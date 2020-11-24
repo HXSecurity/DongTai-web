@@ -1,0 +1,25 @@
+
+body {
+  font-size: 14px;
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: PingFangSC-Regular, Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+}
+
+a, address, b, big, blockquote, body,
+center, cite, code, dd, del, div, dl, dt, em,
+fieldset, font, form, h1, h2, h3, h4, h5, h6,
+html, i, iframe, img, ins, label, legend, li,
+ol, p, pre, small, span, strong, u, ul, var {
+  margin: 0;
+  padding: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  padding-inline-start: 0;
+  box-sizing: border-box;
+  list-style-type: none;
+}
