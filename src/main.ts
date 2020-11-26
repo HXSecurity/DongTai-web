@@ -5,8 +5,11 @@ import store from './store'
 import './styles/common.scss'
 import './styles/theme/index.css'
 import ElementUI from 'element-ui'
+import services from "@/services/index";
+
 
 Vue.config.productionTip = false
+Vue.prototype.$services = services
 
 Vue.use(ElementUI)
 

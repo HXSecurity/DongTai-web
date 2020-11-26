@@ -1,13 +1,14 @@
 <template>
-  <div>
-    <router-view/>
-  </div>
+<footer></footer>
 </template>
 
 <script lang="ts">
 import { Vue } from 'vue-property-decorator'
 
-export default class App extends Vue {
-  name = 'App'
+export default class Footer extends Vue {
 }
 </script>
+
+<style scoped>
+
+</style>

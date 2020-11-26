@@ -1,9 +1,14 @@
 import Vue from 'vue'
-import VueRouter, { RouteConfig } from 'vue-router'
+import VueRouter, {RouteConfig} from 'vue-router'
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
+  {
+    path: '/',
+    name: 'index',
+    component: () => import('@/views/layout/Index.vue')
+  },
   {
     path: '/login',
     name: 'Login',
