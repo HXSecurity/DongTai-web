@@ -1,5 +1,6 @@
 <template>
   <main class="loginContainer">
+    <Header></Header>
     <el-card class="loginCard">
       <el-form>
         <el-form-item>
@@ -23,14 +24,28 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import Header from '@/views/layout/Header.vue'
 
-@Component
+@Component({
+  name: 'Login',
+  components: {
+    Header
+  }
+})
 export default class Login extends Vue {
   private userName: string= ''
   private password: string = ''
   private async login () {
-    console.log(23)
-    console.log(this.$services)
+    const params = {
+      username: this.userName,
+      password: this.password
+    }
+    const { status, msg } = await this.$services.login.login(params)
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    console.log('login success')
   }
 }
 </script>

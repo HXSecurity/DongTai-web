@@ -1,13 +1,24 @@
 <template>
-  <main>
-    123
+  <div>
+    <Header/>
     <router-view></router-view>
-  </main>
+    <Footer/>
+  </div>
 </template>
 
-<script>
-export default {
-  name: 'Index'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import Header from './Header.vue'
+import Footer from './Footer.vue'
+@Component({
+  name: 'layoutIndex',
+  components: {
+    Header,
+    Footer
+  }
+})
+export default class Index extends Vue {
+
 }
 </script>
 

@@ -1,16 +1,15 @@
 <template>
-<footer>
-  footer
-</footer>
+<main></main>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  name: 'layoutFooter'
+  name: 'ChangePassword'
 })
-export default class Footer extends Vue {
+export default class ChangePassword extends Vue {
+
 }
 </script>
 

@@ -18,6 +18,11 @@ export default () => new class {
     return request.post('/user/login', params)
   }
 
+  // 获取用户信息
+  getUserInfo(){
+    return request.get('/user/info')
+  }
+
   // 退出登陆
   logout() {
     return request.get('/user/logout')

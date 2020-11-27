@@ -11,12 +11,12 @@ module.exports = {
   devServer: {
     host: 'localhost',
     port: 8091,
-    open: true
-    // proxy: {
-    //   [process.env.VUE_APP_BASE_API]: {
-    //     target: process.env.VUE_TARGET_HOST,
-    //     changeOrigin: true
-    //   }
-    // }
+    open: true,
+    proxy: {
+      [process.env.VUE_APP_BASE_API]: {
+        target: process.env.VUE_TARGET_HOST,
+        changeOrigin: true
+      }
+    }
   }
 }
