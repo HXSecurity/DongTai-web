@@ -1,10 +1,9 @@
-import axios from 'axios'
-import { AxiosResponse, AxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import store from '@/store'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 10000,
+  timeout: 10000
 })
 
 const request = (config: AxiosRequestConfig) => {
@@ -17,11 +16,11 @@ const requestError = (error: any) => {
 }
 
 const response = (response: AxiosResponse) => {
-  if(response.data.status && parseInt(response.data.status) === 403){
+  if (response.data.status && parseInt(response.data.status) === 403) {
     // 退出登陆并跳转登陆页面
-    store.dispatch('logOut').then(()=>{
+    store.dispatch('logOut').then(() => {
 
-    }).catch((err: any)=>{
+    }).catch((err: any) => {
       console.log(err)
     })
   }

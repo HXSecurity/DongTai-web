@@ -11,11 +11,8 @@ const router = new VueRouter({
   routes
 })
 
-
 router.beforeEach((to, from, next) => {
   // 当前没有用户信息
-  console.log(to);
-  console.log(from);
   if (!store.getters.userInfo && to.fullPath !== '/login') {
     store.dispatch('getUserInfo').then(() => {
       console.log('then')
@@ -24,8 +21,14 @@ router.beforeEach((to, from, next) => {
       console.log('catch')
       next('/login')
     })
-  }else {
+  } else {
     next()
+  }
+})
+
+router.afterEach((to) => {
+  if (to.meta.name) {
+    document.title = to.meta.name
   }
 })
 

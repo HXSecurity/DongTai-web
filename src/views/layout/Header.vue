@@ -6,6 +6,7 @@
       </div>
       <div class="flex-column-center">
         <el-button type="text">登录</el-button>
+        {{userInfo}}
       </div>
     </div>
   </header>
@@ -18,6 +19,14 @@ import { Component, Vue } from 'vue-property-decorator'
   name: 'layoutHeader'
 })
 export default class Header extends Vue {
+  created () {
+    // console.log(mapGetters)
+    console.log(this.$store)
+  }
+
+  get userInfo () {
+    return this.$store.getters.userInfo
+  }
 }
 </script>
 

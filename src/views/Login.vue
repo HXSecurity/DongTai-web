@@ -5,14 +5,14 @@
       <el-form>
         <el-form-item>
           <div style="font-size: 20px;text-align: center">
-            登录
+            {{$t('views.login.title')}}
           </div>
         </el-form-item>
         <el-form-item>
-          <el-input prefix-icon="el-icon-user" v-model="userName"></el-input>
+          <el-input prefix-icon="el-icon-user" v-model="userName" :placeholder="$t('views.login.usernamePlaceholder')"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input prefix-icon="el-icon-lock" show-password v-model="password"></el-input>
+          <el-input prefix-icon="el-icon-lock" show-password v-model="password" :placeholder="$t('views.login.passwordPlaceholder')"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" style="width: 100%" @click="login">登录</el-button>
@@ -45,7 +45,7 @@ export default class Login extends Vue {
       this.$message.error(msg)
       return
     }
-    console.log('login success')
+    this.$router.push('/')
   }
 }
 </script>
