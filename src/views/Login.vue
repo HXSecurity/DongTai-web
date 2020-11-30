@@ -15,7 +15,7 @@
           <el-input prefix-icon="el-icon-lock" show-password v-model="password" :placeholder="$t('views.login.passwordPlaceholder')"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="login">登录</el-button>
+          <el-button type="primary" style="width: 100%" @click="login" @keyup.enter.native="login">登录</el-button>
         </el-form-item>
       </el-form>
     </el-card>
