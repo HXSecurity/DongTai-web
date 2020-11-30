@@ -51,12 +51,32 @@
     </div>
     <div class="main-warp">
       <div class="selectForm">
-        <el-select size="mini" v-model="searchObj.order">
+        <el-select size="mini" v-model="searchObj.order" @change="newSelectData">
           <el-option v-for="item in searchOptionsObj.orderOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
-        <el-select size="mini" v-model="searchObj.language">
+        <el-select size="mini" v-model="searchObj.language" @change="newSelectData">
           <el-option v-for="item in searchOptionsObj.language" :key="item.language" :label="item.language" :value="item.language"></el-option>
         </el-select>
+
+        <div class="selectInput">
+          <el-input style="width: 462px" size="mini">
+            <i
+              slot="suffix"
+              class="el-input__icon el-icon-search"
+              @click="newSelectData"
+            />
+          </el-input>
+        </div>
+      </div>
+      <div class="card" v-for="item in tableData" :key="item.id">
+        <div class="cart-title flex-row-space-between">
+          <span class="title flex-column-center">
+          {{`${item.url}的${item.http_method}请求出现${item.type}漏洞，位置：${item.taint_position}`}}
+          </span>
+          <span class="time flex-column-center">
+            {{item.first_time}}
+          </span>
+        </div>
       </div>
     </div>
   </main>
@@ -117,6 +137,12 @@ export default class VulnList extends Vue {
   }
 
   created () {
+    this.getTableData()
+    this.vulnSummary()
+  }
+
+  private newSelectData () {
+    this.page = 1
     this.getTableData()
     this.vulnSummary()
   }
@@ -189,6 +215,7 @@ export default class VulnList extends Vue {
   .module-line{
     margin-top: 24px;
     cursor: pointer;
+    padding-left: 5px;
 
     .selectOption{
       color: #4B99F1;
@@ -205,5 +232,41 @@ export default class VulnList extends Vue {
 .main-warp {
   padding-top: 14px;
   margin-left: 248px;
+
+  .selectForm{
+    width: 100%;
+
+    .selectInput{
+      float: right;
+    }
+  }
+
+  .card{
+    margin-top: 14px;
+    width: 100%;
+    height: 172px;
+    background: #FFFFFF;
+    border-radius: 8px;
+    border: 1px solid #DEE4EA;
+
+    .cart-title{
+      width: 952px;
+      height: 48px;
+      background: #F1F8FF;
+      border-radius: 8px 8px 0px 0px;
+      border: 1px solid #C8E0FF;
+      padding: 0 12px;
+
+      .title{
+        color: #38435A;
+        font-size: 16px;
+      }
+
+      .time{
+        font-size: 14px;
+        color: #586069;
+      }
+    }
+  }
 }
 </style>
