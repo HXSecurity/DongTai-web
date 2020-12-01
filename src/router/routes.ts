@@ -24,6 +24,13 @@ const routes: Array<RouteConfig> = [
               name: i18n.t('menu.vulnList')
             },
             component: () => import('@/views/vuln/VulnList.vue')
+          },
+          {
+            path: 'vulnDetail/:page/:id',
+            meta: {
+              name: i18n.t('menu.vulnDetail')
+            },
+            component: () => import('@/views/vuln/VulnDetail.vue')
           }
         ]
       }

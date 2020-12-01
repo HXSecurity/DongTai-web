@@ -23,7 +23,7 @@ export default () => new class {
   }
 
   // 漏洞详情
-  vulnDetail (id: number) {
+  getVulnDetail (id: number) {
     return request.get(`/vuln/${id}`)
   }
 }()

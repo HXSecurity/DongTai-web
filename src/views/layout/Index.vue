@@ -25,6 +25,7 @@ export default class Index extends Vue {
    position: sticky;
    top: 0;
    width: 100%;
+   z-index: 1;
 }
 
 .layoutMain{

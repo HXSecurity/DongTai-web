@@ -1,5 +1,6 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import store from '@/store'
+import router from "@/router";
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -19,7 +20,7 @@ const response = (response: AxiosResponse) => {
   if (response.data.status && parseInt(response.data.status) === 403) {
     // 退出登陆并跳转登陆页面
     store.dispatch('logOut').then(() => {
-
+      router.push('/login')
     }).catch((err: any) => {
       console.log(err)
     })

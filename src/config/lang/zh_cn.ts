@@ -4,6 +4,7 @@ export default {
     login: '登录',
     vuln: '应用漏洞',
     vulnList: '应用漏洞列表',
+    vulnDetail: '应用漏洞详情',
   },
   views: {
     login: {

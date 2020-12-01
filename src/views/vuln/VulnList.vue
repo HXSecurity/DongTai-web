@@ -1,81 +1,133 @@
 <template>
   <main class="container">
-    <div class="slider-warp">
-      <div class="title flex-column-center">
-        {{$t('views.vulnList.filter')}}
-      </div>
-      <div class="module-title">
-        {{$t('views.vulnList.language')}}
-      </div>
-      <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.language" :key="item.language">
-        <div class="selectOption">
-          {{item.language}}
+    <div class="fixed-warp">
+      <div class="slider-warp">
+        <div class="title flex-column-center">
+          {{ $t('views.vulnList.filter') }}
         </div>
-        <div class="num">
-          {{item.count}}
+        <div class="module-title">
+          {{ $t('views.vulnList.language') }}
         </div>
-      </div>
-      <div class="module-title">
-        {{$t('views.vulnList.level')}}
-      </div>
-      <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.level" :key="item.level">
-        <div class="selectOption">
-          {{item.level}}
+        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.language" :key="item.language"
+             @click="languageChange(item.language)">
+          <div class="selectOption">
+            {{ item.language }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
         </div>
-        <div class="num">
-          {{item.count}}
+        <div class="module-title">
+          {{ $t('views.vulnList.level') }}
         </div>
-      </div>
-      <div class="module-title">
-        {{$t('views.vulnList.type')}}
-      </div>
-      <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.type" :key="item.type">
-        <div class="selectOption">
-          {{item.type}}
+        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.level" :key="item.level"
+             @click="levelChange(item.level)">
+          <div class="selectOption">
+            {{ item.level }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
         </div>
-        <div class="num">
-          {{item.count}}
+        <div class="module-title">
+          {{ $t('views.vulnList.type') }}
         </div>
-      </div>
-      <div class="module-title">
-        {{$t('views.vulnList.project_name')}}
-      </div>
-      <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.projects" :key="item.project_name">
-        <div class="selectOption">
-          {{item.project_name}}
+        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.type" :key="item.type"
+             @click="typeChange(item.type)">
+          <div class="selectOption">
+            {{ item.type }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
         </div>
-        <div class="num">
-          {{item.count}}
+        <div class="module-title">
+          {{ $t('views.vulnList.project_name') }}
+        </div>
+        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.projects"
+             :key="item.project_name" @click="projectNameChange(item.project_name)">
+          <div class="selectOption">
+            {{ item.project_name }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
         </div>
       </div>
     </div>
+
     <div class="main-warp">
       <div class="selectForm">
-        <el-select size="mini" v-model="searchObj.order" @change="newSelectData">
-          <el-option v-for="item in searchOptionsObj.orderOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+        <el-select size="mini" v-model="searchObj.order" @change="newSelectData" clearable>
+          <el-option v-for="item in searchOptionsObj.orderOptions" :key="item.value" :label="item.label"
+                     :value="item.value"></el-option>
         </el-select>
-        <el-select size="mini" v-model="searchObj.language" @change="newSelectData">
-          <el-option v-for="item in searchOptionsObj.language" :key="item.language" :label="item.language" :value="item.language"></el-option>
+        <el-select style="margin-left: 10px" size="mini" v-model="searchObj.language" @change="newSelectData" clearable>
+          <el-option v-for="item in searchOptionsObj.language" :key="item.language" :label="item.language"
+                     :value="item.language"></el-option>
         </el-select>
-
         <div class="selectInput">
-          <el-input style="width: 462px" size="mini">
+          <el-input v-if="keywordInput" v-model="searchObj.url" style="width: 462px" size="mini" @blur="inputHide">
             <i
               slot="suffix"
               class="el-input__icon el-icon-search"
               @click="newSelectData"
             />
           </el-input>
+          <i
+            v-else
+            class="el-icon-search"
+            style="margin-top: 10px;margin-right: 10px"
+            @click="keywordInput = !keywordInput"
+          />
         </div>
       </div>
-      <div class="card" v-for="item in tableData" :key="item.id">
-        <div class="cart-title flex-row-space-between">
+      <div class="card" v-for="item in tableData" :key="item.id" @click="goDetail(item.id)">
+        <div class="card-title flex-row-space-between">
           <span class="title flex-column-center">
-          {{`${item.url}的${item.http_method}请求出现${item.type}漏洞，位置：${item.taint_position}`}}
+          {{ `${item.url}的${item.http_method}请求出现${item.type}漏洞，位置：${item.taint_position}` }}
           </span>
           <span class="time flex-column-center">
-            {{item.first_time}}
+            {{ item.first_time }}
           </span>
+        </div>
+        <div class="card-content">
+          <div class="top-stack">
+            <i class="iconfont iconyuandianzhong"></i>
+            {{ item.top_stack }}
+          </div>
+          <div class="bottom-stack">
+            <i class="iconfont iconyuandianzhong"></i>
+            {{ item.bottom_sttack }}
+          </div>
+          <div class="infoLine flex-row-space-between">
+            <div class="flex-row-space-between" style="width: 60%;">
+              <span class="info">
+                <i class="iconfont iconyingyong" style="color: #A3B0E2"></i>
+                {{ item.project_name }}
+              </span>
+              <span class="info">
+                <i class="iconfont iconbanben-2" style="color: #E6D088"></i>
+                {{ item.server_name }}
+              </span>
+              <span class="info">
+                <i class="iconfont iconweixian" style="color: #E6D088"></i>
+                {{ item.level }}
+              </span>
+              <span class="info">
+                <i class="iconfont iconweixian" style="color: #A2A5AB"></i>
+                {{ item.latest_time }}
+              </span>
+            </div>
+            <div>
+              <div class="tag">
+                {{ item.language }}
+              </div>
+              <div class="tag" style="margin-left: 20px">
+                {{ item.type }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -83,21 +135,13 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import {Component, Vue} from 'vue-property-decorator'
 
-@Component({ name: 'VulnList' })
+@Component({name: 'VulnList'})
 export default class VulnList extends Vue {
   private page: number = 1;
   private pageSize: number = 20;
-  private searchObj = {
-    language: '',
-    level: '',
-    type: '',
-    project_name: '',
-    url: '',
-    order: ''
-  }
-
+  private keywordInput: boolean = false
   private tableData: Array<object> = [];
   private searchOptionsObj = {
     language: [],
@@ -136,18 +180,53 @@ export default class VulnList extends Vue {
     ]
   }
 
-  created () {
+  private searchObj = {
+    language: '',
+    level: '',
+    type: '',
+    project_name: '',
+    url: '',
+    order: ''
+  }
+
+  created() {
     this.getTableData()
     this.vulnSummary()
   }
 
-  private newSelectData () {
+  private inputHide() {
+    if (!this.searchObj.url) {
+      this.keywordInput = false
+    }
+  }
+
+  private languageChange(val: string) {
+    this.searchObj.language = val
+    this.newSelectData()
+  }
+
+  private levelChange(val: string) {
+    this.searchObj.level = val
+    this.newSelectData()
+  }
+
+  private typeChange(val: string) {
+    this.searchObj.type = val
+    this.newSelectData()
+  }
+
+  private projectNameChange(val: string) {
+    this.searchObj.project_name = val
+    this.newSelectData()
+  }
+
+  private newSelectData() {
     this.page = 1
     this.getTableData()
     this.vulnSummary()
   }
 
-  private async getTableData () {
+  private async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -158,7 +237,7 @@ export default class VulnList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.vuln.vulnList(params)
+    const {status, data, msg} = await this.$services.vuln.vulnList(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -166,7 +245,7 @@ export default class VulnList extends Vue {
     this.tableData = data
   }
 
-  private async vulnSummary () {
+  private async vulnSummary() {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
@@ -175,7 +254,7 @@ export default class VulnList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.vuln.vulnSummary(params)
+    const {status, data, msg} = await this.$services.vuln.vulnSummary(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -185,20 +264,31 @@ export default class VulnList extends Vue {
     this.searchOptionsObj.type = data.type
     this.searchOptionsObj.projects = data.projects
   }
+
+  private goDetail(id: number) {
+    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
+  }
 }
 </script>
 
 <style scoped lang='scss'>
 
+.fixed-warp {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
 .slider-warp {
   width: 234px;
-  position: fixed;
+  margin-top: 78px;
   background: #fff;
   overflow: auto;
-  top: 78px;
-  padding: 0 6px;
+  //top: 78px;
+  padding: 0 6px 20px 6px;
+  height: calc(100vh - 78px);
 
-  .title{
+  .title {
     height: 54px;
     border-bottom: 1px solid #E6E9EC;
     font-size: 18px;
@@ -206,23 +296,23 @@ export default class VulnList extends Vue {
     color: #4A72AE;
   }
 
-  .module-title{
+  .module-title {
     margin-top: 28px;
     font-size: 16px;
     color: #38435A;
   }
 
-  .module-line{
+  .module-line {
     margin-top: 24px;
     cursor: pointer;
     padding-left: 5px;
 
-    .selectOption{
+    .selectOption {
       color: #4B99F1;
       font-size: 14px;
     }
 
-    .num{
+    .num {
       color: #959EA9;
       font-size: 14px;
     }
@@ -233,23 +323,24 @@ export default class VulnList extends Vue {
   padding-top: 14px;
   margin-left: 248px;
 
-  .selectForm{
+  .selectForm {
     width: 100%;
 
-    .selectInput{
+    .selectInput {
       float: right;
     }
   }
 
-  .card{
+  .card {
     margin-top: 14px;
     width: 100%;
     height: 172px;
     background: #FFFFFF;
     border-radius: 8px;
     border: 1px solid #DEE4EA;
+    cursor: pointer;
 
-    .cart-title{
+    .card-title {
       width: 952px;
       height: 48px;
       background: #F1F8FF;
@@ -257,14 +348,78 @@ export default class VulnList extends Vue {
       border: 1px solid #C8E0FF;
       padding: 0 12px;
 
-      .title{
+      .title {
         color: #38435A;
         font-size: 16px;
       }
 
-      .time{
+      .time {
         font-size: 14px;
         color: #586069;
+      }
+    }
+
+    .card-content {
+      padding: 0 12px;
+
+      .top-stack {
+        margin-top: 14px;
+        position: relative;
+
+        &:before {
+          content: '';
+          width: 1px;
+          height: 30px;
+          background: #DEE4EA;
+          position: absolute;
+          left: 5px;
+          top: 14px;
+        }
+
+        i {
+          color: #5491EF;
+          font-size: 12px;
+          vertical-align: bottom;
+        }
+      }
+
+      .bottom-stack {
+        margin-top: 24px;
+
+        i {
+          color: #6EC79F;
+          font-size: 12px;
+          vertical-align: bottom;
+        }
+      }
+
+      .infoLine {
+        margin-top: 24px;
+
+        .info {
+          flex: 1;
+        }
+
+        .tag {
+          display: inline-block;
+          color: #fff;
+          height: 20px;
+          font-size: 14px;
+          line-height: 20px;
+          background: #5495F3;
+          padding-right: 10px;
+          padding-left: 4px;
+          position: relative;
+
+          &:before {
+            position: absolute;
+            left: -17px;
+            content: '';
+            height: 20px;
+            width: 18px;
+            background-image: url("../../assets/img/tag.png");
+          }
+        }
       }
     }
   }
