@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="container flex-row-space-between">
     <div class="slider-warp">
       <div class="titleForm">
         <el-select size="mini" v-model="searchObj.order" style="width: 90px;">
@@ -30,7 +30,8 @@
           <el-button size="mini" icon="el-icon-search"></el-button>
         </div>
       </div>
-      <div class="card" v-for="item in tableData" :key="item.id" :class="item.id === selectedId ? 'selected' : ''">
+      <div class="card" v-for="item in tableData" :key="item.id"
+           :class="item.id === selectedId ? 'selected' : ''" @click="idChange(item.id)">
         <div class="titleLine">
           {{ `${item.url}存在${item.type}漏洞` }}
         </div>
@@ -44,6 +45,44 @@
                 {{ item.latest_time }}
               </span>
         </div>
+      </div>
+    </div>
+    <div class="vuln-warp">
+      <div class="vuln-title">
+        {{ `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${vulnObj.vul.type}漏洞，位置：${vulnObj.vul.taint_position}` }}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.baseInfo')}}
+      </div>
+      <div class="baseInfo">
+        <div class="flex-row-space-between">
+          <span>url:{{vulnObj.vul.url}}</span>
+          <span>url:{{vulnObj.vul.url}}</span>
+        </div>
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.vulnDesc')}}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.httpRequest')}}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.codeDemo')}}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.graphy')}}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.suggest')}}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.appInfo')}}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.devEnv')}}
+      </div>
+      <div class="module-title">
+        {{$t('views.vulnDetail.path')}}
       </div>
     </div>
   </main>
@@ -136,6 +175,11 @@ export default class VulnDetail extends Vue {
     this.total = page.alltotal
   }
 
+  private idChange (id: number) {
+    this.selectedId = id
+    this.getVulnDetail()
+  }
+
   private async getVulnDetail () {
     const { data, status, msg } = await this.$services.vuln.getVulnDetail(this.selectedId)
     if (status !== 201) {
@@ -191,6 +235,38 @@ export default class VulnDetail extends Vue {
 
   .selected{
     background: #EFF6FF;
+  }
+}
+
+.vuln-warp{
+  margin-top: 14px;
+  background: #fff;
+  width: 952px;
+  padding: 0 14px;
+
+  .vuln-title{
+    height: 58px;
+    line-height: 58px;
+    font-size: 16px;
+    color: #38435A;
+    border-bottom: 1px solid #E6E9EC;
+  }
+
+  .module-title{
+    color: #38435A;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 24px;
+  }
+
+  .baseInfo{
+    margin-top: 22px;
+    width: 100%;
+    height: 114px;
+    background: #F8F9FB;
+    border-radius: 4px;
+    color: #959FB4;
+    font-size: 14px;
   }
 }
 </style>

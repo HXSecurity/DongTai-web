@@ -42,6 +42,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component({ name: 'layoutHeader' })
 export default class Header extends Vue {
+  $store: any
   get userInfo () {
     return this.$store.getters.userInfo
   }

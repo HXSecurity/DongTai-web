@@ -18,7 +18,7 @@ export default {
       level: '等级',
       type: '类型',
       project_name: '项目',
-      orderOptions:{
+      orderOptions: {
         app_name: '项目名称',
         server_name: '服务器名称',
         type: '漏洞类型',
@@ -27,6 +27,19 @@ export default {
         latest_time: '最新上报时间',
         first_time: '首次上报时间',
       }
+    },
+    vulnDetail: {
+      baseInfo: '基本信息',
+      vulnDesc: '漏洞描述',
+      httpRequest: 'HTTP请求',
+      codeDemo: '漏洞代码示例',
+      graphy: '污点流图',
+      suggest: '修复建议',
+      appInfo: '应用信息',
+      devEnv: '运行时环境',
+      path: '环境变量',
+      url: 'url',
+      url: 'url',
     }
   }
 }

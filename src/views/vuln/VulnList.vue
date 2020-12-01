@@ -98,7 +98,7 @@
           </div>
           <div class="bottom-stack">
             <i class="iconfont iconyuandianzhong"></i>
-            {{ item.bottom_sttack }}
+            {{ item.bottom_stack }}
           </div>
           <div class="infoLine flex-row-space-between">
             <div class="flex-row-space-between" style="width: 60%;">
@@ -135,9 +135,9 @@
 </template>
 
 <script lang='ts'>
-import {Component, Vue} from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
-@Component({name: 'VulnList'})
+@Component({ name: 'VulnList' })
 export default class VulnList extends Vue {
   private page: number = 1;
   private pageSize: number = 20;
@@ -189,44 +189,44 @@ export default class VulnList extends Vue {
     order: ''
   }
 
-  created() {
+  created () {
     this.getTableData()
     this.vulnSummary()
   }
 
-  private inputHide() {
+  private inputHide () {
     if (!this.searchObj.url) {
       this.keywordInput = false
     }
   }
 
-  private languageChange(val: string) {
+  private languageChange (val: string) {
     this.searchObj.language = val
     this.newSelectData()
   }
 
-  private levelChange(val: string) {
+  private levelChange (val: string) {
     this.searchObj.level = val
     this.newSelectData()
   }
 
-  private typeChange(val: string) {
+  private typeChange (val: string) {
     this.searchObj.type = val
     this.newSelectData()
   }
 
-  private projectNameChange(val: string) {
+  private projectNameChange (val: string) {
     this.searchObj.project_name = val
     this.newSelectData()
   }
 
-  private newSelectData() {
+  private newSelectData () {
     this.page = 1
     this.getTableData()
     this.vulnSummary()
   }
 
-  private async getTableData() {
+  private async getTableData () {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -237,7 +237,7 @@ export default class VulnList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const {status, data, msg} = await this.$services.vuln.vulnList(params)
+    const { status, data, msg } = await this.$services.vuln.vulnList(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -245,7 +245,7 @@ export default class VulnList extends Vue {
     this.tableData = data
   }
 
-  private async vulnSummary() {
+  private async vulnSummary () {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
@@ -254,7 +254,7 @@ export default class VulnList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const {status, data, msg} = await this.$services.vuln.vulnSummary(params)
+    const { status, data, msg } = await this.$services.vuln.vulnSummary(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -265,7 +265,7 @@ export default class VulnList extends Vue {
     this.searchOptionsObj.projects = data.projects
   }
 
-  private goDetail(id: number) {
+  private goDetail (id: number) {
     this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
   }
 }
