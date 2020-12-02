@@ -5,8 +5,11 @@
         IAST
       </div>
       <div class="url-warp">
-        <div class="url flex-column-center" :class="currentRoute('/vuln') ? 'currentRoute' : ''">
+        <div class="url flex-column-center" :class="currentRoute('/vuln') ? 'currentRoute' : ''" @click="$router.push('/vuln')">
           {{ $t('menu.vuln') }} /
+        </div>
+        <div class="url flex-column-center" :class="currentRoute('/sca') ? 'currentRoute' : ''" @click="$router.push('/sca')">
+          {{ $t('menu.sca') }} /
         </div>
       </div>
       <div v-if="!userInfo" class="flex-column-center">
@@ -79,6 +82,9 @@ export default class Header extends Vue {
       flex: 1;
       margin-left: 68px;
       height: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
 
       .url {
         height: 100%;
@@ -86,6 +92,11 @@ export default class Header extends Vue {
         font-weight: normal;
         color: #38435A;
         cursor: pointer;
+        margin-left: 10px;
+
+        &:first-child{
+          margin-left: 0;
+        }
       }
 
       .currentRoute{

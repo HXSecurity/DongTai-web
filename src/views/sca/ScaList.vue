@@ -3,10 +3,10 @@
     <div class="fixed-warp">
       <div class="slider-warp">
         <div class="title flex-column-center">
-          {{ $t('views.vulnList.filter') }}
+          {{ $t('views.scaList.filter') }}
         </div>
         <div class="module-title">
-          {{ $t('views.vulnList.language') }}
+          {{ $t('views.scaList.language') }}
         </div>
         <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.language" :key="item.language"
              @click="languageChange(item.language)">
@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="module-title">
-          {{ $t('views.vulnList.level') }}
+          {{ $t('views.scaList.level') }}
         </div>
         <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.level" :key="item.level"
              @click="levelChange(item.level)">
@@ -30,19 +30,7 @@
           </div>
         </div>
         <div class="module-title">
-          {{ $t('views.vulnList.type') }}
-        </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.type" :key="item.type"
-             @click="typeChange(item.type)">
-          <div class="selectOption">
-            {{ item.type }}
-          </div>
-          <div class="num">
-            {{ item.count }}
-          </div>
-        </div>
-        <div class="module-title">
-          {{ $t('views.vulnList.project_name') }}
+          {{ $t('views.scaList.project_name') }}
         </div>
         <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.projects"
              :key="item.project_name" @click="projectNameChange(item.project_name)">
@@ -82,54 +70,15 @@
           />
         </div>
       </div>
-      <div class="card" v-for="item in tableData" :key="item.id" @click="goDetail(item.id)">
-        <div class="card-title flex-row-space-between">
-          <span class="title flex-column-center">
-          {{ `${item.url}的${item.http_method}请求出现${item.type}漏洞，位置：${item.taint_position}` }}
-          </span>
-          <span class="time flex-column-center">
-            {{ item.first_time }}
-          </span>
-        </div>
-        <div class="card-content">
-          <div class="top-stack">
-            <i class="iconfont iconyuandianzhong"></i>
-            {{ item.top_stack }}
-          </div>
-          <div class="bottom-stack">
-            <i class="iconfont iconyuandianzhong"></i>
-            {{ item.bottom_stack }}
-          </div>
-          <div class="infoLine flex-row-space-between">
-            <div class="flex-row-space-between" style="width: 60%;">
-              <span class="info">
-                <i class="iconfont iconyingyong" style="color: #A3B0E2"></i>
-                {{ item.project_name }}
-              </span>
-              <span class="info">
-                <i class="iconfont iconbanben-2" style="color: #E6D088"></i>
-                {{ item.server_name }}
-              </span>
-              <span class="info">
-                <i class="iconfont iconweixian" style="color: #E6D088"></i>
-                {{ item.level }}
-              </span>
-              <span class="info">
-                <i class="iconfont iconweixian" style="color: #A2A5AB"></i>
-                {{ item.latest_time }}
-              </span>
-            </div>
-            <div>
-              <div class="tag">
-                {{ item.language }}
-              </div>
-              <div class="tag" style="margin-left: 20px">
-                {{ item.type }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <el-table class="sca-list" :data="tableData" style="width: 100%;margin-top: 18px;cursor: pointer;" @row-click="goDetail">
+        <el-table-column :label="$t('views.scaList.tableHeaders.name')" prop="package_name"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.version')" prop="version"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.application')" prop="project_name"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.language')" prop="language"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.level')" prop="level"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.count')" prop="vul_count"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.time')" prop="dt"></el-table-column>
+      </el-table>
     </div>
   </main>
 </template>
@@ -138,8 +87,8 @@
 import { Component, Vue } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
 
-@Component({ name: 'VulnList' })
-export default class VulnList extends Vue {
+@Component({ name: 'ScaList' })
+export default class ScaList extends Vue {
   private page: number = 1;
   private pageSize: number = 20;
   private keywordInput: boolean = false
@@ -148,7 +97,6 @@ export default class VulnList extends Vue {
   private searchOptionsObj = {
     language: [],
     level: [],
-    type: [],
     projects: [],
     orderOptions: [
       {
@@ -185,7 +133,6 @@ export default class VulnList extends Vue {
   private searchObj = {
     language: '',
     level: '',
-    type: '',
     project_name: '',
     url: '',
     order: ''
@@ -193,7 +140,7 @@ export default class VulnList extends Vue {
 
   created () {
     this.getTableData()
-    this.vulnSummary()
+    this.scaSummary()
   }
 
   private inputHide () {
@@ -212,11 +159,6 @@ export default class VulnList extends Vue {
     this.newSelectData()
   }
 
-  private typeChange (val: string) {
-    this.searchObj.type = val
-    this.newSelectData()
-  }
-
   private projectNameChange (val: string) {
     this.searchObj.project_name = val
     this.newSelectData()
@@ -226,7 +168,7 @@ export default class VulnList extends Vue {
     this.page = 1
     this.tableData = []
     this.getTableData()
-    this.vulnSummary()
+    this.scaSummary()
   }
 
   mounted () {
@@ -253,12 +195,11 @@ export default class VulnList extends Vue {
       pageSize: this.pageSize,
       language: this.searchObj.language,
       level: this.searchObj.level,
-      type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.vuln.vulnList(params)
+    const { status, data, msg } = await this.$services.sca.scaList(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -277,28 +218,26 @@ export default class VulnList extends Vue {
     this.tableData = [...this.tableData, ...tableData]
   }
 
-  private async vulnSummary () {
+  private async scaSummary () {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
-      type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.vuln.vulnSummary(params)
+    const { status, data, msg } = await this.$services.sca.scaSummary(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
     this.searchOptionsObj.language = data.language
     this.searchOptionsObj.level = data.level
-    this.searchOptionsObj.type = data.type
     this.searchOptionsObj.projects = data.projects
   }
 
-  private goDetail (id: number) {
-    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
+  private goDetail (row: any) {
+    this.$router.push(`/sca/scaDetail/${this.page}/${row.id}`)
   }
 }
 </script>
@@ -361,99 +300,6 @@ export default class VulnList extends Vue {
 
     .selectInput {
       float: right;
-    }
-  }
-
-  .card {
-    margin-top: 14px;
-    width: 100%;
-    padding-bottom: 20px;
-    background: #FFFFFF;
-    border-radius: 8px;
-    border: 1px solid #DEE4EA;
-    cursor: pointer;
-
-    .card-title {
-      width: 952px;
-      height: 48px;
-      background: #F1F8FF;
-      border-radius: 8px 8px 0px 0px;
-      border: 1px solid #C8E0FF;
-      padding: 0 12px;
-
-      .title {
-        color: #38435A;
-        font-size: 16px;
-      }
-
-      .time {
-        font-size: 14px;
-        color: #586069;
-      }
-    }
-
-    .card-content {
-      padding: 0 12px;
-
-      .top-stack {
-        margin-top: 14px;
-        position: relative;
-
-        &:before {
-          content: '';
-          width: 1px;
-          height: 30px;
-          background: #DEE4EA;
-          position: absolute;
-          left: 5px;
-          top: 14px;
-        }
-
-        i {
-          color: #5491EF;
-          font-size: 12px;
-          vertical-align: bottom;
-        }
-      }
-
-      .bottom-stack {
-        margin-top: 24px;
-
-        i {
-          color: #6EC79F;
-          font-size: 12px;
-          vertical-align: bottom;
-        }
-      }
-
-      .infoLine {
-        margin-top: 24px;
-
-        .info {
-          flex: 1;
-        }
-
-        .tag {
-          display: inline-block;
-          color: #fff;
-          height: 20px;
-          font-size: 14px;
-          line-height: 20px;
-          background: #5495F3;
-          padding-right: 10px;
-          padding-left: 4px;
-          position: relative;
-
-          &:before {
-            position: absolute;
-            left: -17px;
-            content: '';
-            height: 20px;
-            width: 18px;
-            background-image: url("../../assets/img/tag.png");
-          }
-        }
-      }
     }
   }
 }

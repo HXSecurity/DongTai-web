@@ -16,7 +16,9 @@
     "vue-i18n": "^8.22.2",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "vuex": "^3.4.0",
+    "js-base64": "3.5.2",
+    "xss": "^1.0.6"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",

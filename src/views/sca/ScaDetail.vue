@@ -139,13 +139,11 @@
         </div>
       </div>
       <!--运行时环境-->
-      <div  v-if="vulnObj.server.runtime"  class="module-title">
+      <div  v-if="vulnObj.vul.runtime"  class="module-title">
         {{ $t('views.vulnDetail.devEnv') }}
       </div>
-      <div v-if="vulnObj.server.runtime"  class="baseInfo">
-        <div class="base-line">
-          <span>{{ vulnObj.server.runtime }}</span>
-        </div>
+      <div v-if="vulnObj.vul.runtime" class="markdownContent">
+        <MyMarkdownIt :content="vulnObj.vul.runtime"></MyMarkdownIt>
       </div>
       <!--      环境变量-->
       <div class="module-title">
@@ -153,10 +151,10 @@
       </div>
       <div class="baseInfo">
         <div class="base-line">
-          <span>{{ $t('views.vulnDetail.command') }}:{{ vulnObj.server.command }}</span>
+          <span>{{ $t('views.vulnDetail.command') }}:{{ vulnObj.vul.command }}</span>
         </div>
-        <div v-if="vulnObj.server.environment" class="base-line">
-          <span>{{ $t('views.vulnDetail.other') }}:{{ vulnObj.server.environment }}</span>
+        <div class="base-line">
+          <span>{{ $t('views.vulnDetail.other') }}:{{ vulnObj.vul.runtime }}</span>
         </div>
       </div>
     </div>
@@ -168,8 +166,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import { decode } from 'js-base64'
 import { formatTimestamp } from '@/utils/utils'
 
-@Component({ name: 'VulnDetail' })
-export default class VulnDetail extends Vue {
+@Component({ name: 'ScaDetail' })
+export default class ScaDetail extends Vue {
   private vulnObj: object = {}
   private tableData: Array<object> = []
   private page: number = 1

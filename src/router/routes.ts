@@ -33,6 +33,36 @@ const routes: Array<RouteConfig> = [
             component: () => import('@/views/vuln/VulnDetail.vue')
           }
         ]
+      },
+      {
+        path: 'sca',
+        redirect: '/sca/scaList',
+        meta: {
+          name: i18n.t('menu.sca')
+        },
+        component: () => import('@/views/sca/Index.vue'),
+        children:[
+          {
+            path: 'scaList',
+            meta: {
+              name: i18n.t('menu.scaList')
+            },
+            component: () => import('@/views/sca/ScaList.vue')
+          },
+          {
+            path: 'scaDetail/:page/:id',
+            meta: {
+              name: i18n.t('menu.scaDetail')
+            },
+            component: () => import('@/views/sca/ScaDetail.vue')
+          }
+        ]
+      },
+      {
+        path: 'setting',
+        meta:{
+          name: i18n.t('menu.setting')
+        }
       }
     ]
   },
