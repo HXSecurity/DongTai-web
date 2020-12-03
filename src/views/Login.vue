@@ -25,6 +25,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Header from '@/views/layout/Header.vue'
+import VueBase from '@/Vuebase'
 
 @Component({
   name: 'Login',
@@ -32,7 +33,7 @@ import Header from '@/views/layout/Header.vue'
     Header
   }
 })
-export default class Login extends Vue {
+export default class Login extends VueBase {
   private userName: string= ''
   private password: string = ''
   private async login () {
@@ -40,7 +41,7 @@ export default class Login extends Vue {
       username: this.userName,
       password: this.password
     }
-    const { status, msg } = await this.$services.login.login(params)
+    const { status, msg } = await this.services.login.login(params)
     if (status !== 201) {
       this.$message.error(msg)
       return

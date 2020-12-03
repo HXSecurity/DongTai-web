@@ -25,7 +25,7 @@
           >
           </el-pagination>
           <span style="color: #969BA4;line-height: 25px;">
-            <strong style="color: #38435A;font-weight: 400;">{{ page }}</strong>/{{ Math.ceil(total / page) }}
+            <strong style="color: #38435A;font-weight: 400;">{{ page }}</strong>/{{ Math.ceil(total / 20) }}
           </span>
           <el-button size="mini" icon="el-icon-search"></el-button>
         </div>
@@ -33,7 +33,7 @@
       <div class="card" v-for="item in tableData" :key="item.id"
            :class="item.id === selectedId ? 'selected' : ''" @click="idChange(item.id)">
         <div class="titleLine">
-          {{ `${item.url}存在${item.type}漏洞` }}
+          {{ `${item.package_name} ${item.version}` }}
         </div>
         <div class="infoLine flex-row-space-between">
           <span>
@@ -41,134 +41,46 @@
                 {{ item.level }}
               </span>
           <span>
-                <i class="iconfont iconweixian" style="color: #A2A5AB"></i>
-                {{ item.latest_time }}
+                <i class="iconfont iconbanben-2" style="color: #A2A5AB;font-size: 14px;"></i>
+                {{ item.version }}
               </span>
         </div>
       </div>
     </div>
-    <div class="vuln-warp" v-if="vulnObj.vul">
-      <div class="vuln-title">
-        {{ `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${vulnObj.vul.type}漏洞，位置：${vulnObj.vul.taint_position}` }}
+    <div class="sca-warp">
+      <div class="sca-title">
+        dsd
+      </div>
+      <div class="sca-info">
+        <div class="info-line">{{`${$t('views.scaDetail.version')}：${scaObj.version}`}}</div>
+        <div class="info-line">{{`${$t('views.scaDetail.level')}：${scaObj.level}`}}</div>
+        <div class="info-line">{{`${$t('views.scaDetail.package_name')}：${scaObj.package_name}`}}</div>
+        <div class="info-line">{{`${$t('views.scaDetail.vul_count')}：${scaObj.vul_count}`}}</div>
+        <div class="info-line">{{`${$t('views.scaDetail.signature_value')}：${scaObj.signature_value}`}}</div>
       </div>
       <div class="module-title">
-        {{ $t('views.vulnDetail.baseInfo') }}
+        {{$t('views.scaDetail.vulList')}}
       </div>
-      <div class="baseInfo">
-        <div class="base-line flex-row-space-between">
-          <span>{{ $t('views.vulnDetail.url') }}:{{ vulnObj.vul.url }}</span>
-          <span>{{ $t('views.vulnDetail.first_time') }}:{{ vulnObj.vul.first_time }}</span>
-        </div>
-        <div class="base-line">
-          <span>{{ $t('views.vulnDetail.serverIp') }}:{{ vulnObj.server.ip }}</span>
-        </div>
-        <div class="base-line flex-row-space-between">
-          <span>{{ $t('views.vulnDetail.language') }}:{{ vulnObj.vul.language }}</span>
-          <span>{{ $t('views.vulnDetail.port') }}:{{ vulnObj.server.port }}</span>
-          <span>{{ $t('views.vulnDetail.projectName') }}:{{ vulnObj.vul.project_name }}</span>
-          <span>{{ $t('views.vulnDetail.level') }}:{{ vulnObj.vul.level }}</span>
-          <span>{{ $t('views.vulnDetail.counts') }}:{{ vulnObj.vul.counts }}</span>
-        </div>
-      </div>
-      <div class="module-title">
-        {{ $t('views.vulnDetail.vulnDesc') }}
-      </div>
-      <div class="markdownContent">
-        <MyMarkdownIt :content="vulnObj.strategy.desc"></MyMarkdownIt>
-      </div>
-      <div class="module-title">
-        {{ $t('views.vulnDetail.httpRequest') }}
-      </div>
-      <div class="markdownContent">
-        <MyMarkdownIt :content="vulnObj.vul.req_header"></MyMarkdownIt>
-      </div>
-      <div v-if="vulnObj.strategy.sample_code" class="module-title">
-        {{ $t('views.vulnDetail.codeDemo') }}
-      </div>
-      <div v-if="vulnObj.strategy.sample_code" class="markdownContent">
-        <MyMarkdownIt :content="vulnObj.strategy.sample_code"></MyMarkdownIt>
-      </div>
-      <!-- 污点流图-->
-      <div class="module-title">
-        {{ $t('views.vulnDetail.graphy') }}
-      </div>
-      <div class="graphyModule flex-row-space-between">
-        <div class="left-warp">
-          <div class="nodeLine flex-column-center" v-for="(item,index) in vulnObj.vul.graphy" :key="index">
-            {{ item.node }}
-            <i v-if="index < vulnObj.vul.graphy.length - 1" class="step el-icon-bottom"></i>
-          </div>
-        </div>
-        <div class="right-warp">
-          <el-table :data="vulnObj.vul.graphy" style="background: #F8F9FB;" :row-class-name="tableRowClassName">
-            <el-table-column align="left" :label="$t('views.vulnDetail.type')" prop="type"></el-table-column>
-            <el-table-column align="center" :label="$t('views.vulnDetail.fileAndNum')">
-              <template slot-scope="{row}">
-                <div>{{ row.file }}</div>
-                <div v-if="row.line_number">{{ row.line_number }}</div>
-              </template>
-            </el-table-column>
-            <el-table-column align="right" :label="$t('views.vulnDetail.wuDianZhi')" prop="target"></el-table-column>
-          </el-table>
-        </div>
-      </div>
-      <div v-if="vulnObj.strategy.repair_suggestion" class="module-title">
-        {{ $t('views.vulnDetail.suggest') }}
-      </div>
-      <div v-if="vulnObj.strategy.repair_suggestion" class="markdownContent">
-        <MyMarkdownIt :content="vulnObj.strategy.repair_suggestion"></MyMarkdownIt>
-      </div>
-      <div class="module-title">
-        {{ $t('views.vulnDetail.appInfo') }}
-      </div>
-      <div class="baseInfo">
-        <div class="base-line flex-row-space-between">
-          <span style="flex: 1;">{{ $t('views.vulnDetail.serverIp') }}:{{ vulnObj.server.ip }}</span>
-          <span style="flex: 1;">{{ $t('views.vulnDetail.port') }}:{{ vulnObj.server.port }}</span>
-          <span style="flex: 1;">{{ $t('views.vulnDetail.serverIp') }}:{{ vulnObj.server.ip }}</span>
-        </div>
-        <div class="base-line flex-row-space-between">
-          <span style="flex: 1;">{{ $t('views.vulnDetail.projectName') }}:{{ vulnObj.vul.project_name }}</span>
-          <span style="flex: 1;">{{ $t('views.vulnDetail.route') }}:{{ vulnObj.vul.context_path }}</span>
-          <span style="flex: 1;"></span>
-        </div>
-        <div class="base-line flex-row-space-between">
-          <span style="flex: 1;">{{ $t('views.vulnDetail.middleware') }}:{{ vulnObj.server.container }}</span>
-          <span style="flex: 1;">{{ $t('views.vulnDetail.route') }}:{{ vulnObj.server.container_path }}</span>
-          <span style="flex: 1;"></span>
-        </div>
-      </div>
-      <!--运行时环境-->
-      <div  v-if="vulnObj.vul.runtime"  class="module-title">
-        {{ $t('views.vulnDetail.devEnv') }}
-      </div>
-      <div v-if="vulnObj.vul.runtime" class="markdownContent">
-        <MyMarkdownIt :content="vulnObj.vul.runtime"></MyMarkdownIt>
-      </div>
-      <!--      环境变量-->
-      <div class="module-title">
-        {{ $t('views.vulnDetail.path') }}
-      </div>
-      <div class="baseInfo">
-        <div class="base-line">
-          <span>{{ $t('views.vulnDetail.command') }}:{{ vulnObj.vul.command }}</span>
-        </div>
-        <div class="base-line">
-          <span>{{ $t('views.vulnDetail.other') }}:{{ vulnObj.vul.runtime }}</span>
-        </div>
-      </div>
+      <el-table :data="scaObj.vuls" style="width: 100%;">
+        <el-table-column :label="$t('views.scaDetail.cveNumber')" prop="vulcve"></el-table-column>
+        <el-table-column :label="$t('views.scaDetail.cweNumber')" prop="vulcwe"></el-table-column>
+        <el-table-column :label="$t('views.scaDetail.vulName')" prop="vulname"></el-table-column>
+        <el-table-column :label="$t('views.scaDetail.vulLevel')" prop="level"></el-table-column>
+        <el-table-column :label="$t('views.scaDetail.safeVersion')" prop="safe_version"></el-table-column>
+        <el-table-column :label="$t('views.scaDetail.operate')" align="right"></el-table-column>
+      </el-table>
     </div>
   </main>
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
-import { decode } from 'js-base64'
+import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
+import VueBase from '@/Vuebase'
 
 @Component({ name: 'ScaDetail' })
-export default class ScaDetail extends Vue {
-  private vulnObj: object = {}
+export default class ScaDetail extends VueBase {
+  private scaObj: object = {}
   private tableData: Array<object> = []
   private page: number = 1
   private selectedId: number = 0
@@ -176,47 +88,42 @@ export default class ScaDetail extends Vue {
   private searchObj = {
     language: '',
     level: '',
-    type: '',
     project_name: '',
     url: '',
     order: ''
   }
 
-  private orderOptions = [
+  private orderOptions= [
     {
-      label: this.$t('views.vulnList.orderOptions.app_name'),
-      value: 'app_name'
+      label: this.$t('views.scaList.orderOptions.project_name'),
+      value: 'project_name'
     },
     {
-      label: this.$t('views.vulnList.orderOptions.server_name'),
-      value: 'server_name'
-    },
-    {
-      label: this.$t('views.vulnList.orderOptions.type'),
-      value: 'type'
-    },
-    {
-      label: this.$t('views.vulnList.orderOptions.level'),
+      label: this.$t('views.scaList.orderOptions.level'),
       value: 'level'
     },
     {
-      label: this.$t('views.vulnList.orderOptions.url'),
-      value: 'url'
+      label: this.$t('views.scaList.orderOptions.package_name'),
+      value: 'package_name'
     },
     {
-      label: this.$t('views.vulnList.orderOptions.latest_time'),
-      value: 'latest_time'
+      label: this.$t('views.scaList.orderOptions.version'),
+      value: 'version'
     },
     {
-      label: this.$t('views.vulnList.orderOptions.first_time'),
-      value: 'first_time'
+      label: this.$t('views.scaList.orderOptions.language'),
+      value: 'language'
+    },
+    {
+      label: this.$t('views.scaList.orderOptions.vul_count'),
+      value: 'vul_count'
     }
   ]
 
   async created () {
     this.page = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
-    await this.getVulnDetail()
+    await this.getScaDetail()
     await this.getTableData()
   }
 
@@ -236,56 +143,31 @@ export default class ScaDetail extends Vue {
       pageSize: 20,
       language: this.searchObj.language,
       level: this.searchObj.level,
-      type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, page, msg } = await this.$services.vuln.vulnList(params)
+    const { status, data, page, msg } = await this.services.sca.scaList(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
-    this.tableData = data.reduce((list, item) => {
-      list.push({
-        ...item,
-        latest_time: formatTimestamp(item.latest_time)
-      })
-      return list
-    }, [])
+    this.tableData = data
     this.total = page.alltotal
   }
 
   private idChange (id: number) {
     this.selectedId = id
-    this.getVulnDetail()
+    this.getScaDetail()
   }
 
-  private async getVulnDetail () {
-    const { data, status, msg } = await this.$services.vuln.getVulnDetail(this.selectedId)
+  private async getScaDetail () {
+    const { data, status, msg } = await this.services.sca.getScaDetail(this.selectedId)
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
-    this.vulnObj = {
-      vul: {
-        ...data.vul,
-        first_time: formatTimestamp(data.vul.first_time),
-        latest_time: formatTimestamp(data.vul.latest_time),
-        req_header: decode(data.vul.req_header),
-        graphy: data.vul.graphy
-      },
-      server: {
-        ...data.server
-      },
-      strategy: {
-        ...data.strategy
-      }
-    }
-  }
-
-  tableRowClassName ({ row, rowIndex }) {
-    return 'diy-row'
+    this.scaObj = data
   }
 }
 </script>
@@ -345,86 +227,40 @@ export default class ScaDetail extends Vue {
   }
 }
 
-.vuln-warp {
+.sca-warp {
   margin-top: 14px;
   background: #fff;
   width: 952px;
   padding: 0 14px;
 
-  .vuln-title {
+  .sca-title {
     height: 58px;
     line-height: 58px;
     font-size: 16px;
     color: #38435A;
+    font-weight: 600;
     border-bottom: 1px solid #E6E9EC;
+  }
+
+  .sca-info{
+    margin-top: 17px;
+
+    .info-line{
+      color: #959FB4;
+      font-size: 14px;
+      margin-top: 18px;
+
+      &:first-child{
+        margin-top: 0;
+      }
+    }
   }
 
   .module-title {
     color: #38435A;
     font-size: 14px;
-    font-weight: 500;
-    margin-top: 24px;
-  }
-
-  .baseInfo {
-    margin-top: 22px;
-    width: 100%;
-    background: #F8F9FB;
-    border-radius: 4px;
-    color: #959FB4;
-    font-size: 14px;
-    padding: 0 14px 26px 14px;
-
-    .base-line {
-      padding-top: 14px;
-
-      &:first-child {
-        padding-top: 18px;
-      }
-    }
-  }
-
-  .markdownContent {
-    background: #F8F9FB;
-    margin-top: 18px;
-    border-radius: 4px;
-  }
-
-  .graphyModule {
-    width: 100%;
-    margin-top: 18px;
-
-    .left-warp {
-      width: 482px;
-
-      .nodeLine {
-        background: #F8F9FB;
-        width: 100%;
-        height: 48px;
-        text-align: center;
-        line-height: 20px;
-        font-size: 14px;
-        color: #959FB4;
-        margin-top: 34px;
-        position: relative;
-
-        &:first-child {
-          margin-top: 0;
-        }
-
-        .step {
-          position: absolute;
-          bottom: -26px;
-          left: 49%;
-          font-size: 20px;
-        }
-      }
-    }
-
-    .right-warp {
-      width: 428px;
-      background: #F8F9FB;
-    }
+    font-weight: 600;
+    margin-top: 58px;
   }
 }
 </style>

@@ -1,6 +1,7 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import axios, {AxiosResponse, AxiosRequestConfig} from 'axios'
 import store from '@/store'
 import router from "@/router";
+import {getToken} from '@/utils/utils'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -8,6 +9,9 @@ const service = axios.create({
 })
 
 const request = (config: AxiosRequestConfig) => {
+  if (getToken()) {
+    config.headers['csrf-token'] = getToken()
+  }
   return config
 }
 

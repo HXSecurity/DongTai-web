@@ -25,7 +25,7 @@
           >
           </el-pagination>
           <span style="color: #969BA4;line-height: 25px;">
-            <strong style="color: #38435A;font-weight: 400;">{{ page }}</strong>/{{ Math.ceil(total / page) }}
+            <strong style="color: #38435A;font-weight: 400;">{{ page }}</strong>/{{ Math.ceil(total / 20) }}
           </span>
           <el-button size="mini" icon="el-icon-search"></el-button>
         </div>
@@ -37,11 +37,11 @@
         </div>
         <div class="infoLine flex-row-space-between">
           <span>
-                <i class="iconfont iconweixian" style="color: #E6D088"></i>
+                <i class="iconfont iconweixian" style="color: #E6D088;"></i>
                 {{ item.level }}
               </span>
           <span>
-                <i class="iconfont iconweixian" style="color: #A2A5AB"></i>
+                <i class="iconfont iconshijian-2" style="color: #A2A5AB;font-size: 14px;"></i>
                 {{ item.latest_time }}
               </span>
         </div>
@@ -100,7 +100,7 @@
           </div>
         </div>
         <div class="right-warp">
-          <el-table :data="vulnObj.vul.graphy" style="background: #F8F9FB;" :row-class-name="tableRowClassName">
+          <el-table class="graphyTable" :data="vulnObj.vul.graphy" style="background: #F8F9FB;" :row-class-name="tableRowClassName">
             <el-table-column align="left" :label="$t('views.vulnDetail.type')" prop="type"></el-table-column>
             <el-table-column align="center" :label="$t('views.vulnDetail.fileAndNum')">
               <template slot-scope="{row}">
@@ -164,12 +164,13 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component} from 'vue-property-decorator'
 import { decode } from 'js-base64'
 import { formatTimestamp } from '@/utils/utils'
+import VueBase from '@/Vuebase'
 
 @Component({ name: 'VulnDetail' })
-export default class VulnDetail extends Vue {
+export default class VulnDetail extends VueBase {
   private vulnObj: object = {}
   private tableData: Array<object> = []
   private page: number = 1
@@ -243,7 +244,7 @@ export default class VulnDetail extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, page, msg } = await this.$services.vuln.vulnList(params)
+    const { status, data, page, msg } = await this.services.vuln.vulnList(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -264,7 +265,7 @@ export default class VulnDetail extends Vue {
   }
 
   private async getVulnDetail () {
-    const { data, status, msg } = await this.$services.vuln.getVulnDetail(this.selectedId)
+    const { data, status, msg } = await this.services.vuln.getVulnDetail(this.selectedId)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -297,6 +298,10 @@ export default class VulnDetail extends Vue {
   background: #F8F9FB;
   color: #959FB4;
   font-size: 14px;
+}
+.graphyTable.el-table th{
+  background: #F8F9FB;
+  color: #959FB4;
 }
 </style>
 
@@ -358,13 +363,14 @@ export default class VulnDetail extends Vue {
     line-height: 58px;
     font-size: 16px;
     color: #38435A;
+    font-weight: 600;
     border-bottom: 1px solid #E6E9EC;
   }
 
   .module-title {
     color: #38435A;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     margin-top: 24px;
   }
 

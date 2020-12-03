@@ -115,7 +115,7 @@
                 {{ item.level }}
               </span>
               <span class="info">
-                <i class="iconfont iconweixian" style="color: #A2A5AB"></i>
+                <i class="iconfont iconshijian-2" style="color: #A2A5AB"></i>
                 {{ item.latest_time }}
               </span>
             </div>
@@ -135,11 +135,12 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
+import VueBase from '@/Vuebase'
 
 @Component({ name: 'VulnList' })
-export default class VulnList extends Vue {
+export default class VulnList extends VueBase {
   private page: number = 1;
   private pageSize: number = 20;
   private keywordInput: boolean = false
@@ -258,7 +259,7 @@ export default class VulnList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.vuln.vulnList(params)
+    const { status, data, msg } = await this.services.vuln.vulnList(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -286,7 +287,7 @@ export default class VulnList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.vuln.vulnSummary(params)
+    const { status, data, msg } = await this.services.vuln.vulnSummary(params)
     if (status !== 201) {
       this.$message.error(msg)
       return

@@ -60,9 +60,20 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: 'setting',
+        redirect: '/setting/changePassword',
         meta:{
           name: i18n.t('menu.setting')
-        }
+        },
+        component: () => import('@/views/setting/Index.vue'),
+        children:[
+          {
+            path: 'changePassword',
+            meta: {
+              name: i18n.t('menu.changePassword')
+            },
+            component: () => import('@/views/setting/ChangePassword.vue')
+          }
+        ]
       }
     ]
   },

@@ -84,11 +84,12 @@
 </template>
 
 <script lang='ts'>
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
+import VueBase from '@/Vuebase'
 
 @Component({ name: 'ScaList' })
-export default class ScaList extends Vue {
+export default class ScaList extends VueBase {
   private page: number = 1;
   private pageSize: number = 20;
   private keywordInput: boolean = false
@@ -100,32 +101,28 @@ export default class ScaList extends Vue {
     projects: [],
     orderOptions: [
       {
-        label: this.$t('views.vulnList.orderOptions.app_name'),
-        value: 'app_name'
+        label: this.$t('views.scaList.orderOptions.project_name'),
+        value: 'project_name'
       },
       {
-        label: this.$t('views.vulnList.orderOptions.server_name'),
-        value: 'server_name'
-      },
-      {
-        label: this.$t('views.vulnList.orderOptions.type'),
-        value: 'type'
-      },
-      {
-        label: this.$t('views.vulnList.orderOptions.level'),
+        label: this.$t('views.scaList.orderOptions.level'),
         value: 'level'
       },
       {
-        label: this.$t('views.vulnList.orderOptions.url'),
-        value: 'url'
+        label: this.$t('views.scaList.orderOptions.package_name'),
+        value: 'package_name'
       },
       {
-        label: this.$t('views.vulnList.orderOptions.latest_time'),
-        value: 'latest_time'
+        label: this.$t('views.scaList.orderOptions.version'),
+        value: 'version'
       },
       {
-        label: this.$t('views.vulnList.orderOptions.first_time'),
-        value: 'first_time'
+        label: this.$t('views.scaList.orderOptions.language'),
+        value: 'language'
+      },
+      {
+        label: this.$t('views.scaList.orderOptions.vul_count'),
+        value: 'vul_count'
       }
     ]
   }
@@ -199,16 +196,15 @@ export default class ScaList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.sca.scaList(params)
+    const { status, data, msg } = await this.services.sca.scaList(params)
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
-    const tableData = data.reduce((list, item) => {
+    const tableData = data.reduce((list: any[], item: { dt: any }) => {
       list.push({
         ...item,
-        first_time: formatTimestamp(item.first_time),
-        latest_time: formatTimestamp(item.latest_time)
+        dt: formatTimestamp(item.dt)
       })
       return list
     }, [])
@@ -226,7 +222,7 @@ export default class ScaList extends Vue {
       url: this.searchObj.url,
       order: this.searchObj.order
     }
-    const { status, data, msg } = await this.$services.sca.scaSummary(params)
+    const { status, data, msg } = await this.services.sca.scaSummary(params)
     if (status !== 201) {
       this.$message.error(msg)
       return

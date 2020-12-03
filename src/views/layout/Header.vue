@@ -11,6 +11,9 @@
         <div class="url flex-column-center" :class="currentRoute('/sca') ? 'currentRoute' : ''" @click="$router.push('/sca')">
           {{ $t('menu.sca') }} /
         </div>
+        <div class="url flex-column-center" :class="currentRoute('/setting') ? 'currentRoute' : ''" @click="$router.push('/setting')">
+          {{ $t('menu.setting') }} /
+        </div>
       </div>
       <div v-if="!userInfo" class="flex-column-center">
         <el-button v-if="!userInfo" type="text" @click="$router.push('/login')">{{ $t('menu.login') }}</el-button>

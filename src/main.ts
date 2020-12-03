@@ -7,14 +7,12 @@ import './styles/theme/index.css'
 import './styles/iconfont/iconfont.css'
 import './styles/iconfont/iconfont'
 import ElementUI from 'element-ui'
-import services from '@/services/index'
 import { i18n } from '@/config/lang'
 import MyMarkdownIt from '@/components/markdownNice/Index'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
-Vue.use(services)
 Vue.component('MyMarkdownIt', MyMarkdownIt)
 
 new Vue({

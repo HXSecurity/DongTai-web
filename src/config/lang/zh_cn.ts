@@ -9,6 +9,11 @@ export default {
     scaList: '组件管理列表',
     scaDetail: '组件管理详情',
     setting: '系统配置',
+    agentManage: '引擎管理',
+    strategyManage: '策略管理',
+    upgradeOnline: '在线升级',
+    sysInfo: '系统信息',
+    changePassword: '密码修改',
   },
   views: {
     login: {
@@ -64,6 +69,14 @@ export default {
       level: '等级',
       type: '类型',
       project_name: '项目',
+      orderOptions: {
+        project_name: '项目名称',
+        level: '风险等级',
+        package_name: '包名',
+        version: '版本',
+        language: '语言',
+        vul_count: '风险数量',
+      },
       tableHeaders: {
         name: '组件名称',
         version: '组件版本',
@@ -73,6 +86,28 @@ export default {
         count: '漏洞数量',
         time: '发现时间',
       }
+    },
+    scaDetail: {
+      version: '版本',
+      level: '风险',
+      package_name: '应用',
+      vul_count: '历史漏洞数量',
+      signature_value: '文件哈希',
+      vulList: '漏洞列表',
+      cveNumber: 'CVE 编号',
+      cweNumber: 'CWE 编号',
+      vulName: '漏洞名称',
+      vulLevel: '漏洞等级',
+      safeVersion: '安全版本',
+      operate: '操作',
+      detail: '详情',
+    },
+    changePassword: {
+      username: '用户名',
+      oldPassword: '旧密码',
+      newPassword: '新密码',
+      confirmNewPassword: '确认新密码',
+      submit: '确认'
     }
   }
 }

@@ -11,3 +11,16 @@ export const formatTimestamp = (timestamp: number | any) => {
   const d = new Date(timestamp)
   return (`${d.getFullYear()}.${addZero(d.getMonth() + 1)}.${addZero(d.getDate())} ${addZero(d.getHours())}:${addZero(d.getMinutes())}`)
 }
+
+export function getToken() {
+  if (document.cookie.length > 0) {
+    let cStart = document.cookie.indexOf('csrftoken' + "=");
+    if (cStart !== -1) {
+      cStart = cStart + 'csrftoken'.length + 1;
+      let cEnd = document.cookie.indexOf(";", cStart);
+      if (cEnd === -1) cEnd = document.cookie.length;
+      return unescape(document.cookie.substring(cStart, cEnd));
+    }
+  }
+  return "";
+}
