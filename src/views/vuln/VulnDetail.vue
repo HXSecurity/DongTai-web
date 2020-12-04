@@ -41,7 +41,12 @@
                 {{ item.level }}
               </span>
           <span>
-                <i class="iconfont iconshijian-2" style="color: #A2A5AB;font-size: 14px;"></i>
+                <i class="iconfont iconweixian"
+                   :style="item.level_type === 1 ? {color: '#EA7171'} :
+                   item.level_type === 2 ? {color: '#F39D0A'}  :
+                   item.level_type === 3 ? {color: '#2E8FE9'}  :
+                   item.level_type === 4 ? {color: '#7BC1AB'}  : ''"
+                ></i>
                 {{ item.latest_time }}
               </span>
         </div>
@@ -51,8 +56,9 @@
       <div class="vuln-title">
         {{ `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${vulnObj.vul.type}漏洞，位置：${vulnObj.vul.taint_position}` }}
       </div>
-      <div class="module-title">
+      <div class="module-title flex-row-space-between">
         {{ $t('views.vulnDetail.baseInfo') }}
+        <el-button size="mini" type="primary">{{ $t('views.vulnDetail.export') }}</el-button>
       </div>
       <div class="baseInfo">
         <div class="base-line flex-row-space-between">
@@ -125,7 +131,7 @@
         <div class="base-line flex-row-space-between">
           <span style="flex: 1;">{{ $t('views.vulnDetail.serverIp') }}:{{ vulnObj.server.ip }}</span>
           <span style="flex: 1;">{{ $t('views.vulnDetail.port') }}:{{ vulnObj.server.port }}</span>
-          <span style="flex: 1;">{{ $t('views.vulnDetail.serverIp') }}:{{ vulnObj.server.ip }}</span>
+          <span style="flex: 1;">{{ $t('views.vulnDetail.clientIp') }}:{{ vulnObj.vul.client_ip }}</span>
         </div>
         <div class="base-line flex-row-space-between">
           <span style="flex: 1;">{{ $t('views.vulnDetail.projectName') }}:{{ vulnObj.vul.project_name }}</span>
@@ -164,10 +170,9 @@
 </template>
 
 <script lang='ts'>
-import { Component} from 'vue-property-decorator'
-import { decode } from 'js-base64'
+import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
-import VueBase from '@/Vuebase'
+import VueBase from '@/VueBase'
 
 @Component({ name: 'VulnDetail' })
 export default class VulnDetail extends VueBase {
@@ -275,7 +280,6 @@ export default class VulnDetail extends VueBase {
         ...data.vul,
         first_time: formatTimestamp(data.vul.first_time),
         latest_time: formatTimestamp(data.vul.latest_time),
-        req_header: decode(data.vul.req_header),
         graphy: data.vul.graphy
       },
       server: {

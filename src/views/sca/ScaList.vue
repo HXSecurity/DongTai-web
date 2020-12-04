@@ -51,8 +51,8 @@
                      :value="item.value"></el-option>
         </el-select>
         <el-select style="margin-left: 10px" size="mini" v-model="searchObj.language" @change="newSelectData" clearable>
-          <el-option v-for="item in searchOptionsObj.language" :key="item.language" :label="item.language"
-                     :value="item.language"></el-option>
+          <el-option label="JAVA" value="JAVA"></el-option>
+          <el-option label=".NET" value=".NET"></el-option>
         </el-select>
         <div class="selectInput">
           <el-input v-if="keywordInput" v-model="searchObj.url" style="width: 462px" size="mini" @blur="inputHide">
@@ -86,7 +86,7 @@
 <script lang='ts'>
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
-import VueBase from '@/Vuebase'
+import VueBase from '@/VueBase'
 
 @Component({ name: 'ScaList' })
 export default class ScaList extends VueBase {

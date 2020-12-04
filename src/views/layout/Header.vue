@@ -4,7 +4,7 @@
       <div class="logo flex-column-center" @click="$router.push('/')">
         IAST
       </div>
-      <div class="url-warp">
+      <div class="url-warp" v-if="userInfo">
         <div class="url flex-column-center" :class="currentRoute('/vuln') ? 'currentRoute' : ''" @click="$router.push('/vuln')">
           {{ $t('menu.vuln') }} /
         </div>

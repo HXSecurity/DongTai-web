@@ -33,11 +33,16 @@
       <div class="card" v-for="item in tableData" :key="item.id"
            :class="item.id === selectedId ? 'selected' : ''" @click="idChange(item.id)">
         <div class="titleLine">
-          {{ `${item.package_name} ${item.version}` }}
+          {{ item.package_name }}
         </div>
         <div class="infoLine flex-row-space-between">
           <span>
-                <i class="iconfont iconweixian" style="color: #E6D088"></i>
+               <i class="iconfont iconweixian"
+                  :style="item.level_type === 1 ? {color: '#EA7171'} :
+                   item.level_type === 2 ? {color: '#F39D0A'}  :
+                   item.level_type === 3 ? {color: '#2E8FE9'}  :
+                   item.level_type === 4 ? {color: '#7BC1AB'}  : ''"
+               ></i>
                 {{ item.level }}
               </span>
           <span>
@@ -49,13 +54,13 @@
     </div>
     <div class="sca-warp">
       <div class="sca-title">
-        dsd
+        {{scaObj.package_name}}
       </div>
       <div class="sca-info">
         <div class="info-line">{{`${$t('views.scaDetail.version')}：${scaObj.version}`}}</div>
         <div class="info-line">{{`${$t('views.scaDetail.level')}：${scaObj.level}`}}</div>
-        <div class="info-line">{{`${$t('views.scaDetail.package_name')}：${scaObj.package_name}`}}</div>
-        <div class="info-line">{{`${$t('views.scaDetail.vul_count')}：${scaObj.vul_count}`}}</div>
+        <div class="info-line">{{`${$t('views.scaDetail.project_name')}：${scaObj.project_name}`}}</div>
+        <div class="info-line">{{`${$t('views.scaDetail.vul_count')}：${scaObj.vul_count}${$t('views.scaDetail.unit')}`}}</div>
         <div class="info-line">{{`${$t('views.scaDetail.signature_value')}：${scaObj.signature_value}`}}</div>
       </div>
       <div class="module-title">
@@ -76,7 +81,7 @@
 <script lang='ts'>
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
-import VueBase from '@/Vuebase'
+import VueBase from '@/VueBase'
 
 @Component({ name: 'ScaDetail' })
 export default class ScaDetail extends VueBase {

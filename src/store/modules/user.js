@@ -16,13 +16,15 @@ const actions = {
     }
     commit('UPDATE_USER_INFO', data)
   },
-
   async logOut ({ commit }) {
     const { status, msg } = await loginServices.logout()
     if (status !== 201) {
       Message.error(msg)
       return
     }
+    commit('UPDATE_USER_INFO', null)
+  },
+  clearInfo ({ commit }) {
     commit('UPDATE_USER_INFO', null)
   }
 }

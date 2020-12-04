@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import Header from '@/views/layout/Header.vue'
-import VueBase from '@/Vuebase'
+import VueBase from '@/VueBase'
 
 @Component({
   name: 'Login',

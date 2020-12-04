@@ -21,15 +21,6 @@ const requestError = (error: any) => {
 }
 
 const response = (response: AxiosResponse) => {
-  if (response.data.status && parseInt(response.data.status) === 403) {
-    // 退出登陆并跳转登陆页面
-    store.dispatch('logOut').then(() => {
-      router.push('/login')
-    }).catch((err: any) => {
-      console.log(err)
-    })
-  }
-
   return response.data
 }
 
@@ -37,6 +28,10 @@ const responseError = (error: any) => {
   if (error.message && error.message.indexOf('timeout') !== -1) {
     console.error('请求超时')
     return
+  }
+  if(error.response.status === 403){
+    store.dispatch('clearInfo')
+    router.push('/login')
   }
   if (error.response.status === 500) {
     // 没有权限

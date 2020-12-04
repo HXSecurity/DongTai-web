@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "764241",
+      "name": "Tomcat",
+      "font_class": "tomcat",
+      "unicode": "e69d",
+      "unicode_decimal": 59037
+    },
+    {
+      "icon_id": "6136438",
+      "name": "Jetty",
+      "font_class": "Jetty",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "6136440",
+      "name": "resin",
+      "font_class": "resin",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "6743388",
+      "name": "webLogic",
+      "font_class": "webLogic",
+      "unicode": "e73a",
+      "unicode_decimal": 59194
+    },
+    {
+      "icon_id": "6743389",
+      "name": "webSphere",
+      "font_class": "webSphere",
+      "unicode": "e73b",
+      "unicode_decimal": 59195
+    },
+    {
+      "icon_id": "10598318",
+      "name": "JBoss",
+      "font_class": "JBoss",
+      "unicode": "e76d",
+      "unicode_decimal": 59245
+    },
+    {
       "icon_id": "18576888",
       "name": "配置-在线升级编辑",
       "font_class": "bianji-6",
@@ -32,48 +74,6 @@
       "font_class": "shanchu-4",
       "unicode": "e678",
       "unicode_decimal": 59000
-    },
-    {
-      "icon_id": "18576224",
-      "name": "web Logic",
-      "font_class": "fuwuqi-2",
-      "unicode": "e673",
-      "unicode_decimal": 58995
-    },
-    {
-      "icon_id": "18575011",
-      "name": "Web Sphere",
-      "font_class": "wangluotuopu",
-      "unicode": "e671",
-      "unicode_decimal": 58993
-    },
-    {
-      "icon_id": "18575012",
-      "name": "tomcat",
-      "font_class": "xiaomao",
-      "unicode": "e672",
-      "unicode_decimal": 58994
-    },
-    {
-      "icon_id": "18575014",
-      "name": "Glass Fish",
-      "font_class": "fuwuqi",
-      "unicode": "e674",
-      "unicode_decimal": 58996
-    },
-    {
-      "icon_id": "18575015",
-      "name": "JBoss",
-      "font_class": "rongqi",
-      "unicode": "e675",
-      "unicode_decimal": 58997
-    },
-    {
-      "icon_id": "18575016",
-      "name": "Jetty",
-      "font_class": "rizhifenxi",
-      "unicode": "e676",
-      "unicode_decimal": 58998
     },
     {
       "icon_id": "689325",

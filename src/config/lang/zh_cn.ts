@@ -40,6 +40,7 @@ export default {
     vulnDetail: {
       baseInfo: '基本信息',
       vulnDesc: '漏洞描述',
+      export: '报告导出',
       httpRequest: 'HTTP请求',
       codeDemo: '漏洞代码示例',
       graphy: '污点流图',
@@ -50,6 +51,7 @@ export default {
       url: 'url',
       first_time: '首次出现',
       serverIp: '服务器 IP',
+      clientIp: '来源 IP',
       language: '语言',
       port: '端口',
       projectName: '项目',
@@ -90,8 +92,9 @@ export default {
     scaDetail: {
       version: '版本',
       level: '风险',
-      package_name: '应用',
-      vul_count: '历史漏洞数量',
+      project_name: '项目',
+      vul_count: '漏洞数量',
+      unit: '个',
       signature_value: '文件哈希',
       vulList: '漏洞列表',
       cveNumber: 'CVE 编号',
@@ -108,6 +111,12 @@ export default {
       newPassword: '新密码',
       confirmNewPassword: '确认新密码',
       submit: '确认'
+    },
+    agentManage: {
+      address: '服务器地址',
+      payload: '服务器负载',
+      status: '运行状态',
+      manage: '管理',
     }
   }
 }

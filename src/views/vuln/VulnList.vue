@@ -63,8 +63,8 @@
                      :value="item.value"></el-option>
         </el-select>
         <el-select style="margin-left: 10px" size="mini" v-model="searchObj.language" @change="newSelectData" clearable>
-          <el-option v-for="item in searchOptionsObj.language" :key="item.language" :label="item.language"
-                     :value="item.language"></el-option>
+          <el-option label="JAVA" value="JAVA"></el-option>
+          <el-option label=".NET" value=".NET"></el-option>
         </el-select>
         <div class="selectInput">
           <el-input v-if="keywordInput" v-model="searchObj.url" style="width: 462px" size="mini" @blur="inputHide">
@@ -107,11 +107,16 @@
                 {{ item.project_name }}
               </span>
               <span class="info">
-                <i class="iconfont iconbanben-2" style="color: #E6D088"></i>
+                <i class="iconfont" :class="switchServerType(item.server_type)"></i>
                 {{ item.server_name }}
               </span>
               <span class="info">
-                <i class="iconfont iconweixian" style="color: #E6D088"></i>
+                <i class="iconfont iconweixian"
+                   :style="item.level_type === 1 ? {color: '#EA7171'} :
+                   item.level_type === 2 ? {color: '#F39D0A'}  :
+                   item.level_type === 3 ? {color: '#2E8FE9'}  :
+                   item.level_type === 4 ? {color: '#7BC1AB'}  : ''"
+                ></i>
                 {{ item.level }}
               </span>
               <span class="info">
@@ -137,7 +142,7 @@
 <script lang='ts'>
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
-import VueBase from '@/Vuebase'
+import VueBase from '@/VueBase'
 
 @Component({ name: 'VulnList' })
 export default class VulnList extends VueBase {
@@ -301,6 +306,26 @@ export default class VulnList extends VueBase {
   private goDetail (id: number) {
     this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
   }
+
+  private switchServerType (serverType: string) {
+    switch (serverType) {
+      case 'tomcat':
+        return 'icontomcat'
+      case 'jetty':
+        return 'iconJetty'
+      case 'resin':
+        return 'iconresin'
+      case 'weblogic':
+        return 'iconwebLogic'
+      case 'websphere':
+        return 'iconwebSphere'
+      case 'jboss':
+        return 'iconJBoss'
+
+      default:
+        return 'iconyingyong'
+    }
+  }
 }
 </script>
 
@@ -455,6 +480,28 @@ export default class VulnList extends VueBase {
           }
         }
       }
+    }
+
+    .icontomcat{
+      color: #E6D088;
+    }
+    .iconJetty{
+      color: #5CB896;
+    }
+    .iconresin{
+      color: #86A0D5;
+    }
+    .iconwebLogic{
+      color: #A4CBB9;
+    }
+    .iconwebSphere{
+      color: #888DD1;
+    }
+    .iconJBoss{
+      color: #41BAD5;
+    }
+    .iconyingyong{
+      color: #DDCC9E;
     }
   }
 }

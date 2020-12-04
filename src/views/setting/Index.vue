@@ -5,7 +5,7 @@
         {{$t('menu.setting')}}
       </div>
       <div class="menu-warp">
-        <div class="menu-item">
+        <div class="menu-item" @click="$router.push('/setting/agentManage')" :class="curModule('/setting/agentManage') ? 'currentModule' : ''">
           {{$t('menu.agentManage')}}
         </div>
         <div class="menu-item">

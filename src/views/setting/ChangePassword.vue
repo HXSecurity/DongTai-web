@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
-import VueBase from '@/Vuebase'
+import VueBase from '@/VueBase'
 
 @Component({ name: 'ChangePassword' })
 export default class ChangePassword extends VueBase {

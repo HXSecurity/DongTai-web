@@ -60,12 +60,19 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: 'setting',
-        redirect: '/setting/changePassword',
+        redirect: '/setting/agentManage',
         meta:{
           name: i18n.t('menu.setting')
         },
         component: () => import('@/views/setting/Index.vue'),
         children:[
+          {
+            path: 'agentManage',
+            meta: {
+              name: i18n.t('menu.agentManage')
+            },
+            component: () => import('@/views/setting/AgentManage.vue')
+          },
           {
             path: 'changePassword',
             meta: {
