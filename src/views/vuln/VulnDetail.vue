@@ -37,16 +37,16 @@
         </div>
         <div class="infoLine flex-row-space-between">
           <span>
-                <i class="iconfont iconweixian" style="color: #E6D088;"></i>
-                {{ item.level }}
-              </span>
-          <span>
                 <i class="iconfont iconweixian"
                    :style="item.level_type === 1 ? {color: '#EA7171'} :
                    item.level_type === 2 ? {color: '#F39D0A'}  :
                    item.level_type === 3 ? {color: '#2E8FE9'}  :
                    item.level_type === 4 ? {color: '#7BC1AB'}  : ''"
                 ></i>
+                {{ item.level }}
+              </span>
+          <span>
+                <i class="iconfont iconshijian-2"></i>
                 {{ item.latest_time }}
               </span>
         </div>

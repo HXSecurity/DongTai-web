@@ -8,7 +8,7 @@
         <div class="menu-item" @click="$router.push('/setting/agentManage')" :class="curModule('/setting/agentManage') ? 'currentModule' : ''">
           {{$t('menu.agentManage')}}
         </div>
-        <div class="menu-item">
+        <div class="menu-item" @click="$router.push('/setting/strategyManage')" :class="curModule('/setting/strategyManage') ? 'currentModule' : ''">
           {{$t('menu.strategyManage')}}
         </div>
         <div class="menu-item">

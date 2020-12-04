@@ -5,7 +5,7 @@
         <el-select size="mini" v-model="searchObj.order" style="width: 90px;">
           <el-option v-for="item in orderOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
         </el-select>
-        <el-input v-model="searchObj.url" style="width: 116px;margin-left: 4px;" size="mini">
+        <el-input v-model="searchObj.keyword" style="width: 116px;margin-left: 4px;" size="mini">
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"
@@ -72,9 +72,36 @@
         <el-table-column :label="$t('views.scaDetail.vulName')" prop="vulname"></el-table-column>
         <el-table-column :label="$t('views.scaDetail.vulLevel')" prop="level"></el-table-column>
         <el-table-column :label="$t('views.scaDetail.safeVersion')" prop="safe_version"></el-table-column>
-        <el-table-column :label="$t('views.scaDetail.operate')" align="right"></el-table-column>
+        <el-table-column :label="$t('views.scaDetail.operate')" width="100px">
+          <template slot-scope="{row}">
+            <i class="iconfont iconxiangqing detail" @click="detailShow(row)"></i>
+          </template>
+        </el-table-column>
       </el-table>
     </div>
+    <el-dialog width="75%" v-if="vulDetailDialogShow" :visible.sync="vulDetailDialogShow" :title="$t('views.scaDetail.vulDetail.title')">
+      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.num')}}:
+        <div class="detail-module-content" style="display: inline-block">
+          {{vulDetail.vulcve}}
+        </div>
+      </div>
+      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.name')}}:
+        <div class="detail-module-content" style="display: inline-block">
+          {{vulDetail.vulname}}
+        </div></div>
+      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.desc')}}:</div>
+      <div class="detail-module-content">
+        <MyMarkdownIt :content="vulDetail.overview"></MyMarkdownIt>
+      </div>
+      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.detail')}}:</div>
+      <div class="detail-module-content">
+        <MyMarkdownIt :content="vulDetail.teardown"></MyMarkdownIt>
+      </div>
+      <!--      <div class="detail-module-label">References:</div>-->
+      <!--      <div v-if="vulDetail.reference !== '[]'" class="detail-module-content">-->
+      <!--        <MyMarkdownIt :content="vulDetail.reference"></MyMarkdownIt>-->
+      <!--      </div>-->
+    </el-dialog>
   </main>
 </template>
 
@@ -90,11 +117,13 @@ export default class ScaDetail extends VueBase {
   private page: number = 1
   private selectedId: number = 0
   private total: number = 0
+  private vulDetailDialogShow: boolean = false
+  private vulDetail: object = {}
   private searchObj = {
     language: '',
     level: '',
     project_name: '',
-    url: '',
+    keyword: '',
     order: ''
   }
 
@@ -149,7 +178,7 @@ export default class ScaDetail extends VueBase {
       language: this.searchObj.language,
       level: this.searchObj.level,
       project_name: this.searchObj.project_name,
-      url: this.searchObj.url,
+      keyword: this.searchObj.keyword,
       order: this.searchObj.order
     }
     const { status, data, page, msg } = await this.services.sca.scaList(params)
@@ -173,6 +202,11 @@ export default class ScaDetail extends VueBase {
       return
     }
     this.scaObj = data
+  }
+
+  private detailShow (row: any) {
+    this.vulDetail = row
+    this.vulDetailDialogShow = true
   }
 }
 </script>
@@ -267,5 +301,21 @@ export default class ScaDetail extends VueBase {
     font-weight: 600;
     margin-top: 58px;
   }
+}
+
+.detail{
+  font-size: 14px;
+  color: #A7AFB9;
+  cursor: pointer;
+}
+
+.detail-module-label{
+  font-size: 14px;
+  color: #959FB4;
+  margin-top: 18px;
+}
+.detail-module-content{
+  font-size: 14px;
+  color: #38435A;
 }
 </style>

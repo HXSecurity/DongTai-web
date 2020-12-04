@@ -67,7 +67,7 @@
           <el-option label=".NET" value=".NET"></el-option>
         </el-select>
         <div class="selectInput">
-          <el-input v-if="keywordInput" v-model="searchObj.url" style="width: 462px" size="mini" @blur="inputHide">
+          <el-input v-if="keywordInput" v-model="searchObj.url" style="width: 462px" size="mini" @blur="inputHide" @keyup.enter.native="newSelectData">
             <i
               slot="suffix"
               class="el-input__icon el-icon-search"

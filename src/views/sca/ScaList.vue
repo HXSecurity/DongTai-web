@@ -55,7 +55,7 @@
           <el-option label=".NET" value=".NET"></el-option>
         </el-select>
         <div class="selectInput">
-          <el-input v-if="keywordInput" v-model="searchObj.url" style="width: 462px" size="mini" @blur="inputHide">
+          <el-input v-if="keywordInput" v-model="searchObj.keyword" style="width: 462px" size="mini" @blur="inputHide" @keyup.enter.native="newSelectData">
             <i
               slot="suffix"
               class="el-input__icon el-icon-search"
@@ -71,13 +71,13 @@
         </div>
       </div>
       <el-table class="sca-list" :data="tableData" style="width: 100%;margin-top: 18px;cursor: pointer;" @row-click="goDetail">
-        <el-table-column :label="$t('views.scaList.tableHeaders.name')" prop="package_name"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.version')" prop="version"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.name')" prop="package_name" min-width="120px"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.version')" prop="version" width="80px"></el-table-column>
         <el-table-column :label="$t('views.scaList.tableHeaders.application')" prop="project_name"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.language')" prop="language"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.level')" prop="level"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.count')" prop="vul_count"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.time')" prop="dt"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.language')" prop="language" width="100px"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.level')" prop="level" width="100px"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.count')" prop="vul_count" width="80px"></el-table-column>
+        <el-table-column :label="$t('views.scaList.tableHeaders.time')" prop="dt" width="140px"></el-table-column>
       </el-table>
     </div>
   </main>
@@ -131,7 +131,7 @@ export default class ScaList extends VueBase {
     language: '',
     level: '',
     project_name: '',
-    url: '',
+    keyword: '',
     order: ''
   }
 
@@ -141,7 +141,7 @@ export default class ScaList extends VueBase {
   }
 
   private inputHide () {
-    if (!this.searchObj.url) {
+    if (!this.searchObj.keyword) {
       this.keywordInput = false
     }
   }
@@ -193,7 +193,7 @@ export default class ScaList extends VueBase {
       language: this.searchObj.language,
       level: this.searchObj.level,
       project_name: this.searchObj.project_name,
-      url: this.searchObj.url,
+      keyword: this.searchObj.keyword,
       order: this.searchObj.order
     }
     const { status, data, msg } = await this.services.sca.scaList(params)
@@ -219,7 +219,7 @@ export default class ScaList extends VueBase {
       language: this.searchObj.language,
       level: this.searchObj.level,
       project_name: this.searchObj.project_name,
-      url: this.searchObj.url,
+      keyword: this.searchObj.keyword,
       order: this.searchObj.order
     }
     const { status, data, msg } = await this.services.sca.scaSummary(params)

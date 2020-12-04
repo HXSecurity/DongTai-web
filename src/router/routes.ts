@@ -74,6 +74,13 @@ const routes: Array<RouteConfig> = [
             component: () => import('@/views/setting/AgentManage.vue')
           },
           {
+            path: 'strategyManage',
+            meta: {
+              name: i18n.t('menu.strategyManage')
+            },
+            component: () => import('@/views/setting/StrategyManage.vue')
+          },
+          {
             path: 'changePassword',
             meta: {
               name: i18n.t('menu.changePassword')

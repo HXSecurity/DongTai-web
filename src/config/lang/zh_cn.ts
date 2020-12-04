@@ -104,6 +104,13 @@ export default {
       safeVersion: '安全版本',
       operate: '操作',
       detail: '详情',
+      vulDetail: {
+        title: '漏洞详情',
+        num: '漏洞编号',
+        name: '漏洞名称',
+        desc: '漏洞概述',
+        detail: '漏洞细节',
+      }
     },
     changePassword: {
       username: '用户名',
@@ -117,6 +124,12 @@ export default {
       payload: '服务器负载',
       status: '运行状态',
       manage: '管理',
+    },
+    strategyManage:{
+      name: '策略名称',
+      detail: '策略详情',
+      status: '启用状态',
+      operate: '操作',
     }
   }
 }
