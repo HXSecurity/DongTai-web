@@ -48,7 +48,7 @@ export default class AgentManage extends VueBase {
       return
     }
     this.tableData = data
-    this.total = data.alltotal
+    this.total = page.alltotal
   }
 
   private async agentInstall (id: string | number) {

@@ -130,6 +130,16 @@ export default {
       detail: '策略详情',
       status: '启用状态',
       operate: '操作',
+    },
+    upgradeOnline:{
+      online: '在线升级',
+      onlineDesc: '在线升级需要连接公网，访问动态IAST的远程升级服务器，请确保当前机器可访问公网。',
+      address: '升级服务器地址',
+      onlineSubmit: '立即升级',
+      offline: '离线升级',
+      offlineDesc: '请联系火线平台售后支持，获取最新的离线安装包，然后上传离线安装包进行升级',
+      select: '选择离线安装包',
+      offlineSubmit: '上传并升级',
     }
   }
 }

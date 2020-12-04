@@ -1,24 +1,20 @@
 <template>
   <div class="content-warp">
     <el-table :data="tableData" class="strategyManageTable">
-      <el-table-column label="Agent" prop="token"></el-table-column>
       <el-table-column :label="$t('views.strategyManage.name')" prop="vul_name"></el-table-column>
-      <el-table-column :label="$t('views.strategyManage.detail')" prop="vul_desc"></el-table-column>
-      <el-table-column :label="$t('views.strategyManage.status')" prop="state">
+      <el-table-column :label="$t('views.strategyManage.detail')" prop="vul_desc" min-width="200px"></el-table-column>
+      <el-table-column :label="$t('views.strategyManage.status')" prop="state" width="100px">
         <template slot-scope="{row}">
-          <el-switch
-            v-model="value"
-            active-color="#13ce66"
-            inactive-color="#ff4949">
-          </el-switch>
+          <div @click="stateChange(row.id, row.state)">
+            <el-switch
+              :value="row.state === 'enable'"
+              active-color="#1A80F2"
+              inactive-color="#C1C9D3"
+            >
+            </el-switch>
+          </div>
         </template>
       </el-table-column>
-      <!--      <el-table-column :label="$t('views.strategyManage.operate')" width="100px">-->
-      <!--        <template slot-scope="{row}">-->
-      <!--          {{row}}-->
-      <!--          <i class="iconfont iconxiazai-2 install" ></i>-->
-      <!--        </template>-->
-      <!--      </el-table-column>-->
     </el-table>
   </div>
 </template>
@@ -42,6 +38,27 @@ export default class StrategyManage extends VueBase {
       return
     }
     this.tableData = data
+  }
+
+  private async stateChange (id: number, state: string) {
+    if (state === 'enable') {
+      const { status, msg } = await this.services.setting.strategyDisable(id)
+      if (status !== 201) {
+        this.$message.error(msg)
+        return
+      }
+      this.$message.success(msg)
+      await this.getTableData()
+    }
+    if (state === 'disable') {
+      const { status, msg } = await this.services.setting.strategyEnable(id)
+      if (status !== 201) {
+        this.$message.error(msg)
+        return
+      }
+      this.$message.success(msg)
+      await this.getTableData()
+    }
   }
 }
 </script>

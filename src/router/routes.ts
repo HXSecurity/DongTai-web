@@ -81,6 +81,20 @@ const routes: Array<RouteConfig> = [
             component: () => import('@/views/setting/StrategyManage.vue')
           },
           {
+            path: 'upgradeOnline',
+            meta: {
+              name: i18n.t('menu.upgradeOnline')
+            },
+            component: () => import('@/views/setting/UpgradeOnline.vue')
+          },
+          {
+            path: 'sysInfo',
+            meta: {
+              name: i18n.t('menu.sysInfo')
+            },
+            component: () => import('@/views/setting/SysInfo.vue')
+          },
+          {
             path: 'changePassword',
             meta: {
               name: i18n.t('menu.changePassword')

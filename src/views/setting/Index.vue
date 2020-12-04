@@ -11,10 +11,10 @@
         <div class="menu-item" @click="$router.push('/setting/strategyManage')" :class="curModule('/setting/strategyManage') ? 'currentModule' : ''">
           {{$t('menu.strategyManage')}}
         </div>
-        <div class="menu-item">
+        <div class="menu-item" @click="$router.push('/setting/upgradeOnline')" :class="curModule('/setting/upgradeOnline') ? 'currentModule' : ''">
           {{$t('menu.upgradeOnline')}}
         </div>
-        <div class="menu-item">
+        <div class="menu-item" @click="$router.push('/setting/sysInfo')" :class="curModule('/setting/sysInfo') ? 'currentModule' : ''">
           {{$t('menu.sysInfo')}}
         </div>
         <div class="menu-item" @click="$router.push('/setting/changePassword')" :class="curModule('/setting/changePassword') ? 'currentModule' : ''">
