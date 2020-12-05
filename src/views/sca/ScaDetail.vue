@@ -2,10 +2,19 @@
   <main class="container flex-row-space-between">
     <div class="slider-warp">
       <div class="titleForm">
-        <el-select size="mini" v-model="searchObj.order" style="width: 90px;">
-          <el-option v-for="item in orderOptions" :key="item.value" :value="item.value" :label="item.label"></el-option>
+        <el-select v-model="searchObj.order" size="mini" style="width: 90px">
+          <el-option
+            v-for="item in orderOptions"
+            :key="item.value"
+            :value="item.value"
+            :label="item.label"
+          ></el-option>
         </el-select>
-        <el-input v-model="searchObj.keyword" style="width: 116px;margin-left: 4px;" size="mini">
+        <el-input
+          v-model="searchObj.keyword"
+          style="width: 116px; margin-left: 4px"
+          size="mini"
+        >
           <i
             slot="suffix"
             class="el-input__icon el-icon-search"
@@ -24,76 +33,141 @@
             @current-change="currentChange"
           >
           </el-pagination>
-          <span style="color: #969BA4;line-height: 25px;">
-            <strong style="color: #38435A;font-weight: 400;">{{ page }}</strong>/{{ Math.ceil(total / 20) }}
+          <span style="color: #969ba4; line-height: 25px">
+            <strong style="color: #38435a; font-weight: 400">{{ page }}</strong
+            >/{{ Math.ceil(total / 20) }}
           </span>
           <el-button size="mini" icon="el-icon-search"></el-button>
         </div>
       </div>
-      <div class="card" v-for="item in tableData" :key="item.id"
-           :class="item.id === selectedId ? 'selected' : ''" @click="idChange(item.id)">
+      <div
+        v-for="item in tableData"
+        :key="item.id"
+        class="card"
+        :class="item.id === selectedId ? 'selected' : ''"
+        @click="idChange(item.id)"
+      >
         <div class="titleLine">
           {{ item.package_name }}
         </div>
         <div class="infoLine flex-row-space-between">
           <span>
-               <i class="iconfont iconweixian"
-                  :style="item.level_type === 1 ? {color: '#EA7171'} :
-                   item.level_type === 2 ? {color: '#F39D0A'}  :
-                   item.level_type === 3 ? {color: '#2E8FE9'}  :
-                   item.level_type === 4 ? {color: '#7BC1AB'}  : ''"
-               ></i>
-                {{ item.level }}
-              </span>
+            <i
+              class="iconfont iconweixian"
+              :style="
+                item.level_type === 1
+                  ? { color: '#EA7171' }
+                  : item.level_type === 2
+                  ? { color: '#F39D0A' }
+                  : item.level_type === 3
+                  ? { color: '#2E8FE9' }
+                  : item.level_type === 4
+                  ? { color: '#7BC1AB' }
+                  : ''
+              "
+            ></i>
+            {{ item.level }}
+          </span>
           <span>
-                <i class="iconfont iconbanben-2" style="color: #A2A5AB;font-size: 14px;"></i>
-                {{ item.version }}
-              </span>
+            <i
+              class="iconfont iconbanben-2"
+              style="color: #a2a5ab; font-size: 14px"
+            ></i>
+            {{ item.version }}
+          </span>
         </div>
       </div>
     </div>
     <div class="sca-warp">
       <div class="sca-title">
-        {{scaObj.package_name}}
+        {{ scaObj.package_name }}
       </div>
       <div class="sca-info">
-        <div class="info-line">{{`${$t('views.scaDetail.version')}：${scaObj.version}`}}</div>
-        <div class="info-line">{{`${$t('views.scaDetail.level')}：${scaObj.level}`}}</div>
-        <div class="info-line">{{`${$t('views.scaDetail.project_name')}：${scaObj.project_name}`}}</div>
-        <div class="info-line">{{`${$t('views.scaDetail.vul_count')}：${scaObj.vul_count}${$t('views.scaDetail.unit')}`}}</div>
-        <div class="info-line">{{`${$t('views.scaDetail.signature_value')}：${scaObj.signature_value}`}}</div>
+        <div class="info-line">
+          {{ `${$t('views.scaDetail.version')}：${scaObj.version}` }}
+        </div>
+        <div class="info-line">
+          {{ `${$t('views.scaDetail.level')}：${scaObj.level}` }}
+        </div>
+        <div class="info-line">
+          {{ `${$t('views.scaDetail.project_name')}：${scaObj.project_name}` }}
+        </div>
+        <div class="info-line">
+          {{
+            `${$t('views.scaDetail.vul_count')}：${scaObj.vul_count}${$t(
+              'views.scaDetail.unit'
+            )}`
+          }}
+        </div>
+        <div class="info-line">
+          {{
+            `${$t('views.scaDetail.signature_value')}：${
+              scaObj.signature_value
+            }`
+          }}
+        </div>
       </div>
       <div class="module-title">
-        {{$t('views.scaDetail.vulList')}}
+        {{ $t('views.scaDetail.vulList') }}
       </div>
-      <el-table :data="scaObj.vuls" style="width: 100%;">
-        <el-table-column :label="$t('views.scaDetail.cveNumber')" prop="vulcve"></el-table-column>
-        <el-table-column :label="$t('views.scaDetail.cweNumber')" prop="vulcwe"></el-table-column>
-        <el-table-column :label="$t('views.scaDetail.vulName')" prop="vulname"></el-table-column>
-        <el-table-column :label="$t('views.scaDetail.vulLevel')" prop="level"></el-table-column>
-        <el-table-column :label="$t('views.scaDetail.safeVersion')" prop="safe_version"></el-table-column>
+      <el-table :data="scaObj.vuls" style="width: 100%">
+        <el-table-column
+          :label="$t('views.scaDetail.cveNumber')"
+          prop="vulcve"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaDetail.cweNumber')"
+          prop="vulcwe"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaDetail.vulName')"
+          prop="vulname"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaDetail.vulLevel')"
+          prop="level"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaDetail.safeVersion')"
+          prop="safe_version"
+        ></el-table-column>
         <el-table-column :label="$t('views.scaDetail.operate')" width="100px">
-          <template slot-scope="{row}">
-            <i class="iconfont iconxiangqing detail" @click="detailShow(row)"></i>
+          <template slot-scope="{ row }">
+            <i
+              class="iconfont iconxiangqing detail"
+              @click="detailShow(row)"
+            ></i>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <el-dialog width="75%" v-if="vulDetailDialogShow" :visible.sync="vulDetailDialogShow" :title="$t('views.scaDetail.vulDetail.title')">
-      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.num')}}:
+    <el-dialog
+      v-if="vulDetailDialogShow"
+      width="75%"
+      :visible.sync="vulDetailDialogShow"
+      :title="$t('views.scaDetail.vulDetail.title')"
+    >
+      <div class="detail-module-label">
+        {{ $t('views.scaDetail.vulDetail.num') }}:
         <div class="detail-module-content" style="display: inline-block">
-          {{vulDetail.vulcve}}
+          {{ vulDetail.vulcve }}
         </div>
       </div>
-      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.name')}}:
+      <div class="detail-module-label">
+        {{ $t('views.scaDetail.vulDetail.name') }}:
         <div class="detail-module-content" style="display: inline-block">
-          {{vulDetail.vulname}}
-        </div></div>
-      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.desc')}}:</div>
+          {{ vulDetail.vulname }}
+        </div>
+      </div>
+      <div class="detail-module-label">
+        {{ $t('views.scaDetail.vulDetail.desc') }}:
+      </div>
       <div class="detail-module-content">
         <MyMarkdownIt :content="vulDetail.overview"></MyMarkdownIt>
       </div>
-      <div class="detail-module-label">{{$t('views.scaDetail.vulDetail.detail')}}:</div>
+      <div class="detail-module-label">
+        {{ $t('views.scaDetail.vulDetail.detail') }}:
+      </div>
       <div class="detail-module-content">
         <MyMarkdownIt :content="vulDetail.teardown"></MyMarkdownIt>
       </div>
@@ -105,73 +179,72 @@
   </main>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component } from 'vue-property-decorator'
-import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
 
 @Component({ name: 'ScaDetail' })
 export default class ScaDetail extends VueBase {
   private scaObj: object = {}
   private tableData: Array<object> = []
-  private page: number = 1
-  private selectedId: number = 0
-  private total: number = 0
-  private vulDetailDialogShow: boolean = false
+  private page = 1
+  private selectedId = 0
+  private total = 0
+  private vulDetailDialogShow = false
   private vulDetail: object = {}
   private searchObj = {
     language: '',
     level: '',
     project_name: '',
     keyword: '',
-    order: ''
+    order: '',
   }
 
-  private orderOptions= [
+  private orderOptions = [
     {
       label: this.$t('views.scaList.orderOptions.project_name'),
-      value: 'project_name'
+      value: 'project_name',
     },
     {
       label: this.$t('views.scaList.orderOptions.level'),
-      value: 'level'
+      value: 'level',
     },
     {
       label: this.$t('views.scaList.orderOptions.package_name'),
-      value: 'package_name'
+      value: 'package_name',
     },
     {
       label: this.$t('views.scaList.orderOptions.version'),
-      value: 'version'
+      value: 'version',
     },
     {
       label: this.$t('views.scaList.orderOptions.language'),
-      value: 'language'
+      value: 'language',
     },
     {
       label: this.$t('views.scaList.orderOptions.vul_count'),
-      value: 'vul_count'
-    }
+      value: 'vul_count',
+    },
   ]
 
-  async created () {
+  async created() {
     this.page = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
     await this.getScaDetail()
     await this.getTableData()
   }
 
-  private newSelectData () {
+  private newSelectData() {
     this.page = 1
     this.getTableData()
   }
 
-  private currentChange (val: number) {
+  private currentChange(val: number) {
     this.page = val
     this.getTableData()
   }
 
-  private async getTableData () {
+  private async getTableData() {
     const params = {
       page: this.page,
       pageSize: 20,
@@ -179,7 +252,7 @@ export default class ScaDetail extends VueBase {
       level: this.searchObj.level,
       project_name: this.searchObj.project_name,
       keyword: this.searchObj.keyword,
-      order: this.searchObj.order
+      order: this.searchObj.order,
     }
     const { status, data, page, msg } = await this.services.sca.scaList(params)
     if (status !== 201) {
@@ -190,13 +263,15 @@ export default class ScaDetail extends VueBase {
     this.total = page.alltotal
   }
 
-  private idChange (id: number) {
+  private idChange(id: number) {
     this.selectedId = id
     this.getScaDetail()
   }
 
-  private async getScaDetail () {
-    const { data, status, msg } = await this.services.sca.getScaDetail(this.selectedId)
+  private async getScaDetail() {
+    const { data, status, msg } = await this.services.sca.getScaDetail(
+      this.selectedId
+    )
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -204,7 +279,7 @@ export default class ScaDetail extends VueBase {
     this.scaObj = data
   }
 
-  private detailShow (row: any) {
+  private detailShow(row: any) {
     this.vulDetail = row
     this.vulDetailDialogShow = true
   }
@@ -213,21 +288,20 @@ export default class ScaDetail extends VueBase {
 
 <style>
 .el-table .diy-row {
-  background: #F8F9FB;
-  color: #959FB4;
+  background: #f8f9fb;
+  color: #959fb4;
   font-size: 14px;
 }
 </style>
 
-<style scoped lang='scss'>
-
+<style scoped lang="scss">
 .slider-warp {
   margin-top: 14px;
   background: #fff;
   width: 234px;
 
   .titleForm {
-    border-bottom: 1px solid #E6E9EC;
+    border-bottom: 1px solid #e6e9ec;
     padding: 14px 12px;
   }
 
@@ -243,7 +317,7 @@ export default class ScaDetail extends VueBase {
     cursor: pointer;
 
     &:hover {
-      background: #EFF6FF;
+      background: #eff6ff;
     }
 
     .titleLine {
@@ -256,13 +330,13 @@ export default class ScaDetail extends VueBase {
 
     .infoLine {
       font-size: 14px;
-      color: #A2A5AB;
+      color: #a2a5ab;
       margin-top: 19px;
     }
   }
 
   .selected {
-    background: #EFF6FF;
+    background: #eff6ff;
   }
 }
 
@@ -276,46 +350,46 @@ export default class ScaDetail extends VueBase {
     height: 58px;
     line-height: 58px;
     font-size: 16px;
-    color: #38435A;
+    color: #38435a;
     font-weight: 600;
-    border-bottom: 1px solid #E6E9EC;
+    border-bottom: 1px solid #e6e9ec;
   }
 
-  .sca-info{
+  .sca-info {
     margin-top: 17px;
 
-    .info-line{
-      color: #959FB4;
+    .info-line {
+      color: #959fb4;
       font-size: 14px;
       margin-top: 18px;
 
-      &:first-child{
+      &:first-child {
         margin-top: 0;
       }
     }
   }
 
   .module-title {
-    color: #38435A;
+    color: #38435a;
     font-size: 14px;
     font-weight: 600;
     margin-top: 58px;
   }
 }
 
-.detail{
+.detail {
   font-size: 14px;
-  color: #A7AFB9;
+  color: #a7afb9;
   cursor: pointer;
 }
 
-.detail-module-label{
+.detail-module-label {
   font-size: 14px;
-  color: #959FB4;
+  color: #959fb4;
   margin-top: 18px;
 }
-.detail-module-content{
+.detail-module-content {
   font-size: 14px;
-  color: #38435A;
+  color: #38435a;
 }
 </style>

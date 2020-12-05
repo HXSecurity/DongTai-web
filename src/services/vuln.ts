@@ -1,29 +1,29 @@
 import request from '@/utils/request'
 
 interface vulnListParams {
-    page?: number;
-    pageSize?: number;
-    language?: string;
-    level?: string;
-    type?: string;
-    app?: string;
-    url?: string;
-    order?: string;
+  page?: number;
+  pageSize?: number;
+  language?: string;
+  level?: string;
+  type?: string;
+  app?: string;
+  url?: string;
+  order?: string;
 }
 
 export default () => new class {
   // 漏洞列表
-  vulnList (params: vulnListParams) {
-    return request.get('/vulns', { params })
+  vulnList(params: vulnListParams): Promise<iResponse> {
+    return request.get('/vulns', {params})
   }
 
   // 漏洞概要
-  vulnSummary (params: vulnListParams) {
-    return request.get('/vuln/summary', { params })
+  vulnSummary(params: vulnListParams): Promise<iResponse> {
+    return request.get('/vuln/summary', {params})
   }
 
   // 漏洞详情
-  getVulnDetail (id: number) {
+  getVulnDetail(id: number): Promise<iResponse> {
     return request.get(`/vuln/${id}`)
   }
 }()

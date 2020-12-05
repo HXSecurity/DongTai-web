@@ -2,23 +2,43 @@
   <main class="container flex-row-space-between">
     <div class="slider-warp">
       <div class="title flex-column-center">
-        {{$t('menu.setting')}}
+        {{ $t('menu.setting') }}
       </div>
       <div class="menu-warp">
-        <div class="menu-item" @click="$router.push('/setting/agentManage')" :class="curModule('/setting/agentManage') ? 'currentModule' : ''">
-          {{$t('menu.agentManage')}}
+        <div
+          class="menu-item"
+          :class="curModule('/setting/agentManage') ? 'currentModule' : ''"
+          @click="$router.push('/setting/agentManage')"
+        >
+          {{ $t('menu.agentManage') }}
         </div>
-        <div class="menu-item" @click="$router.push('/setting/strategyManage')" :class="curModule('/setting/strategyManage') ? 'currentModule' : ''">
-          {{$t('menu.strategyManage')}}
+        <div
+          class="menu-item"
+          :class="curModule('/setting/strategyManage') ? 'currentModule' : ''"
+          @click="$router.push('/setting/strategyManage')"
+        >
+          {{ $t('menu.strategyManage') }}
         </div>
-        <div class="menu-item" @click="$router.push('/setting/upgradeOnline')" :class="curModule('/setting/upgradeOnline') ? 'currentModule' : ''">
-          {{$t('menu.upgradeOnline')}}
+        <div
+          class="menu-item"
+          :class="curModule('/setting/upgradeOnline') ? 'currentModule' : ''"
+          @click="$router.push('/setting/upgradeOnline')"
+        >
+          {{ $t('menu.upgradeOnline') }}
         </div>
-        <div class="menu-item" @click="$router.push('/setting/sysInfo')" :class="curModule('/setting/sysInfo') ? 'currentModule' : ''">
-          {{$t('menu.sysInfo')}}
+        <div
+          class="menu-item"
+          :class="curModule('/setting/sysInfo') ? 'currentModule' : ''"
+          @click="$router.push('/setting/sysInfo')"
+        >
+          {{ $t('menu.sysInfo') }}
         </div>
-        <div class="menu-item" @click="$router.push('/setting/changePassword')" :class="curModule('/setting/changePassword') ? 'currentModule' : ''">
-          {{$t('menu.changePassword')}}
+        <div
+          class="menu-item"
+          :class="curModule('/setting/changePassword') ? 'currentModule' : ''"
+          @click="$router.push('/setting/changePassword')"
+        >
+          {{ $t('menu.changePassword') }}
         </div>
       </div>
     </div>
@@ -33,7 +53,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component({ name: 'SettingIndex' })
 export default class SettingIndex extends Vue {
-  private curModule (path: string) {
+  private curModule(path: string) {
     return this.$route.fullPath === path
   }
 }
@@ -45,44 +65,44 @@ export default class SettingIndex extends Vue {
   background: #fff;
   width: 234px;
 
-  .title{
+  .title {
     height: 54px;
     padding: 0 6px;
-    border-bottom: 1px solid #E6E9EC;
+    border-bottom: 1px solid #e6e9ec;
     font-size: 18px;
     font-weight: 600;
-    color: #4A72AE;
+    color: #4a72ae;
   }
 
-  .menu-warp{
+  .menu-warp {
     padding: 17px 6px 0 6px;
 
-    .menu-item{
+    .menu-item {
       width: 100%;
       height: 38px;
       line-height: 38px;
-      color: #38435A;
+      color: #38435a;
       font-size: 14px;
       border-radius: 4px;
       padding-left: 8px;
       cursor: pointer;
 
-      &:hover{
-        color: #1A80F2;
-        background: #F6F8FA;
+      &:hover {
+        color: #1a80f2;
+        background: #f6f8fa;
       }
     }
 
-    .currentModule{
-      color: #1A80F2;
-      background: #F6F8FA;
+    .currentModule {
+      color: #1a80f2;
+      background: #f6f8fa;
     }
   }
 }
 
-.route-warp{
+.route-warp {
   width: 952px;
-  background: #FFFFFF;
+  background: #ffffff;
   margin-top: 14px;
 }
 </style>

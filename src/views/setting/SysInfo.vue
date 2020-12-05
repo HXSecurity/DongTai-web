@@ -7,11 +7,7 @@ import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
 
 @Component({ name: 'SysInfo' })
-export default class SysInfo extends VueBase {
-
-}
+export default class SysInfo extends VueBase {}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -8,8 +8,12 @@
         <div class="module-title">
           {{ $t('views.scaList.language') }}
         </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.language" :key="item.language"
-             @click="languageChange(item.language)">
+        <div
+          v-for="item in searchOptionsObj.language"
+          :key="item.language"
+          class="flex-row-space-between module-line"
+          @click="languageChange(item.language)"
+        >
           <div class="selectOption">
             {{ item.language }}
           </div>
@@ -20,8 +24,12 @@
         <div class="module-title">
           {{ $t('views.scaList.level') }}
         </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.level" :key="item.level"
-             @click="levelChange(item.level)">
+        <div
+          v-for="item in searchOptionsObj.level"
+          :key="item.level"
+          class="flex-row-space-between module-line"
+          @click="levelChange(item.level)"
+        >
           <div class="selectOption">
             {{ item.level }}
           </div>
@@ -32,8 +40,12 @@
         <div class="module-title">
           {{ $t('views.scaList.project_name') }}
         </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.projects"
-             :key="item.project_name" @click="projectNameChange(item.project_name)">
+        <div
+          v-for="item in searchOptionsObj.projects"
+          :key="item.project_name"
+          class="flex-row-space-between module-line"
+          @click="projectNameChange(item.project_name)"
+        >
           <div class="selectOption">
             {{ item.project_name }}
           </div>
@@ -46,16 +58,38 @@
 
     <div class="main-warp">
       <div class="selectForm">
-        <el-select size="mini" v-model="searchObj.order" @change="newSelectData" clearable>
-          <el-option v-for="item in searchOptionsObj.orderOptions" :key="item.value" :label="item.label"
-                     :value="item.value"></el-option>
+        <el-select
+          v-model="searchObj.order"
+          size="mini"
+          clearable
+          @change="newSelectData"
+        >
+          <el-option
+            v-for="item in searchOptionsObj.orderOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
         </el-select>
-        <el-select style="margin-left: 10px" size="mini" v-model="searchObj.language" @change="newSelectData" clearable>
+        <el-select
+          v-model="searchObj.language"
+          style="margin-left: 10px"
+          size="mini"
+          clearable
+          @change="newSelectData"
+        >
           <el-option label="JAVA" value="JAVA"></el-option>
           <el-option label=".NET" value=".NET"></el-option>
         </el-select>
         <div class="selectInput">
-          <el-input v-if="keywordInput" v-model="searchObj.keyword" style="width: 462px" size="mini" @blur="inputHide" @keyup.enter.native="newSelectData">
+          <el-input
+            v-if="keywordInput"
+            v-model="searchObj.keyword"
+            style="width: 462px"
+            size="mini"
+            @blur="inputHide"
+            @keyup.enter.native="newSelectData"
+          >
             <i
               slot="suffix"
               class="el-input__icon el-icon-search"
@@ -65,36 +99,68 @@
           <i
             v-else
             class="el-icon-search"
-            style="margin-top: 10px;margin-right: 10px"
+            style="margin-top: 10px; margin-right: 10px"
             @click="keywordInput = !keywordInput"
           />
         </div>
       </div>
-      <el-table class="sca-list" :data="tableData" style="width: 100%;margin-top: 18px;cursor: pointer;" @row-click="goDetail">
-        <el-table-column :label="$t('views.scaList.tableHeaders.name')" prop="package_name" min-width="120px"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.version')" prop="version" width="80px"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.application')" prop="project_name"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.language')" prop="language" width="100px"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.level')" prop="level" width="100px"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.count')" prop="vul_count" width="80px"></el-table-column>
-        <el-table-column :label="$t('views.scaList.tableHeaders.time')" prop="dt" width="140px"></el-table-column>
+      <el-table
+        class="sca-list"
+        :data="tableData"
+        style="width: 100%; margin-top: 18px; cursor: pointer"
+        @row-click="goDetail"
+      >
+        <el-table-column
+          :label="$t('views.scaList.tableHeaders.name')"
+          prop="package_name"
+          min-width="120px"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaList.tableHeaders.version')"
+          prop="version"
+          width="80px"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaList.tableHeaders.application')"
+          prop="project_name"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaList.tableHeaders.language')"
+          prop="language"
+          width="100px"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaList.tableHeaders.level')"
+          prop="level"
+          width="100px"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaList.tableHeaders.count')"
+          prop="vul_count"
+          width="80px"
+        ></el-table-column>
+        <el-table-column
+          :label="$t('views.scaList.tableHeaders.time')"
+          prop="dt"
+          width="140px"
+        ></el-table-column>
       </el-table>
     </div>
   </main>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
 
 @Component({ name: 'ScaList' })
 export default class ScaList extends VueBase {
-  private page: number = 1;
-  private pageSize: number = 20;
-  private keywordInput: boolean = false
-  private dataEnd: boolean = false
-  private tableData: Array<object> = [];
+  private page = 1
+  private pageSize = 20
+  private keywordInput = false
+  private dataEnd = false
+  private tableData: Array<object> = []
   private searchOptionsObj = {
     language: [],
     level: [],
@@ -102,29 +168,29 @@ export default class ScaList extends VueBase {
     orderOptions: [
       {
         label: this.$t('views.scaList.orderOptions.project_name'),
-        value: 'project_name'
+        value: 'project_name',
       },
       {
         label: this.$t('views.scaList.orderOptions.level'),
-        value: 'level'
+        value: 'level',
       },
       {
         label: this.$t('views.scaList.orderOptions.package_name'),
-        value: 'package_name'
+        value: 'package_name',
       },
       {
         label: this.$t('views.scaList.orderOptions.version'),
-        value: 'version'
+        value: 'version',
       },
       {
         label: this.$t('views.scaList.orderOptions.language'),
-        value: 'language'
+        value: 'language',
       },
       {
         label: this.$t('views.scaList.orderOptions.vul_count'),
-        value: 'vul_count'
-      }
-    ]
+        value: 'vul_count',
+      },
+    ],
   }
 
   private searchObj = {
@@ -132,52 +198,54 @@ export default class ScaList extends VueBase {
     level: '',
     project_name: '',
     keyword: '',
-    order: ''
+    order: '',
   }
 
-  created () {
+  created() {
     this.getTableData()
     this.scaSummary()
   }
 
-  private inputHide () {
+  private inputHide() {
     if (!this.searchObj.keyword) {
       this.keywordInput = false
     }
   }
 
-  private languageChange (val: string) {
+  private languageChange(val: string) {
     this.searchObj.language = val
     this.newSelectData()
   }
 
-  private levelChange (val: string) {
+  private levelChange(val: string) {
     this.searchObj.level = val
     this.newSelectData()
   }
 
-  private projectNameChange (val: string) {
+  private projectNameChange(val: string) {
     this.searchObj.project_name = val
     this.newSelectData()
   }
 
-  private newSelectData () {
+  private newSelectData() {
     this.page = 1
     this.tableData = []
     this.getTableData()
     this.scaSummary()
   }
 
-  mounted () {
+  mounted() {
     window.addEventListener('scroll', this.myScroll)
   }
 
-  beforeDestroy () {
+  beforeDestroy() {
     window.removeEventListener('scroll', this.myScroll)
   }
 
-  private myScroll () {
-    const bottomWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 1
+  private myScroll() {
+    const bottomWindow =
+      document.documentElement.scrollTop + window.innerHeight >
+      document.documentElement.offsetHeight - 1
     if (bottomWindow) {
       if (!this.dataEnd) {
         this.page += 1
@@ -186,7 +254,7 @@ export default class ScaList extends VueBase {
     }
   }
 
-  private async getTableData () {
+  private async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -194,7 +262,7 @@ export default class ScaList extends VueBase {
       level: this.searchObj.level,
       project_name: this.searchObj.project_name,
       keyword: this.searchObj.keyword,
-      order: this.searchObj.order
+      order: this.searchObj.order,
     }
     const { status, data, msg } = await this.services.sca.scaList(params)
     if (status !== 201) {
@@ -204,7 +272,7 @@ export default class ScaList extends VueBase {
     const tableData = data.reduce((list: any[], item: { dt: any }) => {
       list.push({
         ...item,
-        dt: formatTimestamp(item.dt)
+        dt: formatTimestamp(item.dt),
       })
       return list
     }, [])
@@ -214,13 +282,13 @@ export default class ScaList extends VueBase {
     this.tableData = [...this.tableData, ...tableData]
   }
 
-  private async scaSummary () {
+  private async scaSummary() {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
       project_name: this.searchObj.project_name,
       keyword: this.searchObj.keyword,
-      order: this.searchObj.order
+      order: this.searchObj.order,
     }
     const { status, data, msg } = await this.services.sca.scaSummary(params)
     if (status !== 201) {
@@ -232,14 +300,13 @@ export default class ScaList extends VueBase {
     this.searchOptionsObj.projects = data.projects
   }
 
-  private goDetail (row: any) {
+  private goDetail(row: any) {
     this.$router.push(`/sca/scaDetail/${this.page}/${row.id}`)
   }
 }
 </script>
 
-<style scoped lang='scss'>
-
+<style scoped lang="scss">
 .fixed-warp {
   position: fixed;
   top: 0;
@@ -257,16 +324,16 @@ export default class ScaList extends VueBase {
 
   .title {
     height: 54px;
-    border-bottom: 1px solid #E6E9EC;
+    border-bottom: 1px solid #e6e9ec;
     font-size: 18px;
     font-weight: normal;
-    color: #4A72AE;
+    color: #4a72ae;
   }
 
   .module-title {
     margin-top: 28px;
     font-size: 16px;
-    color: #38435A;
+    color: #38435a;
   }
 
   .module-line {
@@ -275,12 +342,12 @@ export default class ScaList extends VueBase {
     padding-left: 5px;
 
     .selectOption {
-      color: #4B99F1;
+      color: #4b99f1;
       font-size: 14px;
     }
 
     .num {
-      color: #959EA9;
+      color: #959ea9;
       font-size: 14px;
     }
   }

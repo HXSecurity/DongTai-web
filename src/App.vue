@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default class App extends Vue {
 </script>
 
 <style scoped>
-#app{
-  background: #F9FAFB;
+#app {
+  background: #f9fafb;
 }
 </style>

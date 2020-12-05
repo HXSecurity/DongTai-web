@@ -4,18 +4,33 @@
     <el-card class="loginCard">
       <el-form>
         <el-form-item>
-          <div style="font-size: 20px;text-align: center">
-            {{$t('views.login.title')}}
+          <div style="font-size: 20px; text-align: center">
+            {{ $t('views.login.title') }}
           </div>
         </el-form-item>
         <el-form-item>
-          <el-input prefix-icon="el-icon-user" v-model="userName" :placeholder="$t('views.login.usernamePlaceholder')"></el-input>
+          <el-input
+            v-model="userName"
+            prefix-icon="el-icon-user"
+            :placeholder="$t('views.login.usernamePlaceholder')"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-input prefix-icon="el-icon-lock" show-password v-model="password" :placeholder="$t('views.login.passwordPlaceholder')"></el-input>
+          <el-input
+            v-model="password"
+            prefix-icon="el-icon-lock"
+            show-password
+            :placeholder="$t('views.login.passwordPlaceholder')"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="login" @keyup.enter.native="login">登录</el-button>
+          <el-button
+            type="primary"
+            style="width: 100%"
+            @click="login"
+            @keyup.enter.native="login"
+            >登录</el-button
+          >
         </el-form-item>
       </el-form>
     </el-card>
@@ -23,23 +38,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import Header from '@/views/layout/Header.vue'
 import VueBase from '@/VueBase'
 
 @Component({
   name: 'Login',
   components: {
-    Header
-  }
+    Header,
+  },
 })
 export default class Login extends VueBase {
-  private userName: string= ''
-  private password: string = ''
-  private async login () {
+  private userName = ''
+  private password = ''
+  private async login() {
     const params = {
       username: this.userName,
-      password: this.password
+      password: this.password,
     }
     const { status, msg } = await this.services.login.login(params)
     if (status !== 201) {

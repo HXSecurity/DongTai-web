@@ -14,22 +14,22 @@ interface changePasswordParams {
 
 export default () => new class {
   // 登陆
-  login (params: loginParams) {
+  login(params: loginParams): Promise<iResponse> {
     return request.post('/user/login', params)
   }
 
   // 获取用户信息
-  getUserInfo () {
+  getUserInfo(): Promise<iResponse> {
     return request.get('/user/info')
   }
 
   // 退出登陆
-  logout () {
+  logout(): Promise<iResponse> {
     return request.get('/user/logout')
   }
 
   // 修改密码
-  changePassword (params: changePasswordParams) {
+  changePassword(params: changePasswordParams): Promise<iResponse> {
     return request.post('/user/changePassword', params)
   }
 }()

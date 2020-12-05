@@ -1,40 +1,52 @@
 <template>
   <header class="header">
     <div class="container flex-row-space-between header-warp">
-      <div class="logo flex-column-center" @click="$router.push('/')">
-        IAST
-      </div>
-      <div class="url-warp" v-if="userInfo">
-        <div class="url flex-column-center" :class="currentRoute('/vuln') ? 'currentRoute' : ''" @click="$router.push('/vuln')">
+      <div class="logo flex-column-center" @click="$router.push('/')">IAST</div>
+      <div v-if="userInfo" class="url-warp">
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/vuln') ? 'currentRoute' : ''"
+          @click="$router.push('/vuln')"
+        >
           {{ $t('menu.vuln') }} /
         </div>
-        <div class="url flex-column-center" :class="currentRoute('/sca') ? 'currentRoute' : ''" @click="$router.push('/sca')">
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/sca') ? 'currentRoute' : ''"
+          @click="$router.push('/sca')"
+        >
           {{ $t('menu.sca') }} /
         </div>
-        <div class="url flex-column-center" :class="currentRoute('/setting') ? 'currentRoute' : ''" @click="$router.push('/setting')">
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/setting') ? 'currentRoute' : ''"
+          @click="$router.push('/setting')"
+        >
           {{ $t('menu.setting') }} /
         </div>
       </div>
       <div v-if="!userInfo" class="flex-column-center">
-        <el-button v-if="!userInfo" type="text" @click="$router.push('/login')">{{ $t('menu.login') }}</el-button>
+        <el-button v-if="!userInfo" type="text" @click="$router.push('/login')"
+          >{{ $t('menu.login') }}
+        </el-button>
       </div>
       <div v-else>
         <el-dropdown>
           <div style="height: 64px" class="flex-column-center">
             <div>
-              <img class="titleImg" src="../../assets/img/touxiang@2x.png" alt="">
+              <img
+                class="titleImg"
+                src="../../assets/img/touxiang@2x.png"
+                alt=""
+              />
               <span>
-               {{ userInfo.username || '' }}
+                {{ userInfo.username || '' }}
               </span>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <p
-                @click="logOut"
-              >
-                退出
-              </p>
+              <p @click="logOut">退出</p>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -49,15 +61,16 @@ import { Component, Vue } from 'vue-property-decorator'
 @Component({ name: 'layoutHeader' })
 export default class Header extends Vue {
   $store: any
-  get userInfo () {
+
+  get userInfo(): { username: string } {
     return this.$store.getters.userInfo
   }
 
-  private currentRoute (path: string): boolean {
-    return this.$route.matched.some(item => item.path === path)
+  private currentRoute(path: string): boolean {
+    return this.$route.matched.some((item) => item.path === path)
   }
 
-  private logOut () {
+  private logOut() {
     this.$store.dispatch('logOut')
     this.$router.push('/login')
   }
@@ -76,7 +89,7 @@ export default class Header extends Vue {
     .logo {
       font-size: 24px;
       font-weight: bold;
-      color: #12171F;
+      color: #12171f;
       line-height: 36px;
       cursor: pointer;
     }
@@ -93,29 +106,28 @@ export default class Header extends Vue {
         height: 100%;
         font-size: 16px;
         font-weight: normal;
-        color: #38435A;
+        color: #38435a;
         cursor: pointer;
         margin-left: 10px;
 
-        &:first-child{
+        &:first-child {
           margin-left: 0;
         }
       }
 
-      .currentRoute{
-        color: #DC3C3A;
+      .currentRoute {
+        color: #dc3c3a;
       }
     }
 
-    .titleImg{
+    .titleImg {
       width: 46px;
       height: 46px;
-      border: 1px solid #DDE4EF;
+      border: 1px solid #dde4ef;
       border-radius: 50%;
       vertical-align: middle;
       margin-right: 14px;
     }
   }
-
 }
 </style>

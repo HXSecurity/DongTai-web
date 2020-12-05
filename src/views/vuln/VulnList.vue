@@ -8,8 +8,12 @@
         <div class="module-title">
           {{ $t('views.vulnList.language') }}
         </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.language" :key="item.language"
-             @click="languageChange(item.language)">
+        <div
+          v-for="item in searchOptionsObj.language"
+          :key="item.language"
+          class="flex-row-space-between module-line"
+          @click="languageChange(item.language)"
+        >
           <div class="selectOption">
             {{ item.language }}
           </div>
@@ -20,8 +24,12 @@
         <div class="module-title">
           {{ $t('views.vulnList.level') }}
         </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.level" :key="item.level"
-             @click="levelChange(item.level)">
+        <div
+          v-for="item in searchOptionsObj.level"
+          :key="item.level"
+          class="flex-row-space-between module-line"
+          @click="levelChange(item.level)"
+        >
           <div class="selectOption">
             {{ item.level }}
           </div>
@@ -32,8 +40,12 @@
         <div class="module-title">
           {{ $t('views.vulnList.type') }}
         </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.type" :key="item.type"
-             @click="typeChange(item.type)">
+        <div
+          v-for="item in searchOptionsObj.type"
+          :key="item.type"
+          class="flex-row-space-between module-line"
+          @click="typeChange(item.type)"
+        >
           <div class="selectOption">
             {{ item.type }}
           </div>
@@ -44,8 +56,12 @@
         <div class="module-title">
           {{ $t('views.vulnList.project_name') }}
         </div>
-        <div class="flex-row-space-between module-line" v-for="item in searchOptionsObj.projects"
-             :key="item.project_name" @click="projectNameChange(item.project_name)">
+        <div
+          v-for="item in searchOptionsObj.projects"
+          :key="item.project_name"
+          class="flex-row-space-between module-line"
+          @click="projectNameChange(item.project_name)"
+        >
           <div class="selectOption">
             {{ item.project_name }}
           </div>
@@ -58,16 +74,38 @@
 
     <div class="main-warp">
       <div class="selectForm">
-        <el-select size="mini" v-model="searchObj.order" @change="newSelectData" clearable>
-          <el-option v-for="item in searchOptionsObj.orderOptions" :key="item.value" :label="item.label"
-                     :value="item.value"></el-option>
+        <el-select
+          v-model="searchObj.order"
+          size="mini"
+          clearable
+          @change="newSelectData"
+        >
+          <el-option
+            v-for="item in searchOptionsObj.orderOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          ></el-option>
         </el-select>
-        <el-select style="margin-left: 10px" size="mini" v-model="searchObj.language" @change="newSelectData" clearable>
+        <el-select
+          v-model="searchObj.language"
+          style="margin-left: 10px"
+          size="mini"
+          clearable
+          @change="newSelectData"
+        >
           <el-option label="JAVA" value="JAVA"></el-option>
           <el-option label=".NET" value=".NET"></el-option>
         </el-select>
         <div class="selectInput">
-          <el-input v-if="keywordInput" v-model="searchObj.url" style="width: 462px" size="mini" @blur="inputHide" @keyup.enter.native="newSelectData">
+          <el-input
+            v-if="keywordInput"
+            v-model="searchObj.url"
+            style="width: 462px"
+            size="mini"
+            @blur="inputHide"
+            @keyup.enter.native="newSelectData"
+          >
             <i
               slot="suffix"
               class="el-input__icon el-icon-search"
@@ -77,15 +115,22 @@
           <i
             v-else
             class="el-icon-search"
-            style="margin-top: 10px;margin-right: 10px"
+            style="margin-top: 10px; margin-right: 10px"
             @click="keywordInput = !keywordInput"
           />
         </div>
       </div>
-      <div class="card" v-for="item in tableData" :key="item.id" @click="goDetail(item.id)">
+      <div
+        v-for="item in tableData"
+        :key="item.id"
+        class="card"
+        @click="goDetail(item.id)"
+      >
         <div class="card-title flex-row-space-between">
           <span class="title flex-column-center">
-          {{ `${item.url}的${item.http_method}请求出现${item.type}漏洞，位置：${item.taint_position}` }}
+            {{
+              `${item.url}的${item.http_method}请求出现${item.type}漏洞，位置：${item.taint_position}`
+            }}
           </span>
           <span class="time flex-column-center">
             {{ item.first_time }}
@@ -101,26 +146,37 @@
             {{ item.bottom_stack }}
           </div>
           <div class="infoLine flex-row-space-between">
-            <div class="flex-row-space-between" style="width: 60%;">
+            <div class="flex-row-space-between" style="width: 60%">
               <span class="info">
-                <i class="iconfont iconyingyong" style="color: #A3B0E2"></i>
+                <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
                 {{ item.project_name }}
               </span>
               <span class="info">
-                <i class="iconfont" :class="switchServerType(item.server_type)"></i>
+                <i
+                  class="iconfont"
+                  :class="switchServerType(item.server_type)"
+                ></i>
                 {{ item.server_name }}
               </span>
               <span class="info">
-                <i class="iconfont iconweixian"
-                   :style="item.level_type === 1 ? {color: '#EA7171'} :
-                   item.level_type === 2 ? {color: '#F39D0A'}  :
-                   item.level_type === 3 ? {color: '#2E8FE9'}  :
-                   item.level_type === 4 ? {color: '#7BC1AB'}  : ''"
+                <i
+                  class="iconfont iconweixian"
+                  :style="
+                    item.level_type === 1
+                      ? { color: '#EA7171' }
+                      : item.level_type === 2
+                      ? { color: '#F39D0A' }
+                      : item.level_type === 3
+                      ? { color: '#2E8FE9' }
+                      : item.level_type === 4
+                      ? { color: '#7BC1AB' }
+                      : ''
+                  "
                 ></i>
                 {{ item.level }}
               </span>
               <span class="info">
-                <i class="iconfont iconshijian-2" style="color: #A2A5AB"></i>
+                <i class="iconfont iconshijian-2" style="color: #a2a5ab"></i>
                 {{ item.latest_time }}
               </span>
             </div>
@@ -139,18 +195,18 @@
   </main>
 </template>
 
-<script lang='ts'>
+<script lang="ts">
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
 
 @Component({ name: 'VulnList' })
 export default class VulnList extends VueBase {
-  private page: number = 1;
-  private pageSize: number = 20;
-  private keywordInput: boolean = false
-  private dataEnd: boolean = false
-  private tableData: Array<object> = [];
+  private page = 1
+  private pageSize = 20
+  private keywordInput = false
+  private dataEnd = false
+  private tableData: Array<object> = []
   private searchOptionsObj = {
     language: [],
     level: [],
@@ -159,25 +215,25 @@ export default class VulnList extends VueBase {
     orderOptions: [
       {
         label: this.$t('views.vulnList.orderOptions.type'),
-        value: 'type'
+        value: 'type',
       },
       {
         label: this.$t('views.vulnList.orderOptions.level'),
-        value: 'level'
+        value: 'level',
       },
       {
         label: this.$t('views.vulnList.orderOptions.url'),
-        value: 'url'
+        value: 'url',
       },
       {
         label: this.$t('views.vulnList.orderOptions.latest_time'),
-        value: 'latest_time'
+        value: 'latest_time',
       },
       {
         label: this.$t('views.vulnList.orderOptions.first_time'),
-        value: 'first_time'
-      }
-    ]
+        value: 'first_time',
+      },
+    ],
   }
 
   private searchObj = {
@@ -186,57 +242,59 @@ export default class VulnList extends VueBase {
     type: '',
     project_name: '',
     url: '',
-    order: ''
+    order: '',
   }
 
-  created () {
+  created() {
     this.getTableData()
     this.vulnSummary()
   }
 
-  private inputHide () {
+  private inputHide() {
     if (!this.searchObj.url) {
       this.keywordInput = false
     }
   }
 
-  private languageChange (val: string) {
+  private languageChange(val: string) {
     this.searchObj.language = val
     this.newSelectData()
   }
 
-  private levelChange (val: string) {
+  private levelChange(val: string) {
     this.searchObj.level = val
     this.newSelectData()
   }
 
-  private typeChange (val: string) {
+  private typeChange(val: string) {
     this.searchObj.type = val
     this.newSelectData()
   }
 
-  private projectNameChange (val: string) {
+  private projectNameChange(val: string) {
     this.searchObj.project_name = val
     this.newSelectData()
   }
 
-  private newSelectData () {
+  private newSelectData() {
     this.page = 1
     this.tableData = []
     this.getTableData()
     this.vulnSummary()
   }
 
-  mounted () {
+  mounted() {
     window.addEventListener('scroll', this.myScroll)
   }
 
-  beforeDestroy () {
+  beforeDestroy() {
     window.removeEventListener('scroll', this.myScroll)
   }
 
-  private myScroll () {
-    const bottomWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 1
+  private myScroll() {
+    const bottomWindow =
+      document.documentElement.scrollTop + window.innerHeight >
+      document.documentElement.offsetHeight - 1
     if (bottomWindow) {
       if (!this.dataEnd) {
         this.page += 1
@@ -245,7 +303,7 @@ export default class VulnList extends VueBase {
     }
   }
 
-  private async getTableData () {
+  private async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -254,7 +312,7 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order
+      order: this.searchObj.order,
     }
     const { status, data, msg } = await this.services.vuln.vulnList(params)
     if (status !== 201) {
@@ -265,7 +323,7 @@ export default class VulnList extends VueBase {
       list.push({
         ...item,
         first_time: formatTimestamp(item.first_time),
-        latest_time: formatTimestamp(item.latest_time)
+        latest_time: formatTimestamp(item.latest_time),
       })
       return list
     }, [])
@@ -275,14 +333,14 @@ export default class VulnList extends VueBase {
     this.tableData = [...this.tableData, ...tableData]
   }
 
-  private async vulnSummary () {
+  private async vulnSummary() {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order
+      order: this.searchObj.order,
     }
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)
     if (status !== 201) {
@@ -295,11 +353,11 @@ export default class VulnList extends VueBase {
     this.searchOptionsObj.projects = data.projects
   }
 
-  private goDetail (id: number) {
+  private goDetail(id: number) {
     this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
   }
 
-  private switchServerType (serverType: string) {
+  private switchServerType(serverType: string) {
     switch (serverType) {
       case 'tomcat':
         return 'icontomcat'
@@ -321,8 +379,7 @@ export default class VulnList extends VueBase {
 }
 </script>
 
-<style scoped lang='scss'>
-
+<style scoped lang="scss">
 .fixed-warp {
   position: fixed;
   top: 0;
@@ -340,16 +397,16 @@ export default class VulnList extends VueBase {
 
   .title {
     height: 54px;
-    border-bottom: 1px solid #E6E9EC;
+    border-bottom: 1px solid #e6e9ec;
     font-size: 18px;
     font-weight: normal;
-    color: #4A72AE;
+    color: #4a72ae;
   }
 
   .module-title {
     margin-top: 28px;
     font-size: 16px;
-    color: #38435A;
+    color: #38435a;
   }
 
   .module-line {
@@ -358,12 +415,12 @@ export default class VulnList extends VueBase {
     padding-left: 5px;
 
     .selectOption {
-      color: #4B99F1;
+      color: #4b99f1;
       font-size: 14px;
     }
 
     .num {
-      color: #959EA9;
+      color: #959ea9;
       font-size: 14px;
     }
   }
@@ -386,21 +443,21 @@ export default class VulnList extends VueBase {
     margin-top: 14px;
     width: 100%;
     padding-bottom: 20px;
-    background: #FFFFFF;
+    background: #ffffff;
     border-radius: 8px;
-    border: 1px solid #DEE4EA;
+    border: 1px solid #dee4ea;
     cursor: pointer;
 
     .card-title {
       width: 952px;
       height: 48px;
-      background: #F1F8FF;
+      background: #f1f8ff;
       border-radius: 8px 8px 0px 0px;
-      border: 1px solid #C8E0FF;
+      border: 1px solid #c8e0ff;
       padding: 0 12px;
 
       .title {
-        color: #38435A;
+        color: #38435a;
         font-size: 16px;
       }
 
@@ -421,14 +478,14 @@ export default class VulnList extends VueBase {
           content: '';
           width: 1px;
           height: 30px;
-          background: #DEE4EA;
+          background: #dee4ea;
           position: absolute;
           left: 5px;
           top: 14px;
         }
 
         i {
-          color: #5491EF;
+          color: #5491ef;
           font-size: 12px;
           vertical-align: bottom;
         }
@@ -438,7 +495,7 @@ export default class VulnList extends VueBase {
         margin-top: 24px;
 
         i {
-          color: #6EC79F;
+          color: #6ec79f;
           font-size: 12px;
           vertical-align: bottom;
         }
@@ -457,7 +514,7 @@ export default class VulnList extends VueBase {
           height: 20px;
           font-size: 14px;
           line-height: 20px;
-          background: #5495F3;
+          background: #5495f3;
           padding-right: 10px;
           padding-left: 4px;
           position: relative;
@@ -468,32 +525,32 @@ export default class VulnList extends VueBase {
             content: '';
             height: 20px;
             width: 18px;
-            background-image: url("../../assets/img/tag.png");
+            background-image: url('../../assets/img/tag.png');
           }
         }
       }
     }
 
-    .icontomcat{
-      color: #E6D088;
+    .icontomcat {
+      color: #e6d088;
     }
-    .iconJetty{
-      color: #5CB896;
+    .iconJetty {
+      color: #5cb896;
     }
-    .iconresin{
-      color: #86A0D5;
+    .iconresin {
+      color: #86a0d5;
     }
-    .iconwebLogic{
-      color: #A4CBB9;
+    .iconwebLogic {
+      color: #a4cbb9;
     }
-    .iconwebSphere{
-      color: #888DD1;
+    .iconwebSphere {
+      color: #888dd1;
     }
-    .iconJBoss{
-      color: #41BAD5;
+    .iconJBoss {
+      color: #41bad5;
     }
-    .iconyingyong{
-      color: #DDCC9E;
+    .iconyingyong {
+      color: #ddcc9e;
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header class="layoutHeader"/>
+    <Header class="layoutHeader" />
     <router-view class="layoutMain"></router-view>
   </div>
 </template>
@@ -11,26 +11,22 @@ import Header from './Header.vue'
 @Component({
   name: 'layoutIndex',
   components: {
-    Header
-  }
+    Header,
+  },
 })
-export default class Index extends Vue {
-
-}
+export default class Index extends Vue {}
 </script>
 
-<style scoped lang='scss'>
-
-.layoutHeader{
-   position: sticky;
-   top: 0;
-   width: 100%;
-   z-index: 1;
+<style scoped lang="scss">
+.layoutHeader {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 }
 
-.layoutMain{
+.layoutMain {
   // margin-top: 64px;
   min-height: calc(100vh - 64px);
 }
-
 </style>

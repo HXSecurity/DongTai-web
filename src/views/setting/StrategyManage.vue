@@ -1,10 +1,21 @@
 <template>
   <div class="content-warp">
     <el-table :data="tableData" class="strategyManageTable">
-      <el-table-column :label="$t('views.strategyManage.name')" prop="vul_name"></el-table-column>
-      <el-table-column :label="$t('views.strategyManage.detail')" prop="vul_desc" min-width="200px"></el-table-column>
-      <el-table-column :label="$t('views.strategyManage.status')" prop="state" width="100px">
-        <template slot-scope="{row}">
+      <el-table-column
+        :label="$t('views.strategyManage.name')"
+        prop="vul_name"
+      ></el-table-column>
+      <el-table-column
+        :label="$t('views.strategyManage.detail')"
+        prop="vul_desc"
+        min-width="200px"
+      ></el-table-column>
+      <el-table-column
+        :label="$t('views.strategyManage.status')"
+        prop="state"
+        width="100px"
+      >
+        <template slot-scope="{ row }">
           <div @click="stateChange(row.id, row.state)">
             <el-switch
               :value="row.state === 'enable'"
@@ -27,11 +38,11 @@ import { Component } from 'vue-property-decorator'
 export default class StrategyManage extends VueBase {
   private tableData: Array<object> = []
 
-  created () {
+  created() {
     this.getTableData()
   }
 
-  private async getTableData () {
+  private async getTableData() {
     const { status, msg, data } = await this.services.setting.strategyList()
     if (status !== 201) {
       this.$message.error(msg)
@@ -40,14 +51,13 @@ export default class StrategyManage extends VueBase {
     this.tableData = data
   }
 
-  private async stateChange (id: number, state: string) {
+  private async stateChange(id: number, state: string) {
     if (state === 'enable') {
       const { status, msg } = await this.services.setting.strategyDisable(id)
       if (status !== 201) {
         this.$message.error(msg)
         return
       }
-      this.$message.success(msg)
       await this.getTableData()
     }
     if (state === 'disable') {
@@ -56,7 +66,6 @@ export default class StrategyManage extends VueBase {
         this.$message.error(msg)
         return
       }
-      this.$message.success(msg)
       await this.getTableData()
     }
   }
@@ -70,12 +79,12 @@ export default class StrategyManage extends VueBase {
 
 .install {
   cursor: pointer;
-  color: #A7AFB9;
+  color: #a7afb9;
 }
 
 .uninstall {
   cursor: pointer;
-  color: #A7AFB9;
+  color: #a7afb9;
   margin-left: 18px;
 }
 </style>

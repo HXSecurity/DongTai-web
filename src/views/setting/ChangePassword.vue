@@ -1,19 +1,52 @@
 <template>
   <div>
-    <el-form :model="submitForm" label-width="100px" style="margin-top: 64px" status-icon :rules="rules" ref="ruleForm" >
-      <el-form-item :label="$t('views.changePassword.username')">{{userInfo.username}}</el-form-item>
-      <el-form-item :label="$t('views.changePassword.oldPassword')" prop="old_password">
-        <el-input size="mini" show-password v-model="submitForm.old_password" style="width: 220px"></el-input>
+    <el-form
+      ref="ruleForm"
+      :model="submitForm"
+      label-width="100px"
+      style="margin-top: 64px"
+      status-icon
+      :rules="rules"
+    >
+      <el-form-item :label="$t('views.changePassword.username')">{{
+        userInfo.username
+      }}</el-form-item>
+      <el-form-item
+        :label="$t('views.changePassword.oldPassword')"
+        prop="old_password"
+      >
+        <el-input
+          v-model="submitForm.old_password"
+          size="mini"
+          show-password
+          style="width: 220px"
+        ></el-input>
       </el-form-item>
-      <el-form-item :label="$t('views.changePassword.newPassword')" prop="new_password">
-        <el-input size="mini" show-password v-model="submitForm.new_password" style="width: 220px"></el-input>
+      <el-form-item
+        :label="$t('views.changePassword.newPassword')"
+        prop="new_password"
+      >
+        <el-input
+          v-model="submitForm.new_password"
+          size="mini"
+          show-password
+          style="width: 220px"
+        ></el-input>
       </el-form-item>
-      <el-form-item :label="$t('views.changePassword.confirmNewPassword')" prop="checkPass">
-        <el-input size="mini" show-password v-model="submitForm.checkPass" style="width: 220px"></el-input>
+      <el-form-item
+        :label="$t('views.changePassword.confirmNewPassword')"
+        prop="checkPass"
+      >
+        <el-input
+          v-model="submitForm.checkPass"
+          size="mini"
+          show-password
+          style="width: 220px"
+        ></el-input>
       </el-form-item>
-      <el-form-item >
+      <el-form-item>
         <el-button size="mini" type="primary" @click="changePassword">
-          {{$t('views.changePassword.submit')}}
+          {{ $t('views.changePassword.submit') }}
         </el-button>
       </el-form-item>
     </el-form>
@@ -29,27 +62,21 @@ export default class ChangePassword extends VueBase {
   submitForm = {
     old_password: '',
     new_password: '',
-    checkPass: ''
+    checkPass: '',
   }
 
   private rules = {
-    old_password: [
-      { validator: this.validateOldPass, trigger: 'blur' }
-    ],
-    new_password: [
-      { validator: this.validateNewPass, trigger: 'blur' }
-    ],
-    checkPass: [
-      { validator: this.validateCheckPass, trigger: 'blur' }
-    ]
+    old_password: [{ validator: this.validateOldPass, trigger: 'blur' }],
+    new_password: [{ validator: this.validateNewPass, trigger: 'blur' }],
+    checkPass: [{ validator: this.validateCheckPass, trigger: 'blur' }],
   }
 
   $store: any
-  get userInfo () {
+  get userInfo() {
     return this.$store.getters.userInfo
   }
 
-  private validateOldPass (rule: any, value: any, callback: any) {
+  private validateOldPass(rule: any, value: any, callback: any) {
     if (value === '') {
       callback(new Error('请输入旧密码'))
     } else {
@@ -60,7 +87,7 @@ export default class ChangePassword extends VueBase {
     }
   }
 
-  private validateNewPass (rule: any, value: string, callback: any) {
+  private validateNewPass(rule: any, value: string, callback: any) {
     if (value === '') {
       callback(new Error('请输入新密码'))
     } else {
@@ -71,7 +98,7 @@ export default class ChangePassword extends VueBase {
     }
   }
 
-  private validateCheckPass (rule: any, value: any, callback: any) {
+  private validateCheckPass(rule: any, value: any, callback: any) {
     if (value === '') {
       callback(new Error('请再次输入密码'))
     } else if (value !== this.submitForm.new_password) {
@@ -79,15 +106,15 @@ export default class ChangePassword extends VueBase {
     } else {
       callback()
     }
-  };
+  }
 
-  private changePassword () {
+  private changePassword() {
     this.$refs.ruleForm.validate(async (valid: any) => {
       if (valid) {
         const params = {
           username: this.userInfo.username,
           old_password: this.submitForm.old_password,
-          new_password: this.submitForm.new_password
+          new_password: this.submitForm.new_password,
         }
         const { status, msg } = await this.services.login.changePassword(params)
         if (status !== 201) {
@@ -104,6 +131,4 @@ export default class ChangePassword extends VueBase {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
