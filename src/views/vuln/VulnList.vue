@@ -158,14 +158,6 @@ export default class VulnList extends VueBase {
     projects: [],
     orderOptions: [
       {
-        label: this.$t('views.vulnList.orderOptions.app_name'),
-        value: 'app_name'
-      },
-      {
-        label: this.$t('views.vulnList.orderOptions.server_name'),
-        value: 'server_name'
-      },
-      {
         label: this.$t('views.vulnList.orderOptions.type'),
         value: 'type'
       },

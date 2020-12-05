@@ -28,8 +28,6 @@ export default {
       type: '类型',
       project_name: '项目',
       orderOptions: {
-        app_name: '项目名称',
-        server_name: '服务器名称',
         type: '漏洞类型',
         level: '漏洞等级',
         url: 'url',
