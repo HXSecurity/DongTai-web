@@ -1,11 +1,11 @@
-import axios, {AxiosResponse, AxiosRequestConfig} from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
 import store from '@/store'
-import router from "@/router";
-import {getToken} from '@/utils/utils'
+import router from '@/router'
+import { getToken } from '@/utils/utils'
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 10000
+  timeout: 10000,
 })
 
 const request = (config: AxiosRequestConfig) => {
@@ -29,7 +29,7 @@ const responseError = (error: any) => {
     console.error('请求超时')
     return
   }
-  if(error.response.status === 403){
+  if (error.response.status === 403) {
     store.dispatch('clearInfo')
     router.push('/login')
   }

@@ -277,11 +277,12 @@
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
+import { vulnListObj, vulnObj } from './types'
 
 @Component({ name: 'VulnDetail' })
 export default class VulnDetail extends VueBase {
-  private vulnObj: object = {}
-  private tableData: Array<object> = []
+  private vulnObj: vulnObj = {}
+  private tableData: Array<vulnListObj> = []
   private page = 1
   private selectedId = 0
   private total = 0
@@ -360,13 +361,16 @@ export default class VulnDetail extends VueBase {
       this.$message.error(msg)
       return
     }
-    this.tableData = data.reduce((list, item) => {
-      list.push({
-        ...item,
-        latest_time: formatTimestamp(item.latest_time),
-      })
-      return list
-    }, [])
+    this.tableData = data.reduce(
+      (list: Array<vulnListObj>, item: vulnListObj) => {
+        list.push({
+          ...item,
+          latest_time: formatTimestamp(item.latest_time),
+        })
+        return list
+      },
+      []
+    )
     this.total = page.alltotal
   }
 
@@ -399,7 +403,7 @@ export default class VulnDetail extends VueBase {
     }
   }
 
-  tableRowClassName({ row, rowIndex }) {
+  tableRowClassName() {
     return 'diy-row'
   }
 }

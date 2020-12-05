@@ -3,12 +3,13 @@ import createVulnServices from './vuln'
 import createScaServices from './sca'
 import createSettingServices from './setting'
 
-const createServices = () => new class {
-  login = createLoginServices()
-  vuln = createVulnServices()
-  sca = createScaServices()
-  setting = createSettingServices()
-}()
+const createServices = () =>
+  new (class {
+    login = createLoginServices()
+    vuln = createVulnServices()
+    sca = createScaServices()
+    setting = createSettingServices()
+  })()
 
 const services = createServices()
 

@@ -61,7 +61,7 @@ export default class Login extends VueBase {
       this.$message.error(msg)
       return
     }
-    this.$router.push('/')
+    await this.$router.push('/')
   }
 }
 </script>

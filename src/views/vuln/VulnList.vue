@@ -199,6 +199,7 @@
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
+import { vulnListObj } from './types'
 
 @Component({ name: 'VulnList' })
 export default class VulnList extends VueBase {
@@ -206,7 +207,7 @@ export default class VulnList extends VueBase {
   private pageSize = 20
   private keywordInput = false
   private dataEnd = false
-  private tableData: Array<object> = []
+  private tableData: Array<vulnListObj> = []
   private searchOptionsObj = {
     language: [],
     level: [],
@@ -319,14 +320,17 @@ export default class VulnList extends VueBase {
       this.$message.error(msg)
       return
     }
-    const tableData = data.reduce((list, item) => {
-      list.push({
-        ...item,
-        first_time: formatTimestamp(item.first_time),
-        latest_time: formatTimestamp(item.latest_time),
-      })
-      return list
-    }, [])
+    const tableData = data.reduce(
+      (list: Array<vulnListObj>, item: vulnListObj) => {
+        list.push({
+          ...item,
+          first_time: formatTimestamp(item.first_time),
+          latest_time: formatTimestamp(item.latest_time),
+        })
+        return list
+      },
+      []
+    )
     if (tableData.length < 20) {
       this.dataEnd = true
     }
