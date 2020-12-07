@@ -2,6 +2,7 @@ export default {
   menu: {
     home: '首页',
     login: '登录',
+    project: '项目配置',
     vuln: '应用漏洞',
     vulnList: '应用漏洞列表',
     vulnDetail: '应用漏洞详情',
@@ -19,7 +20,7 @@ export default {
     login: {
       title: '登录',
       usernamePlaceholder: '请输入用户名，默认admin',
-      passwordPlaceholder: '请输入密码，默认admin'
+      passwordPlaceholder: '请输入密码，默认admin',
     },
     vulnList: {
       filter: '过滤器',
@@ -33,7 +34,7 @@ export default {
         url: 'url',
         latest_time: '最新上报时间',
         first_time: '首次上报时间',
-      }
+      },
     },
     vulnDetail: {
       baseInfo: '基本信息',
@@ -85,7 +86,7 @@ export default {
         level: '安全等级',
         count: '漏洞数量',
         time: '发现时间',
-      }
+      },
     },
     scaDetail: {
       version: '版本',
@@ -108,14 +109,14 @@ export default {
         name: '漏洞名称',
         desc: '漏洞概述',
         detail: '漏洞细节',
-      }
+      },
     },
     changePassword: {
       username: '用户名',
       oldPassword: '旧密码',
       newPassword: '新密码',
       confirmNewPassword: '确认新密码',
-      submit: '确认'
+      submit: '确认',
     },
     agentManage: {
       address: '服务器地址',
@@ -123,21 +124,26 @@ export default {
       status: '运行状态',
       manage: '管理',
     },
-    strategyManage:{
+    strategyManage: {
       name: '策略名称',
       detail: '策略详情',
       status: '启用状态',
       operate: '操作',
     },
-    upgradeOnline:{
+    upgradeOnline: {
       online: '在线升级',
-      onlineDesc: '在线升级需要连接公网，访问动态IAST的远程升级服务器，请确保当前机器可访问公网。',
+      onlineDesc:
+        '在线升级需要连接公网，访问动态IAST的远程升级服务器，请确保当前机器可访问公网。',
       address: '升级服务器地址',
       onlineSubmit: '立即升级',
       offline: '离线升级',
-      offlineDesc: '请联系火线平台售后支持，获取最新的离线安装包，然后上传离线安装包进行升级',
+      offlineDesc:
+        '请联系火线平台售后支持，获取最新的离线安装包，然后上传离线安装包进行升级',
       select: '选择离线安装包',
       offlineSubmit: '上传并升级',
-    }
-  }
+    },
+    projectManage: {
+      title: '项目列表',
+    },
+  },
 }

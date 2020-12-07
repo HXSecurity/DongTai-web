@@ -5,6 +5,13 @@
       <div v-if="userInfo" class="url-warp">
         <div
           class="url flex-column-center"
+          :class="currentRoute('/project') ? 'currentRoute' : ''"
+          @click="$router.push('/project')"
+        >
+          {{ $t('menu.project') }} /
+        </div>
+        <div
+          class="url flex-column-center"
           :class="currentRoute('/vuln') ? 'currentRoute' : ''"
           @click="$router.push('/vuln')"
         >
