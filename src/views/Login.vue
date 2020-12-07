@@ -56,7 +56,9 @@ export default class Login extends VueBase {
       username: this.userName,
       password: this.password,
     }
+    this.loadingStart()
     const { status, msg } = await this.services.login.login(params)
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return

@@ -40,10 +40,11 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
+import { AgentListObj } from '@/views/setting/types'
 
 @Component({ name: 'AgentManage' })
 export default class AgentManage extends VueBase {
-  private tableData: Array<object> = []
+  private tableData: Array<AgentListObj> = []
   private total = 0
   private page = 1
   private pageSize = 20
@@ -62,9 +63,11 @@ export default class AgentManage extends VueBase {
       page: this.page,
       pageSize: this.pageSize,
     }
+    this.loadingStart()
     const { status, msg, data, page } = await this.services.setting.agentList(
       params
     )
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -74,9 +77,11 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentInstall(id: string | number) {
+    this.loadingStart()
     const { status, msg } = await this.services.setting.agentInstall({
       id: parseInt(`${id}`),
     })
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -85,9 +90,11 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentUninstall(id: string | number) {
+    this.loadingStart()
     const { status, msg } = await this.services.setting.agentUninstall({
       id: parseInt(`${id}`),
     })
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return

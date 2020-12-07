@@ -116,7 +116,9 @@ export default class ChangePassword extends VueBase {
           old_password: this.submitForm.old_password,
           new_password: this.submitForm.new_password,
         }
+        this.loadingStart()
         const { status, msg } = await this.services.login.changePassword(params)
+        this.loadingDone()
         if (status !== 201) {
           this.$message.error(msg)
           return

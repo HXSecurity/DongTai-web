@@ -6,3 +6,5 @@ declare module '*.vue' {
 declare module '@/store'
 
 declare module '@/components/markdownNice/Index'
+
+declare module 'nprogress'

@@ -56,10 +56,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
+import VueBase from '@/VueBase'
 
 @Component({ name: 'layoutHeader' })
-export default class Header extends Vue {
+export default class Header extends VueBase {
   get userInfo(): { username: string } {
     return this.$store.getters.userInfo
   }

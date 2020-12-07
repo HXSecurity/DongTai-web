@@ -1,4 +1,4 @@
-export interface vulnListObj {
+export interface VulnListObj {
   id: number
   project_name: string
   server_name: string
@@ -11,12 +11,12 @@ export interface vulnListObj {
   top_stack: string
   bottom_stack: string
   taint_position: string
-  latest_time: number
-  first_time: number
+  latest_time: string
+  first_time: string
   language: string
 }
 
-interface graphy {
+interface Graphy {
   type: string
   file: string
   line_number: string
@@ -27,7 +27,7 @@ interface graphy {
   node: string
 }
 
-export interface vulnObj {
+export interface VulnObj {
   vul: {
     url: string
     uri: string
@@ -41,7 +41,7 @@ export interface vulnObj {
     level: string
     counts: number
     req_header: string
-    graphy: Array<graphy>
+    graphy: Array<Graphy>
     context_path: string
   }
   server: {

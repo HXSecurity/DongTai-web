@@ -1,84 +1,97 @@
 <template>
   <main class="container flex-row-space-between">
-    <div class="slider-warp">
-      <div class="titleForm">
-        <el-select v-model="searchObj.order" size="mini" style="width: 90px">
-          <el-option
-            v-for="item in orderOptions"
-            :key="item.value"
-            :value="item.value"
-            :label="item.label"
-          ></el-option>
-        </el-select>
-        <el-input
-          v-model="searchObj.keyword"
-          style="width: 116px; margin-left: 4px"
-          size="mini"
-        >
-          <i
-            slot="suffix"
-            class="el-input__icon el-icon-search"
-            @click="newSelectData"
-          />
-        </el-input>
-      </div>
-      <div class="page-line flex-column-center">
-        <div class="flex-row-space-between">
-          <el-pagination
-            small
-            layout="prev, next"
-            :total="total"
-            :current-page="page"
-            :page-size="20"
-            @current-change="currentChange"
+    <div class="fixed-warp">
+      <div class="slider-warp">
+        <div class="titleForm flex-row-space-between">
+          <el-select v-model="searchObj.order" size="mini" style="width: 90px">
+            <el-option
+              v-for="item in orderOptions"
+              :key="item.value"
+              :value="item.value"
+              :label="item.label"
+            ></el-option>
+          </el-select>
+          <el-input
+            v-model="searchObj.keyword"
+            style="width: 106px"
+            size="mini"
           >
-          </el-pagination>
-          <span style="color: #969ba4; line-height: 25px">
-            <strong style="color: #38435a; font-weight: 400">{{ page }}</strong
-            >/{{ Math.ceil(total / 20) }}
-          </span>
-          <el-button size="mini" icon="el-icon-search"></el-button>
-        </div>
-      </div>
-      <div
-        v-for="item in tableData"
-        :key="item.id"
-        class="card"
-        :class="item.id === selectedId ? 'selected' : ''"
-        @click="idChange(item.id)"
-      >
-        <div class="titleLine">
-          {{ item.package_name }}
-        </div>
-        <div class="infoLine flex-row-space-between">
-          <span>
             <i
-              class="iconfont iconweixian"
-              :style="
-                item.level_type === 1
-                  ? { color: '#EA7171' }
-                  : item.level_type === 2
-                  ? { color: '#F39D0A' }
-                  : item.level_type === 3
-                  ? { color: '#2E8FE9' }
-                  : item.level_type === 4
-                  ? { color: '#7BC1AB' }
-                  : ''
-              "
-            ></i>
-            {{ item.level }}
-          </span>
-          <span>
-            <i
-              class="iconfont iconbanben-2"
-              style="color: #a2a5ab; font-size: 14px"
-            ></i>
-            {{ item.version }}
-          </span>
+              slot="suffix"
+              class="el-input__icon el-icon-search"
+              @click="newSelectData"
+            />
+          </el-input>
+        </div>
+        <div class="page-line flex-column-center">
+          <div class="flex-row-space-between">
+            <el-pagination
+              small
+              layout="prev, next"
+              :total="total"
+              :current-page="page"
+              :page-size="20"
+              @current-change="currentChange"
+            >
+            </el-pagination>
+            <span style="color: #969ba4; line-height: 25px">
+              <strong style="color: #38435a; font-weight: 400">{{
+                page
+              }}</strong
+              >/{{ Math.ceil(total / 20) }}
+            </span>
+            <el-button
+              size="mini"
+              icon="el-icon-refresh"
+              @click="getTableData"
+            ></el-button>
+          </div>
+        </div>
+        <div
+          v-for="item in tableData"
+          :key="item.id"
+          class="card"
+          :class="item.id === selectedId ? 'selected' : ''"
+          @click="idChange(item.id)"
+        >
+          <div class="titleLine">
+            {{ item.package_name }}
+          </div>
+          <div class="infoLine flex-row-space-between">
+            <span>
+              <i
+                class="iconfont iconweixian"
+                :style="
+                  item.level_type === 1
+                    ? { color: '#EA7171' }
+                    : item.level_type === 2
+                    ? { color: '#F39D0A' }
+                    : item.level_type === 3
+                    ? { color: '#2E8FE9' }
+                    : item.level_type === 4
+                    ? { color: '#7BC1AB' }
+                    : ''
+                "
+              ></i>
+              {{ item.level }}
+            </span>
+            <span>
+              <i
+                class="iconfont iconbanben-2"
+                style="color: #a2a5ab; font-size: 14px"
+              ></i>
+              {{ item.version }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
-    <div class="sca-warp">
+    <div
+      class="sca-warp"
+      :class="
+        sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'
+      "
+    >
       <div class="sca-title">
         {{ scaObj.package_name }}
       </div>
@@ -182,16 +195,18 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
+import { ScaListObj, ScaObj, VulObj } from '@/views/sca/types'
 
 @Component({ name: 'ScaDetail' })
 export default class ScaDetail extends VueBase {
-  private scaObj: object = {}
-  private tableData: Array<object> = []
+  private sliderWarpContract = false
+  private scaObj: ScaObj | undefined
+  private tableData: Array<ScaListObj> = []
   private page = 1
   private selectedId = 0
   private total = 0
   private vulDetailDialogShow = false
-  private vulDetail: object = {}
+  private vulDetail: VulObj | undefined
   private searchObj = {
     language: '',
     level: '',
@@ -254,7 +269,9 @@ export default class ScaDetail extends VueBase {
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
     }
+    this.loadingStart()
     const { status, data, page, msg } = await this.services.sca.scaList(params)
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -269,9 +286,11 @@ export default class ScaDetail extends VueBase {
   }
 
   private async getScaDetail() {
+    this.loadingStart()
     const { data, status, msg } = await this.services.sca.getScaDetail(
       this.selectedId
     )
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -286,23 +305,24 @@ export default class ScaDetail extends VueBase {
 }
 </script>
 
-<style>
-.el-table .diy-row {
-  background: #f8f9fb;
-  color: #959fb4;
-  font-size: 14px;
-}
-</style>
-
 <style scoped lang="scss">
+.fixed-warp {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
 .slider-warp {
-  margin-top: 14px;
   background: #fff;
   width: 234px;
+  margin-top: 78px;
+  overflow: auto;
+  height: calc(100vh - 103px);
+  padding-bottom: 40px;
 
   .titleForm {
     border-bottom: 1px solid #e6e9ec;
-    padding: 14px 12px;
+    padding: 14px 4px;
   }
 
   .page-line {
@@ -340,10 +360,18 @@ export default class ScaDetail extends VueBase {
   }
 }
 
+.slider-warp-contract {
+  width: 100%;
+}
+
+.slider-warp-spreadOut {
+  width: 952px;
+  margin-left: 248px;
+}
+
 .sca-warp {
   margin-top: 14px;
   background: #fff;
-  width: 952px;
   padding: 0 14px;
 
   .sca-title {

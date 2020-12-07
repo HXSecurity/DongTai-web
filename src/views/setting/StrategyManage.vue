@@ -33,17 +33,20 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
+import { StrategyListObj } from '@/views/setting/types'
 
 @Component({ name: 'StrategyManage' })
 export default class StrategyManage extends VueBase {
-  private tableData: Array<object> = []
+  private tableData: Array<StrategyListObj> = []
 
   created() {
     this.getTableData()
   }
 
   private async getTableData() {
+    this.loadingStart()
     const { status, msg, data } = await this.services.setting.strategyList()
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -53,7 +56,9 @@ export default class StrategyManage extends VueBase {
 
   private async stateChange(id: number, state: string) {
     if (state === 'enable') {
+      this.loadingStart()
       const { status, msg } = await this.services.setting.strategyDisable(id)
+      this.loadingDone()
       if (status !== 201) {
         this.$message.error(msg)
         return
@@ -61,7 +66,9 @@ export default class StrategyManage extends VueBase {
       await this.getTableData()
     }
     if (state === 'disable') {
+      this.loadingStart()
       const { status, msg } = await this.services.setting.strategyEnable(id)
+      this.loadingDone()
       if (status !== 201) {
         this.$message.error(msg)
         return

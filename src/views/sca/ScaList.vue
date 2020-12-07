@@ -5,13 +5,15 @@
         <div class="title flex-column-center">
           {{ $t('views.scaList.filter') }}
         </div>
-        <div class="module-title">
+        <div class="module-title flex-row-space-between">
           {{ $t('views.scaList.language') }}
+          <div class="reset-btn" @click="levelChange('')">reset</div>
         </div>
         <div
           v-for="item in searchOptionsObj.language"
           :key="item.language"
           class="flex-row-space-between module-line"
+          :class="searchObj.language === item.language ? 'selectedLine' : ''"
           @click="languageChange(item.language)"
         >
           <div class="selectOption">
@@ -21,14 +23,16 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title">
+        <div class="module-title flex-row-space-between">
           {{ $t('views.scaList.level') }}
+          <div class="reset-btn" @click="levelChange('')">reset</div>
         </div>
         <div
           v-for="item in searchOptionsObj.level"
-          :key="item.level"
+          :key="item.level_id"
           class="flex-row-space-between module-line"
-          @click="levelChange(item.level)"
+          :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
+          @click="levelChange(item.level_id)"
         >
           <div class="selectOption">
             {{ item.level }}
@@ -37,13 +41,17 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title">
+        <div class="module-title flex-row-space-between">
           {{ $t('views.scaList.project_name') }}
+          <div class="reset-btn" @click="projectNameChange('')">reset</div>
         </div>
         <div
           v-for="item in searchOptionsObj.projects"
           :key="item.project_name"
           class="flex-row-space-between module-line"
+          :class="
+            searchObj.project_name === item.project_name ? 'selectedLine' : ''
+          "
           @click="projectNameChange(item.project_name)"
         >
           <div class="selectOption">
@@ -83,11 +91,9 @@
         </el-select>
         <div class="selectInput">
           <el-input
-            v-if="keywordInput"
             v-model="searchObj.keyword"
             style="width: 462px"
             size="mini"
-            @blur="inputHide"
             @keyup.enter.native="newSelectData"
           >
             <i
@@ -96,12 +102,6 @@
               @click="newSelectData"
             />
           </el-input>
-          <i
-            v-else
-            class="el-icon-search"
-            style="margin-top: 10px; margin-right: 10px"
-            @click="keywordInput = !keywordInput"
-          />
         </div>
       </div>
       <el-table
@@ -153,14 +153,14 @@
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
+import { ScaListObj } from './types'
 
 @Component({ name: 'ScaList' })
 export default class ScaList extends VueBase {
   private page = 1
   private pageSize = 20
-  private keywordInput = false
   private dataEnd = false
-  private tableData: Array<object> = []
+  private tableData: Array<ScaListObj> = []
   private searchOptionsObj = {
     language: [],
     level: [],
@@ -206,12 +206,6 @@ export default class ScaList extends VueBase {
     this.scaSummary()
   }
 
-  private inputHide() {
-    if (!this.searchObj.keyword) {
-      this.keywordInput = false
-    }
-  }
-
   private languageChange(val: string) {
     this.searchObj.language = val
     this.newSelectData()
@@ -231,7 +225,6 @@ export default class ScaList extends VueBase {
     this.page = 1
     this.tableData = []
     this.getTableData()
-    this.scaSummary()
   }
 
   mounted() {
@@ -264,18 +257,23 @@ export default class ScaList extends VueBase {
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
     }
+    this.loadingStart()
     const { status, data, msg } = await this.services.sca.scaList(params)
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
-    const tableData = data.reduce((list: any[], item: { dt: any }) => {
-      list.push({
-        ...item,
-        dt: formatTimestamp(item.dt),
-      })
-      return list
-    }, [])
+    const tableData = data.reduce(
+      (list: Array<ScaListObj>, item: ScaListObj) => {
+        list.push({
+          ...item,
+          dt: formatTimestamp(item.dt),
+        })
+        return list
+      },
+      []
+    )
     if (tableData.length < 20) {
       this.dataEnd = true
     }
@@ -283,14 +281,9 @@ export default class ScaList extends VueBase {
   }
 
   private async scaSummary() {
-    const params = {
-      language: this.searchObj.language,
-      level: this.searchObj.level,
-      project_name: this.searchObj.project_name,
-      keyword: this.searchObj.keyword,
-      order: this.searchObj.order,
-    }
-    const { status, data, msg } = await this.services.sca.scaSummary(params)
+    this.loadingStart()
+    const { status, data, msg } = await this.services.sca.scaSummary({})
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -318,9 +311,8 @@ export default class ScaList extends VueBase {
   margin-top: 78px;
   background: #fff;
   overflow: auto;
-  //top: 78px;
   padding: 0 6px 20px 6px;
-  height: calc(100vh - 78px);
+  height: calc(100vh - 103px);
 
   .title {
     height: 54px;
@@ -332,14 +324,29 @@ export default class ScaList extends VueBase {
 
   .module-title {
     margin-top: 28px;
+    margin-bottom: 24px;
     font-size: 16px;
     color: #38435a;
   }
 
+  .reset-btn {
+    color: #4b99f1;
+    cursor: pointer;
+
+    &:hover {
+      color: #4a72ae;
+    }
+  }
+
   .module-line {
-    margin-top: 24px;
     cursor: pointer;
     padding-left: 5px;
+    height: 38px;
+    line-height: 38px;
+
+    &:hover {
+      background: #f6f8fa;
+    }
 
     .selectOption {
       color: #4b99f1;
@@ -349,6 +356,14 @@ export default class ScaList extends VueBase {
     .num {
       color: #959ea9;
       font-size: 14px;
+    }
+  }
+
+  .selectedLine {
+    background: #f6f8fa;
+
+    .selectOption {
+      color: #0366d6;
     }
   }
 }

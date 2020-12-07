@@ -49,10 +49,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
+import VueBase from '@/VueBase'
 
 @Component({ name: 'SettingIndex' })
-export default class SettingIndex extends Vue {
+export default class SettingIndex extends VueBase {
   private curModule(path: string) {
     return this.$route.fullPath === path
   }

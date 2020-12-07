@@ -5,13 +5,15 @@
         <div class="title flex-column-center">
           {{ $t('views.vulnList.filter') }}
         </div>
-        <div class="module-title">
+        <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.language') }}
+          <div class="reset-btn" @click="languageChange('')">reset</div>
         </div>
         <div
           v-for="item in searchOptionsObj.language"
           :key="item.language"
           class="flex-row-space-between module-line"
+          :class="searchObj.language === item.language ? 'selectedLine' : ''"
           @click="languageChange(item.language)"
         >
           <div class="selectOption">
@@ -21,14 +23,16 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title">
+        <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.level') }}
+          <div class="reset-btn" @click="levelChange('')">reset</div>
         </div>
         <div
           v-for="item in searchOptionsObj.level"
-          :key="item.level"
+          :key="item.level_id"
           class="flex-row-space-between module-line"
-          @click="levelChange(item.level)"
+          :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
+          @click="levelChange(item.level_id)"
         >
           <div class="selectOption">
             {{ item.level }}
@@ -37,13 +41,15 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title">
+        <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.type') }}
+          <div class="reset-btn" @click="typeChange('')">reset</div>
         </div>
         <div
           v-for="item in searchOptionsObj.type"
           :key="item.type"
           class="flex-row-space-between module-line"
+          :class="searchObj.type === item.type ? 'selectedLine' : ''"
           @click="typeChange(item.type)"
         >
           <div class="selectOption">
@@ -53,13 +59,17 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title">
+        <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.project_name') }}
+          <div class="reset-btn" @click="projectNameChange('')">reset</div>
         </div>
         <div
           v-for="item in searchOptionsObj.projects"
           :key="item.project_name"
           class="flex-row-space-between module-line"
+          :class="
+            searchObj.project_name === item.project_name ? 'selectedLine' : ''
+          "
           @click="projectNameChange(item.project_name)"
         >
           <div class="selectOption">
@@ -99,11 +109,9 @@
         </el-select>
         <div class="selectInput">
           <el-input
-            v-if="keywordInput"
             v-model="searchObj.url"
             style="width: 462px"
             size="mini"
-            @blur="inputHide"
             @keyup.enter.native="newSelectData"
           >
             <i
@@ -112,12 +120,6 @@
               @click="newSelectData"
             />
           </el-input>
-          <i
-            v-else
-            class="el-icon-search"
-            style="margin-top: 10px; margin-right: 10px"
-            @click="keywordInput = !keywordInput"
-          />
         </div>
       </div>
       <div
@@ -199,15 +201,14 @@
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
-import { vulnListObj } from './types'
+import { VulnListObj } from './types'
 
 @Component({ name: 'VulnList' })
 export default class VulnList extends VueBase {
   private page = 1
   private pageSize = 20
-  private keywordInput = false
   private dataEnd = false
-  private tableData: Array<vulnListObj> = []
+  private tableData: Array<VulnListObj> = []
   private searchOptionsObj = {
     language: [],
     level: [],
@@ -251,12 +252,6 @@ export default class VulnList extends VueBase {
     this.vulnSummary()
   }
 
-  private inputHide() {
-    if (!this.searchObj.url) {
-      this.keywordInput = false
-    }
-  }
-
   private languageChange(val: string) {
     this.searchObj.language = val
     this.newSelectData()
@@ -281,7 +276,6 @@ export default class VulnList extends VueBase {
     this.page = 1
     this.tableData = []
     this.getTableData()
-    this.vulnSummary()
   }
 
   mounted() {
@@ -315,13 +309,15 @@ export default class VulnList extends VueBase {
       url: this.searchObj.url,
       order: this.searchObj.order,
     }
+    this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnList(params)
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
     const tableData = data.reduce(
-      (list: Array<vulnListObj>, item: vulnListObj) => {
+      (list: Array<VulnListObj>, item: VulnListObj) => {
         list.push({
           ...item,
           first_time: formatTimestamp(item.first_time),
@@ -338,15 +334,9 @@ export default class VulnList extends VueBase {
   }
 
   private async vulnSummary() {
-    const params = {
-      language: this.searchObj.language,
-      level: this.searchObj.level,
-      type: this.searchObj.type,
-      project_name: this.searchObj.project_name,
-      url: this.searchObj.url,
-      order: this.searchObj.order,
-    }
-    const { status, data, msg } = await this.services.vuln.vulnSummary(params)
+    this.loadingStart()
+    const { status, data, msg } = await this.services.vuln.vulnSummary({})
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -361,7 +351,7 @@ export default class VulnList extends VueBase {
     this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
   }
 
-  private switchServerType(serverType: string) {
+  switchServerType(serverType: string) {
     switch (serverType) {
       case 'tomcat':
         return 'icontomcat'
@@ -395,9 +385,8 @@ export default class VulnList extends VueBase {
   margin-top: 78px;
   background: #fff;
   overflow: auto;
-  //top: 78px;
   padding: 0 6px 20px 6px;
-  height: calc(100vh - 78px);
+  height: calc(100vh - 103px);
 
   .title {
     height: 54px;
@@ -409,14 +398,29 @@ export default class VulnList extends VueBase {
 
   .module-title {
     margin-top: 28px;
+    margin-bottom: 24px;
     font-size: 16px;
     color: #38435a;
   }
 
+  .reset-btn {
+    color: #4b99f1;
+    cursor: pointer;
+
+    &:hover {
+      color: #4a72ae;
+    }
+  }
+
   .module-line {
-    margin-top: 24px;
     cursor: pointer;
     padding-left: 5px;
+    height: 38px;
+    line-height: 38px;
+
+    &:hover {
+      background: #f6f8fa;
+    }
 
     .selectOption {
       color: #4b99f1;
@@ -426,6 +430,14 @@ export default class VulnList extends VueBase {
     .num {
       color: #959ea9;
       font-size: 14px;
+    }
+  }
+
+  .selectedLine {
+    background: #f6f8fa;
+
+    .selectOption {
+      color: #0366d6;
     }
   }
 }
@@ -453,11 +465,11 @@ export default class VulnList extends VueBase {
     cursor: pointer;
 
     .card-title {
-      width: 952px;
+      width: 100%;
       height: 48px;
       background: #f1f8ff;
-      border-radius: 8px 8px 0px 0px;
-      border: 1px solid #c8e0ff;
+      border-radius: 8px 8px 0 0;
+      border-bottom: 1px solid #c8e0ff;
       padding: 0 12px;
 
       .title {
@@ -538,21 +550,27 @@ export default class VulnList extends VueBase {
     .icontomcat {
       color: #e6d088;
     }
+
     .iconJetty {
       color: #5cb896;
     }
+
     .iconresin {
       color: #86a0d5;
     }
+
     .iconwebLogic {
       color: #a4cbb9;
     }
+
     .iconwebSphere {
       color: #888dd1;
     }
+
     .iconJBoss {
       color: #41bad5;
     }
+
     .iconyingyong {
       color: #ddcc9e;
     }
