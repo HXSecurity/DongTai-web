@@ -144,6 +144,23 @@ export default {
     },
     projectManage: {
       title: '项目列表',
+      name: '项目名称',
+      vul: '漏洞',
+      agent: 'Agent数量',
+      time: '最新时间',
+      manage: '管理',
+    },
+    projectEdit: {
+      title: '基本设置',
+      name: '项目名称',
+      namePlaceholder: '请输入项目名称',
+      mode: '扫描模式',
+      mode1: '插桩模式',
+      mode2: '流量模式',
+      agent: '选择Agent',
+      agentPlaceholder: '请选择Agent',
+      added: '已添加',
+      submit: '保存',
     },
   },
 }

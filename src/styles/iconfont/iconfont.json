@@ -6,6 +6,153 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18694891",
+      "name": "项目配置-设置-线性图标",
+      "font_class": "shezhi-2",
+      "unicode": "e68e",
+      "unicode_decimal": 59022
+    },
+    {
+      "icon_id": "18679955",
+      "name": "日志清空-线性图标",
+      "font_class": "7-7xiaochugeshi",
+      "unicode": "e68c",
+      "unicode_decimal": 59020
+    },
+    {
+      "icon_id": "18679957",
+      "name": "配置-升级-线性图标",
+      "font_class": "shengji",
+      "unicode": "e68d",
+      "unicode_decimal": 59021
+    },
+    {
+      "icon_id": "18674996",
+      "name": "漏洞详情-收回",
+      "font_class": "open11",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "18674940",
+      "name": "漏洞详情-展开",
+      "font_class": "open1",
+      "unicode": "e68a",
+      "unicode_decimal": 59018
+    },
+    {
+      "icon_id": "18674268",
+      "name": "新建项目——线性图标",
+      "font_class": "xinzengxiangmu-3",
+      "unicode": "e689",
+      "unicode_decimal": 59017
+    },
+    {
+      "icon_id": "18643187",
+      "name": "组件详情-危险等级-线性图标",
+      "font_class": "jy_weixian",
+      "unicode": "e684",
+      "unicode_decimal": 59012
+    },
+    {
+      "icon_id": "18643188",
+      "name": "组件详情-历史漏洞-线性图标",
+      "font_class": "lishi",
+      "unicode": "e685",
+      "unicode_decimal": 59013
+    },
+    {
+      "icon_id": "18643189",
+      "name": "组件详情-版本-线性图标",
+      "font_class": "banben-3",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "18643190",
+      "name": "组件详情-应用-线性图标",
+      "font_class": "app",
+      "unicode": "e687",
+      "unicode_decimal": 59015
+    },
+    {
+      "icon_id": "18643191",
+      "name": "组件详情-文件解析-线性图标",
+      "font_class": "wendangzhongxin",
+      "unicode": "e688",
+      "unicode_decimal": 59016
+    },
+    {
+      "icon_id": "18642122",
+      "name": "漏洞详情-项目",
+      "font_class": "project",
+      "unicode": "e681",
+      "unicode_decimal": 59009
+    },
+    {
+      "icon_id": "18642124",
+      "name": "漏洞详情-中间件",
+      "font_class": "zhongjianjian",
+      "unicode": "e682",
+      "unicode_decimal": 59010
+    },
+    {
+      "icon_id": "18642125",
+      "name": "漏洞详情-服务器",
+      "font_class": "fuwuqi-3",
+      "unicode": "e683",
+      "unicode_decimal": 59011
+    },
+    {
+      "icon_id": "18642092",
+      "name": "漏洞详情-Ip",
+      "font_class": "Ip",
+      "unicode": "e67c",
+      "unicode_decimal": 59004
+    },
+    {
+      "icon_id": "18642093",
+      "name": "漏洞详情-开发语言",
+      "font_class": "yuyan-2",
+      "unicode": "e67d",
+      "unicode_decimal": 59005
+    },
+    {
+      "icon_id": "18642094",
+      "name": "漏洞详情-首次出现时间",
+      "font_class": "shijian-3",
+      "unicode": "e67e",
+      "unicode_decimal": 59006
+    },
+    {
+      "icon_id": "18642095",
+      "name": "漏洞详情-危险等级",
+      "font_class": "weixian-2",
+      "unicode": "e67f",
+      "unicode_decimal": 59007
+    },
+    {
+      "icon_id": "18642096",
+      "name": "漏洞详情-出现次数",
+      "font_class": "cishu-2",
+      "unicode": "e680",
+      "unicode_decimal": 59008
+    },
+    {
+      "icon_id": "18640715",
+      "name": "漏洞详情-导出",
+      "font_class": "daochu-5",
+      "unicode": "e67b",
+      "unicode_decimal": 59003
+    },
+    {
+      "icon_id": "18640619",
+      "name": "漏洞详情-删除",
+      "font_class": "shanchu-6",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
       "icon_id": "18634093",
       "name": "详情",
       "font_class": "xiangqing",

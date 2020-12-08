@@ -224,6 +224,7 @@ export default class ScaList extends VueBase {
   private newSelectData() {
     this.page = 1
     this.tableData = []
+    this.vulnSummary()
     this.getTableData()
   }
 

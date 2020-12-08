@@ -12,3 +12,16 @@
   color: #38435A;
   font-size: 14px;
 }
+
+.projectList-table{
+  width: 100%;
+  margin-top: 18px
+}
+
+.projectList-table.el-table th > .cell{
+  color: #4A72AE;
+}
+
+.projectList-table.el-table .cell{
+  color: #959EA9;
+}

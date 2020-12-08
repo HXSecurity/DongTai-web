@@ -8,6 +8,7 @@ interface ProjectListParams {
 }
 
 interface ProjectAddParams {
+  pid?: number | string
   name: string
   mode: string
   agent_ids: string
@@ -20,9 +21,13 @@ export default () =>
       return request.get('/projects', { params })
     }
 
-    //新增项目
+    //新增项目 编辑
     projectAdd(params: ProjectAddParams): Promise<iResponse> {
       return request.post('/project/add', params)
+    }
+
+    getEngineList(): Promise<iResponse> {
+      return request.get('/project/engines')
     }
 
     // 项目详情

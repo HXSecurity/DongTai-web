@@ -11,7 +11,9 @@ export const formatTimestamp = (timestamp: number | any): string => {
   const d = new Date(timestamp)
   return `${d.getFullYear()}.${addZero(d.getMonth() + 1)}.${addZero(
     d.getDate()
-  )} ${addZero(d.getHours())}:${addZero(d.getMinutes())}`
+  )} ${addZero(d.getHours())}:${addZero(d.getMinutes())}:${addZero(
+    d.getSeconds()
+  )}`
 }
 
 export function getToken() {

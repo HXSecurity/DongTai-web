@@ -49,3 +49,22 @@ ol, p, pre, small, span, strong, u, ul, var {
   fill: currentColor;
   overflow: hidden;
 }
+
+
+/*控制整个滚动条*/
+::-webkit-scrollbar {
+  background-color: #ECF0F7;
+  width: 10px;
+  height: 10px;
+  background-clip: padding-box;
+}
+
+/*滚动条中间滑动部分*/
+::-webkit-scrollbar-thumb {
+  background-color: #D3DBE6;
+  border-radius: 5px;
+}
+/*滚动条右下角区域*/
+::-webkit-scrollbar-corner {
+  background-color: #ECF0F7;
+}

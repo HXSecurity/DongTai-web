@@ -4,7 +4,7 @@
       ref="ruleForm"
       :model="submitForm"
       label-width="100px"
-      style="margin-top: 64px"
+      style="margin-top: 54px"
       status-icon
       :rules="rules"
     >
@@ -45,7 +45,12 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button size="mini" type="primary" @click="changePassword">
+        <el-button
+          size="mini"
+          type="primary"
+          style="width: 104px"
+          @click="changePassword"
+        >
           {{ $t('views.changePassword.submit') }}
         </el-button>
       </el-form-item>

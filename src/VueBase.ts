@@ -7,7 +7,7 @@ export default class VueBase extends Vue {
 
   private lockStack: Array<number> = [] // 锁栈
   private loading: any
-  private loadingStart() {
+  loadingStart() {
     if (!this.lockStack.length) {
       this.loading = this.$loading({
         background: 'rgba(0,0,0,0)',
@@ -15,7 +15,7 @@ export default class VueBase extends Vue {
     }
     this.lockStack.push(1)
   }
-  private loadingDone() {
+  loadingDone() {
     if (this.lockStack.length <= 1) {
       this.loading.close()
     }
