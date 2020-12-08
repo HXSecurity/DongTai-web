@@ -1,7 +1,7 @@
-import createLoginServices from '@/services/login'
+import createUserServices from '@/services/user'
 import { Message } from 'element-ui'
 
-const loginServices = createLoginServices()
+const userServices = createUserServices()
 
 const state = {
   userInfo: null
@@ -9,7 +9,7 @@ const state = {
 
 const actions = {
   async getUserInfo ({ commit }) {
-    const { status, msg, data } = await loginServices.getUserInfo()
+    const { status, msg, data } = await userServices.getUserInfo()
     if (status !== 201) {
       Message.error(msg)
       return
@@ -17,7 +17,7 @@ const actions = {
     commit('UPDATE_USER_INFO', data)
   },
   async logOut ({ commit }) {
-    const { status, msg } = await loginServices.logout()
+    const { status, msg } = await userServices.logout()
     if (status !== 201) {
       Message.error(msg)
       return

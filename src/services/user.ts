@@ -13,6 +13,16 @@ interface changePasswordParams {
   new_password: string
 }
 
+interface UserAddParams {
+  csrfmiddlewaretoken: string
+  username: string
+  password: string
+  email: string
+  role: string
+  department: string
+  phone: string
+}
+
 export default () =>
   new (class {
     // 登陆
@@ -33,5 +43,20 @@ export default () =>
     // 修改密码
     changePassword(params: changePasswordParams): Promise<iResponse> {
       return request.post('/user/changePassword', params)
+    }
+
+    // 用户列表
+    userList(): Promise<iResponse> {
+      return request.get('/users')
+    }
+
+    // 新增用户
+    userAdd(params: UserAddParams): Promise<iResponse> {
+      return request.post('/user/add', params)
+    }
+
+    // 部门列表
+    departmentList(): Promise<iResponse> {
+      return request.get('/departments')
     }
   })()

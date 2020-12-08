@@ -1,4 +1,4 @@
-import createLoginServices from './login'
+import createUserServices from './user'
 import createVulnServices from './vuln'
 import createScaServices from './sca'
 import createSettingServices from './setting'
@@ -6,7 +6,7 @@ import createProjectServices from './project'
 
 const createServices = () =>
   new (class {
-    login = createLoginServices()
+    user = createUserServices()
     vuln = createVulnServices()
     sca = createScaServices()
     setting = createSettingServices()

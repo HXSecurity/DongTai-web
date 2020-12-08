@@ -33,7 +33,7 @@
             >{{ $t('views.projectEdit.mode2') }}</el-radio
           >
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.agent')" prop="agentIdList">
+        <el-form-item :label="$t('views.projectEdit.agent')">
           <el-select
             v-model="submitForm.agentIdList"
             multiple
@@ -95,14 +95,6 @@ export default class ProjectEdit extends VueBase {
         required: true,
         message: this.$t('views.projectEdit.namePlaceholder'),
         trigger: 'blur',
-      },
-    ],
-    agentIdList: [
-      {
-        type: 'array',
-        required: true,
-        message: this.$t('views.projectEdit.agentPlaceholder'),
-        trigger: 'change',
       },
     ],
   }

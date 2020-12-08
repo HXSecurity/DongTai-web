@@ -122,13 +122,13 @@ export default class ChangePassword extends VueBase {
           new_password: this.submitForm.new_password,
         }
         this.loadingStart()
-        const { status, msg } = await this.services.login.changePassword(params)
+        const { status, msg } = await this.services.user.changePassword(params)
         this.loadingDone()
         if (status !== 201) {
           this.$message.error(msg)
           return
         }
-        this.$router.push('/login')
+        await this.$router.push('/login')
       } else {
         console.log('error submit!!')
         return false
