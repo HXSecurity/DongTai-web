@@ -78,12 +78,17 @@
 <script lang="ts">
 import VueBase from '../../VueBase'
 import { Component } from 'vue-property-decorator'
+import { Form } from 'element-ui'
 
 @Component({ name: 'ProjectEdit' })
 export default class ProjectEdit extends VueBase {
-  private submitForm = {
+  private submitForm: {
+    name: string
+    mode: string
+    agentIdList: Array<number>
+  } = {
     name: '',
-    mode: this.$t('views.projectEdit.mode1'),
+    mode: this.$t('views.projectEdit.mode1') as string,
     agentIdList: [],
   }
   private engineList: Array<{ id: number; token: string }> = []
@@ -136,9 +141,12 @@ export default class ProjectEdit extends VueBase {
 
   private agentChange() {
     this.engineSelectedList = this.engineList.reduce(
-      (list: any, item: { id: any }) => {
+      (
+        list: Array<{ id: number; token: string }>,
+        item: { id: number; token: string }
+      ) => {
         if (this.submitForm.agentIdList.includes(item.id)) {
-          list.push(item)
+          list.push({ ...item })
         }
         return list
       },
@@ -155,7 +163,7 @@ export default class ProjectEdit extends VueBase {
   }
 
   private projectAdd() {
-    this.$refs.submitForm.validate(async (valid) => {
+    ;(this.$refs.submitForm as Form).validate(async (valid: any) => {
       if (valid) {
         const params: {
           name: string
@@ -176,7 +184,7 @@ export default class ProjectEdit extends VueBase {
           return
         }
         this.$message.success(msg)
-        this.$router.push('/project')
+        await this.$router.push('/project')
       } else {
         console.log('error submit!!')
         return false

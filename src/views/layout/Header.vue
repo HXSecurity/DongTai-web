@@ -77,7 +77,7 @@ export default class Header extends VueBase {
   }
 
   private logOut() {
-    this.$store.dispatch('logOut')
+    this.$store.dispatch('user/logOut')
     this.$router.push('/login')
   }
 }

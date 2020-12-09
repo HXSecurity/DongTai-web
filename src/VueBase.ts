@@ -3,7 +3,6 @@ import services from '@/services'
 
 export default class VueBase extends Vue {
   public services = services
-  $store: any
 
   private lockStack: Array<number> = [] // 锁栈
   private loading: any

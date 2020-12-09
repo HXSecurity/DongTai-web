@@ -1,19 +1,19 @@
-import Vue from "vue"
-import VueI18n from "vue-i18n";
+import Vue from 'vue'
+import VueI18n from 'vue-i18n'
 
 Vue.use(VueI18n)
 
 import zh_cn from './zh_cn'
 
-const DEFAULT_LANG  = 'zh_cn'
+const DEFAULT_LANG = 'zh_cn'
 
 const locals = {
-  'zh_cn': zh_cn
+  zh_cn: zh_cn,
 }
 
 export const i18n = new VueI18n({
   locale: DEFAULT_LANG,
-  messages: locals
+  messages: locals,
 })
 
 // export const langSetUp = lang =>{
@@ -22,7 +22,3 @@ export const i18n = new VueI18n({
 // }
 
 window.i18n = i18n
-
-interface window {
-  i18n: any;
-}

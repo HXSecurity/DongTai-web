@@ -4,6 +4,7 @@ import routes from './routes'
 import store from '@/store'
 import Nprogress from 'nprogress'
 
+console.log(store)
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -17,7 +18,7 @@ router.beforeEach((to, from, next) => {
   // 当前没有用户信息
   if (!store.getters.userInfo && to.fullPath !== '/login') {
     store
-      .dispatch('getUserInfo')
+      .dispatch('user/getUserInfo')
       .then(() => {
         Nprogress.done()
         next()

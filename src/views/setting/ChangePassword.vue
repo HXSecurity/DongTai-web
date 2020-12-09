@@ -61,6 +61,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
+import { Form } from 'element-ui'
 
 @Component({ name: 'ChangePassword' })
 export default class ChangePassword extends VueBase {
@@ -86,7 +87,7 @@ export default class ChangePassword extends VueBase {
       callback(new Error('请输入旧密码'))
     } else {
       if (this.submitForm.old_password !== '') {
-        this.$refs.ruleForm.validateField('new_password')
+        ;(this.$refs.ruleForm as Form).validateField('new_password')
       }
       callback()
     }
@@ -97,7 +98,7 @@ export default class ChangePassword extends VueBase {
       callback(new Error('请输入新密码'))
     } else {
       if (this.submitForm.old_password !== '') {
-        this.$refs.ruleForm.validateField('checkPass')
+        ;(this.$refs.ruleForm as Form).validateField('checkPass')
       }
       callback()
     }
@@ -114,7 +115,7 @@ export default class ChangePassword extends VueBase {
   }
 
   private changePassword() {
-    this.$refs.ruleForm.validate(async (valid: any) => {
+    ;(this.$refs.ruleForm as Form).validate(async (valid: any) => {
       if (valid) {
         const params = {
           username: this.userInfo.username,

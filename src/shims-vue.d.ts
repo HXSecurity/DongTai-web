@@ -3,7 +3,7 @@ declare module '*.vue' {
   export default Vue
 }
 
-declare module '@/store'
+// declare module '@/store'
 
 declare module '@/components/markdownNice/Index'
 

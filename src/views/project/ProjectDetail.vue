@@ -57,6 +57,7 @@ import { Component } from 'vue-property-decorator'
 import { ProjectObj } from './types'
 import { formatTimestamp } from '@/utils/utils'
 import * as echarts from 'echarts'
+import { EChartsOption } from 'echarts'
 
 @Component({ name: 'ProjectDetail' })
 export default class ProjectDetail extends VueBase {
@@ -83,8 +84,10 @@ export default class ProjectDetail extends VueBase {
       latest_time: formatTimestamp(data.latest_time),
     }
 
-    const levelCountChart = echarts.init(document.getElementById('level_count'))
-    const levelCountOption = {
+    const levelCountChart = echarts.init(
+      document.getElementById('level_count') as HTMLElement
+    )
+    const levelCountOption: EChartsOption = {
       tooltip: {
         trigger: 'axis',
       },
@@ -101,7 +104,7 @@ export default class ProjectDetail extends VueBase {
       yAxis: {
         type: 'category',
         data: data.level_count
-          .map((item) => {
+          .map((item: { level_name: string }) => {
             return item.level_name
           })
           .reverse(),
@@ -111,7 +114,7 @@ export default class ProjectDetail extends VueBase {
           type: 'bar',
           barWidth: 10,
           data: data.level_count
-            .map((item) => {
+            .map((item: { num: number }) => {
               return item.num
             })
             .reverse(),
@@ -121,9 +124,9 @@ export default class ProjectDetail extends VueBase {
     levelCountChart.setOption(levelCountOption)
 
     const typeSummaryChart = echarts.init(
-      document.getElementById('type_summary')
+      document.getElementById('type_summary') as HTMLElement
     )
-    const typeSummaryOption = {
+    const typeSummaryOption: EChartsOption = {
       tooltip: {
         trigger: 'item',
       },
@@ -137,29 +140,37 @@ export default class ProjectDetail extends VueBase {
       series: [
         {
           type: 'pie',
-          data: data.type_summary.reduce((list, item) => {
-            list.push({
-              name: item.type_name,
-              value: item.type_count,
-              tooltip: {
-                formatter: '类型<br />{b0}: {c0} ({d}%)<br />',
-              },
-            })
-            return list
-          }, []),
+          data: data.type_summary.reduce(
+            (
+              list: { name: any; value: any; tooltip: { formatter: string } }[],
+              item: { type_name: any; type_count: any }
+            ) => {
+              list.push({
+                name: item.type_name,
+                value: item.type_count,
+                tooltip: {
+                  formatter: '类型<br />{b0}: {c0} ({d}%)<br />',
+                },
+              })
+              return list
+            },
+            []
+          ),
         },
       ],
     }
     typeSummaryChart.setOption(typeSummaryOption)
 
-    const dayNumChart = echarts.init(document.getElementById('day_num'))
-    const dayNumOption = {
+    const dayNumChart = echarts.init(
+      document.getElementById('day_num') as HTMLElement
+    )
+    const dayNumOption: EChartsOption = {
       tooltip: {
         trigger: 'axis',
       },
       xAxis: {
         type: 'category',
-        data: data.day_num.map((item) => {
+        data: data.day_num.map((item: { day_label: any }) => {
           return item.day_label
         }),
       },
@@ -168,7 +179,7 @@ export default class ProjectDetail extends VueBase {
       },
       series: [
         {
-          data: data.day_num.map((item) => {
+          data: data.day_num.map((item: { day_num: any }) => {
             return item.day_num
           }),
           type: 'line',
