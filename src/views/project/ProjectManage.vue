@@ -83,7 +83,6 @@
           <template slot-scope="{ row }">
             <i
               class="iconfont iconshezhi-2 pIcon"
-              style="font-size: 18px"
               @click="$router.push(`/project/projectEdit/${row.id}`)"
             ></i>
             <i

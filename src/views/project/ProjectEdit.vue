@@ -116,10 +116,10 @@ export default class ProjectEdit extends VueBase {
     }
     this.submitForm.name = data.name
     this.submitForm.mode = data.mode
-    this.submitForm.agentIdList = data.agents.map((item) => {
+    this.submitForm.agentIdList = data.agents.map((item: { id: any }) => {
       return item.id
     })
-    this.agentChange(this.submitForm.agentIdList)
+    this.agentChange()
   }
 
   private async getEngineList() {
@@ -134,13 +134,16 @@ export default class ProjectEdit extends VueBase {
     this.engineList = data
   }
 
-  private agentChange(val: any) {
-    this.engineSelectedList = this.engineList.reduce((list, item) => {
-      if (this.submitForm.agentIdList.includes(item.id)) {
-        list.push(item)
-      }
-      return list
-    }, [])
+  private agentChange() {
+    this.engineSelectedList = this.engineList.reduce(
+      (list: any, item: { id: any }) => {
+        if (this.submitForm.agentIdList.includes(item.id)) {
+          list.push(item)
+        }
+        return list
+      },
+      []
+    )
   }
 
   private idDelete(index: number) {
@@ -148,13 +151,18 @@ export default class ProjectEdit extends VueBase {
       ...this.submitForm.agentIdList.slice(0, index),
       ...this.submitForm.agentIdList.slice(index + 1),
     ]
-    this.agentChange(this.submitForm.agentIdList)
+    this.agentChange()
   }
 
   private projectAdd() {
     this.$refs.submitForm.validate(async (valid) => {
       if (valid) {
-        const params = {
+        const params: {
+          name: string
+          mode: string | any
+          agent_ids: string
+          pid?: string
+        } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
           agent_ids: this.submitForm.agentIdList.join(','),

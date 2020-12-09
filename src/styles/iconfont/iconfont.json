@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18696562",
+      "name": "项目详情-项目漏洞超链接-线性图标",
+      "font_class": "chaolianjie",
+      "unicode": "e691",
+      "unicode_decimal": 59025
+    },
+    {
+      "icon_id": "18696445",
+      "name": "项目详情-创建时间-线性图标",
+      "font_class": "shijian00",
+      "unicode": "e68f",
+      "unicode_decimal": 59023
+    },
+    {
+      "icon_id": "18717033",
+      "name": "项目详情-检测策略-线性图标",
+      "font_class": "jiance-copy",
+      "unicode": "e831",
+      "unicode_decimal": 59441
+    },
+    {
       "icon_id": "18694891",
       "name": "项目配置-设置-线性图标",
       "font_class": "shezhi-2",

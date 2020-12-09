@@ -12,3 +12,10 @@ export interface ProjectListParams {
   latest_time: string
   vul_count: Array<VulContObj>
 }
+
+export interface ProjectObj {
+  id: number
+  mode: string
+  name: string
+  latest_time: string
+}

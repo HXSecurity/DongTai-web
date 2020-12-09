@@ -26,7 +26,7 @@ export default class Index extends Vue {}
 }
 
 .layoutMain {
-  // margin-top: 64px;
   min-height: calc(100vh - 64px);
+  overflow: auto;
 }
 </style>

@@ -166,5 +166,12 @@ export default {
       added: '已添加',
       submit: '保存',
     },
+    projectDetail: {
+      mode: '扫描模式',
+      latest_time: '最新时间',
+      projectVul: '项目漏洞',
+      vulNum: '漏洞数量',
+      type: '类型分布',
+    },
   },
 }
