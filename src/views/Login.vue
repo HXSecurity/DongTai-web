@@ -2,18 +2,16 @@
   <main class="loginContainer flex-row-space-between">
     <div class="left-content"></div>
     <div class="right-content">
-      <el-card class="loginCard login-card">
-        <div slot="header">
-          <div class="title">
-            {{ $t('views.login.title') }}
-          </div>
-          <div class="subTitle">
-            <span class="line"></span>
-            {{ $t('views.login.subTitle') }}
-            <span class="line"></span>
-          </div>
+      <div class="loginCard">
+        <div class="title">
+          {{ $t('views.login.title') }}
         </div>
-        <el-form style="margin-top: 33px">
+        <div class="subTitle">
+          <span class="line"></span>
+          {{ $t('views.login.subTitle') }}
+          <span class="line"></span>
+        </div>
+        <el-form style="margin-top: 53px">
           <el-form-item :label="$t('views.login.user')">
             <el-input
               v-model="userName"
@@ -39,7 +37,7 @@
             </el-button>
           </el-form-item>
         </el-form>
-      </el-card>
+      </div>
     </div>
   </main>
 </template>
@@ -90,12 +88,6 @@ export default class Login extends VueBase {
     flex: 1;
     position: relative;
   }
-
-  //.logo {
-  //  position: absolute;
-  //  top: 25px;
-  //  left: 51px;
-  //}
 
   .loginCard {
     width: 610px;

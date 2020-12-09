@@ -26,12 +26,12 @@ export default () =>
       return request.post('/project/add', params)
     }
 
-    getEngineList(): Promise<iResponse> {
-      return request.get('/project/engines')
+    getEngineList(id: string): Promise<iResponse> {
+      return request.get(`/project/engines/${id}`)
     }
 
     // 项目详情
-    projectDetail(id: number): Promise<iResponse> {
+    projectDetail(id: string): Promise<iResponse> {
       return request.get(`/project/${id}`)
     }
 
@@ -41,7 +41,7 @@ export default () =>
     }
 
     //项目详情 - 图标概括
-    projectsSummary(id: number): Promise<iResponse> {
+    projectsSummary(id: string): Promise<iResponse> {
       return request.get(`/projects/summary/${id}`)
     }
   })()

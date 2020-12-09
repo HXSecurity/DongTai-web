@@ -123,7 +123,10 @@ export default class ProjectEdit extends VueBase {
   }
 
   private async getEngineList() {
-    const { status, msg, data } = await this.services.project.getEngineList()
+    const idParams = this.$route.params.pid || '0'
+    const { status, msg, data } = await this.services.project.getEngineList(
+      idParams
+    )
     if (status !== 201) {
       this.$message.error(msg)
       return

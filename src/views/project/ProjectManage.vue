@@ -32,10 +32,16 @@
         />
       </div>
       <el-table :data="tableData" class="projectList-table">
-        <el-table-column
-          prop="name"
-          :label="$t('views.projectManage.name')"
-        ></el-table-column>
+        <el-table-column prop="name" :label="$t('views.projectManage.name')">
+          <template slot-scope="{ row }">
+            <div
+              class="projectName"
+              @click="$router.push(`/project/projectDetail/${row.id}`)"
+            >
+              {{ row.name }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column :label="$t('views.projectManage.vul')">
           <template slot-scope="{ row }">
             <span
@@ -196,6 +202,13 @@ export default class ProjectManage extends VueBase {
   cursor: pointer;
   &:hover {
     color: #1a80f2;
+  }
+}
+
+.projectName {
+  cursor: pointer;
+  &:hover {
+    color: #4b99f1;
   }
 }
 </style>

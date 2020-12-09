@@ -32,6 +32,13 @@ const routes: Array<RouteConfig> = [
             },
             component: () => import('@/views/project/ProjectEdit.vue'),
           },
+          {
+            path: 'projectDetail/:pid',
+            meta: {
+              name: i18n.t('menu.projectDetail'),
+            },
+            component: () => import('@/views/project/ProjectDetail.vue'),
+          },
         ],
       },
       {
