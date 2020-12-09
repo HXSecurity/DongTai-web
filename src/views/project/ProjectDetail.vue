@@ -88,7 +88,6 @@ export default class ProjectDetail extends VueBase {
       tooltip: {
         trigger: 'axis',
       },
-
       grid: {
         left: '3%',
         right: '4%',

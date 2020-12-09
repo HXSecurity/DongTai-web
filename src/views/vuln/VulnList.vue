@@ -3,7 +3,12 @@
     <div class="fixed-warp">
       <div class="slider-warp">
         <div class="title flex-column-center">
-          {{ $t('views.vulnList.filter') }}
+          <div class="flex-row-space-between">
+            {{ $t('views.vulnList.filter') }}
+            <div class="reset-btn" style="margin-top: 2px" @click="reset">
+              reset
+            </div>
+          </div>
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.language') }}
@@ -148,7 +153,7 @@
             {{ item.bottom_stack }}
           </div>
           <div class="infoLine flex-row-space-between">
-            <div class="flex-row-space-between" style="width: 60%">
+            <div class="flex-row-space-between" style="width: 65%">
               <span class="info">
                 <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
                 {{ item.project_name }}
@@ -178,7 +183,10 @@
                 {{ item.level }}
               </span>
               <span class="info">
-                <i class="iconfont iconshijian-2" style="color: #a2a5ab"></i>
+                <i
+                  class="iconfont iconshijian-2"
+                  style="color: #a2a5ab; font-size: 14px"
+                ></i>
                 {{ item.latest_time }}
               </span>
             </div>
@@ -250,6 +258,14 @@ export default class VulnList extends VueBase {
   created() {
     this.getTableData()
     this.vulnSummary()
+  }
+
+  private reset() {
+    this.searchObj.language = ''
+    this.searchObj.level = ''
+    this.searchObj.type = ''
+    this.searchObj.project_name = ''
+    this.newSelectData()
   }
 
   private languageChange(val: string) {
@@ -335,8 +351,16 @@ export default class VulnList extends VueBase {
   }
 
   private async vulnSummary() {
+    const params = {
+      language: this.searchObj.language,
+      level: this.searchObj.level,
+      type: this.searchObj.type,
+      project_name: this.searchObj.project_name,
+      url: this.searchObj.url,
+      order: this.searchObj.order,
+    }
     this.loadingStart()
-    const { status, data, msg } = await this.services.vuln.vulnSummary({})
+    const { status, data, msg } = await this.services.vuln.vulnSummary(params)
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
@@ -467,7 +491,7 @@ export default class VulnList extends VueBase {
 
     .card-title {
       width: 100%;
-      height: 48px;
+      min-height: 48px;
       background: #f1f8ff;
       border-radius: 8px 8px 0 0;
       border-bottom: 1px solid #c8e0ff;
@@ -476,6 +500,7 @@ export default class VulnList extends VueBase {
       .title {
         color: #38435a;
         font-size: 16px;
+        max-width: 780px;
       }
 
       .time {

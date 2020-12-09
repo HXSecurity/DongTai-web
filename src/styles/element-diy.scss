@@ -1,6 +1,9 @@
 .sca-list.el-table th > .cell{
   color: #4A72AE;
 }
+.sca-list.el-table--enable-row-hover .el-table__body tr:hover > td{
+  color: #4B99F1;
+}
 
 .agentManageTable.el-table th > .cell{
   color: #959FB4;

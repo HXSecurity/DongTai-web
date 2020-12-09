@@ -57,6 +57,7 @@
             <span>
               <i
                 class="iconfont iconweixian"
+                style="font-size: 14px"
                 :style="
                   item.level_type === 1
                     ? { color: '#EA7171' }
@@ -72,7 +73,7 @@
               {{ item.level }}
             </span>
             <span>
-              <i class="iconfont iconshijian-2"></i>
+              <i class="iconfont iconshijian-2" style="font-size: 14px"></i>
               {{ item.latest_time }}
             </span>
           </div>
@@ -80,7 +81,7 @@
       </div>
     </div>
     <div
-      v-if="vulnObj.vul"
+      v-if="vulnObj.vul.url"
       class="vuln-warp"
       :class="
         sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'
@@ -292,7 +293,40 @@ import { VulnListObj, VulnObj } from './types'
 @Component({ name: 'VulnDetail' })
 export default class VulnDetail extends VueBase {
   private sliderWarpContract = false
-  private vulnObj: VulnObj | undefined
+  private vulnObj: VulnObj = {
+    vul: {
+      url: '',
+      uri: '',
+      http_method: '',
+      type: '',
+      taint_position: '',
+      first_time: 0,
+      latest_time: 0,
+      project_name: '',
+      language: '',
+      level: '',
+      counts: 0,
+      req_header: '',
+      graphy: [],
+      context_path: '',
+    },
+    server: {
+      name: '',
+      hostname: '',
+      ip: '',
+      port: 0,
+      container: '',
+      container_path: '',
+      runtime: '',
+      environment: '',
+      command: '',
+    },
+    strategy: {
+      desc: '',
+      sample_code: '',
+      repair_suggestion: '',
+    },
+  }
   private tableData: Array<VulnListObj> = []
   private page = 1
   private selectedId = 0
@@ -394,20 +428,23 @@ export default class VulnDetail extends VueBase {
       this.$message.error(msg)
       return
     }
-    this.vulnObj = {
-      vul: {
-        ...data.vul,
-        first_time: formatTimestamp(data.vul.first_time),
-        latest_time: formatTimestamp(data.vul.latest_time),
-        graphy: data.vul.graphy,
-      },
-      server: {
-        ...data.server,
-      },
-      strategy: {
-        ...data.strategy,
-      },
-    }
+    this.$nextTick(() => {
+      this.vulnObj = {
+        vul: {
+          ...data.vul,
+          req_header: data.vul.req_header.replace(/\n/g, '<br/>'),
+          first_time: formatTimestamp(data.vul.first_time),
+          latest_time: formatTimestamp(data.vul.latest_time),
+          graphy: data.vul.graphy,
+        },
+        server: {
+          ...data.server,
+        },
+        strategy: {
+          ...data.strategy,
+        },
+      }
+    })
   }
 
   tableRowClassName() {

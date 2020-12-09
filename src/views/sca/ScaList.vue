@@ -3,7 +3,12 @@
     <div class="fixed-warp">
       <div class="slider-warp">
         <div class="title flex-column-center">
-          {{ $t('views.scaList.filter') }}
+          <div class="flex-row-space-between">
+            {{ $t('views.vulnList.filter') }}
+            <div class="reset-btn" style="margin-top: 2px" @click="reset">
+              reset
+            </div>
+          </div>
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.scaList.language') }}
@@ -142,7 +147,7 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.time')"
           prop="dt"
-          width="140px"
+          width="160px"
         ></el-table-column>
       </el-table>
     </div>
@@ -205,6 +210,12 @@ export default class ScaList extends VueBase {
     this.getTableData()
     this.scaSummary()
   }
+  private reset() {
+    this.searchObj.language = ''
+    this.searchObj.level = ''
+    this.searchObj.project_name = ''
+    this.newSelectData()
+  }
 
   private languageChange(val: string) {
     this.searchObj.language = val
@@ -224,7 +235,7 @@ export default class ScaList extends VueBase {
   private newSelectData() {
     this.page = 1
     this.tableData = []
-    this.vulnSummary()
+    this.scaSummary()
     this.getTableData()
   }
 
@@ -282,8 +293,15 @@ export default class ScaList extends VueBase {
   }
 
   private async scaSummary() {
+    const params = {
+      language: this.searchObj.language,
+      level: this.searchObj.level,
+      project_name: this.searchObj.project_name,
+      keyword: this.searchObj.keyword,
+      order: this.searchObj.order,
+    }
     this.loadingStart()
-    const { status, data, msg } = await this.services.sca.scaSummary({})
+    const { status, data, msg } = await this.services.sca.scaSummary(params)
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
