@@ -1,56 +1,58 @@
 <template>
-  <main class="loginContainer">
-    <Header></Header>
-    <el-card class="loginCard">
-      <el-form>
-        <el-form-item>
-          <div style="font-size: 20px; text-align: center">
+  <main class="loginContainer flex-row-space-between">
+    <div class="left-content"></div>
+    <div class="right-content">
+      <el-card class="loginCard login-card">
+        <div slot="header">
+          <div class="title">
             {{ $t('views.login.title') }}
           </div>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            v-model="userName"
-            prefix-icon="el-icon-user"
-            :placeholder="$t('views.login.usernamePlaceholder')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-input
-            v-model="password"
-            prefix-icon="el-icon-lock"
-            show-password
-            :placeholder="$t('views.login.passwordPlaceholder')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            type="primary"
-            style="width: 100%"
-            @click="login"
-            @keyup.enter.native="login"
-            >登录</el-button
-          >
-        </el-form-item>
-      </el-form>
-    </el-card>
+          <div class="subTitle">
+            <span class="line"></span>
+            {{ $t('views.login.subTitle') }}
+            <span class="line"></span>
+          </div>
+        </div>
+        <el-form style="margin-top: 33px">
+          <el-form-item :label="$t('views.login.user')">
+            <el-input
+              v-model="userName"
+              clearable
+              :placeholder="$t('views.login.usernamePlaceholder')"
+            ></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('views.login.password')">
+            <el-input
+              v-model="password"
+              show-password
+              clearable
+              :placeholder="$t('views.login.passwordPlaceholder')"
+            ></el-input>
+          </el-form-item>
+          <el-form-item style="margin-top: 104px">
+            <el-button
+              type="primary"
+              style="width: 100%; background: #4a72ae"
+              @click="login"
+              @keyup.enter.native="login"
+              >登录
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </div>
   </main>
 </template>
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
-import Header from '@/views/layout/Header.vue'
 import VueBase from '@/VueBase'
 
-@Component({
-  name: 'Login',
-  components: {
-    Header,
-  },
-})
+@Component({ name: 'Login' })
 export default class Login extends VueBase {
   private userName = ''
   private password = ''
+
   private async login() {
     const params = {
       username: this.userName,
@@ -71,25 +73,68 @@ export default class Login extends VueBase {
 <style scoped lang="scss">
 .loginContainer {
   width: 100%;
+  min-width: 1200px;
   height: 100vh;
+  min-height: 600px;
   background: #fff;
-  position: relative;
 
-  .logo {
-    position: absolute;
-    top: 25px;
-    left: 51px;
+  .left-content {
+    position: relative;
+    flex: 1;
+    background-image: url('../assets/img/loginBg.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
   }
 
+  .right-content {
+    flex: 1;
+    position: relative;
+  }
+
+  //.logo {
+  //  position: absolute;
+  //  top: 25px;
+  //  left: 51px;
+  //}
+
   .loginCard {
-    width: 306px;
-    height: 315px;
+    width: 610px;
+    height: 523px;
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
     margin: auto;
+
+    .title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      color: #2a303d;
+    }
+
+    .subTitle {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 400;
+      color: #a5acbc;
+
+      .line {
+        background: #d7dae1;
+        height: 1px;
+        width: 46px;
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 38px;
+
+        &:last-child {
+          margin-right: 0;
+          margin-left: 38px;
+        }
+      }
+    }
   }
 }
 </style>

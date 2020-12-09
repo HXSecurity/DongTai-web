@@ -18,8 +18,11 @@ export default {
   },
   views: {
     login: {
-      title: '登录',
-      usernamePlaceholder: '请输入用户名，默认admin',
+      title: '用户登录',
+      subTitle: '欢迎使用IAST系统',
+      user: '账号',
+      usernamePlaceholder: '请输入账号，默认admin',
+      password: '密码',
       passwordPlaceholder: '请输入密码，默认admin',
     },
     vulnList: {
