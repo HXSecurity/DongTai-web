@@ -134,6 +134,12 @@ const routes: Array<RouteConfig> = [
           },
         ],
       },
+      {
+        path: 'user',
+        meta: {
+          name: i18n.t('menu.user'),
+        },
+      },
     ],
   },
   {

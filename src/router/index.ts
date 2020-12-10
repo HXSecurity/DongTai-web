@@ -4,7 +4,6 @@ import routes from './routes'
 import store from '@/store'
 import Nprogress from 'nprogress'
 
-console.log(store)
 Vue.use(VueRouter)
 
 const router = new VueRouter({

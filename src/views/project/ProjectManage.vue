@@ -1,12 +1,6 @@
 <template>
   <main class="container">
     <div class="select-warp flex-column-center">
-      <div style="display: none">
-        <el-select>
-          <el-option label="JAVA" value="JAVA"></el-option>
-          <el-option label=".NET" value=".NET"></el-option>
-        </el-select>
-      </div>
       <div style="text-align: right">
         <el-input
           v-model="searchObj.name"
