@@ -97,7 +97,7 @@ export default class ChangePassword extends VueBase {
     if (value === '') {
       callback(new Error('请输入新密码'))
     } else {
-      if (this.submitForm.old_password !== '') {
+      if (this.submitForm.new_password !== '') {
         ;(this.$refs.ruleForm as Form).validateField('checkPass')
       }
       callback()

@@ -36,3 +36,12 @@
 .userListTable.el-table th > .cell{
   color: #4A72AE;
 }
+
+
+.addUserInput .el-input__inner:focus{
+  border-color: #D5DCE3
+}
+
+.addUserInput.el-select .el-input.is-focus .el-input__inner{
+  border-color: #D5DCE3
+}

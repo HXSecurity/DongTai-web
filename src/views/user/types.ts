@@ -8,12 +8,11 @@ export interface UserListObj {
 }
 
 export interface UserAddParams {
-  csrfmiddlewaretoken: string
   username: string
   password: string
   re_password: string
   email: string
-  role: string
+  role: number
   department: string
   phone: string
   uid?: number
