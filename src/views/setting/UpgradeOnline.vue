@@ -10,4 +10,8 @@ import { Component } from 'vue-property-decorator'
 export default class UpgradeOnline extends VueBase {}
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+main {
+  padding: 10px;
+}
+</style>

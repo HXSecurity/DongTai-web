@@ -1,5 +1,5 @@
 <template>
-  <main>ds</main>
+  <main>d dd</main>
 </template>
 
 <script lang="ts">
@@ -10,4 +10,8 @@ import { Component } from 'vue-property-decorator'
 export default class UserList extends VueBase {}
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+main {
+  padding: 10px;
+}
+</style>
