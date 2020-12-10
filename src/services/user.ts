@@ -17,10 +17,12 @@ interface UserAddParams {
   csrfmiddlewaretoken: string
   username: string
   password: string
+  re_password: string
   email: string
   role: string
   department: string
   phone: string
+  uid?: number
 }
 
 export default () =>
@@ -46,13 +48,21 @@ export default () =>
     }
 
     // 用户列表
-    userList(): Promise<iResponse> {
-      return request.get('/users')
+    userList(params: {
+      page: number
+      pageSize: number
+      keywords?: string
+    }): Promise<iResponse> {
+      return request.get('/users', { params })
     }
 
     // 新增用户
     userAdd(params: UserAddParams): Promise<iResponse> {
       return request.post('/user/add', params)
+    }
+
+    userDelete(params: { uid: number }): Promise<iResponse> {
+      return request.post('/user/delete', params)
     }
 
     // 部门列表

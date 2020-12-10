@@ -22,9 +22,5 @@ module.exports = {
         changeOrigin: true
       }
     }
-  },
-  build: {
-    productionSourceMap: false,
-    productionGzip: true,
   }
 }

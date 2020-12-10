@@ -136,9 +136,20 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: 'user',
+        redirect: '/user/userList',
         meta: {
           name: i18n.t('menu.user'),
         },
+        component: () => import('@/views/user/Index.vue'),
+        children: [
+          {
+            path: 'userList',
+            meta: {
+              name: i18n.t('menu.user'),
+            },
+            component: () => import('@/views/user/UserList.vue'),
+          },
+        ],
       },
     ],
   },

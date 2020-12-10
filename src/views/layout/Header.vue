@@ -31,6 +31,13 @@
         >
           {{ $t('menu.setting') }} /
         </div>
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/user') ? 'currentRoute' : ''"
+          @click="$router.push('/user')"
+        >
+          {{ $t('menu.user') }} /
+        </div>
       </div>
       <div v-if="!userInfo" class="flex-column-center">
         <el-button v-if="!userInfo" type="text" @click="$router.push('/login')"

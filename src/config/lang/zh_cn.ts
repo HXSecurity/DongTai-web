@@ -16,6 +16,7 @@ export default {
     upgradeOnline: '在线升级',
     sysInfo: '系统信息',
     changePassword: '密码修改',
+    user: '角色管理',
   },
   views: {
     login: {
@@ -172,6 +173,16 @@ export default {
       projectVul: '项目漏洞',
       vulNum: '漏洞数量',
       type: '类型分布',
+    },
+    userList: {
+      addUser: '新增用户',
+      userID: '用户ID',
+      name: '用户名称',
+      email: '用户邮箱',
+      level: '用户级别',
+      department: '所属部门',
+      phone: '联系电话',
+      operate: '操作',
     },
   },
 }

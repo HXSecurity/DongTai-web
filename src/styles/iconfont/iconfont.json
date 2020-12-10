@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18742688",
+      "name": "添加用户",
+      "font_class": "xinzengyonghu",
+      "unicode": "e690",
+      "unicode_decimal": 59024
+    },
+    {
       "icon_id": "18696562",
       "name": "项目详情-项目漏洞超链接-线性图标",
       "font_class": "chaolianjie",
