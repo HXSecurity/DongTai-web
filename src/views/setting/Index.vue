@@ -40,6 +40,13 @@
         >
           {{ $t('menu.changePassword') }}
         </div>
+        <div
+          class="menu-item"
+          :class="curModule('/setting/logManage') ? 'currentModule' : ''"
+          @click="$router.push('/setting/logManage')"
+        >
+          {{ $t('menu.logManage') }}
+        </div>
       </div>
     </div>
     <div class="route-warp">

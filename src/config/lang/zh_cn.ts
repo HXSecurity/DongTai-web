@@ -16,6 +16,7 @@ export default {
     upgradeOnline: '系统升级',
     sysInfo: '系统信息',
     changePassword: '密码修改',
+    logManage: '操作日志',
     user: '角色管理',
   },
   views: {
@@ -146,6 +147,10 @@ export default {
         '请联系火线平台售后支持，获取最新的离线安装包，然后上传离线安装包进行升级',
       select: '选择离线安装包',
       offlineSubmit: '上传并升级',
+    },
+    sysInfo: {
+      infoTitle: '授权信息',
+      infolicense: '',
     },
     projectManage: {
       title: '项目列表',

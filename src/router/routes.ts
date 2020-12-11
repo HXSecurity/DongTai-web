@@ -132,6 +132,13 @@ const routes: Array<RouteConfig> = [
             },
             component: () => import('@/views/setting/ChangePassword.vue'),
           },
+          {
+            path: 'logManage',
+            meta: {
+              name: i18n.t('menu.logManage'),
+            },
+            component: () => import('@/views/setting/LogManage.vue'),
+          },
         ],
       },
       {
