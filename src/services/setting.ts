@@ -37,4 +37,25 @@ export default () =>
     strategyDisable(id: number): Promise<iResponse> {
       return request.get(`/strategy/${id}/disable`)
     }
+
+    // 在线升级
+    upgradeOnline(
+      Authorization: string,
+      data: { url: string; token: string }
+    ): Promise<iResponse> {
+      // return request.post('/agent/upgrade/online', params)
+      return request({
+        method: 'post',
+        url: '/agent/upgrade/online',
+        data,
+        headers: {
+          Authorization,
+        },
+      }).then()
+    }
+
+    // 离线升级
+    upgradeOffline(params: any): Promise<iResponse> {
+      return request.post('/agent/upgrade/offline', params)
+    }
   })()

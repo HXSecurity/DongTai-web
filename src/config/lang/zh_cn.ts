@@ -13,7 +13,7 @@ export default {
     setting: '系统配置',
     agentManage: '引擎管理',
     strategyManage: '策略管理',
-    upgradeOnline: '在线升级',
+    upgradeOnline: '系统升级',
     sysInfo: '系统信息',
     changePassword: '密码修改',
     user: '角色管理',

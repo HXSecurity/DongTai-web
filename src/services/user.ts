@@ -68,4 +68,9 @@ export default () =>
     departmentList(): Promise<iResponse> {
       return request.get('/departments')
     }
+
+    // 获取用户token、系统更新url
+    userToken(): Promise<iResponse> {
+      return request.get('/user/token')
+    }
   })()
