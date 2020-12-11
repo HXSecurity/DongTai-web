@@ -49,3 +49,12 @@
 .editInput .el-input__inner{
   border: none;
 }
+
+.logListTable{
+  width: 100%;
+  margin-top: 10px;
+}
+
+.logListTable.el-table th > .cell{
+  color: #4A72AE;
+}

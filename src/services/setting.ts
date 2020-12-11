@@ -58,4 +58,14 @@ export default () =>
     upgradeOffline(params: any): Promise<iResponse> {
       return request.post('/agent/upgrade/offline', params)
     }
+
+    // 日志列表
+    logList(params: { page: number; pageSize: number }): Promise<iResponse> {
+      return request.get('/logs', { params })
+    }
+
+    // 删除指定操作日志
+    logDelete(params: { ids: string }): Promise<iResponse> {
+      return request.get('/log/delete', { params })
+    }
   })()

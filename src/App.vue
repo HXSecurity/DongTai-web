@@ -14,6 +14,6 @@ export default class App extends Vue {
 
 <style scoped>
 #app {
-  background: #f9fafb;
+  background: #f4f4f4;
 }
 </style>
