@@ -15,17 +15,34 @@
             {{ projectObj.latest_time }}
           </div>
           <div class="operate">
-            <i class="iconfont icondaochu-5"></i>
-            <i
-              class="iconfont iconshezhi-2"
+            <el-button type="text" class="operateBtn">
+              <i class="iconfont icondaochu-5"></i>
+              导出
+            </el-button>
+            <el-button
+              type="text"
+              class="operateBtn"
               @click="$router.push(`/project/projectEdit/${projectObj.id}`)"
-            ></i>
+            >
+              <i class="iconfont iconshezhi-2"></i>
+              设置
+            </el-button>
           </div>
         </div>
       </div>
-      <div class="projectVul">
-        {{ $t('views.projectDetail.projectVul') }}
-        <i class="iconfont iconchaolianjie"></i>
+      <div class="projectVul flex-row-space-between">
+        <el-button
+          type="text"
+          class="pTab"
+          :class="selectTab === 'desc' ? 'selected' : ''"
+        >
+          <i class="iconfont iconshuju1"></i>
+          {{ $t('views.projectDetail.projectDesc') }}
+        </el-button>
+        <el-button type="text" class="pTab">
+          <i class="iconfont iconloudong"></i>
+          {{ $t('views.projectDetail.projectVul') }}
+        </el-button>
       </div>
       <div class="module flex-row-space-between">
         <div class="module-content">
@@ -54,13 +71,14 @@
 <script lang="ts">
 import VueBase from '../../VueBase'
 import { Component } from 'vue-property-decorator'
-import { ProjectObj } from './types'
+import { ProjectObj, SelectTabs } from './types'
 import { formatTimestamp } from '@/utils/utils'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 
 @Component({ name: 'ProjectDetail' })
 export default class ProjectDetail extends VueBase {
+  private selectTab = SelectTabs.desc
   private projectObj: ProjectObj = {
     id: 0,
     mode: '',
@@ -225,16 +243,26 @@ export default class ProjectDetail extends VueBase {
       }
 
       .operate {
-        color: #b1b9c4;
+        // color: #b1b9c4;
 
-        i {
-          cursor: pointer;
-          margin-left: 24px;
-
-          &:first-child {
-            margin-left: 0;
-          }
+        .operateBtn {
+          width: 80px;
+          height: 32px;
+          line-height: 0;
+          border-radius: 2px;
+          font-size: 14px;
+          border: 1px solid #4a72ae;
+          color: #4a72ae;
         }
+
+        // i {
+        //   cursor: pointer;
+        //   margin-left: 24px;
+
+        //   &:first-child {
+        //     margin-left: 0;
+        //   }
+        // }
       }
     }
   }
@@ -245,10 +273,23 @@ export default class ProjectDetail extends VueBase {
     color: #2e7def;
     margin-top: 13px;
 
-    i {
-      font-size: 14px;
-      color: #b1b9c4;
+    .pTab {
+      width: 49%;
+      height: 32px;
+      line-height: 0;
+      border-radius: 2px;
+      border: 1px solid #2e7def;
     }
+
+    .selected {
+      background: #2e7def;
+      color: #fff;
+    }
+
+    // i {
+    //   font-size: 14px;
+    //   color: #b1b9c4;
+    // }
   }
 
   .module {

@@ -33,6 +33,8 @@ export default {
       language: '语言',
       level: '等级',
       type: '类型',
+      reset: '重置',
+      resetAll: '重置全部',
       project_name: '项目',
       orderOptions: {
         type: '漏洞类型',
@@ -45,7 +47,8 @@ export default {
     vulnDetail: {
       baseInfo: '基本信息',
       vulnDesc: '漏洞描述',
-      export: '报告导出',
+      export: '导出',
+      delete: '删除',
       httpRequest: 'HTTP请求',
       codeDemo: '漏洞代码示例',
       graphy: '污点流图',
@@ -175,6 +178,7 @@ export default {
     projectDetail: {
       mode: '扫描模式',
       latest_time: '最新时间',
+      projectDesc: '项目概况',
       projectVul: '项目漏洞',
       vulNum: '漏洞数量',
       type: '类型分布',

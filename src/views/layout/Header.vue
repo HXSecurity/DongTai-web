@@ -8,35 +8,35 @@
           :class="currentRoute('/project') ? 'currentRoute' : ''"
           @click="$router.push('/project')"
         >
-          {{ $t('menu.project') }} /
+          {{ $t('menu.project') }}
         </div>
         <div
           class="url flex-column-center"
           :class="currentRoute('/vuln') ? 'currentRoute' : ''"
           @click="$router.push('/vuln')"
         >
-          {{ $t('menu.vuln') }} /
+          {{ $t('menu.vuln') }}
         </div>
         <div
           class="url flex-column-center"
           :class="currentRoute('/sca') ? 'currentRoute' : ''"
           @click="$router.push('/sca')"
         >
-          {{ $t('menu.sca') }} /
+          {{ $t('menu.sca') }}
         </div>
         <div
           class="url flex-column-center"
           :class="currentRoute('/setting') ? 'currentRoute' : ''"
           @click="$router.push('/setting')"
         >
-          {{ $t('menu.setting') }} /
+          {{ $t('menu.setting') }}
         </div>
         <div
           class="url flex-column-center"
           :class="currentRoute('/user') ? 'currentRoute' : ''"
           @click="$router.push('/user')"
         >
-          {{ $t('menu.user') }} /
+          {{ $t('menu.user') }}
         </div>
       </div>
       <div v-if="!userInfo" class="flex-column-center">
@@ -122,14 +122,23 @@ export default class Header extends VueBase {
         color: #38435a;
         cursor: pointer;
         margin-left: 10px;
+        padding: 0 40px;
 
         &:first-child {
           margin-left: 0;
         }
+
+        &:hover {
+          color: #4a72ae;
+          background: aliceblue;
+          border-bottom: 2px solid #4a72ae;
+        }
       }
 
       .currentRoute {
-        color: #dc3c3a;
+        color: #4a72ae;
+        background: aliceblue;
+        border-bottom: 2px solid #4a72ae;
       }
     }
 

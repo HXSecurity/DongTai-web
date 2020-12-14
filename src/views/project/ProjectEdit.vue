@@ -3,7 +3,7 @@
     <div style="height: 28px"></div>
     <div class="content-warp">
       <div class="back" @click="$router.push('/project')">
-        <i class="el-icon-back"></i>BACK
+        <i class="el-icon-back"></i>返回
       </div>
       <div class="title">{{ $t('views.projectEdit.title') }}</div>
       <el-form
@@ -201,11 +201,12 @@ export default class ProjectEdit extends VueBase {
   min-height: calc(100vh - 92px);
 
   .back {
-    color: #acb4c4;
+    color: #9ea3a8;
     cursor: pointer;
 
     i {
       font-size: 16px;
+      margin-right: 8px;
     }
   }
 

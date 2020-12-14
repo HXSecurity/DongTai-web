@@ -19,3 +19,8 @@ export interface ProjectObj {
   name: string
   latest_time: string
 }
+
+export const enum SelectTabs {
+  desc = 'desc',
+  vul = 'vul',
+}

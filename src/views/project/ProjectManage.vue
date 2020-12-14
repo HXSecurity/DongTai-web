@@ -1,7 +1,17 @@
 <template>
   <main class="container">
-    <div class="select-warp flex-column-center">
-      <div style="text-align: right">
+    <div class="select-warp flex-row-space-between">
+      <div class="flex-column-center">
+        <el-button
+          type="text"
+          class="projectAdd"
+          @click="$router.push('/project/projectEdit')"
+        >
+          <i class="iconfont iconxinzengxiangmu-3"></i>
+          新建项目
+        </el-button>
+      </div>
+      <div class="flex-column-center">
         <el-input
           v-model="searchObj.name"
           style="width: 462px"
@@ -19,11 +29,6 @@
     <div class="list-warp">
       <div class="top-line flex-row-space-between">
         {{ $t('views.projectManage.title') }}
-        <img
-          src="../../assets/img/projectAdd.png"
-          alt="projectAdd"
-          @click="$router.push('/project/projectEdit')"
-        />
       </div>
       <el-table :data="tableData" class="projectList-table">
         <el-table-column prop="name" :label="$t('views.projectManage.name')">
@@ -170,6 +175,16 @@ export default class ProjectManage extends VueBase {
 .select-warp {
   height: 70px;
   width: 100%;
+
+  .projectAdd {
+    width: 104px;
+    height: 32px;
+    line-height: 0;
+    background: #ffffff;
+    border-radius: 2px;
+    border: 1px solid #4a72ae;
+    color: #4a72ae;
+  }
 }
 
 .list-warp {

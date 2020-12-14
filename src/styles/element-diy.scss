@@ -1,60 +1,77 @@
-.sca-list.el-table th > .cell{
-  color: #4A72AE;
+.sca-list.el-table th > .cell {
+  color: #4a72ae;
 }
-.sca-list.el-table--enable-row-hover .el-table__body tr:hover > td{
-  color: #4B99F1;
+.sca-list.el-table--enable-row-hover .el-table__body tr:hover > td {
+  color: #4b99f1;
 }
 
-.agentManageTable.el-table th > .cell{
-  color: #959FB4;
+.agentManageTable.el-table th > .cell {
+  color: #959fb4;
   font-size: 14px;
 }
 
-.agentManageTable.el-table .cell{
-  color: #38435A;
+.agentManageTable.el-table .cell {
+  color: #38435a;
   font-size: 14px;
 }
 
-.projectList-table{
+.projectList-table {
   width: 100%;
-  margin-top: 18px
+  margin-top: 18px;
 }
 
-.projectList-table.el-table th > .cell{
-  color: #4A72AE;
+.projectList-table.el-table th > .cell {
+  color: #4a72ae;
 }
 
-.projectList-table.el-table .cell{
-  color: #959EA9;
+.projectList-table.el-table .cell {
+  color: #959ea9;
 }
 
-
-.userListTable{
+.userListTable {
   width: 100%;
-  margin-top: 14px
+  margin-top: 14px;
 }
-.userListTable.el-table th > .cell{
-  color: #4A72AE;
-}
-
-
-.addUserInput .el-input__inner:focus{
-  border-color: #D5DCE3
+.userListTable.el-table th > .cell {
+  color: #4a72ae;
 }
 
-.addUserInput.el-select .el-input.is-focus .el-input__inner{
-  border-color: #D5DCE3
+.addUserInput .el-input__inner:focus {
+  border-color: #d5dce3;
 }
 
-.editInput .el-input__inner{
+.addUserInput.el-select .el-input.is-focus .el-input__inner {
+  border-color: #d5dce3;
+}
+
+.editInput .el-input__inner {
   border: none;
 }
 
-.logListTable{
+.logListTable {
   width: 100%;
   margin-top: 10px;
 }
 
-.logListTable.el-table th > .cell{
-  color: #4A72AE;
+.logListTable.el-table th > .cell {
+  color: #4a72ae;
+}
+
+.commonSelect .el-input__inner {
+  height: 38px;
+}
+
+.commonSelect.el-select .el-input__inner:focus {
+  border-color: #fff;
+}
+
+.commonSelect.el-select .el-input.is-focus .el-input__inner {
+  border-color: #fff;
+}
+
+.commonInput .el-input__inner {
+  height: 38px;
+}
+.commonInput .el-input__inner:focus {
+  border-color: #dee4ea;
 }

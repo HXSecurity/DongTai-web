@@ -28,4 +28,9 @@ export default () =>
     getVulnDetail(id: number): Promise<iResponse> {
       return request.get(`/vuln/${id}`)
     }
+
+    // 漏洞删除
+    vulnDelete(id: number): Promise<iResponse> {
+      return request.post(`/vuln/delete/${id}`)
+    }
   })()

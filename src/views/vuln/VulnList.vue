@@ -5,14 +5,17 @@
         <div class="title flex-column-center">
           <div class="flex-row-space-between">
             {{ $t('views.vulnList.filter') }}
-            <div class="reset-btn" style="margin-top: 2px" @click="reset">
-              reset
-            </div>
+
+            <el-button type="text" class="resetAllBtn" @click="reset">
+              {{ $t('views.vulnList.resetAll') }}
+            </el-button>
           </div>
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.language') }}
-          <div class="reset-btn" @click="languageChange('')">reset</div>
+          <div class="reset-btn" @click="languageChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
         </div>
         <div
           v-for="item in searchOptionsObj.language"
@@ -30,7 +33,9 @@
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.level') }}
-          <div class="reset-btn" @click="levelChange('')">reset</div>
+          <div class="reset-btn" @click="levelChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
         </div>
         <div
           v-for="item in searchOptionsObj.level"
@@ -48,7 +53,9 @@
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.type') }}
-          <div class="reset-btn" @click="typeChange('')">reset</div>
+          <div class="reset-btn" @click="typeChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
         </div>
         <div
           v-for="item in searchOptionsObj.type"
@@ -66,7 +73,9 @@
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.project_name') }}
-          <div class="reset-btn" @click="projectNameChange('')">reset</div>
+          <div class="reset-btn" @click="projectNameChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
         </div>
         <div
           v-for="item in searchOptionsObj.projects"
@@ -91,7 +100,8 @@
       <div class="selectForm">
         <el-select
           v-model="searchObj.order"
-          size="mini"
+          class="commonSelect"
+          placeholder="排序"
           clearable
           @change="newSelectData"
         >
@@ -104,8 +114,9 @@
         </el-select>
         <el-select
           v-model="searchObj.language"
+          placeholder="语言"
           style="margin-left: 10px"
-          size="mini"
+          class="commonSelect"
           clearable
           @change="newSelectData"
         >
@@ -115,8 +126,9 @@
         <div class="selectInput">
           <el-input
             v-model="searchObj.url"
+            placeholder="请输入关键字"
+            class="commonInput"
             style="width: 462px"
-            size="mini"
             @keyup.enter.native="newSelectData"
           >
             <i
@@ -136,7 +148,9 @@
         <div class="card-title flex-row-space-between">
           <span class="title flex-column-center">
             {{
-              `${item.url}的${item.http_method}请求出现${item.type}漏洞，位置：${item.taint_position}`
+              `${item.url}的${item.http_method}请求出现${item.type}漏洞${
+                item.taint_position ? `，位置：${item.taint_position}` : ''
+              }`
             }}
           </span>
           <span class="time flex-column-center">
@@ -146,11 +160,15 @@
         <div class="card-content">
           <div class="top-stack">
             <i class="iconfont iconyuandianzhong"></i>
-            {{ item.top_stack }}
+            <span>
+              {{ item.top_stack }}
+            </span>
           </div>
           <div class="bottom-stack">
             <i class="iconfont iconyuandianzhong"></i>
-            {{ item.bottom_stack }}
+            <span>
+              {{ item.bottom_stack }}
+            </span>
           </div>
           <div class="infoLine flex-row-space-between">
             <div class="flex-row-space-between" style="width: 65%">
@@ -158,7 +176,7 @@
                 <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
                 {{ item.project_name }}
               </span>
-              <span class="info">
+              <span class="info" style="flex: 2">
                 <i
                   class="iconfont"
                   :class="switchServerType(item.server_type)"
@@ -194,7 +212,7 @@
               <div class="tag">
                 {{ item.language }}
               </div>
-              <div class="tag" style="margin-left: 20px">
+              <div class="tag2" style="margin-left: 20px">
                 {{ item.type }}
               </div>
             </div>
@@ -207,7 +225,7 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
-import { formatTimestamp } from '@/utils/utils'
+import { formatTimestamp, getPassedTime } from '@/utils/utils'
 import VueBase from '@/VueBase'
 import { VulnListObj } from './types'
 
@@ -338,7 +356,7 @@ export default class VulnList extends VueBase {
         list.push({
           ...item,
           first_time: formatTimestamp(item.first_time),
-          latest_time: formatTimestamp(item.latest_time),
+          latest_time: getPassedTime(item.latest_time),
         })
         return list
       },
@@ -419,6 +437,15 @@ export default class VulnList extends VueBase {
     font-size: 18px;
     font-weight: normal;
     color: #4a72ae;
+
+    .resetAllBtn {
+      width: 72px;
+      height: 28px;
+      line-height: 0;
+      background: #4a72ae;
+      border-radius: 2px;
+      color: #fff;
+    }
   }
 
   .module-title {
@@ -429,12 +456,8 @@ export default class VulnList extends VueBase {
   }
 
   .reset-btn {
-    color: #4b99f1;
+    color: #4a72ae;
     cursor: pointer;
-
-    &:hover {
-      color: #4a72ae;
-    }
   }
 
   .module-line {
@@ -529,7 +552,15 @@ export default class VulnList extends VueBase {
         i {
           color: #5491ef;
           font-size: 12px;
-          vertical-align: bottom;
+          vertical-align: top;
+          margin-right: 5px;
+        }
+
+        span {
+          width: calc(100% - 18px);
+          word-break: break-all;
+          display: inline-block;
+          vertical-align: top;
         }
       }
 
@@ -539,7 +570,15 @@ export default class VulnList extends VueBase {
         i {
           color: #6ec79f;
           font-size: 12px;
-          vertical-align: bottom;
+          vertical-align: top;
+          margin-right: 5px;
+        }
+
+        span {
+          width: calc(100% - 18px);
+          word-break: break-all;
+          display: inline-block;
+          vertical-align: top;
         }
       }
 
@@ -568,6 +607,27 @@ export default class VulnList extends VueBase {
             height: 20px;
             width: 18px;
             background-image: url('../../assets/img/tag.png');
+          }
+        }
+
+        .tag2 {
+          display: inline-block;
+          color: #fff;
+          height: 20px;
+          font-size: 14px;
+          line-height: 20px;
+          background: #e2ce94;
+          padding-right: 10px;
+          padding-left: 4px;
+          position: relative;
+
+          &:before {
+            position: absolute;
+            left: -17px;
+            content: '';
+            height: 20px;
+            width: 18px;
+            background-image: url('../../assets/img/tag2.png');
           }
         }
       }

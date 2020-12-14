@@ -28,3 +28,36 @@ export function getToken() {
   }
   return ''
 }
+
+export const getPassedTime = (timestamp: number | any): string => {
+  const time = new Date(parseInt(timestamp) * 1000)
+  const curDate = new Date()
+  let timeGap = curDate.getTime() - time.getTime()
+  const ms = timeGap % 1000
+  timeGap = (timeGap - ms) / 1000
+  const second = timeGap % 60
+  timeGap = (timeGap - second) / 60
+  const minute = timeGap % 60
+  timeGap = (timeGap - minute) / 60
+  const hour = timeGap % 24
+  timeGap = (timeGap - hour) / 24
+  const day = timeGap % 30
+  timeGap = (timeGap - day) / 30
+  const month = timeGap % 12
+  const year = (timeGap - month) / 12
+  if (year > 0) {
+    return `${year}年前`
+  } else if (month > 0) {
+    return `${month}月前`
+  } else if (day > 0) {
+    return `${day}天前`
+  } else if (hour > 0) {
+    return `${hour}小时前`
+  } else if (minute > 0) {
+    return `${minute}分钟前`
+  } else if (second > 0) {
+    return `${second}秒前`
+  } else {
+    return ''
+  }
+}
