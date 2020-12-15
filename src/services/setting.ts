@@ -68,4 +68,19 @@ export default () =>
     logDelete(params: { ids: string }): Promise<iResponse> {
       return request.post('/log/delete', params)
     }
+
+    // 用户查询自有创建策略
+    strategyUserList(): Promise<iResponse> {
+      return request.get('/strategy/user/list')
+    }
+
+    // 按等级获取策略类型
+    strategyTypes(): Promise<iResponse> {
+      return request.get('/strategy/types')
+    }
+
+    // 用户创建策略
+    strategyUserAdd(params: { ids: string; name: string }): Promise<iResponse> {
+      return request.post('/strategy/user/add', params)
+    }
   })()
