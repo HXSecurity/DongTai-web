@@ -35,34 +35,47 @@
           type="text"
           class="pTab"
           :class="selectTab === 'desc' ? 'selected' : ''"
+          @click="selectTab = 'desc'"
         >
           <i class="iconfont iconshuju1"></i>
           {{ $t('views.projectDetail.projectDesc') }}
         </el-button>
-        <el-button type="text" class="pTab">
+        <el-button
+          type="text"
+          class="pTab"
+          :class="selectTab === 'vul' ? 'selected' : ''"
+          @click="selectTab = 'vul'"
+        >
           <i class="iconfont iconloudong"></i>
           {{ $t('views.projectDetail.projectVul') }}
         </el-button>
       </div>
-      <div class="module flex-row-space-between">
-        <div class="module-content">
+      <div v-show="selectTab === 'desc'">
+        <div class="module flex-row-space-between">
+          <div class="module-content">
+            <div class="module-title">
+              {{ $t('views.projectDetail.vulNum') }}
+            </div>
+            <div id="level_count" class="module-card"></div>
+          </div>
+          <div class="module-content">
+            <div class="module-title">
+              {{ $t('views.projectDetail.type') }}
+            </div>
+            <div id="type_summary" class="module-card"></div>
+          </div>
+        </div>
+        <div class="module">
           <div class="module-title">
             {{ $t('views.projectDetail.vulNum') }}
           </div>
-          <div id="level_count" class="module-card"></div>
-        </div>
-        <div class="module-content">
-          <div class="module-title">
-            {{ $t('views.projectDetail.type') }}
-          </div>
-          <div id="type_summary" class="module-card"></div>
+          <div id="day_num" class="module-card"></div>
         </div>
       </div>
-      <div class="module">
-        <div class="module-title">
-          {{ $t('views.projectDetail.vulNum') }}
-        </div>
-        <div id="day_num" class="module-card"></div>
+      <div v-if="selectTab === 'vul'">
+        <vul-list-component
+          :project-id="$route.params.pid"
+        ></vul-list-component>
       </div>
     </div>
   </main>
@@ -75,8 +88,14 @@ import { ProjectObj, SelectTabs } from './types'
 import { formatTimestamp } from '@/utils/utils'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
+import VulListComponent from './VulListComponent.vue'
 
-@Component({ name: 'ProjectDetail' })
+@Component({
+  name: 'ProjectDetail',
+  components: {
+    VulListComponent,
+  },
+})
 export default class ProjectDetail extends VueBase {
   private selectTab = SelectTabs.desc
   private projectObj: ProjectObj = {

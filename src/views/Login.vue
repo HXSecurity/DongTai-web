@@ -1,44 +1,45 @@
 <template>
-  <main class="loginContainer flex-row-space-between">
-    <div class="left-content"></div>
-    <div class="right-content">
-      <div class="loginCard">
-        <div class="title">
-          {{ $t('views.login.title') }}
-        </div>
-        <div class="subTitle">
-          <span class="line"></span>
-          {{ $t('views.login.subTitle') }}
-          <span class="line"></span>
-        </div>
-        <el-form style="margin-top: 53px">
-          <el-form-item :label="$t('views.login.user')">
-            <el-input
-              v-model="userName"
-              clearable
-              :placeholder="$t('views.login.usernamePlaceholder')"
-            ></el-input>
-          </el-form-item>
-          <el-form-item :label="$t('views.login.password')">
-            <el-input
-              v-model="password"
-              show-password
-              clearable
-              :placeholder="$t('views.login.passwordPlaceholder')"
-            ></el-input>
-          </el-form-item>
-          <el-form-item style="margin-top: 104px">
-            <el-button
-              type="primary"
-              style="width: 100%; background: #4a72ae"
-              @click="login"
-              @keyup.enter.native="login"
-              >登录
-            </el-button>
-          </el-form-item>
-        </el-form>
+  <main class="loginContainer">
+    <!-- <div class="left-content"></div> -->
+    <!-- <div class="right-content"> -->
+    <div class="loginFooter"></div>
+    <div class="loginCard">
+      <div class="title">
+        {{ $t('views.login.title') }}
       </div>
+      <div class="subTitle">
+        <span class="line"></span>
+        {{ $t('views.login.subTitle') }}
+        <span class="line"></span>
+      </div>
+      <el-form style="margin-top: 53px">
+        <el-form-item :label="$t('views.login.user')">
+          <el-input
+            v-model="userName"
+            clearable
+            :placeholder="$t('views.login.usernamePlaceholder')"
+          ></el-input>
+        </el-form-item>
+        <el-form-item :label="$t('views.login.password')">
+          <el-input
+            v-model="password"
+            show-password
+            clearable
+            :placeholder="$t('views.login.passwordPlaceholder')"
+          ></el-input>
+        </el-form-item>
+        <el-form-item style="margin-top: 54px">
+          <el-button
+            type="primary"
+            style="width: 100%; background: #4a72ae"
+            @click="login"
+            @keyup.enter.native="login"
+            >登录
+          </el-button>
+        </el-form-item>
+      </el-form>
     </div>
+    <!-- </div> -->
   </main>
 </template>
 
@@ -75,26 +76,38 @@ export default class Login extends VueBase {
   height: 100vh;
   min-height: 600px;
   background: #fff;
+  position: relative;
 
-  .left-content {
-    position: relative;
-    flex: 1;
-    background-image: url('../assets/img/loginBg.png');
+  // .left-content {
+  //   position: relative;
+  //   flex: 1;
+  //   background-image: url('../assets/img/loginBg.png');
+  //   background-size: 100% 100%;
+  //   background-repeat: no-repeat;
+  // }
+
+  // .right-content {
+  //   flex: 1;
+  //   position: relative;
+  // }
+
+  .loginFooter {
+    background-image: url('../assets/img/loginbg.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
-  }
-
-  .right-content {
-    flex: 1;
-    position: relative;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 218px;
   }
 
   .loginCard {
     width: 610px;
-    height: 523px;
+    height: 567px;
+    padding: 60px 73px;
+    box-shadow: 0px 0px 16px 0px rgba(189, 197, 208, 0.5);
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 96px;
     left: 0;
     right: 0;
     margin: auto;

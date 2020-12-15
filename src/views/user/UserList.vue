@@ -135,8 +135,9 @@
           ></el-input>
         </el-form-item>
         <el-form-item
+          v-if="!userForm.uid"
           :label="$t('views.userList.password')"
-          :prop="userForm.uid ? '' : password"
+          prop="password"
         >
           <el-input
             v-model="userForm.password"
@@ -148,9 +149,33 @@
           ></el-input>
         </el-form-item>
         <el-form-item
-          :label="$t('views.userList.rePass')"
-          :prop="userForm.uid ? '' : re_password"
+          v-if="userForm.uid"
+          :label="$t('views.userList.password')"
         >
+          <el-input
+            v-model="userForm.password"
+            class="addUserInput"
+            show-password
+            :placeholder="$t('views.userList.passwordPlaceholder')"
+            clearable
+            style="width: 400px"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          v-if="!userForm.uid"
+          :label="$t('views.userList.rePass')"
+          prop="re_password"
+        >
+          <el-input
+            v-model="userForm.re_password"
+            class="addUserInput"
+            show-password
+            :placeholder="$t('views.userList.rePassPlaceholder')"
+            clearable
+            style="width: 400px"
+          ></el-input>
+        </el-form-item>
+        <el-form-item v-if="userForm.uid" :label="$t('views.userList.rePass')">
           <el-input
             v-model="userForm.re_password"
             class="addUserInput"
@@ -178,7 +203,6 @@ import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
 import { UserListObj, UserAddParams } from './types'
 import { Form } from 'element-ui'
-import vuln from '@/services/vuln'
 
 @Component({ name: 'UserList' })
 export default class UserList extends VueBase {
