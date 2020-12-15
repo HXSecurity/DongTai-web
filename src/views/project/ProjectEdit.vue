@@ -10,18 +10,18 @@
         ref="submitForm"
         :model="submitForm"
         label-width="100px"
-        style="margin-top: 32px"
+        style="margin-top: 32px;"
         status-icon
         :rules="rules"
       >
-        <el-form-item :label="$t('views.projectEdit.name')" prop="name">
+        <el-form-item :label="$t('views.projectEdit.name')" class="el-form--label-left" prop="name">
           <el-input
             v-model="submitForm.name"
             style="width: 412px"
             :placeholder="$t('views.projectEdit.namePlaceholder')"
           ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.mode')">
+        <el-form-item :label="$t('views.projectEdit.mode')" class="el-form--label-left" >
           <el-radio
             v-model="submitForm.mode"
             :label="$t('views.projectEdit.mode1')"
@@ -33,7 +33,7 @@
             >{{ $t('views.projectEdit.mode2') }}</el-radio
           >
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.agent')">
+        <el-form-item :label="$t('views.projectEdit.agent')" class="el-form--label-left" >
           <el-select
             v-model="submitForm.agentIdList"
             multiple
@@ -49,7 +49,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.added')">
+        <el-form-item :label="$t('views.projectEdit.added')" class="el-form--label-left" >
           <el-tag
             v-for="(tag, index) in engineSelectedList"
             :key="tag.id"
@@ -61,7 +61,7 @@
             {{ tag.token }}
           </el-tag>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="el-form--label-left" >
           <el-button
             type="text"
             size="small"

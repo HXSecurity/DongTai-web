@@ -62,11 +62,7 @@
             {{ `${item.url}存在${item.type}漏洞` }}
           </div>
           <div class="infoLine flex-row-space-between">
-            <span>
-              <i
-                class="iconfont iconweixian"
-                style="font-size: 14px"
-                :style="
+            <span :style="
                   item.level_type === 1
                     ? { color: '#EA7171' }
                     : item.level_type === 2
@@ -76,8 +72,8 @@
                     : item.level_type === 4
                     ? { color: '#7BC1AB' }
                     : ''
-                "
-              ></i>
+                ">
+              <i class="iconfont iconweixian" style="font-size: 14px"></i>
               {{ item.level }}
             </span>
             <span>
@@ -152,7 +148,9 @@
               <i class="iconfont iconzhongjianjian"></i>
               {{ $t('views.vulnDetail.middleware') }}:
             </span>
-            {{ vulnObj.server.container }}
+            <span style="width:140px;overflow: hidden;">
+            {{vulnObj.server.container}}
+            </span>
           </div>
           <div class="info">
             <span class="label">
@@ -204,7 +202,7 @@
         {{ $t('views.vulnDetail.httpRequest') }}
       </div>
       <div class="markdownContent httpRequest">
-        <MyMarkdownIt :content="vulnObj.vul.req_header"></MyMarkdownIt>
+        <MyMarkdownIt :content="vulnObj.vul.req_header" style="color:#747C8C"></MyMarkdownIt>
       </div>
       <!-- 污点流图-->
       <div
@@ -311,7 +309,7 @@
         {{ $t('views.vulnDetail.devEnv') }}
       </div>
       <div v-if="vulnObj.server.runtime" class="baseInfo">
-        <div class="base-line">
+        <div class="base-line" style="padding:10px 0px;height:10px">
           <span>{{ vulnObj.server.runtime }}</span>
         </div>
       </div>
@@ -321,15 +319,16 @@
       </div>
       <div class="baseInfo">
         <div class="base-line">
-          <span>
-            {{ $t('views.vulnDetail.command') }}:{{ vulnObj.server.command }}
+          <span style="color:black;font-family:PingFangSC-Medium, PingFang SC;display:block">
+            {{ $t('views.vulnDetail.command') }}
           </span>
+          <span style="display:block; margin-top:6px;">{{ vulnObj.server.command }}</span>
         </div>
         <div v-if="vulnObj.server.environment" class="base-line">
-          <span>{{ $t('views.vulnDetail.other') }}: </span>
+          <span style="color:black;font-family:PingFangSC-Medium, PingFang SC">{{$t('views.vulnDetail.other')}}</span>
         </div>
-        <div v-if="vulnObj.server.environment" class="base-line">
-          <span style="color: #849ed8">{{ vulnObj.server.environment }} </span>
+        <div v-if="vulnObj.server.environment" class="base-line" style="padding-top: 6px">
+          <span style="color: #849ed8;">{{ vulnObj.server.environment }} </span>
         </div>
       </div>
     </div>

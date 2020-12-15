@@ -30,6 +30,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
+      style="float:right"
       :total="total"
       :current-page="page"
       :page-size="pageSize"

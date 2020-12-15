@@ -14,7 +14,8 @@
       <div class="flex-column-center">
         <el-input
           v-model="searchObj.name"
-          style="width: 462px"
+          placeholder="请输入项目名称"
+          style="width: 462px;"
           size="mini"
           @keyup.enter.native="newSelectData"
         >
@@ -27,10 +28,10 @@
       </div>
     </div>
     <div class="list-warp">
-      <div class="top-line flex-row-space-between">
-        {{ $t('views.projectManage.title') }}
+      <div class="top-line flex-row-space-between" style="margin-left: 8px">
+        {{$t('views.projectManage.title')}}
       </div>
-      <el-table :data="tableData" class="projectList-table">
+      <el-table :data="tableData" class="projectList-table" style="border:1px">
         <el-table-column prop="name" :label="$t('views.projectManage.name')">
           <template slot-scope="{ row }">
             <div
@@ -50,7 +51,7 @@
             >
               <i
                 class="iconfont iconyuandianzhong"
-                style="font-size: 14px"
+                style="font-size: 12px"
                 :style="
                   item.level === 1
                     ? { color: '#DF6060' }
@@ -92,6 +93,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
+        style="float:right"
         layout="prev, pager, next"
         :total="total"
         :page-size="pageSize"
