@@ -4,6 +4,7 @@ import { iResponse } from '@/services/types'
 interface vulnListParams {
   page?: number
   pageSize?: number
+  projectId?: string
   language?: string
   level?: string
   type?: string

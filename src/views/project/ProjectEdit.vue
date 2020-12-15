@@ -45,7 +45,22 @@
               v-for="item in engineList"
               :key="item.id"
               :value="item.id"
-              :label="item.token"
+              :label="item.short_name"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item :label="$t('views.projectEdit.scan')">
+          <el-select
+            v-model="submitForm.agentIdList"
+            style="width: 412px"
+            :placeholder="$t('views.projectEdit.scanPlaceholder')"
+            @change="agentChange"
+          >
+            <el-option
+              v-for="item in engineList"
+              :key="item.id"
+              :value="item.id"
+              :label="item.short_name"
             ></el-option>
           </el-select>
         </el-form-item>
