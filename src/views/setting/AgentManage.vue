@@ -5,6 +5,7 @@
       <el-table-column
         :label="$t('views.agentManage.address')"
         prop="server"
+        min-width="50px"
       ></el-table-column>
       <el-table-column
         :label="$t('views.agentManage.payload')"
@@ -13,11 +14,12 @@
       <el-table-column
         :label="$t('views.agentManage.status')"
         prop="running_status"
+        width="90px"
       ></el-table-column>
       <el-table-column :label="$t('views.agentManage.manage')" width="100px">
         <template slot-scope="{ row }">
           <i
-            class="iconfont iconxiazai-2 install"
+            class="iconfont iconshengji install"
             @click="agentInstall(row.id)"
           ></i>
           <i

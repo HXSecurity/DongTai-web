@@ -75,3 +75,27 @@
 .commonInput .el-input__inner:focus {
   border-color: #dee4ea;
 }
+
+.graphyTable {
+  border-radius: 4px;
+  border: 1px solid #ebeef4;
+}
+.graphyTable.el-table--fit {
+  border-right: 1px solid #c8e0ff;
+}
+.graphyTable .el-table__header {
+  background: #f1f8ff;
+  color: #38435a;
+  border-radius: 4px 4px 0px 0px;
+  border-bottom: 1px solid #c8e0ff;
+}
+.graphyTable.el-table th {
+  background: #f1f8ff;
+  color: #38435a;
+}
+
+.graphyTable.el-table__header,
+.el-table__body,
+.el-table__footer {
+  border-bottom: 1px solid #c8e0ff;
+}

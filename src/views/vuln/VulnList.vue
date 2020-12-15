@@ -12,6 +12,29 @@
           </div>
         </div>
         <div class="module-title flex-row-space-between">
+          {{ $t('views.vulnList.project_name') }}
+          <div class="reset-btn" @click="projectNameChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
+        </div>
+        <div
+          v-for="item in searchOptionsObj.projects"
+          :key="item.project_name"
+          class="flex-row-space-between module-line"
+          :class="
+            searchObj.project_name === item.project_name ? 'selectedLine' : ''
+          "
+          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          @click="projectNameChange(item.project_name, item.count === 0)"
+        >
+          <div class="selectOption">
+            {{ item.project_name }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
+        </div>
+        <div class="module-title flex-row-space-between">
           {{ $t('views.vulnList.language') }}
           <div class="reset-btn" @click="languageChange('')">
             {{ $t('views.vulnList.reset') }}
@@ -22,7 +45,8 @@
           :key="item.language"
           class="flex-row-space-between module-line"
           :class="searchObj.language === item.language ? 'selectedLine' : ''"
-          @click="languageChange(item.language)"
+          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          @click="languageChange(item.language, item.count === 0)"
         >
           <div class="selectOption">
             {{ item.language }}
@@ -42,7 +66,8 @@
           :key="item.level_id"
           class="flex-row-space-between module-line"
           :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-          @click="levelChange(item.level_id)"
+          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          @click="levelChange(item.level_id, item.count === 0)"
         >
           <div class="selectOption">
             {{ item.level }}
@@ -62,32 +87,11 @@
           :key="item.type"
           class="flex-row-space-between module-line"
           :class="searchObj.type === item.type ? 'selectedLine' : ''"
-          @click="typeChange(item.type)"
+          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          @click="typeChange(item.type, item.count === 0)"
         >
           <div class="selectOption">
             {{ item.type }}
-          </div>
-          <div class="num">
-            {{ item.count }}
-          </div>
-        </div>
-        <div class="module-title flex-row-space-between">
-          {{ $t('views.vulnList.project_name') }}
-          <div class="reset-btn" @click="projectNameChange('')">
-            {{ $t('views.vulnList.reset') }}
-          </div>
-        </div>
-        <div
-          v-for="item in searchOptionsObj.projects"
-          :key="item.project_name"
-          class="flex-row-space-between module-line"
-          :class="
-            searchObj.project_name === item.project_name ? 'selectedLine' : ''
-          "
-          @click="projectNameChange(item.project_name)"
-        >
-          <div class="selectOption">
-            {{ item.project_name }}
           </div>
           <div class="num">
             {{ item.count }}
@@ -286,22 +290,34 @@ export default class VulnList extends VueBase {
     this.newSelectData()
   }
 
-  private languageChange(val: string) {
+  private languageChange(val: string, stop: boolean) {
+    if (stop) {
+      return
+    }
     this.searchObj.language = val
     this.newSelectData()
   }
 
-  private levelChange(val: string) {
+  private levelChange(val: string, stop: boolean) {
+    if (stop) {
+      return
+    }
     this.searchObj.level = val
     this.newSelectData()
   }
 
-  private typeChange(val: string) {
+  private typeChange(val: string, stop: boolean) {
+    if (stop) {
+      return
+    }
     this.searchObj.type = val
     this.newSelectData()
   }
 
-  private projectNameChange(val: string) {
+  private projectNameChange(val: string, stop: boolean) {
+    if (stop) {
+      return
+    }
     this.searchObj.project_name = val
     this.newSelectData()
   }

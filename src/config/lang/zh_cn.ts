@@ -78,6 +78,8 @@ export default {
       language: '语言',
       level: '等级',
       type: '类型',
+      reset: '重置',
+      resetAll: '重置全部',
       project_name: '项目',
       orderOptions: {
         project_name: '项目名称',

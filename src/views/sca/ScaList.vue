@@ -5,21 +5,47 @@
         <div class="title flex-column-center">
           <div class="flex-row-space-between">
             {{ $t('views.vulnList.filter') }}
-            <div class="reset-btn" style="margin-top: 2px" @click="reset">
-              reset
-            </div>
+            <el-button type="text" class="resetAllBtn" @click="reset">
+              {{ $t('views.vulnList.resetAll') }}
+            </el-button>
+          </div>
+        </div>
+        <div class="module-title flex-row-space-between">
+          {{ $t('views.scaList.project_name') }}
+          <div class="reset-btn" @click="projectNameChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
+        </div>
+        <div
+          v-for="item in searchOptionsObj.projects"
+          :key="item.project_name"
+          class="flex-row-space-between module-line"
+          :class="
+            searchObj.project_name === item.project_name ? 'selectedLine' : ''
+          "
+          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          @click="projectNameChange(item.project_name, item.count === 0)"
+        >
+          <div class="selectOption">
+            {{ item.project_name }}
+          </div>
+          <div class="num">
+            {{ item.count }}
           </div>
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.scaList.language') }}
-          <div class="reset-btn" @click="levelChange('')">reset</div>
+          <div class="reset-btn" @click="levelChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
         </div>
         <div
           v-for="item in searchOptionsObj.language"
           :key="item.language"
           class="flex-row-space-between module-line"
           :class="searchObj.language === item.language ? 'selectedLine' : ''"
-          @click="languageChange(item.language)"
+          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          @click="languageChange(item.language, item.count === 0)"
         >
           <div class="selectOption">
             {{ item.language }}
@@ -30,37 +56,20 @@
         </div>
         <div class="module-title flex-row-space-between">
           {{ $t('views.scaList.level') }}
-          <div class="reset-btn" @click="levelChange('')">reset</div>
+          <div class="reset-btn" @click="levelChange('')">
+            {{ $t('views.vulnList.reset') }}
+          </div>
         </div>
         <div
           v-for="item in searchOptionsObj.level"
           :key="item.level_id"
           class="flex-row-space-between module-line"
           :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-          @click="levelChange(item.level_id)"
+          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          @click="levelChange(item.level_id, item.count === 0)"
         >
           <div class="selectOption">
             {{ item.level }}
-          </div>
-          <div class="num">
-            {{ item.count }}
-          </div>
-        </div>
-        <div class="module-title flex-row-space-between">
-          {{ $t('views.scaList.project_name') }}
-          <div class="reset-btn" @click="projectNameChange('')">reset</div>
-        </div>
-        <div
-          v-for="item in searchOptionsObj.projects"
-          :key="item.project_name"
-          class="flex-row-space-between module-line"
-          :class="
-            searchObj.project_name === item.project_name ? 'selectedLine' : ''
-          "
-          @click="projectNameChange(item.project_name)"
-        >
-          <div class="selectOption">
-            {{ item.project_name }}
           </div>
           <div class="num">
             {{ item.count }}
@@ -73,7 +82,8 @@
       <div class="selectForm">
         <el-select
           v-model="searchObj.order"
-          size="mini"
+          class="commonSelect"
+          placeholder="排序"
           clearable
           @change="newSelectData"
         >
@@ -86,8 +96,9 @@
         </el-select>
         <el-select
           v-model="searchObj.language"
+          placeholder="语言"
           style="margin-left: 10px"
-          size="mini"
+          class="commonSelect"
           clearable
           @change="newSelectData"
         >
@@ -98,7 +109,8 @@
           <el-input
             v-model="searchObj.keyword"
             style="width: 462px"
-            size="mini"
+            placeholder="请输入关键字"
+            class="commonInput"
             @keyup.enter.native="newSelectData"
           >
             <i
@@ -217,17 +229,26 @@ export default class ScaList extends VueBase {
     this.newSelectData()
   }
 
-  private languageChange(val: string) {
+  private languageChange(val: string, stop: boolean) {
+    if (stop) {
+      return
+    }
     this.searchObj.language = val
     this.newSelectData()
   }
 
-  private levelChange(val: string) {
+  private levelChange(val: string, stop: boolean) {
+    if (stop) {
+      return
+    }
     this.searchObj.level = val
     this.newSelectData()
   }
 
-  private projectNameChange(val: string) {
+  private projectNameChange(val: string, stop: boolean) {
+    if (stop) {
+      return
+    }
     this.searchObj.project_name = val
     this.newSelectData()
   }
@@ -339,6 +360,15 @@ export default class ScaList extends VueBase {
     font-size: 18px;
     font-weight: normal;
     color: #4a72ae;
+
+    .resetAllBtn {
+      width: 72px;
+      height: 28px;
+      line-height: 0;
+      background: #4a72ae;
+      border-radius: 2px;
+      color: #fff;
+    }
   }
 
   .module-title {
@@ -349,12 +379,8 @@ export default class ScaList extends VueBase {
   }
 
   .reset-btn {
-    color: #4b99f1;
+    color: #4a72ae;
     cursor: pointer;
-
-    &:hover {
-      color: #4a72ae;
-    }
   }
 
   .module-line {

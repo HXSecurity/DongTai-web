@@ -95,7 +95,7 @@
       <div style="height: 100%">
         <i
           class="iconfont operateIcon"
-          :class="sliderWarpContract ? 'iconopen1' : 'iconopen11'"
+          :class="sliderWarpContract ? 'iconopen1-2' : 'iconopen11'"
           @click="sliderWarpContract = !sliderWarpContract"
         ></i>
       </div>
@@ -218,12 +218,50 @@
         class="graphyModule flex-row-space-between"
       >
         <div class="left-warp">
+          <div class="flex-row-space-between">
+            <div class="tip">
+              <i
+                class="iconfont iconyuandianzhong"
+                style="font-size: 12px; color: #5491ef"
+              ></i>
+              污点来源
+            </div>
+            <div class="tip">
+              <i
+                class="iconfont iconyuandianzhong"
+                style="font-size: 12px; color: #f3bc3f"
+              ></i>
+              传播方法
+            </div>
+            <div class="tip">
+              <i
+                class="iconfont iconyuandianzhong"
+                style="font-size: 12px; color: #ec984f"
+              ></i>
+              危险方法
+            </div>
+          </div>
           <div
             v-for="(item, index) in vulnObj.vul.graphy"
             :key="index"
-            class="nodeLine flex-column-center"
+            class="nodeLine flex-row-space-between"
           >
-            {{ item.node }}
+            <div class="flex-column-center" style="padding: 0 5px">
+              <i
+                class="iconfont iconyuandianzhong"
+                style="font-size: 12px; color: #ec984f"
+                :style="
+                  index === 0
+                    ? { color: '#5491ef' }
+                    : index === vulnObj.vul.graphy.length - 1
+                    ? { color: '#ec984f' }
+                    : {}
+                "
+              ></i>
+            </div>
+            <div class="node">
+              {{ item.node }}
+            </div>
             <i
               v-if="index < vulnObj.vul.graphy.length - 1"
               class="step el-icon-bottom"
@@ -245,6 +283,7 @@
             <el-table-column
               align="center"
               :label="$t('views.vulnDetail.fileAndNum')"
+              min-width="100px"
             >
               <template slot-scope="{ row }">
                 <div>{{ row.file }}</div>
@@ -498,13 +537,9 @@ export default class VulnDetail extends VueBase {
 
 <style>
 .el-table .diy-row {
-  background: #f8f9fb;
+  background: #fff;
   color: #959fb4;
   font-size: 14px;
-}
-.graphyTable.el-table th {
-  background: #f8f9fb;
-  color: #959fb4;
 }
 </style>
 
@@ -588,8 +623,10 @@ export default class VulnDetail extends VueBase {
 
 .vuln-warp {
   margin-top: 14px;
+  min-height: calc(100vh - 104px);
+  margin-bottom: 26px;
   background: #fff;
-  padding: 0 14px;
+  padding: 0 14px 41px 14px;
 
   .vuln-title {
     height: 58px;
@@ -666,6 +703,8 @@ export default class VulnDetail extends VueBase {
     color: #959fb4;
     font-size: 14px;
     padding: 0 14px 26px 14px;
+    max-height: 262px;
+    overflow-y: auto;
 
     .base-line {
       padding-top: 14px;
@@ -690,21 +729,31 @@ export default class VulnDetail extends VueBase {
     .left-warp {
       width: 49%;
 
-      .nodeLine {
-        background: #f8f9fb;
-        width: 100%;
-        height: 48px;
-        text-align: center;
-        line-height: 20px;
+      .tip {
+        flex: 1;
+        color: #38435a;
         font-size: 14px;
-        color: #959fb4;
+      }
+
+      .nodeLine {
+        border: 1px solid #e9edf5;
+        background: #fff;
+        width: 100%;
+        font-size: 14px;
+        color: #646e83;
         margin-top: 34px;
-        padding: 0 10px;
-        word-break: break-all;
         position: relative;
 
         &:first-child {
           margin-top: 0;
+        }
+
+        .node {
+          flex: 1;
+          text-align: center;
+          line-height: 20px;
+          padding: 10px 10px;
+          word-break: break-all;
         }
 
         .step {

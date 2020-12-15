@@ -66,6 +66,6 @@ export default () =>
 
     // 删除指定操作日志
     logDelete(params: { ids: string }): Promise<iResponse> {
-      return request.get('/log/delete', { params })
+      return request.post('/log/delete', params)
     }
   })()

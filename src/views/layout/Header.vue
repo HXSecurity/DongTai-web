@@ -122,7 +122,7 @@ export default class Header extends VueBase {
         color: #38435a;
         cursor: pointer;
         margin-left: 10px;
-        padding: 0 40px;
+        padding: 0 15px;
 
         &:first-child {
           margin-left: 0;

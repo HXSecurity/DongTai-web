@@ -1,6 +1,6 @@
 <template>
-  <main class="container flex-row-space-between">
-    <div class="fixed-warp">
+  <main class="container">
+    <div v-if="!sliderWarpContract" class="fixed-warp">
       <div class="slider-warp">
         <div class="titleForm flex-row-space-between">
           <el-select v-model="searchObj.order" size="mini" style="width: 90px">
@@ -25,26 +25,34 @@
         </div>
         <div class="page-line flex-column-center">
           <div class="flex-row-space-between">
-            <el-pagination
-              small
-              layout="prev, next"
-              :total="total"
-              :current-page="page"
-              :page-size="20"
-              @current-change="currentChange"
-            >
-            </el-pagination>
-            <span style="color: #969ba4; line-height: 25px">
-              <strong style="color: #38435a; font-weight: 400">{{
-                page
-              }}</strong
-              >/{{ Math.ceil(total / 20) }}
-            </span>
-            <el-button
-              size="mini"
-              icon="el-icon-refresh"
-              @click="getTableData"
-            ></el-button>
+            <div class="flex-column-center">
+              <el-pagination
+                small
+                layout="prev, next"
+                :total="total"
+                :current-page="page"
+                :page-size="20"
+                @current-change="currentChange"
+              >
+              </el-pagination>
+            </div>
+            <div class="flex-column-center">
+              <span style="color: #969ba4; line-height: 25px">
+                <strong style="color: #38435a; font-weight: 400">{{
+                  page
+                }}</strong
+                >/{{ Math.ceil(total / 20) }}
+              </span>
+            </div>
+            <div class="flex-column-center">
+              <el-button
+                type="text"
+                style="color: #5782db"
+                @click="getTableData"
+              >
+                刷新
+              </el-button>
+            </div>
           </div>
         </div>
         <div
@@ -87,6 +95,18 @@
       </div>
     </div>
     <div
+      class="operateCol"
+      :style="sliderWarpContract ? {} : { 'margin-left': '228px' }"
+    >
+      <div style="height: 100%">
+        <i
+          class="iconfont operateIcon"
+          :class="sliderWarpContract ? 'iconopen1-2' : 'iconopen11'"
+          @click="sliderWarpContract = !sliderWarpContract"
+        ></i>
+      </div>
+    </div>
+    <div
       class="sca-warp"
       :class="
         sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'
@@ -97,27 +117,39 @@
       </div>
       <div class="sca-info">
         <div class="info-line">
-          {{ `${$t('views.scaDetail.version')}：${scaObj.version}` }}
+          <span>
+            <i class="iconfont iconbanben-3"></i>
+            {{ $t('views.scaDetail.version') }}：
+          </span>
+          {{ scaObj.version }}
         </div>
         <div class="info-line">
-          {{ `${$t('views.scaDetail.level')}：${scaObj.level}` }}
+          <span>
+            <i class="iconfont iconweixian-2"></i>
+            {{ $t('views.scaDetail.level') }}：
+          </span>
+          {{ scaObj.level }}
         </div>
         <div class="info-line">
-          {{ `${$t('views.scaDetail.project_name')}：${scaObj.project_name}` }}
+          <span>
+            <i class="iconfont iconapp"></i>
+            {{ $t('views.scaDetail.project_name') }}：
+          </span>
+          {{ scaObj.project_name }}
         </div>
         <div class="info-line">
-          {{
-            `${$t('views.scaDetail.vul_count')}：${scaObj.vul_count}${$t(
-              'views.scaDetail.unit'
-            )}`
-          }}
+          <span>
+            <i class="iconfont iconlishi"></i>
+            {{ $t('views.scaDetail.vul_count') }}：
+          </span>
+          {{ `${scaObj.vul_count}${$t('views.scaDetail.unit')}` }}
         </div>
         <div class="info-line">
-          {{
-            `${$t('views.scaDetail.signature_value')}：${
-              scaObj.signature_value
-            }`
-          }}
+          <span>
+            <i class="iconfont iconwendangzhongxin"></i>
+            {{ $t('views.scaDetail.signature_value') }}：
+          </span>
+          {{ scaObj.signature_value }}
         </div>
       </div>
       <div class="module-title">
@@ -360,8 +392,21 @@ export default class ScaDetail extends VueBase {
   }
 }
 
+.operateCol {
+  position: fixed;
+  overflow: auto;
+  height: calc(100vh - 64px);
+  .operateIcon {
+    font-size: 26px;
+    color: #c5d6e2;
+    cursor: pointer;
+    line-height: 100vh;
+  }
+}
+
 .slider-warp-contract {
-  width: 100%;
+  width: calc(100% - 24px);
+  margin-left: 23px;
 }
 
 .slider-warp-spreadOut {
@@ -371,8 +416,10 @@ export default class ScaDetail extends VueBase {
 
 .sca-warp {
   margin-top: 14px;
+  min-height: calc(100vh - 104px);
+  margin-bottom: 26px;
   background: #fff;
-  padding: 0 14px;
+  padding: 0 14px 41px 14px;
 
   .sca-title {
     height: 58px;
@@ -393,6 +440,16 @@ export default class ScaDetail extends VueBase {
 
       &:first-child {
         margin-top: 0;
+      }
+
+      span {
+        color: #5782db;
+        display: inline-block;
+        vertical-align: middle;
+
+        i {
+          font-size: 14px;
+        }
       }
     }
   }

@@ -7,7 +7,7 @@
           <i class="iconfont icondaochu-5"></i>
           导出
         </el-button>
-        <el-button type="text" class="btn" @click="logDelete">
+        <el-button type="text" class="btn" @click="deleteDialogShow">
           <i class="iconfont iconshanchu-6"></i>
           删除
         </el-button>
@@ -55,6 +55,24 @@
         @current-change="currentChange"
       ></el-pagination>
     </div>
+    <el-dialog :visible.sync="deleteDialogOpen" title="删除日志" width="25%">
+      <div style="text-align: center">
+        <p style="color: #959fb4">日志删除后，将不可恢复</p>
+        <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <el-button type="text" class="confirmDel" @click="logDelete">
+          确认删除
+        </el-button>
+        <el-button
+          type="text"
+          class="cancelDel"
+          @click="deleteDialogOpen = false"
+        >
+          取消
+        </el-button>
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -65,6 +83,7 @@ import { LogItem } from './types'
 
 @Component({ name: 'LogManage' })
 export default class LogManage extends VueBase {
+  private deleteDialogOpen = false
   private page = 1
   private pageSize = 20
   private total = 0
@@ -118,6 +137,14 @@ export default class LogManage extends VueBase {
     this.tableData = data
     this.total = total
   }
+
+  private deleteDialogShow() {
+    if (this.selectIdSet.length <= 0) {
+      this.$message.error('请选择日志')
+      return
+    }
+    this.deleteDialogOpen = true
+  }
   private async logDelete() {
     const params = {
       ids: this.selectIdSet.join(','),
@@ -128,6 +155,7 @@ export default class LogManage extends VueBase {
       return
     }
     this.$message.success(msg)
+    this.deleteDialogOpen = false
     await this.getTableData()
   }
 }
@@ -160,5 +188,22 @@ main {
       }
     }
   }
+}
+
+.confirmDel {
+  width: 124px;
+  height: 38px;
+  line-height: 0;
+  background: #4a72ae;
+  border-radius: 2px;
+  color: #fff;
+}
+
+.cancelDel {
+  width: 124px;
+  height: 38px;
+  border-radius: 2px;
+  border: 1px solid #4a72ae;
+  color: #4a72ae;
 }
 </style>

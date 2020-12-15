@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "18825267",
+      "name": "open1-2",
+      "font_class": "open1-2",
+      "unicode": "e696",
+      "unicode_decimal": 59030
+    },
+    {
+      "icon_id": "18823345",
+      "name": "项目配置-新增策略模板",
+      "font_class": "zengjia-2",
+      "unicode": "e694",
+      "unicode_decimal": 59028
+    },
+    {
+      "icon_id": "18823346",
+      "name": "项目配置-创建策略",
+      "font_class": "xuanzhong-5",
+      "unicode": "e695",
+      "unicode_decimal": 59029
+    },
+    {
       "icon_id": "18797703",
       "name": "数据概览",
       "font_class": "shuju1",
