@@ -92,7 +92,7 @@ export default class Login extends VueBase {
   // }
 
   .loginFooter {
-    background-image: url('../assets/img/loginbg.png');
+    background-image: url('../assets/img/loginBg.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     position: absolute;

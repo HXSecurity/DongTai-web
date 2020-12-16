@@ -335,7 +335,7 @@ export default class VulListComponent extends VueBase {
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order,
-      projectId: this.projectId,
+      project_id: this.projectId,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnList(params)

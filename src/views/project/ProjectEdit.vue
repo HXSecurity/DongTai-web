@@ -104,11 +104,12 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="漏洞类型">
-            <el-input
-              v-model="scanForm.name"
-              class="commonInput"
-              style="width: 400px"
-            ></el-input>
+            <el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
+              <el-radio-button label="top">top</el-radio-button>
+              <el-radio-button label="right">right</el-radio-button>
+              <el-radio-button label="bottom">bottom</el-radio-button>
+              <el-radio-button label="left">left</el-radio-button>
+            </el-radio-group>
           </el-form-item>
         </el-form>
       </div>
@@ -144,7 +145,7 @@ export default class ProjectEdit extends VueBase {
     token: string
   }> = []
   private strategyList: Array<{ id: number; name: string }> = []
-
+  private strategyTypeList = []
   private rules = {
     name: [
       {
@@ -222,6 +223,15 @@ export default class ProjectEdit extends VueBase {
       return
     }
     this.strategyList = data
+  }
+
+  private async strategyTypes() {
+    const { status, msg, data } = await this.services.setting.strategyTypes()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.strategyTypeList = data
   }
 
   private agentChange() {
