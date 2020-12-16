@@ -45,9 +45,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        {{ $t('views.vulnList.level') }}
+        <span style="font-size: 14px">{{ $t('views.vulnList.level') }}</span>
         <div class="reset-btn" @click="levelChange('')">
-          {{ $t('views.vulnList.reset') }}
+          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
@@ -73,9 +73,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        {{ $t('views.vulnList.type') }}
+        <span style="font-size: 14px">{{ $t('views.vulnList.type') }}</span>
         <div class="reset-btn" @click="typeChange('')">
-          {{ $t('views.vulnList.reset') }}
+          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
@@ -149,15 +149,24 @@
         class="card"
         @click="goDetail(item.id)"
       >
-        <div class="card-title flex-row-space-between" style="height:33px;min-height:32px">
-          <span class="title flex-column-center" style="font-size:14px;font-weight:bold;height:32px">
+        <div
+          class="card-title flex-row-space-between"
+          style="height: 33px; min-height: 32px"
+        >
+          <span
+            class="title flex-column-center"
+            style="font-size: 14px; font-weight: bold; height: 32px"
+          >
             {{
               `${item.url}的${item.http_method}请求出现${item.type}漏洞${
                 item.taint_position ? `，位置：${item.taint_position}` : ''
               }`
             }}
           </span>
-          <span class="time flex-column-center" style="font-size:12px;height:32px;">
+          <span
+            class="time flex-column-center"
+            style="font-size: 12px; height: 32px"
+          >
             {{ item.first_time }}
           </span>
         </div>
@@ -187,17 +196,20 @@
                 ></i>
                 {{ item.server_name }}
               </span>
-              <span class="info" :style="
-                    item.level_type === 1
-                      ? { color: '#EA7171' }
-                      : item.level_type === 2
-                      ? { color: '#F39D0A' }
-                      : item.level_type === 3
-                      ? { color: '#2E8FE9' }
-                      : item.level_type === 4
-                      ? { color: '#7BC1AB' }
-                      : ''
-                  ">
+              <span
+                class="info"
+                :style="
+                  item.level_type === 1
+                    ? { color: '#EA7171' }
+                    : item.level_type === 2
+                    ? { color: '#F39D0A' }
+                    : item.level_type === 3
+                    ? { color: '#2E8FE9' }
+                    : item.level_type === 4
+                    ? { color: '#7BC1AB' }
+                    : ''
+                "
+              >
                 <i class="iconfont iconweixian"></i>
                 {{ item.level }}
               </span>
@@ -516,7 +528,7 @@ export default class VulListComponent extends VueBase {
   .card {
     margin-top: 14px;
     width: 100%;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     background: #ffffff;
     border-radius: 8px;
     border: 1px solid #dee4ea;
