@@ -49,7 +49,7 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.scan')">
+        <!-- <el-form-item :label="$t('views.projectEdit.scan')">
           <el-select
             v-model="submitForm.agentIdList"
             style="width: 412px"
@@ -63,7 +63,7 @@
               :label="item.short_name"
             ></el-option>
           </el-select>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('views.projectEdit.added')" class="el-form--label-left" >
           <el-tag
             v-for="(tag, index) in engineSelectedList"
@@ -87,7 +87,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-dialog :visible.sync="scanAddDialogOpen" title="创建策略" width="650px">
+    <!-- <el-dialog :visible.sync="scanAddDialogOpen" title="创建策略" width="650px">
       <div>
         <el-form label-width="80px">
           <el-form-item label="策略名称">
@@ -107,7 +107,7 @@
           </el-form-item>
         </el-form>
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </main>
 </template>
 

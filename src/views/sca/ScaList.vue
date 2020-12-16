@@ -52,9 +52,14 @@
           class="module-title flex-row-space-between"
           style="margin-top: 14px; margin-bottom: 0px"
         >
-          {{ $t('views.scaList.language') }}
+          <span style="font-size: 14px">
+            {{ $t('views.scaList.language') }}
+          </span>
+
           <div class="reset-btn" @click="levelChange('')">
-            {{ $t('views.vulnList.reset') }}
+            <span style="font-size: 14px">
+              {{ $t('views.vulnList.reset') }}
+            </span>
           </div>
         </div>
         <div
@@ -80,9 +85,13 @@
           class="module-title flex-row-space-between"
           style="margin-top: 14px; margin-bottom: 0px"
         >
-          {{ $t('views.scaList.level') }}
+          <span style="font-size: 14px">
+            {{ $t('views.scaList.level') }}
+          </span>
           <div class="reset-btn" @click="levelChange('')">
-            {{ $t('views.vulnList.reset') }}
+            <span style="font-size: 14px">
+              {{ $t('views.vulnList.reset') }}
+            </span>
           </div>
         </div>
         <div
