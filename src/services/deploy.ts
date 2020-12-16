@@ -17,7 +17,7 @@ export default () =>
 
     // 下载引擎
     engineDownload() {
-      return request
+      request
         .get('/engine/download', {
           responseType: 'blob', // 告诉服务器我们需要的响应格式
         })

@@ -21,7 +21,7 @@
       </div>
       <div class="contentWarp">
         <div v-if="curStep === 1" class="stepWarp">
-          <el-form label-position="top">
+          <el-form label-position="top" @submit.native.prevent>
             <el-form-item>
               <div class="title">第一步，选择Agent类型</div>
             </el-form-item>
@@ -56,7 +56,7 @@
           </el-form>
         </div>
         <div v-if="curStep === 2" class="stepWarp">
-          <el-form label-position="top">
+          <el-form label-position="top" @submit.native.prevent>
             <el-form-item>
               <div class="title">第二步，选择应用的运行环境</div>
             </el-form-item>
@@ -119,7 +119,7 @@
           </el-form>
         </div>
         <div v-if="curStep === 3" class="stepWarp">
-          <el-form label-position="top">
+          <el-form label-position="top" @submit.native.prevent>
             <el-form-item style="margin-bottom: 5px">
               <div class="title">第三步，下载与配置</div>
               <div class="token">
@@ -137,7 +137,11 @@
                 </div>
                 <div class="moudleTitle">
                   手动下载：
-                  <button type="text" class="downloadBtn">
+                  <button
+                    type="text"
+                    class="downloadBtn"
+                    @click="engineDownload"
+                  >
                     <i class="el-icon-download"></i>
                     点击下载
                   </button>
@@ -396,6 +400,7 @@ main {
       }
 
       .downloadBtn {
+        cursor: pointer;
         width: 94px;
         height: 26px;
         border-radius: 4px;
