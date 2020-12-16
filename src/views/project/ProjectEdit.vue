@@ -87,6 +87,27 @@
         </el-form-item>
       </el-form>
     </div>
+    <el-dialog :visible.sync="scanAddDialogOpen" title="创建策略" width="650px">
+      <div>
+        <el-form label-width="80px">
+          <el-form-item label="策略名称">
+            <el-input
+              v-model="scanForm.name"
+              class="commonInput"
+              style="width: 400px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="漏洞类型">
+            <el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
+              <el-radio-button label="top">top</el-radio-button>
+              <el-radio-button label="right">right</el-radio-button>
+              <el-radio-button label="bottom">bottom</el-radio-button>
+              <el-radio-button label="left">left</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -101,14 +122,24 @@ export default class ProjectEdit extends VueBase {
     name: string
     mode: string
     agentIdList: Array<number>
+    scanId: number | undefined
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
     agentIdList: [],
+    scanId: undefined,
   }
-  private engineList: Array<{ id: number; token: string }> = []
-  private engineSelectedList: Array<{ id: number; token: string }> = []
-
+  private engineList: Array<{
+    id: number
+    short_name: string
+    token: string
+  }> = []
+  private engineSelectedList: Array<{
+    id: number
+    token: string
+  }> = []
+  private strategyList: Array<{ id: number; name: string }> = []
+  private strategyTypeList = []
   private rules = {
     name: [
       {
@@ -117,12 +148,37 @@ export default class ProjectEdit extends VueBase {
         trigger: 'blur',
       },
     ],
+    scanId: [
+      {
+        required: true,
+        message: this.$t('views.projectEdit.scanPlaceholder'),
+        trigger: 'change',
+      },
+    ],
+  }
+
+  private scanAddDialogOpen = false
+  private scanForm: {
+    ids: Array<number>
+    name: string
+  } = {
+    ids: [],
+    name: '',
   }
 
   async created() {
     await this.getEngineList()
+    await this.strategyUserList()
     if (this.$route.params.pid) {
       await this.projectDetail()
+    }
+  }
+
+  private scanAddDialogShow() {
+    this.scanAddDialogOpen = true
+    this.scanForm = {
+      ids: [],
+      name: '',
     }
   }
 
@@ -152,6 +208,24 @@ export default class ProjectEdit extends VueBase {
       return
     }
     this.engineList = data
+  }
+
+  private async strategyUserList() {
+    const { status, msg, data } = await this.services.setting.strategyUserList()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.strategyList = data
+  }
+
+  private async strategyTypes() {
+    const { status, msg, data } = await this.services.setting.strategyTypes()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.strategyTypeList = data
   }
 
   private agentChange() {
@@ -237,6 +311,13 @@ export default class ProjectEdit extends VueBase {
     border-radius: 2px;
     border: 1px solid #1a80f2;
     color: #1a80f2;
+  }
+
+  .addStrategyIcon {
+    color: #1a80f2;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
   }
 }
 </style>
