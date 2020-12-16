@@ -140,7 +140,7 @@
                   <button
                     type="text"
                     class="downloadBtn"
-                    @click="engineDownload"
+                    @click="agentDownload"
                   >
                     <i class="el-icon-download"></i>
                     点击下载
@@ -248,9 +248,9 @@ export default class Deploy extends VueBase {
   }
 
   // 下载引擎
-  private async engineDownload() {
+  private async agentDownload() {
     this.loadingStart()
-    await this.services.deploy.engineDownload()
+    await this.services.deploy.agentDownload()
     this.loadingDone()
   }
 

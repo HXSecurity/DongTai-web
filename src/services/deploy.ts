@@ -16,9 +16,9 @@ export default () =>
     }
 
     // 下载引擎
-    engineDownload() {
+    agentDownload() {
       request
-        .get('/engine/download', {
+        .get('agent/download', {
           responseType: 'blob', // 告诉服务器我们需要的响应格式
         })
         .then((res: any) => {
