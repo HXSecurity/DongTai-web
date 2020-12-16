@@ -100,3 +100,13 @@
 .el-table__footer {
   border-bottom: 1px solid #c8e0ff;
 }
+
+.scanRadioGroup.el-radio-button__orig-radio:checked + .el-radio-button__inner {
+  background-color: #4a72ae;
+  border-color: #4a72ae;
+}
+
+
+.deploySelect .el-input__inner {
+  height: 38px;
+}

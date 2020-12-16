@@ -12,6 +12,7 @@ interface ProjectAddParams {
   name: string
   mode: string
   agent_ids: string
+  scan_id: number
 }
 
 export default () =>

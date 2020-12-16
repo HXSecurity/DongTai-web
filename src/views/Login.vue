@@ -5,7 +5,11 @@
     <div class="loginFooter"></div>
     <div class="loginCard">
       <div class="title">
-        {{ $t('views.login.title') }}
+        <img
+          src="../assets/img/loginLogo.png"
+          alt="logo"
+          style="width: 140px; height: 32px"
+        />
       </div>
       <div class="subTitle">
         <span class="line"></span>

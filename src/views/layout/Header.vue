@@ -1,7 +1,13 @@
 <template>
   <header class="header">
     <div class="container flex-row-space-between header-warp">
-      <div class="logo flex-column-center" @click="$router.push('/')">IAST</div>
+      <div class="logo flex-column-center" @click="$router.push('/')">
+        <img
+          src="../../assets/img/logo.png"
+          alt="logo"
+          style="width: 98px; height: 22px"
+        />
+      </div>
       <div v-if="userInfo" class="url-warp">
         <div
           class="url flex-column-center"
@@ -45,6 +51,9 @@
         </el-button>
       </div>
       <div v-else>
+        <el-button type="text" class="anent" @click="$router.push('/deploy')">
+          部署IAST
+        </el-button>
         <el-dropdown>
           <div style="height: 64px" class="flex-column-center">
             <div>
@@ -149,6 +158,16 @@ export default class Header extends VueBase {
       border-radius: 50%;
       vertical-align: middle;
       margin-right: 14px;
+    }
+
+    .anent {
+      color: #fff;
+      width: 82px;
+      height: 28px;
+      line-height: 0;
+      background: #4a72ae;
+      border-radius: 4px;
+      margin-right: 20px;
     }
   }
 }

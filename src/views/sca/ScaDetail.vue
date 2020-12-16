@@ -104,6 +104,7 @@
       </div>
     </div>
     <div
+      v-if="scaObj && scaObj.package_name"
       class="sca-warp"
       :class="
         sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'

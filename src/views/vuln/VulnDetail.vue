@@ -104,15 +104,17 @@
       "
     >
       <div class="vuln-title flex-row-space-between">
-        {{
-          `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${
-            vulnObj.vul.type
-          }漏洞${
-            vulnObj.vul.taint_position
-              ? `，位置：${vulnObj.vul.taint_position}`
-              : ''
-          }`
-        }}
+        <div>
+          {{
+            `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${
+              vulnObj.vul.type
+            }漏洞${
+              vulnObj.vul.taint_position
+                ? `，位置：${vulnObj.vul.taint_position}`
+                : ''
+            }`
+          }}
+        </div>
         <div class="btnWarp">
           <el-button type="text" class="btn">
             <i class="iconfont icondaochu-5"></i>
@@ -628,14 +630,15 @@ export default class VulnDetail extends VueBase {
   padding: 0 14px 41px 14px;
 
   .vuln-title {
-    height: 58px;
-    line-height: 58px;
+    padding-top: 24px;
+    padding-bottom: 10px;
     font-size: 16px;
     color: #38435a;
     font-weight: 600;
     border-bottom: 1px solid #e6e9ec;
 
     .btnWarp {
+      width: 190px;
       .btn {
         width: 80px;
         height: 32px;
