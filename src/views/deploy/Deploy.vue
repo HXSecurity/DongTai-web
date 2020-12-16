@@ -35,9 +35,9 @@
               >
                 <el-option
                   v-for="item in agents"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -70,9 +70,9 @@
               >
                 <el-option
                   v-for="item in javaVersion"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -86,9 +86,9 @@
               >
                 <el-option
                   v-for="item in middlewares"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -102,9 +102,9 @@
               >
                 <el-option
                   v-for="item in system"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -179,26 +179,25 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
-import { Option } from './types'
 
 @Component({ name: 'Deploy' })
 export default class Deploy extends VueBase {
   private curStep = 1
   private deployForm: {
-    agent: undefined | number
-    javaVersion: undefined | number
-    middleware: undefined | number
-    system: undefined | number
+    agent: string
+    javaVersion: string
+    middleware: string
+    system: string
   } = {
-    agent: undefined,
-    javaVersion: undefined,
-    middleware: undefined,
-    system: undefined,
+    agent: '',
+    javaVersion: '',
+    middleware: '',
+    system: '',
   }
-  private agents: Array<Option> = []
-  private javaVersion: Array<Option> = []
-  private middlewares: Array<Option> = []
-  private system: Array<Option> = []
+  private agents: Array<string> = []
+  private javaVersion: Array<string> = []
+  private middlewares: Array<string> = []
+  private system: Array<string> = []
   private userToken = ''
   private desc = ''
 
@@ -227,10 +226,10 @@ export default class Deploy extends VueBase {
     this.userToken = user_token
     this.desc = desc
     this.deployForm = {
-      agent: parseInt(data.agent_value),
-      javaVersion: parseInt(data.java_version),
-      middleware: parseInt(data.middleware),
-      system: parseInt(data.system),
+      agent: data.agent_value,
+      javaVersion: data.java_version,
+      middleware: data.middleware,
+      system: data.system,
     }
   }
   private async agentDeployInfo() {
@@ -256,12 +255,7 @@ export default class Deploy extends VueBase {
 
   //系统部署信息提交
   private async agentDeploySubmit() {
-    const params: {
-      agent_value?: number
-      java_version?: number
-      middleware?: number
-      system?: number
-    } = {
+    const params = {
       agent_value: this.deployForm.agent,
       java_version: this.deployForm.javaVersion,
       middleware: this.deployForm.middleware,

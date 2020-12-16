@@ -2,10 +2,10 @@ import request from '@/utils/request'
 import { iResponse } from '@/services/types'
 
 interface AgentDeploySubmitParams {
-  agent_value?: number
-  java_version?: number
-  middleware?: number
-  system?: number
+  agent_value?: string
+  java_version?: string
+  middleware?: string
+  system?: string
 }
 
 export default () =>
