@@ -210,6 +210,7 @@ export default class Deploy extends VueBase {
       status,
       msg,
       data,
+      step,
       user_token,
       desc,
     } = await this.services.deploy.getDeplogInfo()
@@ -218,6 +219,7 @@ export default class Deploy extends VueBase {
       this.$message.error(msg)
       return
     }
+    this.curStep = step
     this.userToken = user_token
     this.desc = desc
     this.deployForm = {
