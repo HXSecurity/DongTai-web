@@ -149,8 +149,8 @@
                 <div class="moudleTitle">自动下载：</div>
                 <div class="command">
                   {{
-                    `curl -X GET https://www.huoxian.cn/iast/download/agent -H
-                  'X-IAST-TOKEN: ${userToken}' -o agent.jar -k`
+                    `curl -X GET ${url}/api/v1/agent/download?url=${url} -H
+                  'Authorization: Token ${userToken}' -o agent.jar -k`
                   }}
                 </div>
               </div>
@@ -200,6 +200,7 @@ export default class Deploy extends VueBase {
   private system: Array<string> = []
   private userToken = ''
   private desc = ''
+  private url= location.origin
 
   created() {
     this.getDeplogInfo()
@@ -249,7 +250,7 @@ export default class Deploy extends VueBase {
   // 下载引擎
   private async agentDownload() {
     this.loadingStart()
-    await this.services.deploy.agentDownload()
+    await this.services.deploy.agentDownload(this.url)
     this.loadingDone()
   }
 
