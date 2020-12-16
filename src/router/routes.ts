@@ -158,6 +158,13 @@ const routes: Array<RouteConfig> = [
           },
         ],
       },
+      {
+        path: '/deploy',
+        meta: {
+          name: '部署IAST',
+        },
+        component: () => import('@/views/deploy/Deploy.vue'),
+      },
     ],
   },
   {

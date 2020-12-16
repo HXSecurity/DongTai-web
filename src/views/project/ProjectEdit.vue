@@ -326,7 +326,9 @@ export default class ProjectEdit extends VueBase {
   }
 
   private async strategyUserList() {
+    this.loadingStart()
     const { status, msg, data } = await this.services.setting.strategyUserList()
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -335,7 +337,9 @@ export default class ProjectEdit extends VueBase {
   }
 
   private async strategyTypes() {
+    this.loadingStart()
     const { status, msg, data } = await this.services.setting.strategyTypes()
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -380,7 +384,9 @@ export default class ProjectEdit extends VueBase {
       ids: this.scanForm.ids.join(','),
       name: this.scanForm.name,
     }
+    this.loadingStart()
     const { status, msg } = await this.services.setting.strategyUserAdd(params)
+    this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return

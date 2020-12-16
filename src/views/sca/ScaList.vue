@@ -184,10 +184,6 @@ export default class ScaList extends VueBase {
     projects: [],
     orderOptions: [
       {
-        label: this.$t('views.scaList.orderOptions.project_name'),
-        value: 'project_name',
-      },
-      {
         label: this.$t('views.scaList.orderOptions.level'),
         value: 'level',
       },
