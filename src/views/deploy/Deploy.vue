@@ -5,15 +5,17 @@
       <div class="sliderWarp">
         <div class="step linghtStep">1</div>
         <div
-          class="step marginTool"
-          :class="curStep >= 2 ? 'linghtStep' : 'grayStep'"
-        >
+          class="transitionline"
+          :class="curStep >= 2 ? 'lightLine' : 'grayLine'"
+        ></div>
+        <div class="step" :class="curStep >= 2 ? 'linghtStep' : 'grayStep'">
           2
         </div>
         <div
-          class="step marginTool"
-          :class="curStep === 3 ? 'linghtStep' : 'grayStep'"
-        >
+          class="transitionline"
+          :class="curStep === 3 ? 'lightLine' : 'grayLine'"
+        ></div>
+        <div class="step" :class="curStep === 3 ? 'linghtStep' : 'grayStep'">
           3
         </div>
       </div>
@@ -297,7 +299,8 @@ main {
 }
 
 .sliderWarp {
-  width: 20%;
+  width: 52px;
+  text-align: center;
 
   .step {
     width: 52px;
@@ -309,8 +312,19 @@ main {
     position: relative;
   }
 
-  .marginTool {
-    margin-top: 182px;
+  .transitionline {
+    height: 182px;
+    border-right: 1px dashed;
+    width: 0;
+    display: inline-block;
+  }
+
+  .lightLine {
+    border-right-color: #4876c2;
+  }
+
+  .grayLine {
+    border-right-color: #aab0bd;
   }
 
   .linghtStep {
