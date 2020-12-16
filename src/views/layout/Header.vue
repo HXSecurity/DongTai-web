@@ -48,6 +48,7 @@
         <el-dropdown>
           <div style="height: 64px" class="flex-column-center">
             <div>
+              <el-button type="text" class="anent"></el-button>
               <img
                 class="titleImg"
                 src="../../assets/img/touxiang@2x.png"

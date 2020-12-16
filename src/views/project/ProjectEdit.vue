@@ -103,15 +103,59 @@
               style="width: 400px"
             ></el-input>
           </el-form-item>
-          <el-form-item label="漏洞类型">
-            <el-radio-group v-model="tabPosition" style="margin-bottom: 30px">
-              <el-radio-button label="top">top</el-radio-button>
-              <el-radio-button label="right">right</el-radio-button>
-              <el-radio-button label="bottom">bottom</el-radio-button>
-              <el-radio-button label="left">left</el-radio-button>
+          <el-form-item label="漏洞类型" style="margin-bottom: 0">
+            <el-radio-group
+              v-model="scanForm.fid"
+              class="scanRadioGroup"
+              size="mini"
+              @change="isAllSelect"
+            >
+              <el-radio-button
+                v-for="item in strategyTypeList"
+                :key="item.level_id"
+                :label="item.level_id"
+              >
+                {{ item.level_name }}
+              </el-radio-button>
             </el-radio-group>
           </el-form-item>
+          <el-form-item style="margin-bottom: 0">
+            <div>
+              <el-checkbox
+                v-model="isSelectAll"
+                @change="selectAllChange"
+              ></el-checkbox>
+              全选
+            </div>
+          </el-form-item>
+          <el-form-item v-if="strategyTypeList.length > 0">
+            <div
+              v-for="item in strategyTypeList[
+                strategyTypeList.findIndex((i) => i.level_id === scanForm.fid)
+              ].type_value"
+              :key="item.strategy_id"
+              class="typeTag"
+              @click.prevent="checkIdChange(item.strategy_id)"
+            >
+              <el-checkbox
+                :value="scanForm.ids.some((id) => id === item.strategy_id)"
+              ></el-checkbox>
+              {{ item.vul_name }}
+            </div>
+          </el-form-item>
         </el-form>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <el-button type="text" class="submit" @click="strategyUserAdd">
+          保存
+        </el-button>
+        <el-button
+          type="text"
+          class="cancel"
+          @click="scanAddDialogOpen = false"
+        >
+          取消
+        </el-button>
       </div>
     </el-dialog>
   </main>
@@ -145,7 +189,16 @@ export default class ProjectEdit extends VueBase {
     token: string
   }> = []
   private strategyList: Array<{ id: number; name: string }> = []
-  private strategyTypeList = []
+  private strategyTypeList: Array<{
+    level_id: number
+    level_name: number
+    type_value: Array<{
+      strategy_id: number
+      level_id: number
+      state: string
+      vul_name: string
+    }>
+  }> = []
   private rules = {
     name: [
       {
@@ -167,10 +220,13 @@ export default class ProjectEdit extends VueBase {
   private scanForm: {
     ids: Array<number>
     name: string
+    fid: number
   } = {
     ids: [],
+    fid: 1,
     name: '',
   }
+  private isSelectAll = false
 
   async created() {
     await this.getEngineList()
@@ -184,8 +240,10 @@ export default class ProjectEdit extends VueBase {
     this.scanAddDialogOpen = true
     this.scanForm = {
       ids: [],
+      fid: 1,
       name: '',
     }
+    this.strategyTypes()
   }
 
   private async projectDetail() {
@@ -201,6 +259,7 @@ export default class ProjectEdit extends VueBase {
     this.submitForm.agentIdList = data.agents.map((item: { id: any }) => {
       return item.id
     })
+    this.submitForm.scanId = data.scan_id
     this.agentChange()
   }
 
@@ -214,6 +273,56 @@ export default class ProjectEdit extends VueBase {
       return
     }
     this.engineList = data
+  }
+  private selectAllChange() {
+    const idSet = new Set([...this.scanForm.ids])
+    this.strategyTypeList[
+      this.strategyTypeList.findIndex(
+        (i: { level_id: number }) => i.level_id === this.scanForm.fid
+      )
+    ].type_value.forEach(
+      (item: {
+        strategy_id: number
+        level_id: number
+        state: string
+        vul_name: string
+      }) => {
+        if (this.isSelectAll) {
+          idSet.add(item.strategy_id)
+        } else {
+          idSet.delete(item.strategy_id)
+        }
+      }
+    )
+    this.scanForm.ids = [...idSet]
+  }
+  private checkIdChange(id: number) {
+    const idSet = new Set([...this.scanForm.ids])
+    if (idSet.has(id)) {
+      idSet.delete(id)
+    } else {
+      idSet.add(id)
+    }
+    this.scanForm.ids = [...idSet]
+    this.isAllSelect()
+  }
+
+  isAllSelect() {
+    const idSet = new Set([...this.scanForm.ids])
+    this.isSelectAll = this.strategyTypeList[
+      this.strategyTypeList.findIndex(
+        (i: { level_id: number }) => i.level_id === this.scanForm.fid
+      )
+    ].type_value.every(
+      (item: {
+        strategy_id: number
+        level_id: number
+        state: string
+        vul_name: string
+      }) => {
+        return idSet.has(item.strategy_id)
+      }
+    )
   }
 
   private async strategyUserList() {
@@ -231,7 +340,53 @@ export default class ProjectEdit extends VueBase {
       this.$message.error(msg)
       return
     }
+    data
+      .reduce(
+        (
+          list: any[],
+          item: {
+            level_id: number
+            level_name: number
+            type_value: Array<{
+              strategy_id: number
+              level_id: number
+              state: string
+              vul_name: string
+            }>
+          }
+        ) => {
+          list = [...list, ...item.type_value]
+          return list
+        },
+        []
+      )
+      .forEach(
+        (item: {
+          strategy_id: number
+          level_id: number
+          state: string
+          vul_name: string
+        }) => {
+          if (item.state === 'enable') {
+            this.scanForm.ids.push(item.strategy_id)
+          }
+        }
+      )
     this.strategyTypeList = data
+  }
+
+  private async strategyUserAdd() {
+    const params = {
+      ids: this.scanForm.ids.join(','),
+      name: this.scanForm.name,
+    }
+    const { status, msg } = await this.services.setting.strategyUserAdd(params)
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.scanAddDialogOpen = false
+    this.strategyUserList()
   }
 
   private agentChange() {
@@ -264,11 +419,13 @@ export default class ProjectEdit extends VueBase {
           name: string
           mode: string | any
           agent_ids: string
+          scan_id: number
           pid?: string
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
           agent_ids: this.submitForm.agentIdList.join(','),
+          scan_id: this.submitForm.scanId as number,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid
@@ -325,5 +482,28 @@ export default class ProjectEdit extends VueBase {
     cursor: pointer;
     margin-left: 10px;
   }
+}
+
+.typeTag {
+  display: inline-block;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+.submit {
+  width: 124px;
+  height: 38px;
+  line-height: 0;
+  background: #4a72ae;
+  border-radius: 2px;
+  color: #fff;
+}
+.cancel {
+  width: 124px;
+  height: 38px;
+  line-height: 0;
+  border-radius: 2px;
+  border: 1px solid #4a72ae;
+  color: #4a72ae;
 }
 </style>
