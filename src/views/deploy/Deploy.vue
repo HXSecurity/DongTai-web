@@ -291,13 +291,12 @@ main {
   width: 100%;
   height: calc(100vh - 64px);
   background: #fff;
-  position: relative;
 
   .footerBg {
     background-image: url('../../assets/img/loginBg.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     width: 100%;
     height: 218px;
@@ -346,7 +345,7 @@ main {
 }
 
 .contentWarp {
-  width: 60%;
+  width: 906px;
 
   .stepWarp {
     .title {
@@ -372,6 +371,7 @@ main {
     .token {
       background: #f7f7f8;
       border-radius: 4px;
+      width: 806px;
       padding: 11px;
       line-height: 18px;
     }
