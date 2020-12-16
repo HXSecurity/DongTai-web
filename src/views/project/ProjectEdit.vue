@@ -49,21 +49,6 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.scan')">
-          <el-select
-            v-model="submitForm.agentIdList"
-            style="width: 412px"
-            :placeholder="$t('views.projectEdit.scanPlaceholder')"
-            @change="agentChange"
-          >
-            <el-option
-              v-for="item in engineList"
-              :key="item.id"
-              :value="item.id"
-              :label="item.short_name"
-            ></el-option>
-          </el-select>
-        </el-form-item>
         <el-form-item :label="$t('views.projectEdit.added')">
           <el-tag
             v-for="(tag, index) in engineSelectedList"
@@ -76,6 +61,27 @@
             {{ tag.token }}
           </el-tag>
         </el-form-item>
+        <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
+          <el-select
+            v-model="submitForm.scanId"
+            style="width: 412px"
+            :placeholder="$t('views.projectEdit.scanPlaceholder')"
+            @change="agentChange"
+          >
+            <el-option
+              v-for="item in strategyList"
+              :key="item.id"
+              :value="item.id"
+              :label="item.name"
+            ></el-option>
+          </el-select>
+          <i
+            class="el-icon-circle-plus-outline addStrategyIcon"
+            @click="scanAddDialogShow"
+          >
+            {{ $t('views.projectEdit.scanAdd') }}
+          </i>
+        </el-form-item>
         <el-form-item>
           <el-button
             type="text"
@@ -87,6 +93,26 @@
         </el-form-item>
       </el-form>
     </div>
+    <el-dialog :visible.sync="scanAddDialogOpen" title="创建策略" width="650px">
+      <div>
+        <el-form label-width="80px">
+          <el-form-item label="策略名称">
+            <el-input
+              v-model="scanForm.name"
+              class="commonInput"
+              style="width: 400px"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="漏洞类型">
+            <el-input
+              v-model="scanForm.name"
+              class="commonInput"
+              style="width: 400px"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -101,13 +127,23 @@ export default class ProjectEdit extends VueBase {
     name: string
     mode: string
     agentIdList: Array<number>
+    scanId: number | undefined
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
     agentIdList: [],
+    scanId: undefined,
   }
-  private engineList: Array<{ id: number; token: string }> = []
-  private engineSelectedList: Array<{ id: number; token: string }> = []
+  private engineList: Array<{
+    id: number
+    short_name: string
+    token: string
+  }> = []
+  private engineSelectedList: Array<{
+    id: number
+    token: string
+  }> = []
+  private strategyList: Array<{ id: number; name: string }> = []
 
   private rules = {
     name: [
@@ -117,12 +153,37 @@ export default class ProjectEdit extends VueBase {
         trigger: 'blur',
       },
     ],
+    scanId: [
+      {
+        required: true,
+        message: this.$t('views.projectEdit.scanPlaceholder'),
+        trigger: 'change',
+      },
+    ],
+  }
+
+  private scanAddDialogOpen = false
+  private scanForm: {
+    ids: Array<number>
+    name: string
+  } = {
+    ids: [],
+    name: '',
   }
 
   async created() {
     await this.getEngineList()
+    await this.strategyUserList()
     if (this.$route.params.pid) {
       await this.projectDetail()
+    }
+  }
+
+  private scanAddDialogShow() {
+    this.scanAddDialogOpen = true
+    this.scanForm = {
+      ids: [],
+      name: '',
     }
   }
 
@@ -152,6 +213,15 @@ export default class ProjectEdit extends VueBase {
       return
     }
     this.engineList = data
+  }
+
+  private async strategyUserList() {
+    const { status, msg, data } = await this.services.setting.strategyUserList()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.strategyList = data
   }
 
   private agentChange() {
@@ -237,6 +307,13 @@ export default class ProjectEdit extends VueBase {
     border-radius: 2px;
     border: 1px solid #1a80f2;
     color: #1a80f2;
+  }
+
+  .addStrategyIcon {
+    color: #1a80f2;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
   }
 }
 </style>
