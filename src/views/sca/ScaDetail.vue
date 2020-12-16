@@ -66,10 +66,7 @@
             {{ item.package_name }}
           </div>
           <div class="infoLine flex-row-space-between">
-            <span>
-              <i
-                class="iconfont iconweixian"
-                :style="
+            <span :style="
                   item.level_type === 1
                     ? { color: '#EA7171' }
                     : item.level_type === 2
@@ -79,8 +76,8 @@
                     : item.level_type === 4
                     ? { color: '#7BC1AB' }
                     : ''
-                "
-              ></i>
+                ">
+              <i class="iconfont iconweixian"></i>
               {{ item.level }}
             </span>
             <span>

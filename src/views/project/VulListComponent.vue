@@ -3,17 +3,23 @@
     <div class="slider-warp">
       <div class="title flex-column-center">
         <div class="flex-row-space-between">
-          {{ $t('views.vulnList.filter') }}
-
+          <span style="font-size: 16px; font-weight: bold">{{
+            $t('views.vulnList.filter')
+          }}</span>
           <el-button type="text" class="resetAllBtn" @click="reset">
-            {{ $t('views.vulnList.resetAll') }}
+            <span style="font-size: 12px">
+              {{ $t('views.vulnList.resetAll') }}
+            </span>
           </el-button>
         </div>
       </div>
-      <div class="module-title flex-row-space-between">
-        {{ $t('views.vulnList.language') }}
+      <div
+        class="module-title flex-row-space-between"
+        style="margin-top: 14px; margin-bottom: 0px"
+      >
+        <span style="font-size: 14px">{{ $t('views.vulnList.language') }}</span>
         <div class="reset-btn" @click="languageChange('')">
-          {{ $t('views.vulnList.reset') }}
+          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
@@ -21,7 +27,11 @@
         :key="item.language"
         class="flex-row-space-between module-line"
         :class="searchObj.language === item.language ? 'selectedLine' : ''"
-        :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+        :style="
+          item.count === 0
+            ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
+            : { height: '30px', 'font-size': '14px' }
+        "
         @click="languageChange(item.language, item.count === 0)"
       >
         <div class="selectOption">
@@ -31,7 +41,10 @@
           {{ item.count }}
         </div>
       </div>
-      <div class="module-title flex-row-space-between">
+      <div
+        class="module-title flex-row-space-between"
+        style="margin-top: 14px; margin-bottom: 0px"
+      >
         {{ $t('views.vulnList.level') }}
         <div class="reset-btn" @click="levelChange('')">
           {{ $t('views.vulnList.reset') }}
@@ -42,7 +55,11 @@
         :key="item.level_id"
         class="flex-row-space-between module-line"
         :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-        :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+        :style="
+          item.count === 0
+            ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
+            : { height: '30px', 'font-size': '14px' }
+        "
         @click="levelChange(item.level_id, item.count === 0)"
       >
         <div class="selectOption">
@@ -52,7 +69,10 @@
           {{ item.count }}
         </div>
       </div>
-      <div class="module-title flex-row-space-between">
+      <div
+        class="module-title flex-row-space-between"
+        style="margin-top: 14px; margin-bottom: 0px"
+      >
         {{ $t('views.vulnList.type') }}
         <div class="reset-btn" @click="typeChange('')">
           {{ $t('views.vulnList.reset') }}
@@ -63,7 +83,11 @@
         :key="item.type"
         class="flex-row-space-between module-line"
         :class="searchObj.type === item.type ? 'selectedLine' : ''"
-        :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+        :style="
+          item.count === 0
+            ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
+            : { height: '30px', 'font-size': '14px' }
+        "
         @click="typeChange(item.type, item.count === 0)"
       >
         <div class="selectOption">
@@ -79,8 +103,9 @@
       <div class="selectForm">
         <el-select
           v-model="searchObj.order"
+          style="width: 160px; font-size: 14px"
           class="commonSelect"
-          placeholder="排序"
+          placeholder="请选择排序条件"
           clearable
           @change="newSelectData"
         >
@@ -93,8 +118,8 @@
         </el-select>
         <el-select
           v-model="searchObj.language"
-          placeholder="语言"
-          style="margin-left: 10px"
+          placeholder="请选择开发语言"
+          style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
           @change="newSelectData"
@@ -105,9 +130,9 @@
         <div class="selectInput">
           <el-input
             v-model="searchObj.url"
-            placeholder="请输入关键字"
+            placeholder="请输入搜索条件，如：http://127.0.0.1:8080"
             class="commonInput"
-            style="width: 462px"
+            style="width: 412px"
             @keyup.enter.native="newSelectData"
           >
             <i
@@ -124,15 +149,15 @@
         class="card"
         @click="goDetail(item.id)"
       >
-        <div class="card-title flex-row-space-between">
-          <span class="title flex-column-center">
+        <div class="card-title flex-row-space-between" style="height:33px;min-height:32px">
+          <span class="title flex-column-center" style="font-size:14px;font-weight:bold;height:32px">
             {{
               `${item.url}的${item.http_method}请求出现${item.type}漏洞${
                 item.taint_position ? `，位置：${item.taint_position}` : ''
               }`
             }}
           </span>
-          <span class="time flex-column-center">
+          <span class="time flex-column-center" style="font-size:12px;height:32px;">
             {{ item.first_time }}
           </span>
         </div>
@@ -162,10 +187,7 @@
                 ></i>
                 {{ item.server_name }}
               </span>
-              <span class="info">
-                <i
-                  class="iconfont iconweixian"
-                  :style="
+              <span class="info" :style="
                     item.level_type === 1
                       ? { color: '#EA7171' }
                       : item.level_type === 2
@@ -175,8 +197,8 @@
                       : item.level_type === 4
                       ? { color: '#7BC1AB' }
                       : ''
-                  "
-                ></i>
+                  ">
+                <i class="iconfont iconweixian"></i>
                 {{ item.level }}
               </span>
               <span class="info">

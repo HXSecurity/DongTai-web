@@ -2,18 +2,29 @@
   <main class="container">
     <div class="fixed-warp">
       <div class="slider-warp">
-        <div class="title flex-column-center">
+        <div class="title flex-column-center" style="height: 54px">
           <div class="flex-row-space-between">
-            {{ $t('views.vulnList.filter') }}
+            <span style="font-size: 16px; font-weight: bold">{{
+              $t('views.vulnList.filter')
+            }}</span>
             <el-button type="text" class="resetAllBtn" @click="reset">
-              {{ $t('views.vulnList.resetAll') }}
+              <span style="font-size: 12px">{{
+                $t('views.vulnList.resetAll')
+              }}</span>
             </el-button>
           </div>
         </div>
-        <div class="module-title flex-row-space-between">
-          {{ $t('views.scaList.project_name') }}
+        <div
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
+          <span style="font-size: 14px">{{
+            $t('views.scaList.project_name')
+          }}</span>
           <div class="reset-btn" @click="projectNameChange('')">
-            {{ $t('views.vulnList.reset') }}
+            <span style="font-size: 14px">{{
+              $t('views.vulnList.reset')
+            }}</span>
           </div>
         </div>
         <div
@@ -23,7 +34,11 @@
           :class="
             searchObj.project_name === item.project_name ? 'selectedLine' : ''
           "
-          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px' }
+              : { height: '30px' }
+          "
           @click="projectNameChange(item.project_name, item.count === 0)"
         >
           <div class="selectOption">
@@ -33,7 +48,10 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title flex-row-space-between">
+        <div
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
           {{ $t('views.scaList.language') }}
           <div class="reset-btn" @click="levelChange('')">
             {{ $t('views.vulnList.reset') }}
@@ -44,7 +62,11 @@
           :key="item.language"
           class="flex-row-space-between module-line"
           :class="searchObj.language === item.language ? 'selectedLine' : ''"
-          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px' }
+              : { height: '30px' }
+          "
           @click="languageChange(item.language, item.count === 0)"
         >
           <div class="selectOption">
@@ -54,7 +76,10 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title flex-row-space-between">
+        <div
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
           {{ $t('views.scaList.level') }}
           <div class="reset-btn" @click="levelChange('')">
             {{ $t('views.vulnList.reset') }}
@@ -65,7 +90,11 @@
           :key="item.level_id"
           class="flex-row-space-between module-line"
           :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-          :style="item.count === 0 ? { cursor: 'not-allowed' } : {}"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px' }
+              : { height: '30px' }
+          "
           @click="levelChange(item.level_id, item.count === 0)"
         >
           <div class="selectOption">
@@ -82,8 +111,9 @@
       <div class="selectForm">
         <el-select
           v-model="searchObj.order"
+          style="width: 160px; font-size: 14px"
           class="commonSelect"
-          placeholder="排序"
+          placeholder="请选择排序条件"
           clearable
           @change="newSelectData"
         >
@@ -96,8 +126,8 @@
         </el-select>
         <el-select
           v-model="searchObj.language"
-          placeholder="语言"
-          style="margin-left: 10px"
+          placeholder="请选择开发语言"
+          style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
           @change="newSelectData"
@@ -108,8 +138,8 @@
         <div class="selectInput">
           <el-input
             v-model="searchObj.keyword"
-            style="width: 462px"
-            placeholder="请输入关键字"
+            style="width: 412px"
+            placeholder="请输入搜索条件，如：spring"
             class="commonInput"
             @keyup.enter.native="newSelectData"
           >

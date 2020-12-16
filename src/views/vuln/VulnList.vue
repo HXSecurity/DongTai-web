@@ -79,7 +79,7 @@
           :key="item.level_id"
           class="flex-row-space-between module-line"
           :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px' } : {height:'30px'}"
+          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px','font-size':'14px' } : {height:'30px','font-size':'14px'}"
           @click="levelChange(item.level_id, item.count === 0)"
         >
           <div class="selectOption">
@@ -104,7 +104,7 @@
           :key="item.type"
           class="flex-row-space-between module-line"
           :class="searchObj.type === item.type ? 'selectedLine' : ''"
-          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px' } : {height:'30px'}"
+          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px','font-size':'14px' } : {height:'30px','font-size':'14px'}"
           @click="typeChange(item.type, item.count === 0)"
         >
           <div class="selectOption">
@@ -120,7 +120,7 @@
     <div class="main-warp">
       <div class="selectForm">
         <el-select
-        style="width:160px;font-size:14px;"
+          style="width:160px;font-size:14px;"
           v-model="searchObj.order"
           class="commonSelect"
           placeholder="请选择排序条件"
@@ -167,7 +167,7 @@
         class="card"
         @click="goDetail(item.id)"
       >
-        <div class="card-title flex-row-space-between"  style="height:33px;min-height:32px">
+        <div class="card-title flex-row-space-between" style="height:33px;min-height:32px">
           <span class="title flex-column-center" style="font-size:14px;font-weight:bold;height:32px">
             {{
               `${item.url}的${item.http_method}请求出现${item.type}漏洞${
@@ -205,7 +205,7 @@
                 ></i>
                 {{ item.server_name }}
               </span>
-              <span class="info"                   :style="
+              <span class="info" :style="
                     item.level_type === 1
                       ? { color: '#EA7171' }
                       : item.level_type === 2
@@ -524,7 +524,7 @@ export default class VulnList extends VueBase {
 .main-warp {
   padding-top: 14px;
   margin-left: 248px;
-  padding-bottom: 32px;
+  padding-bottom: 10px;
 
   .selectForm {
     width: 100%;
