@@ -48,6 +48,38 @@
             {{ item.count }}
           </div>
         </div>
+                <div
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
+          <span style="font-size: 14px">
+            {{ $t('views.scaList.level') }}
+          </span>
+          <div class="reset-btn" @click="levelChange('')">
+            <span style="font-size: 14px">
+              {{ $t('views.vulnList.reset') }}
+            </span>
+          </div>
+        </div>
+        <div
+          v-for="item in searchOptionsObj.level"
+          :key="item.level_id"
+          class="flex-row-space-between module-line"
+          :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px' }
+              : { height: '30px' }
+          "
+          @click="levelChange(item.level_id, item.count === 0)"
+        >
+          <div class="selectOption">
+            {{ item.level }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
+        </div>
         <div
           class="module-title flex-row-space-between"
           style="margin-top: 14px; margin-bottom: 0px"
@@ -76,38 +108,6 @@
         >
           <div class="selectOption">
             {{ item.language }}
-          </div>
-          <div class="num">
-            {{ item.count }}
-          </div>
-        </div>
-        <div
-          class="module-title flex-row-space-between"
-          style="margin-top: 14px; margin-bottom: 0px"
-        >
-          <span style="font-size: 14px">
-            {{ $t('views.scaList.level') }}
-          </span>
-          <div class="reset-btn" @click="levelChange('')">
-            <span style="font-size: 14px">
-              {{ $t('views.vulnList.reset') }}
-            </span>
-          </div>
-        </div>
-        <div
-          v-for="item in searchOptionsObj.level"
-          :key="item.level_id"
-          class="flex-row-space-between module-line"
-          :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-          :style="
-            item.count === 0
-              ? { cursor: 'not-allowed', height: '30px' }
-              : { height: '30px' }
-          "
-          @click="levelChange(item.level_id, item.count === 0)"
-        >
-          <div class="selectOption">
-            {{ item.level }}
           </div>
           <div class="num">
             {{ item.count }}

@@ -17,25 +17,25 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t('views.vulnList.language') }}</span>
-        <div class="reset-btn" @click="languageChange('')">
+        <span style="font-size: 14px">{{ $t('views.vulnList.type') }}</span>
+        <div class="reset-btn" @click="typeChange('')">
           <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
-        v-for="item in searchOptionsObj.language"
-        :key="item.language"
+        v-for="item in searchOptionsObj.type"
+        :key="item.type"
         class="flex-row-space-between module-line"
-        :class="searchObj.language === item.language ? 'selectedLine' : ''"
+        :class="searchObj.type === item.type ? 'selectedLine' : ''"
         :style="
           item.count === 0
             ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
             : { height: '30px', 'font-size': '14px' }
         "
-        @click="languageChange(item.language, item.count === 0)"
+        @click="typeChange(item.type, item.count === 0)"
       >
         <div class="selectOption">
-          {{ item.language }}
+          {{ item.type }}
         </div>
         <div class="num">
           {{ item.count }}
@@ -69,29 +69,29 @@
           {{ item.count }}
         </div>
       </div>
-      <div
+            <div
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t('views.vulnList.type') }}</span>
-        <div class="reset-btn" @click="typeChange('')">
+        <span style="font-size: 14px">{{ $t('views.vulnList.language') }}</span>
+        <div class="reset-btn" @click="languageChange('')">
           <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
-        v-for="item in searchOptionsObj.type"
-        :key="item.type"
+        v-for="item in searchOptionsObj.language"
+        :key="item.language"
         class="flex-row-space-between module-line"
-        :class="searchObj.type === item.type ? 'selectedLine' : ''"
+        :class="searchObj.language === item.language ? 'selectedLine' : ''"
         :style="
           item.count === 0
             ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
             : { height: '30px', 'font-size': '14px' }
         "
-        @click="typeChange(item.type, item.count === 0)"
+        @click="languageChange(item.language, item.count === 0)"
       >
         <div class="selectOption">
-          {{ item.type }}
+          {{ item.language }}
         </div>
         <div class="num">
           {{ item.count }}

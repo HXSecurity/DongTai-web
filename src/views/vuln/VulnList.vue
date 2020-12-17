@@ -2,20 +2,34 @@
   <main class="container">
     <div class="fixed-warp">
       <div class="slider-warp">
-        <div class="title flex-column-center" style="height:54px;">
+        <div class="title flex-column-center" style="height: 54px">
           <div class="flex-row-space-between">
-            <span style="font-size:16px;font-weight:bold">{{ $t('views.vulnList.filter') }}</span>
-            <el-button type="text" style="height:14px" class="resetAllBtn" @click="reset">
-              <span style="font-size:12px">
-              {{ $t('views.vulnList.resetAll') }}
+            <span style="font-size: 16px; font-weight: bold">{{
+              $t('views.vulnList.filter')
+            }}</span>
+            <el-button
+              type="text"
+              style="height: 14px"
+              class="resetAllBtn"
+              @click="reset"
+            >
+              <span style="font-size: 12px">
+                {{ $t('views.vulnList.resetAll') }}
               </span>
             </el-button>
           </div>
         </div>
-        <div class="module-title flex-row-space-between" style="margin-top:14px;margin-bottom:0px">
-          <span style="font-size:14px;">{{ $t('views.vulnList.project_name') }}</span>
+        <div
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
+          <span style="font-size: 14px">{{
+            $t('views.vulnList.project_name')
+          }}</span>
           <div class="reset-btn" @click="projectNameChange('')">
-            <span style="font-size:14px;">{{ $t('views.vulnList.reset') }}</span>
+            <span style="font-size: 14px">{{
+              $t('views.vulnList.reset')
+            }}</span>
           </div>
         </div>
         <div
@@ -25,52 +39,66 @@
           :class="
             searchObj.project_name === item.project_name ? 'selectedLine' : ''
           "
-          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px','font-size':'14px' } : {height:'30px'}"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
+              : { height: '30px' }
+          "
           @click="projectNameChange(item.project_name, item.count === 0)"
         >
           <div class="selectOption">
             <span>
-            {{ item.project_name }}
+              {{ item.project_name }}
             </span>
           </div>
           <div class="num">
             <span>
-            {{ item.count }}
-            </span>
-          </div>
-        </div>
-        <div class="module-title flex-row-space-between"  style="margin-top:14px;margin-bottom:0px">
-          <span style="font-size:14px;">
-          {{ $t('views.vulnList.language') }}
-          </span>
-          <div class="reset-btn" @click="languageChange('')">
-            <span style="font-size:14px;">
-            {{ $t('views.vulnList.reset') }}
+              {{ item.count }}
             </span>
           </div>
         </div>
         <div
-          v-for="item in searchOptionsObj.language"
-          :key="item.language"
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
+          <span style="font-size: 14px">
+            {{ $t('views.vulnList.type') }}
+          </span>
+          <div class="reset-btn" @click="typeChange('')">
+            <span style="font-size: 14px">
+              {{ $t('views.vulnList.reset') }}
+            </span>
+          </div>
+        </div>
+        <div
+          v-for="item in searchOptionsObj.type"
+          :key="item.type"
           class="flex-row-space-between module-line"
-          :class="searchObj.language === item.language ? 'selectedLine' : ''"
-          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px','font-size':'14px' } : {height:'30px','font-size':'14px'}"
-          @click="languageChange(item.language, item.count === 0)"
+          :class="searchObj.type === item.type ? 'selectedLine' : ''"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
+              : { height: '30px', 'font-size': '14px' }
+          "
+          @click="typeChange(item.type, item.count === 0)"
         >
           <div class="selectOption">
-            {{ item.language }}
+            {{ item.type }}
           </div>
           <div class="num">
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title flex-row-space-between" style="margin-top:14px;margin-bottom:0px">
-          <span style="font-size:14px;">
-          {{ $t('views.vulnList.level') }}
+                <div
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
+          <span style="font-size: 14px">
+            {{ $t('views.vulnList.level') }}
           </span>
           <div class="reset-btn" @click="levelChange('')">
-            <span style="font-size:14px;">
-            {{ $t('views.vulnList.reset') }}
+            <span style="font-size: 14px">
+              {{ $t('views.vulnList.reset') }}
             </span>
           </div>
         </div>
@@ -79,7 +107,11 @@
           :key="item.level_id"
           class="flex-row-space-between module-line"
           :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px','font-size':'14px' } : {height:'30px','font-size':'14px'}"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
+              : { height: '30px', 'font-size': '14px' }
+          "
           @click="levelChange(item.level_id, item.count === 0)"
         >
           <div class="selectOption">
@@ -89,26 +121,33 @@
             {{ item.count }}
           </div>
         </div>
-        <div class="module-title flex-row-space-between" style="margin-top:14px;margin-bottom:0px">
-          <span style="font-size:14px;">
-          {{ $t('views.vulnList.type') }}
+        <div
+          class="module-title flex-row-space-between"
+          style="margin-top: 14px; margin-bottom: 0px"
+        >
+          <span style="font-size: 14px">
+            {{ $t('views.vulnList.language') }}
           </span>
-          <div class="reset-btn" @click="typeChange('')">
-            <span style="font-size:14px;">
-            {{ $t('views.vulnList.reset') }}
+          <div class="reset-btn" @click="languageChange('')">
+            <span style="font-size: 14px">
+              {{ $t('views.vulnList.reset') }}
             </span>
           </div>
         </div>
         <div
-          v-for="item in searchOptionsObj.type"
-          :key="item.type"
+          v-for="item in searchOptionsObj.language"
+          :key="item.language"
           class="flex-row-space-between module-line"
-          :class="searchObj.type === item.type ? 'selectedLine' : ''"
-          :style="item.count === 0 ? { cursor: 'not-allowed',height:'30px','font-size':'14px' } : {height:'30px','font-size':'14px'}"
-          @click="typeChange(item.type, item.count === 0)"
+          :class="searchObj.language === item.language ? 'selectedLine' : ''"
+          :style="
+            item.count === 0
+              ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
+              : { height: '30px', 'font-size': '14px' }
+          "
+          @click="languageChange(item.language, item.count === 0)"
         >
           <div class="selectOption">
-            {{ item.type }}
+            {{ item.language }}
           </div>
           <div class="num">
             {{ item.count }}
@@ -120,7 +159,7 @@
     <div class="main-warp">
       <div class="selectForm">
         <el-select
-          style="width:160px;font-size:14px;"
+          style="width: 160px; font-size: 14px"
           v-model="searchObj.order"
           class="commonSelect"
           placeholder="请选择排序条件"
@@ -137,7 +176,7 @@
         <el-select
           v-model="searchObj.language"
           placeholder="请选择开发语言"
-          style="margin-left: 10px;width:160px;font-size:14px;"
+          style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
           @change="newSelectData"
@@ -167,15 +206,24 @@
         class="card"
         @click="goDetail(item.id)"
       >
-        <div class="card-title flex-row-space-between" style="height:33px;min-height:32px">
-          <span class="title flex-column-center" style="font-size:14px;font-weight:bold;height:32px">
+        <div
+          class="card-title flex-row-space-between"
+          style="height: 33px; min-height: 32px"
+        >
+          <span
+            class="title flex-column-center"
+            style="font-size: 14px; font-weight: bold; height: 32px"
+          >
             {{
               `${item.url}的${item.http_method}请求出现${item.type}漏洞${
                 item.taint_position ? `，位置：${item.taint_position}` : ''
               }`
             }}
           </span>
-          <span class="time flex-column-center" style="font-size:12px;height:32px;">
+          <span
+            class="time flex-column-center"
+            style="font-size: 12px; height: 32px"
+          >
             {{ item.first_time }}
           </span>
         </div>
@@ -205,17 +253,20 @@
                 ></i>
                 {{ item.server_name }}
               </span>
-              <span class="info" :style="
-                    item.level_type === 1
-                      ? { color: '#EA7171' }
-                      : item.level_type === 2
-                      ? { color: '#F39D0A' }
-                      : item.level_type === 3
-                      ? { color: '#2E8FE9' }
-                      : item.level_type === 4
-                      ? { color: '#7BC1AB' }
-                      : ''
-                  ">
+              <span
+                class="info"
+                :style="
+                  item.level_type === 1
+                    ? { color: '#EA7171' }
+                    : item.level_type === 2
+                    ? { color: '#F39D0A' }
+                    : item.level_type === 3
+                    ? { color: '#2E8FE9' }
+                    : item.level_type === 4
+                    ? { color: '#7BC1AB' }
+                    : ''
+                "
+              >
                 <i class="iconfont iconweixian"></i>
                 {{ item.level }}
               </span>
