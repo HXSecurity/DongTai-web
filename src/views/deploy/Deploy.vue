@@ -149,8 +149,8 @@
                 <div class="moudleTitle">自动下载：</div>
                 <div class="command">
                   {{
-                    `curl -X GET https://www.huoxian.cn/iast/download/agent -H
-                  'X-IAST-TOKEN: ${userToken}' -o agent.jar -k`
+                    `curl -X GET ${origin}/api/v1/agent/download -H
+                  'Authorization: Token ${userToken}' -o agent.jar -k`
                   }}
                 </div>
               </div>
@@ -200,10 +200,12 @@ export default class Deploy extends VueBase {
   private system: Array<string> = []
   private userToken = ''
   private desc = ''
+  private origin = ''
 
   created() {
     this.getDeplogInfo()
     this.agentDeployInfo()
+    this.origin = location.origin
   }
 
   // 获取系统部署信息
