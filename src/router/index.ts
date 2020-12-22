@@ -1,25 +1,41 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import routes from './routes'
+import store from '@/store'
+import Nprogress from 'nprogress'
 
-const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+Vue.use(VueRouter)
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes,
+})
+
+router.beforeEach((to, from, next) => {
+  Nprogress.start()
+  // 当前没有用户信息
+  if (!store.getters.userInfo && to.fullPath !== '/login') {
+    store
+      .dispatch('user/getUserInfo')
+      .then(() => {
+        Nprogress.done()
+        next()
+      })
+      .catch(() => {
+        Nprogress.done()
+        next('/login')
+      })
+  } else {
+    next()
   }
-]
+})
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+router.afterEach((to) => {
+  Nprogress.done()
+  if (to.meta.name) {
+    document.title = to.meta.name
+  }
 })
 
 export default router
