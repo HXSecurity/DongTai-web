@@ -1,7 +1,7 @@
 FROM node:12 AS builder
 WORKDIR /app
 COPY package.json /app/
-RUN npm install --unsafe-perm
+RUN npm install --unsafe-perm --registry=https://registry.npm.taobao.org
 
 COPY . /app
 RUN npm run build
