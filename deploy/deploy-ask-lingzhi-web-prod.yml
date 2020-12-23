@@ -1,33 +1,37 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lingzhi-web
+  name: huoqi-ui
   namespace: huoqi-prod
   annotations:
-    kubesphere.io/description: lingzhi前端
+    kubesphere.io/description: 火器数据分析
   labels:
-    app: lingzhi-web
+    app: huoqi-ui
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: lingzhi-web
+      app: huoqi-ui
   template:
     metadata:
       labels:
-        app: lingzhi-web
+        app: huoqi-ui
     spec:
       containers:
-        - name: lingzhi-web-container
-          image: registry-vpc.cn-beijing.aliyuncs.com/secnium/lingzhi-web:VERSION
+        - name: huoqi-ui-container
+          image: registry-vpc.cn-beijing.aliyuncs.com/secnium/huoqi-ui:0.1.117
           imagePullPolicy: IfNotPresent
-
+          env:
+            - name: BASEURL
+              value: "http://huoqi-api-prod.c1b67d43b25864c618b8fc0b6bf741ca2.cn-beijing.alicontainer.com"
+            - name: LOG_COLLECT
+              value: "true"
           resources:
             limits:
-              cpu: "500m"
-              memory: 1000Mi
+              cpu: "100m"
+              memory: 300Mi
             requests:
-              cpu: "500m"
-              memory: 1000Mi
+              cpu: "100m"
+              memory: 200Mi
       imagePullSecrets:
         - name: huoqi-regsecret-huoqi-prod
