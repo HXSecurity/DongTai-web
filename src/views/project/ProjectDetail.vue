@@ -10,9 +10,12 @@
             <i class="mode">
               {{ projectObj.mode }}
             </i>
+            <i class="iconfont iconyonghu"></i>
+            {{ $t('views.projectDetail.owner') }}
+            <span style="margin-right: 40px"> {{ projectObj.owner }}</span>
             <i class="iconfont iconshijian00"></i>
             {{ $t('views.projectDetail.latest_time') }}
-            {{ projectObj.latest_time }}
+            <i style="margin-right: 40px">{{ projectObj.latest_time }}</i>
           </div>
           <div class="operate">
             <el-button type="text" class="operateBtn" @click="projectExport">
@@ -103,6 +106,7 @@ export default class ProjectDetail extends VueBase {
     id: 0,
     mode: '',
     name: '',
+    owner: '',
     latest_time: '',
   }
   mounted() {
@@ -240,6 +244,9 @@ export default class ProjectDetail extends VueBase {
         link.href = window.URL.createObjectURL(blob)
         link.download = this.projectObj.name + '.doc'
         link.click()
+      })
+      .catch(() => {
+        this.$message.error('报告导出失败')
       })
   }
 }

@@ -15,7 +15,7 @@
         <el-input
           v-model="searchObj.name"
           placeholder="请输入项目名称"
-          style="width: 462px;"
+          style="width: 462px"
           size="mini"
           @keyup.enter.native="newSelectData"
         >
@@ -29,9 +29,9 @@
     </div>
     <div class="list-warp">
       <div class="top-line flex-row-space-between" style="margin-left: 8px">
-        {{$t('views.projectManage.title')}}
+        {{ $t('views.projectManage.title') }}
       </div>
-      <el-table :data="tableData" class="projectList-table" style="border:1px">
+      <el-table :data="tableData" class="projectList-table" style="border: 1px">
         <el-table-column prop="name" :label="$t('views.projectManage.name')">
           <template slot-scope="{ row }">
             <div
@@ -73,6 +73,10 @@
           :label="$t('views.projectManage.agent')"
         ></el-table-column>
         <el-table-column
+          prop="owner"
+          :label="$t('views.projectManage.owner')"
+        ></el-table-column>
+        <el-table-column
           prop="latest_time"
           :label="$t('views.projectManage.time')"
         ></el-table-column>
@@ -93,7 +97,7 @@
         </el-table-column>
       </el-table>
       <el-pagination
-        style="float:right"
+        style="float: right"
         layout="prev, pager, next"
         :total="total"
         :page-size="pageSize"

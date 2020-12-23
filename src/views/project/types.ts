@@ -17,6 +17,7 @@ export interface ProjectObj {
   id: number
   mode: string
   name: string
+  owner: string
   latest_time: string
 }
 

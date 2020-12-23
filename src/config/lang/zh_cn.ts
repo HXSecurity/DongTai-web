@@ -162,6 +162,7 @@ export default {
       name: '项目名称',
       vul: '漏洞',
       agent: 'Agent数量',
+      owner: '负责人',
       time: '最新时间',
       manage: '管理',
     },
@@ -187,6 +188,7 @@ export default {
       projectVul: '项目漏洞',
       vulNum: '漏洞数量',
       type: '类型分布',
+      owner: '负责人',
     },
     userList: {
       keywordPlaceholder: '请输入名称关键字',
