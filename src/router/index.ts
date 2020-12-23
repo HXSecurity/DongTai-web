@@ -20,14 +20,22 @@ router.beforeEach((to, from, next) => {
       .dispatch('user/getUserInfo')
       .then(() => {
         Nprogress.done()
-        next()
+        if (store.getters.userInfo.role != 1 && (to.fullPath == '/user/userList' || to.fullPath == '/setting/sysInfo' || to.fullPath == '/setting/upgradeOnline')) {
+          next('/')
+        } else {
+          next()
+        }
       })
       .catch(() => {
         Nprogress.done()
         next('/login')
       })
   } else {
-    next()
+    if (store.getters.userInfo.role != 1 && (to.fullPath == '/user/userList' || to.fullPath == '/setting/sysInfo' || to.fullPath == '/setting/upgradeOnline')) {
+      next('/')
+    } else {
+      next()
+    }
   }
 })
 
