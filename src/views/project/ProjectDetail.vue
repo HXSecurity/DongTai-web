@@ -10,7 +10,7 @@
             <i class="mode">
               {{ projectObj.mode }}
             </i>
-            <i class="iconfont iconyonghu"></i>
+            <i class="iconfont icongerenzhongxin" style="font-size: 14px"></i>
             {{ $t('views.projectDetail.owner') }}
             <span style="margin-right: 40px"> {{ projectObj.owner }}</span>
             <i class="iconfont iconshijian00"></i>
