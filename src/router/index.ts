@@ -31,11 +31,7 @@ router.beforeEach((to, from, next) => {
         next('/login')
       })
   } else {
-    if (store.getters.userInfo.role != 1 && (to.fullPath == '/user/userList' || to.fullPath == '/setting/sysInfo' || to.fullPath == '/setting/upgradeOnline')) {
-      next('/')
-    } else {
-      next()
-    }
+    next()
   }
 })
 

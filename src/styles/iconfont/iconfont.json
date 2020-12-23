@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "14919887",
+      "name": "user",
+      "font_class": "gerenzhongxin",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "18865120",
+      "name": "第三步-下载",
+      "font_class": "xiazai-3",
+      "unicode": "e697",
+      "unicode_decimal": 59031
+    },
+    {
       "icon_id": "18825267",
       "name": "open1-2",
       "font_class": "open1-2",
