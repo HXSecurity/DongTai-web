@@ -15,7 +15,7 @@
             {{ projectObj.latest_time }}
           </div>
           <div class="operate">
-            <el-button type="text" class="operateBtn">
+            <el-button type="text" class="operateBtn" @click="projectExport">
               <i class="iconfont icondaochu-5"></i>
               导出
             </el-button>
@@ -224,6 +224,10 @@ export default class ProjectDetail extends VueBase {
       ],
     }
     dayNumChart.setOption(dayNumOption)
+  }
+
+  projectExport() {
+    window.open(`/api/v1/project/export?pid=${this.$route.params.pid}`)
   }
 }
 </script>

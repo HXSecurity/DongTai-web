@@ -20,6 +20,7 @@
           {{ $t('menu.strategyManage') }}
         </div>
         <div
+          v-if="userInfo.role === 1"
           class="menu-item"
           :class="curModule('/setting/upgradeOnline') ? 'currentModule' : ''"
           @click="$router.push('/setting/upgradeOnline')"
@@ -27,6 +28,7 @@
           {{ $t('menu.upgradeOnline') }}
         </div>
         <div
+          v-if="userInfo.role === 1"
           class="menu-item"
           :class="curModule('/setting/sysInfo') ? 'currentModule' : ''"
           @click="$router.push('/setting/sysInfo')"
@@ -63,6 +65,9 @@ import VueBase from '@/VueBase'
 export default class SettingIndex extends VueBase {
   private curModule(path: string) {
     return this.$route.fullPath === path
+  }
+  get userInfo(): { username: string } {
+    return this.$store.getters.userInfo
   }
 }
 </script>

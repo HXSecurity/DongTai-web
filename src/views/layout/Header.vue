@@ -38,6 +38,7 @@
           {{ $t('menu.setting') }}
         </div>
         <div
+          v-if="userInfo.role === 1"
           class="url flex-column-center"
           :class="currentRoute('/user') ? 'currentRoute' : ''"
           @click="$router.push('/user')"

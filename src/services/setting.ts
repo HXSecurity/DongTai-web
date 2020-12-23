@@ -69,6 +69,16 @@ export default () =>
       return request.post('/log/delete', params)
     }
 
+    // 清空日志
+    logClear(): Promise<iResponse> {
+      return request.get('/log/clear')
+    }
+
+    // // 导出日志
+    // logExport(params: { ids: string }): Promise<iResponse> {
+    //   return request.get('/log/export', { params })
+    // }
+
     // 用户查询自有创建策略
     strategyUserList(): Promise<iResponse> {
       return request.get('/strategy/user/list')
