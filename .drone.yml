@@ -40,7 +40,7 @@ steps:
         - 0.1.${DRONE_BUILD_NUMBER}
     when:
       branch:
-        - bushu
+        - master
 
   # 部署prod环境
   - name: deliver-prod
@@ -57,7 +57,7 @@ steps:
       - ls deploy/deploy-ask-lingzhi-web-prod.yml | xargs -I {} kubectl apply -f {}
     when:
       branch:
-        - bushu
+        - master
 
   # 结束通知
   - name: notify-end
@@ -77,7 +77,7 @@ steps:
         - success
 trigger:
   branch:
-    - bushu
+    - master
   #    - test
   event:
     - push
