@@ -86,6 +86,7 @@ import VueBase from '../../VueBase'
 import { Component } from 'vue-property-decorator'
 import { ProjectObj, SelectTabs } from './types'
 import { formatTimestamp } from '@/utils/utils'
+import request from '@/utils/request'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
@@ -227,7 +228,19 @@ export default class ProjectDetail extends VueBase {
   }
 
   projectExport() {
-    window.open(`/api/v1/project/export?pid=${this.$route.params.pid}`)
+    request
+      .get(`/api/v1/project/export?pid=${this.$route.params.pid}`, {
+        responseType: 'blob', // 告诉服务器我们需要的响应格式
+      })
+      .then((res: any) => {
+        const blob = new Blob([res], {
+          type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
+        })
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = this.projectObj.name + '.doc'
+        link.click()
+      })
   }
 }
 </script>
