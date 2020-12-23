@@ -1,8 +1,4 @@
-FROM node:12 AS builder
-WORKDIR /app
-COPY package.json /app/
-RUN npm install --unsafe-perm --registry=https://registry.npm.taobao.org
-
+FROM  registry-vpc.cn-beijing.aliyuncs.com/secnium/iast-ui-base:latest as builder
 COPY . /app
 RUN npm run build
 
