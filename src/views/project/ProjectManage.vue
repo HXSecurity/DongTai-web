@@ -32,7 +32,12 @@
         {{ $t('views.projectManage.title') }}
       </div>
       <el-table :data="tableData" class="projectList-table" style="border: 1px">
-        <el-table-column prop="name" :label="$t('views.projectManage.name')">
+        <el-table-column
+          width="200px"
+          prop="name"
+          :show-overflow-tooltip="true"
+          :label="$t('views.projectManage.name')"
+        >
           <template slot-scope="{ row }">
             <div
               class="projectName"
@@ -42,7 +47,11 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column :label="$t('views.projectManage.vul')">
+        <el-table-column
+          width="300px"
+          style="padding-left: 20px"
+          :label="$t('views.projectManage.vul')"
+        >
           <template slot-scope="{ row }">
             <span
               v-for="item in row.vul_count"
@@ -70,6 +79,7 @@
         </el-table-column>
         <el-table-column
           prop="agent_count"
+          width="100px"
           :label="$t('views.projectManage.agent')"
         ></el-table-column>
         <el-table-column
