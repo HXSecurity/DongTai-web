@@ -27,6 +27,8 @@ export default {
       usernamePlaceholder: '请输入账号，默认admin',
       password: '密码',
       passwordPlaceholder: '请输入密码，默认admin',
+      captcha: '验证码',
+      captchaPlaceholder: '请输入验证码',
     },
     vulnList: {
       filter: '过滤器',
