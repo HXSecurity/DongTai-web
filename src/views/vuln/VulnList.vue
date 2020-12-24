@@ -48,7 +48,7 @@
         >
           <div class="selectOption">
             <span>
-              {{ item.project_name }}
+              {{ projectNameSplit(item.project_name, 12) }}
             </span>
           </div>
           <div class="num">
@@ -89,7 +89,7 @@
             {{ item.count }}
           </div>
         </div>
-                <div
+        <div
           class="module-title flex-row-space-between"
           style="margin-top: 14px; margin-bottom: 0px"
         >
@@ -244,7 +244,7 @@
             <div class="flex-row-space-between" style="width: 65%">
               <span class="info">
                 <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
-                {{ item.project_name }}
+                {{ projectNameSplit(item.project_name, 6) }}
               </span>
               <span class="info" style="flex: 2">
                 <i
@@ -494,6 +494,13 @@ export default class VulnList extends VueBase {
       default:
         return 'iconyingyong'
     }
+  }
+
+  projectNameSplit(name: string, total: number) {
+    if (name.length > total) {
+      return name.substring(0, total)
+    }
+    return name
   }
 }
 </script>
