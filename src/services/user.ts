@@ -26,6 +26,11 @@ interface UserAddParams {
 
 export default () =>
   new (class {
+    // 获取验证码
+    initCaptcha(): Promise<iResponse> {
+      return request.get('/captcha/refresh')
+    }
+
     // 登陆
     login(params: loginParams): Promise<iResponse> {
       return request.post('/user/login', params)
