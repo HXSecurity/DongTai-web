@@ -54,11 +54,12 @@
         <div
           v-for="item in tableData"
           :key="item.id"
+          track-by="$index"
           class="card"
           :class="
             item.id === selectedId
-              ? cardRowClassName(true)
-              : cardRowClassName(false)
+              ? cardRowClassName(true, item.index)
+              : cardRowClassName(false, item.index)
           "
           @click="idChange(item.id)"
         >
@@ -560,16 +561,17 @@ export default class VulnDetail extends VueBase {
     return 'diy-row'
   }
 
-  cardRowClassName(select: boolean) {
+  cardRowClassName(select: boolean, index: number) {
+    console.log(index)
+    console.log(index % 2)
     var className = ''
     if (select) {
       className = 'selected'
     } else {
-      if (this.cardIndex % 2 === 0) {
+      if (index % 2 === 0) {
         className = 'card-gap'
       }
     }
-    this.cardIndex += 1
     return className
   }
 }
