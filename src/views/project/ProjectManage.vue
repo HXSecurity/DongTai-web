@@ -69,6 +69,7 @@
           </template>
         </el-table-column>
         <el-table-column
+          style="width:"
           prop="agent_count"
           :label="$t('views.projectManage.agent')"
         ></el-table-column>
