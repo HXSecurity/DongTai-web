@@ -42,13 +42,13 @@
           @click="projectNameChange(item.project_name, item.count === 0)"
         >
           <div class="selectOption">
-            {{ item.project_name }}
+            {{ projectNameSplit(item.project_name, 12) }}
           </div>
           <div class="num">
             {{ item.count }}
           </div>
         </div>
-                <div
+        <div
           class="module-title flex-row-space-between"
           style="margin-top: 14px; margin-bottom: 0px"
         >
@@ -370,6 +370,12 @@ export default class ScaList extends VueBase {
 
   private goDetail(row: any) {
     this.$router.push(`/sca/scaDetail/${this.page}/${row.id}`)
+  }
+  projectNameSplit(name: string, total: number) {
+    if (name.length > total) {
+      return name.substring(0, total)
+    }
+    return name
   }
 }
 </script>
