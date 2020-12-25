@@ -108,7 +108,7 @@
       </el-table>
       <el-pagination
         style="float: right"
-        layout="prev, pager, next"
+        layout="total, prev, pager, next, jumper"
         :total="total"
         :page-size="pageSize"
         :current-page="page"
