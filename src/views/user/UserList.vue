@@ -20,11 +20,11 @@
         </el-input>
       </div>
       <el-table class="userListTable" :data="tableData">
-        <el-table-column
+        <!-- <el-table-column
           :label="$t('views.userList.userID')"
           prop="id"
           width="90px"
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           :label="$t('views.userList.name')"
           prop="username"
@@ -58,7 +58,8 @@
       </el-table>
       <el-pagination
         style="text-align: right; margin-top: 10px"
-        layout="prev, pager, next"
+        layout="total, prev, pager, next, jumper"
+        :hide-on-single-page="total>pageSize"
         :total="total"
         :page-size="pageSize"
         :current-page="page"
