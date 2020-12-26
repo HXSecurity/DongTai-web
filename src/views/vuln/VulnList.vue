@@ -520,7 +520,7 @@ export default class VulnList extends VueBase {
   overflow: auto;
   padding: 0 6px 20px 6px;
   height: calc(100vh - 103px);
-  padding-left: calc(234px - 100%);
+  // padding-left: calc(234px - 100%);
 
   .title {
     height: 54px;
