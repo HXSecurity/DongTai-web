@@ -123,7 +123,7 @@
           }}
         </div>
         <div class="btnWarp">
-          <el-button type="text" class="btn">
+          <el-button type="text" class="btn" @click="exportVul">
             <i class="iconfont icondaochu-5"></i>
             {{ $t('views.vulnDetail.export') }}
           </el-button>
@@ -384,6 +384,7 @@
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp, getPassedTime } from '@/utils/utils'
 import VueBase from '@/VueBase'
+import request from '@/utils/request'
 import { VulnListObj, VulnObj } from './types'
 
 @Component({ name: 'VulnDetail' })
@@ -562,8 +563,6 @@ export default class VulnDetail extends VueBase {
   }
 
   cardRowClassName(select: boolean, index: number) {
-    console.log(index)
-    console.log(index % 2)
     var className = ''
     if (select) {
       className = 'selected'
@@ -573,6 +572,31 @@ export default class VulnDetail extends VueBase {
       }
     }
     return className
+  }
+
+  exportVul() {
+    var projectName = this.vulnObj.vul.project_name
+    request
+      .get(`project/export?pname=${projectName}&vid=${this.selectedId}`, {
+        responseType: 'blob', // 告诉服务器我们需要的响应格式
+      })
+      .then((res: any) => {
+        if (res.hasOwnProperty('response')) {
+          this.$message.error({ message: '报告导出失败', showClose: true })
+        } else {
+          const blob = new Blob([res], {
+            type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
+          })
+          const link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = projectName + '.doc'
+          link.click()
+          this.$message.success({ message: '报告导出成功', showClose: true })
+        }
+      })
+      .catch((error) => {
+        this.$message.error({ message: '报告导出失败', showClose: true })
+      })
   }
 }
 </script>
