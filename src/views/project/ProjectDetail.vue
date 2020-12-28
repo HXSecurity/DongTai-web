@@ -93,6 +93,7 @@ import request from '@/utils/request'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
+import { Message } from 'element-ui'
 
 @Component({
   name: 'ProjectDetail',
@@ -233,20 +234,25 @@ export default class ProjectDetail extends VueBase {
 
   projectExport() {
     request
-      .get(`/api/v1/project/export?pid=${this.$route.params.pid}`, {
+      .get(`/project/export?pid=${this.$route.params.pid}`, {
         responseType: 'blob', // 告诉服务器我们需要的响应格式
       })
       .then((res: any) => {
-        const blob = new Blob([res], {
-          type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
-        })
-        const link = document.createElement('a')
-        link.href = window.URL.createObjectURL(blob)
-        link.download = this.projectObj.name + '.doc'
-        link.click()
+        if (res.hasOwnProperty('response')) {
+          this.$message.error({ message: '报告导出失败', showClose: true })
+        } else {
+          const blob = new Blob([res], {
+            type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
+          })
+          const link = document.createElement('a')
+          link.href = window.URL.createObjectURL(blob)
+          link.download = this.projectObj.name + '.doc'
+          link.click()
+          this.$message.success({ message: '报告导出成功', showClose: true })
+        }
       })
-      .catch(() => {
-        this.$message.error('报告导出失败')
+      .catch((error) => {
+        this.$message.error({ message: '报告导出失败', showClose: true })
       })
   }
 }
