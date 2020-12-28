@@ -19,6 +19,41 @@ steps:
       status:
         - failure
         - success
+  # 获取缓存
+  - name: restore-cache
+    image: drillster/drone-volume-cache
+    volumes:
+      - name: cache
+        path: /cache
+    settings:
+      restore: true
+      mount:
+        - ./.npm-cache
+        - ./node_modules
+  # 安装依赖
+  - name: npm-install
+    image: node:12
+    commands:
+      - npm config set cache ./.npm-cache --global
+      - npm install
+  # 构建dist
+  - name: build-dist
+    image: node:12
+    commands:
+      - npm run build
+
+  # 保存缓存
+  - name: rebuild-cache # 把依赖和 npm 缓存放到缓存里
+    image: drillster/drone-volume-cache
+    settings:
+      rebuild: true
+      mount:
+        - ./.npm-cache
+        - ./node_modules
+    volumes:
+      - name: cache
+        path: /cache
+
   # 构建prod镜像
   - name: build-prod
     image: plugins/docker
@@ -75,6 +110,12 @@ steps:
       status:
         - failure
         - success
+
+volumes:
+  - name: cache
+    host:
+      path: /data/cache
+
 trigger:
   branch:
     - master
