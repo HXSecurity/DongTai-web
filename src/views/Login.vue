@@ -1,65 +1,67 @@
 <template>
-  <main class="loginContainer">
+  <main>
     <!-- <div class="left-content"></div> -->
     <!-- <div class="right-content"> -->
-    <div class="loginCard">
-      <div class="title">
-        <img
-          src="../assets/img/loginLogo.png"
-          alt="logo"
-          style="width: 140px; height: 32px"
-        />
+    <div class="loginContainer">
+      <div class="loginCard">
+        <div class="title">
+          <img
+            src="../assets/img/loginLogo.png"
+            alt="logo"
+            style="width: 140px; height: 32px"
+          />
+        </div>
+        <div class="subTitle">
+          <span class="line"></span>
+          {{ $t('views.login.subTitle') }}
+          <span class="line"></span>
+        </div>
+        <el-form style="margin-top: 10px">
+          <el-form-item :label="$t('views.login.user')">
+            <el-input
+              v-model="userName"
+              clearable
+              :placeholder="$t('views.login.usernamePlaceholder')"
+            ></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('views.login.password')">
+            <el-input
+              v-model="password"
+              show-password
+              clearable
+              :placeholder="$t('views.login.passwordPlaceholder')"
+            ></el-input>
+          </el-form-item>
+          <el-form-item :label="$t('views.login.captcha')">
+            <br />
+            <el-input
+              style="width: 80%"
+              v-model="captcha"
+              clearable
+              :placeholder="$t('views.login.captchaPlaceholder')"
+            ></el-input
+            ><el-image
+              style="
+                position: absolute;
+                height: 36px;
+                margin-top: 2px;
+                margin-left: 10px;
+              "
+              :src="captcha_url"
+              @click="initCaptcha()"
+            ></el-image>
+          </el-form-item>
+          <el-form-item style="margin-top: 54px">
+            <el-button
+              type="primary"
+              style="width: 100%; background: #4a72ae"
+              @click="login"
+              @keyup.enter.native="login"
+              >登录
+            </el-button>
+          </el-form-item>
+        </el-form>
       </div>
-      <div class="subTitle">
-        <span class="line"></span>
-        {{ $t('views.login.subTitle') }}
-        <span class="line"></span>
-      </div>
-      <el-form style="margin-top: 10px">
-        <el-form-item :label="$t('views.login.user')">
-          <el-input
-            v-model="userName"
-            clearable
-            :placeholder="$t('views.login.usernamePlaceholder')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('views.login.password')">
-          <el-input
-            v-model="password"
-            show-password
-            clearable
-            :placeholder="$t('views.login.passwordPlaceholder')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('views.login.captcha')">
-          <br />
-          <el-input
-            style="width: 80%"
-            v-model="captcha"
-            clearable
-            :placeholder="$t('views.login.captchaPlaceholder')"
-          ></el-input
-          ><el-image
-            style="
-              position: absolute;
-              height: 36px;
-              margin-top: 2px;
-              margin-left: 10px;
-            "
-            :src="captcha_url"
-            @click="initCaptcha()"
-          ></el-image>
-        </el-form-item>
-        <el-form-item style="margin-top: 54px">
-          <el-button
-            type="primary"
-            style="width: 100%; background: #4a72ae"
-            @click="login"
-            @keyup.enter.native="login"
-            >登录
-          </el-button>
-        </el-form-item>
-      </el-form>
     </div>
     <div class="loginFooter"></div>
     <!-- </div> -->
@@ -115,11 +117,20 @@ export default class Login extends VueBase {
 </script>
 
 <style scoped lang="scss">
+main {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100vh;
+}
 .loginContainer {
   width: 100%;
   min-width: 1200px;
-  height: 100vh;
-  min-height: 600px;
+  // height: if((calc((100vh-218px) < 710px)), 800px, calc(100vh-218px));
+  height: 710px;
+  // height: calc(100vh - 218px);
+  // min-height: 100px;
   background: #fff;
   position: relative;
 
@@ -136,19 +147,9 @@ export default class Login extends VueBase {
   //   position: relative;
   // }
 
-  .loginFooter {
-    background-image: url('../assets/img/loginBg.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 218px;
-  }
-
   .loginCard {
     width: 610px;
-    height: 610px;
+    // height: 610px;
     padding: 60px 73px;
     box-shadow: 0px 0px 16px 0px rgba(189, 197, 208, 0.5);
     position: absolute;
@@ -156,6 +157,7 @@ export default class Login extends VueBase {
     left: 0;
     right: 0;
     margin: auto;
+    z-index: 2;
 
     .title {
       text-align: center;
@@ -186,5 +188,16 @@ export default class Login extends VueBase {
       }
     }
   }
+}
+
+.loginFooter {
+  background-image: url('../assets/img/loginBg.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  // position: absolute;
+  // bottom: 0;
+  width: 100%;
+  height: 218px;
+  // margin-top: calc(100vh - 928px);
 }
 </style>
