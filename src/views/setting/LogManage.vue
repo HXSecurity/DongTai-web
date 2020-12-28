@@ -3,7 +3,7 @@
     <div class="titleLine flex-row-space-between">
       日志管理
       <div class="btn-warp">
-        <el-button type="text" class="btn">
+        <el-button type="text" class="btn" @click="logExport">
           <i class="iconfont icondaochu-5"></i>
           导出
         </el-button>
@@ -11,7 +11,7 @@
           <i class="iconfont iconshanchu-6"></i>
           删除
         </el-button>
-        <el-button type="text" class="btn">
+        <el-button type="text" class="btn" @click="clearDialogOpen = true">
           <i class="iconfont icon7-7xiaochugeshi"></i>
           清空
         </el-button>
@@ -73,6 +73,24 @@
         </el-button>
       </div>
     </el-dialog>
+    <el-dialog :visible.sync="clearDialogOpen" title="清空日志" width="25%">
+      <div style="text-align: center">
+        <p style="color: #959fb4">日志清空后，将不可恢复</p>
+        <p style="color: #959fb4; margin-top: 14px">请确认是否清空？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <el-button type="text" class="confirmDel" @click="logClear">
+          确认清空
+        </el-button>
+        <el-button
+          type="text"
+          class="cancelDel"
+          @click="clearDialogOpen = false"
+        >
+          取消
+        </el-button>
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -84,6 +102,7 @@ import { LogItem } from './types'
 @Component({ name: 'LogManage' })
 export default class LogManage extends VueBase {
   private deleteDialogOpen = false
+  private clearDialogOpen = false
   private page = 1
   private pageSize = 20
   private total = 0
@@ -157,6 +176,23 @@ export default class LogManage extends VueBase {
     this.$message.success(msg)
     this.deleteDialogOpen = false
     await this.getTableData()
+  }
+  private async logClear() {
+    const { status, msg } = await this.services.setting.logClear()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.$message.success(msg)
+    this.clearDialogOpen = false
+    await this.getTableData()
+  }
+  private async logExport() {
+    if (this.selectIdSet.length <= 0) {
+      this.$message.error('请选择日志')
+      return
+    }
+    window.open(`/api/v1/log/export?ids=${this.selectIdSet.join(',')}`)
   }
 }
 </script>

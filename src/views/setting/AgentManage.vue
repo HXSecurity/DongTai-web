@@ -34,7 +34,7 @@
       :total="total"
       :current-page="page"
       :page-size="pageSize"
-      layout="prev, pager, next"
+      layout="total, prev, pager, next, jumper"
       @current-change="currentChange"
     ></el-pagination>
   </div>

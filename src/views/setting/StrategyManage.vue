@@ -42,6 +42,9 @@ export default class StrategyManage extends VueBase {
   created() {
     this.getTableData()
   }
+  get userInfo(): { username: string } {
+    return this.$store.getters.userInfo
+  }
 
   private async getTableData() {
     this.loadingStart()
@@ -55,25 +58,30 @@ export default class StrategyManage extends VueBase {
   }
 
   private async stateChange(id: number, state: string) {
-    if (state === 'enable') {
-      this.loadingStart()
-      const { status, msg } = await this.services.setting.strategyDisable(id)
-      this.loadingDone()
-      if (status !== 201) {
-        this.$message.error(msg)
-        return
+    if (this.$store.getters.userInfo.role === 1) {
+      if (state === 'enable') {
+        this.loadingStart()
+        const { status, msg } = await this.services.setting.strategyDisable(id)
+        this.loadingDone()
+        if (status !== 201) {
+          this.$message.error(msg)
+          return
+        }
+        await this.getTableData()
       }
-      await this.getTableData()
-    }
-    if (state === 'disable') {
-      this.loadingStart()
-      const { status, msg } = await this.services.setting.strategyEnable(id)
-      this.loadingDone()
-      if (status !== 201) {
-        this.$message.error(msg)
-        return
+      if (state === 'disable') {
+        this.loadingStart()
+        const { status, msg } = await this.services.setting.strategyEnable(id)
+        this.loadingDone()
+        if (status !== 201) {
+          this.$message.error(msg)
+          return
+        }
+        await this.getTableData()
       }
-      await this.getTableData()
+    } else {
+      this.$message.error('当前用户无修改权限')
+      return
     }
   }
 }

@@ -124,9 +124,7 @@
               <div class="title">第三步，下载与配置</div>
               <div class="token">
                 <p style="color: #4a72ae">为了启用洞态，需要增加如下JVM配置</p>
-                <p>
-                  -javaagent:/path/to/server/agent.jar=token={{ userToken }}
-                </p>
+                <p>-javaagent:/path/to/server/agent.jar</p>
               </div>
             </el-form-item>
             <el-form-item style="margin-bottom: 0">
@@ -147,7 +145,7 @@
                   </button>
                 </div>
                 <div class="moudleTitle">自动下载：</div>
-                <div class="command">
+                <div class="command token">
                   {{
                     `curl -X GET ${url}/api/v1/agent/download?url=${url} -H
                   'Authorization: Token ${userToken}' -o agent.jar -k`
@@ -165,7 +163,7 @@
               <el-button type="text" class="prevBtn" @click="curStep = 2">
                 上一步
               </el-button>
-              <el-button type="text" class="nextBtn" @click="$router.push('/')">
+              <el-button type="text" class="nextBtn" @click="agentDeployFinish">
                 完成
               </el-button>
             </el-form-item>
@@ -200,7 +198,7 @@ export default class Deploy extends VueBase {
   private system: Array<string> = []
   private userToken = ''
   private desc = ''
-  private url= location.origin
+  private url = location.origin
 
   created() {
     this.getDeplogInfo()
@@ -223,7 +221,7 @@ export default class Deploy extends VueBase {
       this.$message.error(msg)
       return
     }
-    this.curStep = step
+    // this.curStep = step
     this.userToken = user_token
     this.desc = desc
     this.deployForm = {
@@ -277,6 +275,11 @@ export default class Deploy extends VueBase {
     this.curStep = 3
     this.userToken = user_token
     this.desc = desc
+  }
+
+  private async agentDeployFinish() {
+    this.curStep = 1
+    this.$router.push('/')
   }
 }
 </script>

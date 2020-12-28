@@ -10,12 +10,15 @@
             <i class="mode">
               {{ projectObj.mode }}
             </i>
+            <i class="iconfont icongerenzhongxin" style="font-size: 14px"></i>
+            {{ $t('views.projectDetail.owner') }}
+            <span style="margin-right: 40px"> {{ projectObj.owner }}</span>
             <i class="iconfont iconshijian00"></i>
             {{ $t('views.projectDetail.latest_time') }}
-            {{ projectObj.latest_time }}
+            <i style="margin-right: 40px">{{ projectObj.latest_time }}</i>
           </div>
           <div class="operate">
-            <el-button type="text" class="operateBtn">
+            <el-button type="text" class="operateBtn" @click="projectExport">
               <i class="iconfont icondaochu-5"></i>
               导出
             </el-button>
@@ -86,6 +89,7 @@ import VueBase from '../../VueBase'
 import { Component } from 'vue-property-decorator'
 import { ProjectObj, SelectTabs } from './types'
 import { formatTimestamp } from '@/utils/utils'
+import request from '@/utils/request'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
@@ -102,6 +106,7 @@ export default class ProjectDetail extends VueBase {
     id: 0,
     mode: '',
     name: '',
+    owner: '',
     latest_time: '',
   }
   mounted() {
@@ -224,6 +229,25 @@ export default class ProjectDetail extends VueBase {
       ],
     }
     dayNumChart.setOption(dayNumOption)
+  }
+
+  projectExport() {
+    request
+      .get(`/api/v1/project/export?pid=${this.$route.params.pid}`, {
+        responseType: 'blob', // 告诉服务器我们需要的响应格式
+      })
+      .then((res: any) => {
+        const blob = new Blob([res], {
+          type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
+        })
+        const link = document.createElement('a')
+        link.href = window.URL.createObjectURL(blob)
+        link.download = this.projectObj.name + '.doc'
+        link.click()
+      })
+      .catch(() => {
+        this.$message.error('报告导出失败')
+      })
   }
 }
 </script>

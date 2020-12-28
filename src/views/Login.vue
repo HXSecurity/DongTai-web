@@ -2,7 +2,6 @@
   <main class="loginContainer">
     <!-- <div class="left-content"></div> -->
     <!-- <div class="right-content"> -->
-    <div class="loginFooter"></div>
     <div class="loginCard">
       <div class="title">
         <img
@@ -16,7 +15,7 @@
         {{ $t('views.login.subTitle') }}
         <span class="line"></span>
       </div>
-      <el-form style="margin-top: 53px">
+      <el-form style="margin-top: 10px">
         <el-form-item :label="$t('views.login.user')">
           <el-input
             v-model="userName"
@@ -32,6 +31,25 @@
             :placeholder="$t('views.login.passwordPlaceholder')"
           ></el-input>
         </el-form-item>
+        <el-form-item :label="$t('views.login.captcha')">
+          <br />
+          <el-input
+            style="width: 80%"
+            v-model="captcha"
+            clearable
+            :placeholder="$t('views.login.captchaPlaceholder')"
+          ></el-input
+          ><el-image
+            style="
+              position: absolute;
+              height: 36px;
+              margin-top: 2px;
+              margin-left: 10px;
+            "
+            :src="captcha_url"
+            @click="initCaptcha()"
+          ></el-image>
+        </el-form-item>
         <el-form-item style="margin-top: 54px">
           <el-button
             type="primary"
@@ -43,6 +61,7 @@
         </el-form-item>
       </el-form>
     </div>
+    <div class="loginFooter"></div>
     <!-- </div> -->
   </main>
 </template>
@@ -55,20 +74,42 @@ import VueBase from '@/VueBase'
 export default class Login extends VueBase {
   private userName = ''
   private password = ''
+  private captcha = ''
+  private captcha_hash_key = ''
+  private captcha_url = ''
+
+  created() {
+    this.initCaptcha()
+  }
+
+  private async initCaptcha() {
+    const { status, data, msg } = await this.services.user.initCaptcha()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.captcha_url = data['image_url']
+    this.captcha_hash_key = data['hash_key']
+  }
 
   private async login() {
     const params = {
       username: this.userName,
       password: this.password,
+      captcha: this.captcha,
+      captcha_hash_key: this.captcha_hash_key,
     }
     this.loadingStart()
     const { status, msg } = await this.services.user.login(params)
     this.loadingDone()
-    if (status !== 201) {
+    if (status === 201) {
+      await this.$router.push('/')
+    } else if (status === 204) {
       this.$message.error(msg)
-      return
+    } else if (status === 203 || status === 202) {
+      this.$message.error(msg)
+      this.initCaptcha()
     }
-    await this.$router.push('/')
   }
 }
 </script>
@@ -107,7 +148,7 @@ export default class Login extends VueBase {
 
   .loginCard {
     width: 610px;
-    height: 567px;
+    height: 610px;
     padding: 60px 73px;
     box-shadow: 0px 0px 16px 0px rgba(189, 197, 208, 0.5);
     position: absolute;

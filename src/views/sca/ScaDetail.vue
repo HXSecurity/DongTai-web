@@ -66,17 +66,19 @@
             {{ item.package_name }}
           </div>
           <div class="infoLine flex-row-space-between">
-            <span :style="
-                  item.level_type === 1
-                    ? { color: '#EA7171' }
-                    : item.level_type === 2
-                    ? { color: '#F39D0A' }
-                    : item.level_type === 3
-                    ? { color: '#2E8FE9' }
-                    : item.level_type === 4
-                    ? { color: '#7BC1AB' }
-                    : ''
-                ">
+            <span
+              :style="
+                item.level_type === 1
+                  ? { color: '#EA7171' }
+                  : item.level_type === 2
+                  ? { color: '#F39D0A' }
+                  : item.level_type === 3
+                  ? { color: '#2E8FE9' }
+                  : item.level_type === 4
+                  ? { color: '#7BC1AB' }
+                  : ''
+              "
+            >
               <i class="iconfont iconweixian"></i>
               {{ item.level }}
             </span>
@@ -230,7 +232,7 @@ import { ScaListObj, ScaObj, VulObj } from '@/views/sca/types'
 @Component({ name: 'ScaDetail' })
 export default class ScaDetail extends VueBase {
   private sliderWarpContract = false
-  private scaObj: ScaObj | undefined
+  private scaObj = {}
   private tableData: Array<ScaListObj> = []
   private page = 1
   private selectedId = 0

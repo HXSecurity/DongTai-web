@@ -54,25 +54,32 @@
         <div
           v-for="item in tableData"
           :key="item.id"
+          track-by="$index"
           class="card"
-          :class="item.id === selectedId ? 'selected' : ''"
+          :class="
+            item.id === selectedId
+              ? cardRowClassName(true, item.index)
+              : cardRowClassName(false, item.index)
+          "
           @click="idChange(item.id)"
         >
           <div class="titleLine">
             {{ `${item.url}存在${item.type}漏洞` }}
           </div>
           <div class="infoLine flex-row-space-between">
-            <span :style="
-                  item.level_type === 1
-                    ? { color: '#EA7171' }
-                    : item.level_type === 2
-                    ? { color: '#F39D0A' }
-                    : item.level_type === 3
-                    ? { color: '#2E8FE9' }
-                    : item.level_type === 4
-                    ? { color: '#7BC1AB' }
-                    : ''
-                ">
+            <span
+              :style="
+                item.level_type === 1
+                  ? { color: '#EA7171' }
+                  : item.level_type === 2
+                  ? { color: '#F39D0A' }
+                  : item.level_type === 3
+                  ? { color: '#2E8FE9' }
+                  : item.level_type === 4
+                  ? { color: '#7BC1AB' }
+                  : ''
+              "
+            >
               <i class="iconfont iconweixian" style="font-size: 14px"></i>
               {{ item.level }}
             </span>
@@ -150,8 +157,8 @@
               <i class="iconfont iconzhongjianjian"></i>
               {{ $t('views.vulnDetail.middleware') }}:
             </span>
-            <span style="width:140px;overflow: hidden;">
-            {{vulnObj.server.container}}
+            <span style="width: 140px; overflow: hidden">
+              {{ vulnObj.server.container }}
             </span>
           </div>
           <div class="info">
@@ -204,7 +211,10 @@
         {{ $t('views.vulnDetail.httpRequest') }}
       </div>
       <div class="markdownContent httpRequest">
-        <MyMarkdownIt :content="vulnObj.vul.req_header" style="color:#747C8C"></MyMarkdownIt>
+        <MyMarkdownIt
+          :content="vulnObj.vul.req_header"
+          style="color: #747c8c"
+        ></MyMarkdownIt>
       </div>
       <!-- 污点流图-->
       <div
@@ -311,7 +321,7 @@
         {{ $t('views.vulnDetail.devEnv') }}
       </div>
       <div v-if="vulnObj.server.runtime" class="baseInfo">
-        <div class="base-line" style="padding:10px 0px;height:10px">
+        <div class="base-line" style="padding: 10px 0px; height: 10px">
           <span>{{ vulnObj.server.runtime }}</span>
         </div>
       </div>
@@ -321,16 +331,31 @@
       </div>
       <div class="baseInfo">
         <div class="base-line">
-          <span style="color:black;font-family:PingFangSC-Medium, PingFang SC;display:block">
+          <span
+            style="
+              color: black;
+              font-family: PingFangSC-Medium, PingFang SC;
+              display: block;
+            "
+          >
             {{ $t('views.vulnDetail.command') }}
           </span>
-          <span style="display:block; margin-top:6px;">{{ vulnObj.server.command }}</span>
+          <span style="display: block; margin-top: 6px">{{
+            vulnObj.server.command
+          }}</span>
         </div>
         <div v-if="vulnObj.server.environment" class="base-line">
-          <span style="color:black;font-family:PingFangSC-Medium, PingFang SC">{{$t('views.vulnDetail.other')}}</span>
+          <span
+            style="color: black; font-family: PingFangSC-Medium, PingFang SC"
+            >{{ $t('views.vulnDetail.other') }}</span
+          >
         </div>
-        <div v-if="vulnObj.server.environment" class="base-line" style="padding-top: 6px">
-          <span style="color: #849ed8;">{{ vulnObj.server.environment }} </span>
+        <div
+          v-if="vulnObj.server.environment"
+          class="base-line"
+          style="padding-top: 6px"
+        >
+          <span style="color: #849ed8">{{ vulnObj.server.environment }} </span>
         </div>
       </div>
     </div>
@@ -403,6 +428,7 @@ export default class VulnDetail extends VueBase {
   private page = 1
   private selectedId = 0
   private total = 0
+  private cardIndex = 0
   private searchObj = {
     language: '',
     level: '',
@@ -438,6 +464,7 @@ export default class VulnDetail extends VueBase {
   async created() {
     this.page = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
+    this.cardIndex = 0
     await this.getVulnDetail()
     await this.getTableData()
   }
@@ -533,6 +560,20 @@ export default class VulnDetail extends VueBase {
   tableRowClassName() {
     return 'diy-row'
   }
+
+  cardRowClassName(select: boolean, index: number) {
+    console.log(index)
+    console.log(index % 2)
+    var className = ''
+    if (select) {
+      className = 'selected'
+    } else {
+      if (index % 2 === 0) {
+        className = 'card-gap'
+      }
+    }
+    return className
+  }
 }
 </script>
 
@@ -597,6 +638,10 @@ export default class VulnDetail extends VueBase {
 
   .selected {
     background: #eff6ff;
+  }
+
+  .card-gap {
+    background: #fbfcff;
   }
 }
 
