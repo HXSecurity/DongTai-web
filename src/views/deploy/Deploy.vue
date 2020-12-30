@@ -147,7 +147,7 @@
                 <div class="moudleTitle">自动下载：</div>
                 <div class="command token">
                   {{
-                    `curl -X GET ${url}/api/v1/agent/download?url=${url} -H
+                    `curl -X GET ${url}/api/v1/agent/download?url=${url}&jdk.version=${this.deployForm.javaVersion} -H
                   'Authorization: Token ${userToken}' -o agent.jar -k`
                   }}
                 </div>
@@ -248,7 +248,10 @@ export default class Deploy extends VueBase {
   // 下载引擎
   private async agentDownload() {
     this.loadingStart()
-    await this.services.deploy.agentDownload(this.url)
+    await this.services.deploy.agentDownload(
+      this.url,
+      this.deployForm.javaVersion
+    )
     this.loadingDone()
   }
 
