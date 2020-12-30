@@ -16,9 +16,9 @@ export default () =>
     }
 
     // 下载引擎
-    agentDownload(url: String) {
+    agentDownload(url: String, jdkVersion: String) {
       request
-        .get('agent/download?url='+url, {
+        .get('agent/download?url=' + url + '&jdk.version=' + jdkVersion, {
           responseType: 'blob', // 告诉服务器我们需要的响应格式
         })
         .then((res: any) => {
