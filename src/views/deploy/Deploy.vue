@@ -147,7 +147,7 @@
                 <div class="moudleTitle">自动下载：</div>
                 <div class="command token">
                   {{
-                    `curl -X GET ${url}/api/v1/agent/download?url=${url}&jdk.version=${this.deployForm.javaVersion} -H
+                    `curl -X GET ${url}/api/v1/agent/download?url=${url}&jdk.version=${encodeURI(this.deployForm.javaVersion)} -H
                   'Authorization: Token ${userToken}' -o agent.jar -k`
                   }}
                 </div>
