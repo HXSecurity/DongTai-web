@@ -197,6 +197,7 @@ export default {
     userList: {
       keywordPlaceholder: '请输入名称关键字',
       addUser: '新增用户',
+      editUser: '修改用户信息',
       userID: '用户ID',
       name: '用户名称',
       namePlaceholder: '请输入用户名称',

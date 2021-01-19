@@ -19,7 +19,7 @@ interface UserAddParams {
   re_password: string
   email: string
   role: number
-  department: string
+  department: object
   phone: string
   uid?: number
 }
@@ -62,7 +62,12 @@ export default () =>
 
     // 新增用户
     userAdd(params: UserAddParams): Promise<iResponse> {
-      return request.post('/user/add', params)
+      return request.put('/user/add', params)
+    }
+
+    // 修改用户信息
+    userEdit(params: UserAddParams): Promise<iResponse> {
+      return request.post('/user/' + params.uid, params)
     }
 
     userDelete(params: { uid: number }): Promise<iResponse> {

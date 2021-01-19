@@ -1,76 +1,129 @@
 <template>
   <main class="container">
     <div class="userContent">
-      <div class="titleLine flex-row-space-between">
-        <div class="btn" @click="addDialogShow">
-          <i class="iconfont iconxinzengyonghu"></i>
-          {{ $t('views.userList.addUser') }}
-        </div>
-        <el-input
-          v-model="keywords"
-          style="width: 462px"
-          :placeholder="$t('views.userList.keywordPlaceholder')"
-          @keyup.enter.native="newSelectData"
+      <div
+        class="block"
+        style="display: inline-block; float: left; width: 340px"
+      >
+        <el-tree
+          :data="data"
+          node-key="id"
+          :current-node-key="1"
+          :expand-on-click-node="false"
+          :check-on-click-node="false"
+          @node-click="SelectNode"
         >
-          <i
-            slot="suffix"
-            class="el-input__icon el-icon-search"
-            @click="newSelectData"
-          />
-        </el-input>
+          <span class="custom-tree-node" slot-scope="{ node, data }">
+            <template v-if="data.isEdit == 1">
+              <el-input
+                class="tree-node-input"
+                @blur="() => submitEdit(node, data)"
+                v-model="currentDepartmentName"
+                style="height:20px line-height:20px"
+              ></el-input>
+            </template>
+            <span v-else>{{ node.label }}</span>
+            <span>
+              <el-button
+                v-if="data.id != -1"
+                type="text"
+                size="mini"
+                @click="() => edit(node, data)"
+              >
+                修改
+              </el-button>
+              <el-button
+                type="text"
+                size="mini"
+                @click="() => append(node, data)"
+              >
+                新增子部门
+              </el-button>
+              <el-button
+                v-if="data.id != -1"
+                type="text"
+                size="mini"
+                @click="() => remove(node, data)"
+              >
+                删除
+              </el-button>
+            </span>
+          </span>
+        </el-tree>
       </div>
-      <el-table class="userListTable" :data="tableData">
-        <!-- <el-table-column
-          :label="$t('views.userList.userID')"
-          prop="id"
-          width="90px"
-        ></el-table-column> -->
-        <el-table-column
-          :label="$t('views.userList.name')"
-          prop="username"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('views.userList.email')"
-          prop="email"
-        ></el-table-column>
-        <el-table-column :label="$t('views.userList.role')" prop="is_superuser">
-          <template slot-scope="{ row }">
-            {{ row.is_superuser ? '超级管理员' : '普通用户' }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.userList.department')"
-          prop="department"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('views.userList.phone')"
-          prop="phone"
-        ></el-table-column>
-        <el-table-column :label="$t('views.userList.operate')" width="100px">
-          <template slot-scope="{ row }">
-            <i class="iconfont iconshezhi-2 pIcon" @click="userEdit(row)"></i>
+      <div style="display: inline-block; width: 828px">
+        <div class="titleLine flex-row-space-between">
+          <div class="btn" @click="addDialogShow">
+            <i class="iconfont iconxinzengyonghu"></i>
+            {{ $t('views.userList.addUser') }}
+          </div>
+          <el-input
+            v-model="keywords"
+            size="small"
+            style="width: 462px"
+            :placeholder="$t('views.userList.keywordPlaceholder')"
+            @keyup.enter.native="newSelectData"
+          >
             <i
-              class="iconfont iconshanchu-6 pIcon"
-              @click="userDelete(row.id)"
-            ></i>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-pagination
-        style="text-align: right; margin-top: 10px"
-        layout="total, prev, pager, next, jumper"
-        :hide-on-single-page="total>pageSize"
-        :total="total"
-        :page-size="pageSize"
-        :current-page="page"
-        @current-change="currentChange"
-      ></el-pagination>
+              slot="suffix"
+              class="el-input__icon el-icon-search"
+              @click="newSelectData"
+            />
+          </el-input>
+        </div>
+        <el-table class="userListTable" :data="tableData">
+          <el-table-column
+            :label="$t('views.userList.name')"
+            prop="username"
+          ></el-table-column>
+          <el-table-column
+            :label="$t('views.userList.email')"
+            prop="email"
+          ></el-table-column>
+          <el-table-column
+            :label="$t('views.userList.role')"
+            prop="is_superuser"
+          >
+            <template slot-scope="{ row }">
+              {{ row.is_superuser ? '管理员' : '普通用户' }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.userList.department')"
+            prop="department.name"
+          ></el-table-column>
+          <el-table-column
+            :label="$t('views.userList.phone')"
+            prop="phone"
+          ></el-table-column>
+          <el-table-column :label="$t('views.userList.operate')" width="100px">
+            <template slot-scope="{ row }">
+              <i class="iconfont iconshezhi-2 pIcon" @click="userEdit(row)"></i>
+              <i
+                class="iconfont iconshanchu-6 pIcon"
+                @click="userDelete(row.id)"
+              ></i>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          style="text-align: right; margin-top: 10px"
+          layout="total, prev, pager, next, jumper"
+          :hide-on-single-page="total > pageSize"
+          :total="total"
+          :page-size="pageSize"
+          :current-page="page"
+          @current-change="currentChange"
+        ></el-pagination>
+      </div>
     </div>
     <el-dialog
       v-if="addDialogOpen"
       :visible.sync="addDialogOpen"
       top="8vh"
-      :title="$t('views.userList.addUser')"
+      :title="
+        isAdd ? $t('views.userList.addUser') : $t('views.userList.editUser')
+      "
     >
       <el-form
         ref="ruleForm"
@@ -85,6 +138,7 @@
             :placeholder="$t('views.userList.namePlaceholder')"
             clearable
             class="addUserInput"
+            size="small"
             style="width: 400px"
           ></el-input>
         </el-form-item>
@@ -94,6 +148,7 @@
             class="addUserInput"
             :placeholder="$t('views.userList.email')"
             clearable
+            size="small"
             style="width: 400px"
           ></el-input>
         </el-form-item>
@@ -102,29 +157,23 @@
             v-model="userForm.role"
             class="addUserInput"
             clearable
+            size="small"
             style="width: 400px"
           >
-            <el-option label="超级管理员" :value="1"></el-option>
+            <el-option label="管理员" :value="1"></el-option>
             <el-option label="普通用户" :value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('views.userList.department')">
-          <el-select
-            v-model="userForm.department"
+          <el-input
+            :value="userForm.department.name"
             class="addUserInput"
-            filterable
-            allow-create
-            :placeholder="$t('views.userList.departmentPlaceholder')"
+            :placeholder="$t('views.userList.email')"
             clearable
+            disabled
+            size="small"
             style="width: 400px"
-          >
-            <el-option
-              v-for="item in departments"
-              :key="item.id"
-              :value="item.name"
-              :label="item.name"
-            ></el-option>
-          </el-select>
+          ></el-input>
         </el-form-item>
         <el-form-item :label="$t('views.userList.phone')" prop="phone">
           <el-input
@@ -132,6 +181,7 @@
             class="addUserInput"
             :placeholder="$t('views.userList.phonePlaceholder')"
             clearable
+            size="small"
             style="width: 400px"
           ></el-input>
         </el-form-item>
@@ -146,6 +196,7 @@
             show-password
             :placeholder="$t('views.userList.passwordPlaceholder')"
             clearable
+            size="small"
             style="width: 400px"
           ></el-input>
         </el-form-item>
@@ -159,6 +210,7 @@
             show-password
             :placeholder="$t('views.userList.passwordPlaceholder')"
             clearable
+            size="small"
             style="width: 400px"
           ></el-input>
         </el-form-item>
@@ -173,6 +225,7 @@
             show-password
             :placeholder="$t('views.userList.rePassPlaceholder')"
             clearable
+            size="small"
             style="width: 400px"
           ></el-input>
         </el-form-item>
@@ -183,16 +236,25 @@
             show-password
             :placeholder="$t('views.userList.rePassPlaceholder')"
             clearable
+            size="small"
             style="width: 400px"
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="text" class="submitBtn" @click="userAdd">{{
-            $t('views.userList.submit')
-          }}</el-button>
-          <el-button type="text" class="cancelBtn" @click="cancelAdd">{{
-            $t('views.userList.cancel')
-          }}</el-button>
+          <el-button
+            type="text"
+            class="submitBtn"
+            size="small"
+            @click="userAdd"
+            >{{ $t('views.userList.submit') }}</el-button
+          >
+          <el-button
+            type="text"
+            class="cancelBtn"
+            size="small"
+            @click="cancelAdd"
+            >{{ $t('views.userList.cancel') }}</el-button
+          >
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -205,12 +267,19 @@ import { Component } from 'vue-property-decorator'
 import { UserListObj, UserAddParams } from './types'
 import { Form } from 'element-ui'
 
-@Component({ name: 'UserList' })
-export default class UserList extends VueBase {
+@Component({ name: 'DepartmentList' })
+export default class DepartmentList extends VueBase {
   private page = 1
   private pageSize = 20
   private total = 0
   private keywords = ''
+  private newDepartment: boolean = false
+  private currentDepartmentName: string = ''
+  private department = {
+    id: -1,
+    name: '',
+  }
+  private isAdd = true
   private tableData: Array<UserListObj> = []
   private departments: Array<{
     id: number
@@ -252,6 +321,7 @@ export default class UserList extends VueBase {
     password: [{ validator: this.validateNewPass, trigger: 'blur' }],
     re_password: [{ validator: this.validateCheckPass, trigger: 'blur' }],
   }
+  private data = []
 
   private validateNewPass(rule: any, value: string, callback: any) {
     if (value === '') {
@@ -274,8 +344,8 @@ export default class UserList extends VueBase {
   }
 
   created() {
-    this.getTableData()
     this.departmentList()
+    this.getTableData()
   }
 
   private addDialogShow() {
@@ -285,7 +355,7 @@ export default class UserList extends VueBase {
       re_password: '',
       email: '',
       role: 0,
-      department: '',
+      department: this.department,
       phone: '',
       uid: 0,
     }
@@ -293,6 +363,7 @@ export default class UserList extends VueBase {
   }
 
   private userEdit(row: UserListObj) {
+    this.isAdd = false
     this.userForm = {
       username: row.username,
       password: '',
@@ -308,6 +379,9 @@ export default class UserList extends VueBase {
 
   private cancelAdd() {
     this.addDialogOpen = false
+    if (this.isAdd === false) {
+      this.isAdd = true
+    }
   }
   private newSelectData() {
     this.page = 1
@@ -321,10 +395,12 @@ export default class UserList extends VueBase {
     const params: {
       page: number
       pageSize: number
+      departmentId?: number
       keywords?: string
     } = {
       page: this.page,
       pageSize: this.pageSize,
+      departmentId: this.department.id,
     }
     if (this.keywords) {
       params.keywords = this.keywords
@@ -344,13 +420,17 @@ export default class UserList extends VueBase {
 
   private async departmentList() {
     this.loadingStart()
-    const { status, msg, data } = await this.services.user.departmentList()
+    const {
+      status,
+      msg,
+      data,
+    } = await this.services.department.departmentList()
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
-    this.departments = data
+    this.data = data
   }
 
   private userAdd() {
@@ -369,14 +449,24 @@ export default class UserList extends VueBase {
           params.uid = this.userForm.uid
         }
         this.loadingStart()
-        const { status, msg } = await this.services.user.userAdd(params)
-        this.loadingDone()
-        if (status !== 201) {
-          this.$message.error(msg)
-          return
+        if (this.isAdd) {
+          const { status, msg } = await this.services.user.userAdd(params)
+          this.loadingDone()
+          if (status !== 201) {
+            this.$message.error(msg)
+            return
+          }
+        } else {
+          const { status, msg } = await this.services.user.userEdit(params)
+          this.loadingDone()
+          if (status !== 201) {
+            this.$message.error(msg)
+            return
+          }
         }
         this.addDialogOpen = false
         this.getTableData()
+        this.isAdd = true
       } else {
         console.log('error submit!!')
         return false
@@ -395,6 +485,121 @@ export default class UserList extends VueBase {
       return
     }
     await this.getTableData()
+  }
+
+  private async depatmentAdd() {}
+
+  private async departmentDel() {}
+
+  private append(
+    node: any,
+    data: { id: number; label: string; children: [{}] }
+  ) {
+    this.newDepartment = true
+    const defaultDepartmentName: string = '子部门'
+    const newChild = {
+      id: data.id + 1,
+      label: '子部门',
+      isEdit: 1,
+      children: [],
+    }
+    if (!data.children) {
+      this.$set(data, 'children', [])
+    }
+    this.currentDepartmentName = defaultDepartmentName
+    data.children.push(newChild)
+  }
+
+  private async remove(node: any, data: any) {
+    // 执行删除
+    const { status, msg } = await this.services.department.departmentDel(
+      data.id
+    )
+
+    if (status === 201) {
+      const parent = node.parent
+      const children = parent.data.children || parent.data
+      const index = children.findIndex((d: any) => d.id === data.id)
+      children.splice(index, 1)
+      this.$message.success(msg)
+    } else {
+      this.$message.error(msg)
+    }
+  }
+
+  private SelectNode(data: any, node: any, obj: any) {
+    node.expanded = true
+    if (
+      data.isEdit === undefined ||
+      (data.isEdit === 0 && this.newDepartment == false && data.id !== -1)
+    ) {
+      // 触发用户查询
+      this.department.id = data.id
+      this.department.name = data.label
+      this.getTableData()
+    }
+  }
+
+  edit(node: object, data: { id: number; label: string; isEdit: boolean }) {
+    this.newDepartment = false
+    this.$set(data, 'isEdit', 1)
+    this.currentDepartmentName = data.label
+  }
+
+  private async submitEdit(node: any, nodeData: any) {
+    if (nodeData.label == this.currentDepartmentName) {
+      console.log('没有修改')
+      this.currentDepartmentName = ''
+      this.$set(nodeData, 'isEdit', 0)
+
+      if (this.newDepartment) {
+        const parent = node.parent
+        const children = parent.data.children || parent.data
+        const index = children.findIndex((d: any) => d.id === nodeData.id)
+        children.splice(index, 1)
+        this.newDepartment = false
+      }
+    } else {
+      const params = {
+        name: this.currentDepartmentName,
+        parent: node.parent.data.id,
+      }
+      if (this.newDepartment) {
+        // 创建部门
+        const {
+          status,
+          msg,
+          data,
+        } = await this.services.department.departmentAdd(params)
+        if (status !== 201) {
+          this.$set(data, 'isEdit', 0)
+          this.$message.error(msg)
+          return
+        } else {
+          this.$set(nodeData, 'id', data)
+          this.$set(nodeData, 'label', this.currentDepartmentName)
+          this.currentDepartmentName = ''
+          this.$set(nodeData, 'isEdit', 0)
+          this.$message.success(msg)
+        }
+        this.newDepartment = false
+      } else {
+        const { status, msg } = await this.services.department.departmentUpdate(
+          nodeData.id,
+          params
+        )
+        if (status !== 201) {
+          this.$set(nodeData, 'isEdit', 0)
+          this.$message.error(msg)
+          return
+        } else {
+          this.$set(nodeData, 'label', this.currentDepartmentName)
+          this.currentDepartmentName = ''
+          this.$set(nodeData, 'isEdit', 0)
+          this.$message.success(msg)
+        }
+      }
+    }
   }
 }
 </script>
@@ -444,5 +649,21 @@ export default class UserList extends VueBase {
   border: 1px solid #4a72ae;
   font-size: 14px;
   color: #4a72ae;
+}
+
+.custom-tree-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  padding-right: 8px;
+}
+
+.tree-node-input {
+  .el-input__inner {
+    height: 20px;
+    line-height: 20px;
+  }
 }
 </style>
