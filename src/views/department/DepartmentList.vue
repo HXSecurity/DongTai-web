@@ -8,6 +8,7 @@
         <el-tree
           :data="data"
           node-key="id"
+          :default-expand-all="true"
           :current-node-key="1"
           :expand-on-click-node="false"
           :check-on-click-node="false"
@@ -85,7 +86,7 @@
             prop="is_superuser"
           >
             <template slot-scope="{ row }">
-              {{ row.is_superuser ? '管理员' : '普通用户' }}
+              {{ row.is_superuser === 0 ? '普通用户' : '管理员' }}
             </template>
           </el-table-column>
           <el-table-column
@@ -160,7 +161,7 @@
             size="small"
             style="width: 400px"
           >
-            <el-option label="管理员" :value="1"></el-option>
+            <el-option label="管理员" :value="2"></el-option>
             <el-option label="普通用户" :value="0"></el-option>
           </el-select>
         </el-form-item>
@@ -292,7 +293,7 @@ export default class DepartmentList extends VueBase {
     re_password: '',
     email: '',
     role: 0,
-    department: '',
+    department: {},
     phone: '',
     uid: 0,
   }
@@ -369,7 +370,7 @@ export default class DepartmentList extends VueBase {
       password: '',
       re_password: '',
       email: row.email,
-      role: row.is_superuser ? 1 : 0,
+      role: row.is_superuser,
       department: row.department,
       phone: row.phone,
       uid: row.id,
@@ -448,6 +449,7 @@ export default class DepartmentList extends VueBase {
         if (this.userForm.uid) {
           params.uid = this.userForm.uid
         }
+        console.log(params)
         this.loadingStart()
         if (this.isAdd) {
           const { status, msg } = await this.services.user.userAdd(params)

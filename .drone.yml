@@ -77,6 +77,29 @@ steps:
       branch:
         - master
 
+    # 构建saas-prod镜像
+  - name: build-iast-saas-web-prod
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: aliyun_dockerhub_username
+      password:
+        from_secret: aliyun_dockerhub_password
+      repo: registry-vpc.cn-beijing.aliyuncs.com/secnium/iast-saas-web
+      registry:
+        from_secret: aliyun_dockerhub_registry
+      mirror:
+        from_secret: aliyun_mirror
+      use_cache: true
+      cache_from:
+        - registry-vpc.cn-beijing.aliyuncs.com/secnium/iast-saas-web:latest
+      tags:
+        - latest
+        - 0.1.${DRONE_BUILD_NUMBER}
+    when:
+      branch:
+        - saas.master
+
   # 部署prod环境
   - name: deliver-prod
     image: sinlead/drone-kubectl
@@ -119,6 +142,7 @@ volumes:
 trigger:
   branch:
     - master
+    - saas.master
   #    - test
   event:
     - push
