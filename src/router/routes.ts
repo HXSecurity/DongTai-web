@@ -159,6 +159,40 @@ const routes: Array<RouteConfig> = [
         ],
       },
       {
+        path: 'department',
+        redirect: '/department/departmentList',
+        meta: {
+          name: i18n.t('meun.department'),
+        },
+        component: () => import('@/views/department/Index.vue'),
+        children: [
+          {
+            path: 'departmentList',
+            meta: {
+              name: i18n.t('menu.department'),
+            },
+            component: () => import('@/views/department/DepartmentList.vue'),
+          },
+        ],
+      },
+      {
+        path: 'talent',
+        redirect: '/talent/talentList',
+        meta: {
+          name: i18n.t('meun.talent'),
+        },
+        component: () => import('@/views/talent/Index.vue'),
+        children: [
+          {
+            path: 'talentList',
+            meta: {
+              name: i18n.t('menu.talent'),
+            },
+            component: () => import('@/views/talent/TalentList.vue'),
+          },
+        ],
+      },
+      {
         path: '/deploy',
         meta: {
           name: '部署IAST',
