@@ -71,7 +71,7 @@ export default () =>
     }
 
     userDelete(params: { uid: number }): Promise<iResponse> {
-      return request.post('/user/delete', params)
+      return request.delete('/user/' + params.uid + '/delete')
     }
 
     // 部门列表
