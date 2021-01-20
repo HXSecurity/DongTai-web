@@ -215,7 +215,7 @@
             style="font-size: 14px; font-weight: bold; height: 32px"
           >
             {{
-              `${item.url}的${item.http_method}请求出现${item.type}漏洞${
+              `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
                 item.taint_position ? `，位置：${item.taint_position}` : ''
               }`
             }}
