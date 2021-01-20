@@ -64,7 +64,7 @@
           @click="idChange(item.id)"
         >
           <div class="titleLine">
-            {{ `${item.url}存在${item.type}漏洞` }}
+            {{ `${item.uri}存在${item.type}漏洞` }}
           </div>
           <div class="infoLine flex-row-space-between">
             <span
@@ -483,7 +483,7 @@ export default class VulnDetail extends VueBase {
   private async getTableData() {
     const params = {
       page: this.page,
-      pageSize: 20,
+      pageSize: 10,
       language: this.searchObj.language,
       level: this.searchObj.level,
       type: this.searchObj.type,
