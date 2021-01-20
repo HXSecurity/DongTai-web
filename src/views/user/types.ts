@@ -1,6 +1,6 @@
 export interface UserListObj {
   username: string
-  department: string
+  department: object
   email: string
   id: number
   is_superuser: boolean
@@ -13,7 +13,7 @@ export interface UserAddParams {
   re_password: string
   email: string
   role: number
-  department: string
+  department: object
   phone: string
   uid?: number
 }
