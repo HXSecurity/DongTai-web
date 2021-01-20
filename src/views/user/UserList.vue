@@ -40,7 +40,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('views.userList.department')"
-          prop="department"
+          prop="department.name"
         ></el-table-column>
         <el-table-column
           :label="$t('views.userList.phone')"
@@ -59,7 +59,7 @@
       <el-pagination
         style="text-align: right; margin-top: 10px"
         layout="total, prev, pager, next, jumper"
-        :hide-on-single-page="total>pageSize"
+        :hide-on-single-page="total > pageSize"
         :total="total"
         :page-size="pageSize"
         :current-page="page"
@@ -110,7 +110,7 @@
         </el-form-item>
         <el-form-item :label="$t('views.userList.department')">
           <el-select
-            v-model="userForm.department"
+            v-model="userForm.department.name"
             class="addUserInput"
             filterable
             allow-create
@@ -223,7 +223,10 @@ export default class UserList extends VueBase {
     re_password: '',
     email: '',
     role: 0,
-    department: '',
+    department: {
+      id: -1,
+      name: '',
+    },
     phone: '',
     uid: 0,
   }
@@ -285,7 +288,10 @@ export default class UserList extends VueBase {
       re_password: '',
       email: '',
       role: 0,
-      department: '',
+      department: {
+        id: -1,
+        name: '',
+      },
       phone: '',
       uid: 0,
     }

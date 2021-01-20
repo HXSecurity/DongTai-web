@@ -11,19 +11,11 @@ export default () =>
             return request.get('/talents', { params })
         }
 
-        talentAdd(params: {
-            talent_name: string
-            email: string
-            is_active?: boolean
-        }): Promise<iResponse> {
+        talentAdd(params: any): Promise<iResponse> {
             return request.put('/talent/add', params)
         }
 
-        talentEdit(params: {
-            id: number
-            talent_name: string
-            is_active?: boolean
-        }): Promise<iResponse> {
+        talentEdit(params: any): Promise<iResponse> {
             return request.post('talent/' + params.id, params)
         }
 
