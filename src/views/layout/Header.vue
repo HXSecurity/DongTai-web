@@ -40,14 +40,6 @@
         <div
           v-if="userInfo.role === 1 || userInfo.role === 2"
           class="url flex-column-center"
-          :class="currentRoute('/user') ? 'currentRoute' : ''"
-          @click="$router.push('/user')"
-        >
-          {{ $t('menu.user') }}
-        </div>
-        <div
-          v-if="userInfo.role === 1 || userInfo.role === 2"
-          class="url flex-column-center"
           :class="currentRoute('/department') ? 'currentRoute' : ''"
           @click="$router.push('/department')"
         >

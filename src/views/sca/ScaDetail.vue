@@ -294,7 +294,7 @@ export default class ScaDetail extends VueBase {
   private async getTableData() {
     const params = {
       page: this.page,
-      pageSize: 20,
+      pageSize: 10,
       language: this.searchObj.language,
       level: this.searchObj.level,
       project_name: this.searchObj.project_name,
