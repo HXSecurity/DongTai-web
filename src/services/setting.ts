@@ -23,6 +23,11 @@ export default () =>
       return request.post('/agent/uninstall', params)
     }
 
+    // 引擎管理-删除
+    agentDelete(params: { id: number }): Promise<iResponse> {
+      return request.get('/agent/' + params.id + '/delete')
+    }
+
     // 策略管理-策略列表
     strategyList(): Promise<iResponse> {
       return request.get('/strategys')
