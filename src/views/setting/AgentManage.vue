@@ -1,6 +1,6 @@
 <template>
   <div class="content-warp">
-    <el-table :data="tableData" class="agentManageTable">
+    <el-table :data="tableData" class="agentManageTable" header-align="center">
       <el-table-column label="Agent" prop="token"></el-table-column>
       <el-table-column
         :label="$t('views.agentManage.address')"
@@ -16,7 +16,7 @@
         prop="running_status"
         width="90px"
       ></el-table-column>
-      <el-table-column :label="$t('views.agentManage.manage')" width="100px">
+      <el-table-column :label="$t('views.agentManage.manage')" width="140px">
         <template slot-scope="{ row }">
           <i
             class="iconfont iconshengji install"
@@ -26,17 +26,39 @@
             class="iconfont iconshanchu-4 uninstall"
             @click="agentUninstall(row.id)"
           ></i>
+          <i
+            class="iconfont iconshanchu-4 uninstall"
+            @click="doDelete(row.id)"
+          ></i>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
-      style="float:right"
+      style="float: right"
       :total="total"
       :current-page="page"
       :page-size="pageSize"
       layout="total, prev, pager, next, jumper"
       @current-change="currentChange"
     ></el-pagination>
+    <el-dialog :visible.sync="deleteDialogOpen" title="删除引擎" width="25%">
+      <div style="text-align: center">
+        <p style="color: #959fb4">引擎删除后，相关的数据将一并删除，不可恢复</p>
+        <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <el-button type="text" class="confirmDel" @click="agentDelete">
+          确认删除
+        </el-button>
+        <el-button
+          type="text"
+          class="cancelDel"
+          @click="deleteDialogOpen = false"
+        >
+          取消
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -51,6 +73,10 @@ export default class AgentManage extends VueBase {
   private total = 0
   private page = 1
   private pageSize = 20
+  private currentPageSize = 0
+  private currentPageDelete = 0
+  private deleteDialogOpen = false
+  private deleteSelectId = 0
 
   created() {
     this.getTableData()
@@ -76,7 +102,10 @@ export default class AgentManage extends VueBase {
       return
     }
     this.tableData = data
+    this.currentPageSize = data.length
     this.total = page.alltotal
+    this.currentPageDelete = 0
+    console.log(this.currentPageSize)
   }
 
   private async agentInstall(id: string | number) {
@@ -103,6 +132,30 @@ export default class AgentManage extends VueBase {
       return
     }
     await this.getTableData()
+  }
+
+  private async doDelete(id: string | number) {
+    this.deleteDialogOpen = true
+    this.deleteSelectId = parseInt(`${id}`)
+  }
+
+  private async agentDelete() {
+    this.deleteDialogOpen = false
+    this.loadingStart()
+    const { status, msg } = await this.services.setting.agentDelete({
+      id: this.deleteSelectId,
+    })
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.currentPageDelete = this.currentPageDelete + 1
+    if (this.currentPageDelete === this.currentPageSize) {
+      this.page = this.page - 1
+    }
+    await this.getTableData()
+    this.deleteSelectId = 0
   }
 }
 </script>
