@@ -19,7 +19,8 @@ export default {
     logManage: '操作日志',
     user: '角色管理',
     talent: '租户管理',
-    department: '组织管理'
+    department: '组织管理',
+    taintPool: '污点池'
   },
   views: {
     login: {
