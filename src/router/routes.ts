@@ -90,6 +90,23 @@ const routes: Array<RouteConfig> = [
         ],
       },
       {
+        path: 'taint',
+        redirect: '/taint/Pool',
+        meta: {
+          name: i18n.t('menu.taintPool'),
+        },
+        component: () => import('@/views/taint/Index.vue'),
+        children: [
+          {
+            path: 'Pool',
+            meta: {
+              name: i18n.t('menu.taintPool'),
+            },
+            component: () => import('@/views/taint/Pool.vue'),
+          },
+        ],
+      },
+      {
         path: 'setting',
         redirect: '/setting/agentManage',
         meta: {

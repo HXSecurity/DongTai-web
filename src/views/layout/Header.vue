@@ -32,6 +32,13 @@
         </div>
         <div
           class="url flex-column-center"
+          :class="currentRoute('/taint') ? 'currentRoute' : ''"
+          @click="$router.push('/taint')"
+        >
+          {{ $t('menu.taintPool') }}
+        </div>
+        <div
+          class="url flex-column-center"
           :class="currentRoute('/setting') ? 'currentRoute' : ''"
           @click="$router.push('/setting')"
         >
