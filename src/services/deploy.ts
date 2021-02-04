@@ -41,4 +41,9 @@ export default () =>
     getDeplogInfo(): Promise<iResponse> {
       return request.get('/agent/deploy/submit')
     }
+
+    // 获取OPENAPI的地址
+    getOpenApiUrl(): Promise<iResponse> {
+      return request.get('/openapi')
+    }
   })()
