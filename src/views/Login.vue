@@ -81,6 +81,7 @@ export default class Login extends VueBase {
   private captcha_url = ''
 
   created() {
+    console.log(this.$api)
     this.initCaptcha()
   }
 

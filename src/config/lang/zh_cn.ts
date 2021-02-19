@@ -18,6 +18,7 @@ export default {
     changePassword: '密码修改',
     logManage: '操作日志',
     user: '角色管理',
+    search: '污点搜索',
   },
   views: {
     login: {
@@ -29,6 +30,10 @@ export default {
       passwordPlaceholder: '请输入密码，默认admin',
       captcha: '验证码',
       captchaPlaceholder: '请输入验证码',
+    },
+    search: {
+      defPolicy: '内置策略',
+      myPolicy: '我的策略',
     },
     vulnList: {
       filter: '过滤器',

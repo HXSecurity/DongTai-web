@@ -174,6 +174,13 @@ const routes: Array<RouteConfig> = [
     },
     component: () => import('@/views/Login.vue'),
   },
+  {
+    path: '/search',
+    meta: {
+      name: i18n.t('menu.search'),
+    },
+    component: () => import('@/views/search/Search.vue'),
+  },
 ]
 
 export default routes

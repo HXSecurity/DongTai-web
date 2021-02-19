@@ -12,15 +12,29 @@ const router = new VueRouter({
   routes,
 })
 
+const whiteList = ['/login', '/search']
+
+const isWhiteList = (path: string) => {
+  return whiteList.some((item: string) => {
+    return path.indexOf(item) > -1
+  })
+}
+
 router.beforeEach((to, from, next) => {
   Nprogress.start()
   // 当前没有用户信息
-  if (!store.getters.userInfo && to.fullPath !== '/login') {
+
+  if (!store.getters.userInfo && !isWhiteList(to.fullPath)) {
     store
       .dispatch('user/getUserInfo')
       .then(() => {
         Nprogress.done()
-        if (store.getters.userInfo.role != 1 && (to.fullPath == '/user/userList' || to.fullPath == '/setting/sysInfo' || to.fullPath == '/setting/upgradeOnline')) {
+        if (
+          store.getters.userInfo.role != 1 &&
+          (to.fullPath == '/user/userList' ||
+            to.fullPath == '/setting/sysInfo' ||
+            to.fullPath == '/setting/upgradeOnline')
+        ) {
           next('/')
         } else {
           next()
