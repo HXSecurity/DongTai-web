@@ -11,6 +11,13 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/layout/Index.vue'),
     children: [
       {
+        path: 'login',
+        meta: {
+          name: i18n.t('menu.login'),
+        },
+        component: () => import('@/views/Login.vue'),
+      },
+      {
         path: 'project',
         redirect: '/project/projectManage',
         meta: {
@@ -91,7 +98,7 @@ const routes: Array<RouteConfig> = [
       },
       {
         path: 'taint',
-        redirect: '/taint/Pool',
+        redirect: '/taint/search',
         meta: {
           name: i18n.t('menu.taintPool'),
         },
@@ -103,6 +110,13 @@ const routes: Array<RouteConfig> = [
               name: i18n.t('menu.taintPool'),
             },
             component: () => import('@/views/taint/Pool.vue'),
+          },
+          {
+            path: 'search',
+            meta: {
+              name: i18n.t('menu.taintPool'),
+            },
+            component: () => import('@/views/taint/Search.vue'),
           },
         ],
       },
@@ -201,20 +215,20 @@ const routes: Array<RouteConfig> = [
       },
     ],
   },
-  {
-    path: '/login',
-    meta: {
-      name: i18n.t('menu.login'),
-    },
-    component: () => import('@/views/Login.vue'),
-  },
-  {
-    path: '/search',
-    meta: {
-      name: i18n.t('menu.search'),
-    },
-    component: () => import('@/views/search/Search.vue'),
-  },
+  // {
+  //   path: '/login',
+  //   meta: {
+  //     name: i18n.t('menu.login'),
+  //   },
+  //   component: () => import('@/views/Login.vue'),
+  // },
+  // {
+  //   path: '/search',
+  //   meta: {
+  //     name: i18n.t('menu.search'),
+  //   },
+  //   component: () => import('@/views/search/Search.vue'),
+  // },
 ]
 
 export default routes

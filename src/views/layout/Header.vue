@@ -61,7 +61,14 @@
           {{ $t('menu.talent') }}
         </div>
       </div>
-      <div v-if="!userInfo" class="flex-column-center">
+      <div v-if="!userInfo" class="url-warp" style="justify-content: space-between;">
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/taint') ? 'currentRoute' : ''"
+          @click="$router.push('/taint')"
+        >
+          {{ $t('menu.taintPool') }}
+        </div>
         <el-button v-if="!userInfo" type="text" @click="$router.push('/login')"
           >{{ $t('menu.login') }}
         </el-button>
@@ -147,6 +154,8 @@ export default class Header extends VueBase {
         color: #38435a;
         cursor: pointer;
         margin-left: 10px;
+        min-width: 100px;
+        text-align: center;
         padding: 0 15px;
 
         &:first-child {

@@ -20,7 +20,7 @@ export default {
     user: '角色管理',
     talent: '租户管理',
     department: '组织管理',
-    taintPool: '污点池',
+    taintPool: '搜索',
     search: '污点搜索',
   },
   views: {
