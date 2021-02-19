@@ -147,7 +147,9 @@
                 <div class="moudleTitle">自动下载：</div>
                 <div class="command token">
                   {{
-                    `curl -X GET ${url}/api/v1/agent/download?url=${url}&jdk.version=${encodeURI(this.deployForm.javaVersion)} -H
+                    `curl -X GET ${url}/api/v1/agent/download?url=${url}&jdk.version=${encodeURI(
+                      this.deployForm.javaVersion
+                    )} -H
                   'Authorization: Token ${userToken}' -o agent.jar -k`
                   }}
                 </div>
@@ -198,11 +200,21 @@ export default class Deploy extends VueBase {
   private system: Array<string> = []
   private userToken = ''
   private desc = ''
-  private url = location.origin
+  private url = ''
 
   created() {
     this.getDeplogInfo()
     this.agentDeployInfo()
+    this.getOpenApiUrl()
+  }
+
+  private async getOpenApiUrl() {
+    const { status, msg, data } = await this.services.deploy.getOpenApiUrl()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.url = data.url
   }
 
   // 获取系统部署信息

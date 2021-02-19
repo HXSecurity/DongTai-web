@@ -18,6 +18,9 @@ export default {
     changePassword: '密码修改',
     logManage: '操作日志',
     user: '角色管理',
+    talent: '租户管理',
+    department: '组织管理',
+    taintPool: '污点池',
     search: '污点搜索',
   },
   views: {
@@ -200,6 +203,7 @@ export default {
     userList: {
       keywordPlaceholder: '请输入名称关键字',
       addUser: '新增用户',
+      editUser: '修改用户信息',
       userID: '用户ID',
       name: '用户名称',
       namePlaceholder: '请输入用户名称',
@@ -218,5 +222,29 @@ export default {
       submit: '确认',
       cancel: '取消',
     },
+    talent: {
+      title: {
+        add: '新增租户',
+        modify: '修改租户信息',
+        placeholder: '请输入租户名称进行搜索，例如：火线白帽社区',
+      },
+      table: {
+        name: '租户名称',
+        enable: '启用状态',
+        create: '创建时间',
+        update: '更新时间',
+        modifyBy: '操作人员',
+        operate: '操作',
+      },
+      add: {
+        email: '邮箱地址',
+        emailPlaceholder: '请输入企业邮箱，注意：必须使用企业邮箱',
+        enable: '启用状态',
+        enablePlaceholder: '租户是否启用',
+        placeholder: '请输入租户名称，注意：租户名称不能重复',
+        submit: '确认',
+        cancel: '取消',
+      },
+    }
   },
 }

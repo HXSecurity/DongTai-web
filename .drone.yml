@@ -77,6 +77,29 @@ steps:
       branch:
         - master
 
+    # 构建saas-prod镜像
+  - name: build-iast-saas-web-prod
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: aliyun_dockerhub_username
+      password:
+        from_secret: aliyun_dockerhub_password
+      repo: registry-vpc.cn-beijing.aliyuncs.com/secnium/iast-saas-web
+      registry:
+        from_secret: aliyun_dockerhub_registry
+      mirror:
+        from_secret: aliyun_mirror
+      use_cache: true
+      cache_from:
+        - registry-vpc.cn-beijing.aliyuncs.com/secnium/iast-saas-web:latest
+      tags:
+        - latest
+        - 0.1.${DRONE_BUILD_NUMBER}
+    when:
+      branch:
+        - saas.master
+
   # 部署prod环境
   - name: deliver-prod
     image: sinlead/drone-kubectl
@@ -93,6 +116,23 @@ steps:
     when:
       branch:
         - master
+
+  # 部署saas.prod环境
+  - name: deliver-iast-saas-web-prod
+    image: sinlead/drone-kubectl
+    settings:
+      kubernetes_server:
+        from_secret: iast_eks_prod_server
+      kubernetes_cert:
+        from_secret: iast_eks_prod_cert
+      kubernetes_token:
+        from_secret: iast_eks_prod_token
+    commands:
+      - find deploy/deploy-eks-iast-saas-prod.yml -type f -exec sed -i 's/VERSION/0.1.${DRONE_BUILD_NUMBER}/g' {} \;
+      - ls deploy/deploy-eks-iast-saas-prod.yml | xargs -I {} kubectl apply -f {}
+    when:
+      branch:
+        - saas.master
 
   # 结束通知
   - name: notify-end
@@ -119,7 +159,7 @@ volumes:
 trigger:
   branch:
     - master
-  #    - test
+    - saas.master
   event:
     - push
     - tag

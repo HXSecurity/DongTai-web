@@ -32,18 +32,33 @@
         </div>
         <div
           class="url flex-column-center"
+          :class="currentRoute('/taint') ? 'currentRoute' : ''"
+          @click="$router.push('/taint')"
+        >
+          {{ $t('menu.taintPool') }}
+        </div>
+        <div
+          class="url flex-column-center"
           :class="currentRoute('/setting') ? 'currentRoute' : ''"
           @click="$router.push('/setting')"
         >
           {{ $t('menu.setting') }}
         </div>
         <div
+          v-if="userInfo.role === 1 || userInfo.role === 2"
+          class="url flex-column-center"
+          :class="currentRoute('/department') ? 'currentRoute' : ''"
+          @click="$router.push('/department')"
+        >
+          {{ $t('menu.department') }}
+        </div>
+        <div
           v-if="userInfo.role === 1"
           class="url flex-column-center"
-          :class="currentRoute('/user') ? 'currentRoute' : ''"
-          @click="$router.push('/user')"
+          :class="currentRoute('/talent') ? 'currentRoute' : ''"
+          @click="$router.push('/talent')"
         >
-          {{ $t('menu.user') }}
+          {{ $t('menu.talent') }}
         </div>
       </div>
       <div v-if="!userInfo" class="flex-column-center">

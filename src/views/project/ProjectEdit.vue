@@ -385,7 +385,9 @@ export default class ProjectEdit extends VueBase {
       name: this.scanForm.name,
     }
     this.loadingStart()
-    const { status, msg } = await this.services.setting.strategyUserAdd(params)
+    const { status, msg, data } = await this.services.setting.strategyUserAdd(
+      params
+    )
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
@@ -393,6 +395,8 @@ export default class ProjectEdit extends VueBase {
     }
     this.scanAddDialogOpen = false
     this.strategyUserList()
+    // 设置策略id为刚增加的策略
+    this.submitForm.scanId = data.id
   }
 
   private agentChange() {

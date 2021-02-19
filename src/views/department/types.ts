@@ -3,7 +3,7 @@ export interface UserListObj {
   department: object
   email: string
   id: number
-  is_superuser: boolean
+  is_superuser: number
   phone: string
 }
 

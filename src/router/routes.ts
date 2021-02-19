@@ -90,6 +90,23 @@ const routes: Array<RouteConfig> = [
         ],
       },
       {
+        path: 'taint',
+        redirect: '/taint/Pool',
+        meta: {
+          name: i18n.t('menu.taintPool'),
+        },
+        component: () => import('@/views/taint/Index.vue'),
+        children: [
+          {
+            path: 'Pool',
+            meta: {
+              name: i18n.t('menu.taintPool'),
+            },
+            component: () => import('@/views/taint/Pool.vue'),
+          },
+        ],
+      },
+      {
         path: 'setting',
         redirect: '/setting/agentManage',
         meta: {
@@ -142,19 +159,36 @@ const routes: Array<RouteConfig> = [
         ],
       },
       {
-        path: 'user',
-        redirect: '/user/userList',
+        path: 'department',
+        redirect: '/department/departmentList',
         meta: {
-          name: i18n.t('menu.user'),
+          name: i18n.t('meun.department'),
         },
-        component: () => import('@/views/user/Index.vue'),
+        component: () => import('@/views/department/Index.vue'),
         children: [
           {
-            path: 'userList',
+            path: 'departmentList',
             meta: {
-              name: i18n.t('menu.user'),
+              name: i18n.t('menu.department'),
             },
-            component: () => import('@/views/user/UserList.vue'),
+            component: () => import('@/views/department/DepartmentList.vue'),
+          },
+        ],
+      },
+      {
+        path: 'talent',
+        redirect: '/talent/talentList',
+        meta: {
+          name: i18n.t('meun.talent'),
+        },
+        component: () => import('@/views/talent/Index.vue'),
+        children: [
+          {
+            path: 'talentList',
+            meta: {
+              name: i18n.t('menu.talent'),
+            },
+            component: () => import('@/views/talent/TalentList.vue'),
           },
         ],
       },
