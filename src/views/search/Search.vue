@@ -95,11 +95,10 @@
           <div>url</div>
           <div>agent</div>
         </div>
+        i
         <div class="card-row">
           <div style="flex: 2; margin-right: 60px">
-            <div>
-
-            </div>
+            <div></div>
           </div>
           <div style="display: flex">
             <span class="search-card-label">组件:</span>
@@ -130,13 +129,16 @@ import {
 export default class Search extends VueBase {
   policies: policy[] = []
   criteriaOptionS: criteriaOption[] = [
-    { label: 'AND', value: 'and', label: 'OR', value: 'or' },
+    { label: 'AND', value: 'and' },
+    { label: 'OR', value: 'or' },
   ]
   nodeTypeOptionS: nodeTypeOption[] = [
-    { label: '1', value: '节点1', label: '2', value: '节点2' },
+    { label: '1', value: '节点1' },
+    { label: '2', value: '节点2' },
   ]
   selectOptionS: selectOption[] = [
-    { label: '1', value: '选项1', label: '2', value: '选项2' },
+    { label: '1', value: '选项1' },
+    { label: '2', value: '选项2' },
   ]
   paramsList: params[] = [{ criteria: '', nodeType: '', select: '', info: '' }]
 
@@ -155,13 +157,12 @@ export default class Search extends VueBase {
   }
 
   created() {
-    for (let key: int = 0; key < 5; key++) {
+    for (let key = 0; key < 5; key++) {
       this.policies.push({
         name: 'test' + key,
         info: 'testInfo' + key,
       })
     }
-    this.initCaptcha()
   }
 }
 </script>
