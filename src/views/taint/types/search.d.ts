@@ -33,10 +33,17 @@ interface dependency{
 export interface dataObj{
   agent_name: string
   dependencies:dependency[]
+  sink_rules: {value: string}[]
   language: string
   level: string | null
   req_params: string | null
   rule: string | null
   update_time: string
   url: string
+}
+
+export interface ruleObj{
+  id: number
+  rule_name: string
+  rule_msg: string
 }

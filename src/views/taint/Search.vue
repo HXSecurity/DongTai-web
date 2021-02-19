@@ -2,38 +2,29 @@
   <main class="container">
     <div class="policy-select">
       <el-select
-        v-model="value"
-        popper-class="search-select"
+        v-model="sysRule"
         :placeholder="$t('views.search.defPolicy')"
+        @change="sysRuleChange"
       >
         <el-option
-          v-for="item in policies"
-          :key="item.name"
-          :label="item.info"
-          :value="item.name"
-        >
-          <div class="select-title">
-            {{ item.name }}
-          </div>
-          <div class="select-info">{{ item.info }}</div>
-        </el-option>
+          v-for="item in sysRuleList"
+          :key="item.id"
+          :label="item.rule_name"
+          :value="item"
+        />
       </el-select>
       <el-select
-        v-model="value"
-        popper-class="search-select"
+        v-if="userInfo"
+        v-model="userRule"
+        style="margin-left: 10px"
         :placeholder="$t('views.search.myPolicy')"
       >
         <el-option
-          v-for="item in policies"
-          :key="item.name"
-          :label="item.info"
-          :value="item.name"
-        >
-          <div class="select-title">
-            {{ item.name }}
-          </div>
-          <div class="select-info">{{ item.info }}</div>
-        </el-option>
+          v-for="item in userRuleList"
+          :key="item.id"
+          :label="item.rule_name"
+          :value="item"
+        />
       </el-select>
     </div>
     <div class="search-params">
@@ -110,8 +101,8 @@
           <div>
             <label>风险函数：</label>
             <div class="list-box">
-              <div class="line" v-for="(line,lineIndex) in item.dependencies" :key="lineIndex">
-                {{ line.package_name }}&nbsp;存在&nbsp;{{line.vul_count}}&nbsp;个漏洞
+              <div class="line" v-for="(line,lineIndex) in item.sink_rules" :key="lineIndex">
+                {{ line.value }}
               </div>
             </div>
           </div>
@@ -119,7 +110,7 @@
             <label>组件：</label>
             <div class="list-box">
               <div class="line" v-for="(line,lineIndex) in item.dependencies" :key="lineIndex">
-                {{ line.package_name }}&nbsp;存在&nbsp;{{line.vul_count}}&nbsp;个漏洞
+                {{ line.package_name }}&nbsp;存在&nbsp;{{ line.vul_count }}&nbsp;个漏洞
               </div>
             </div>
           </div>
@@ -142,14 +133,23 @@ import {
   criteriaOption,
   nodeTypeOption,
   selectOption,
-  dataObj
+  dataObj,
+  ruleObj
 } from './types/search'
 import { formatTimestamp } from '@/utils/utils'
+
+enum engineVulRuleType {
+  user = 'user',
+  system = 'system'
+}
 
 @Component({ name: 'Search' })
 export default class Search extends VueBase {
   private tableData: Array<dataObj> = []
-  private policies: policy[] = []
+  private sysRule : ruleObj = null;
+  private sysRuleList: Array<ruleObj> = []
+  private userRule : ruleObj = null;
+  private userRuleList: Array<ruleObj> = []
   private criteriaOptionS: criteriaOption[] = [
     { label: 'AND', value: 'and' },
     { label: 'OR', value: 'or' }
@@ -164,14 +164,14 @@ export default class Search extends VueBase {
   ]
   paramsList: params[] = [{ criteria: '', nodeType: '', select: '', info: '' }]
 
+  get userInfo(): { username: string } {
+    return this.$store.getters.userInfo
+  }
+
   created() {
     this.getTableData()
-    for (let key = 0; key < 5; key++) {
-      this.policies.push({
-        name: 'test' + key,
-        info: 'testInfo' + key
-      })
-    }
+    this.userInfo && this.engineVulRule(engineVulRuleType.user)
+    this.engineVulRule(engineVulRuleType.system)
   }
 
   add(): void {
@@ -186,6 +186,28 @@ export default class Search extends VueBase {
         return false
       }
     })
+  }
+
+  private async engineVulRule(type: string) {
+    const { status, msg, data } = await this.services.taint.engineVulRule({ type })
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    if (type === engineVulRuleType.system) {
+      this.sysRuleList = data
+    }
+    if (type === engineVulRuleType.user) {
+      this.userRuleList = data
+    }
+  }
+
+  private sysRuleChange(val){
+    console.log(val)
+  }
+
+  private async engineVulRuleDetail(rule_id:number){
+    const {status,msg,data} = await this.services.taint.engineVulRuleDetail({ rule_id })
   }
 
   private async getTableData() {
@@ -208,22 +230,22 @@ export default class Search extends VueBase {
 }
 </script>
 
-<style lang="scss">
-.search-select {
-  .el-select-dropdown__item {
-    height: auto !important;
-    line-height: normal;
+<!--<style lang="scss">-->
+<!--.search-select {-->
+<!--  .el-select-dropdown__item {-->
+<!--    height: auto !important;-->
+<!--    line-height: normal;-->
 
-    .select-title {
-      border-top: 1px solid #ccc;
-    }
+<!--    .select-title {-->
+<!--      border-top: 1px solid #ccc;-->
+<!--    }-->
 
-    .select-info {
-      margin-top: 6px;
-    }
-  }
-}
-</style>
+<!--    .select-info {-->
+<!--      margin-top: 6px;-->
+<!--    }-->
+<!--  }-->
+<!--}-->
+<!--</style>-->
 
 <style lang="scss" scoped>
 main {
@@ -231,9 +253,19 @@ main {
 }
 
 .policy-select {
+  margin-bottom: 10px;
+
   > div {
-    margin-left: 20px;
+    margin-left: 0px;
   }
+}
+
+.search-params {
+  border: 1px solid #d6ddec;
+  border-radius: 4px;
+  background: #fff;
+  margin: 10px 0;
+  padding: 10px;
 }
 
 .search-btn-list {
@@ -243,7 +275,7 @@ main {
 
 .search-card-list {
   .search-card {
-    border: 1px solid #bfd1e3;
+    border: 1px solid #d6ddec;
     border-radius: 4px;
     background: #fff;
     margin-bottom: 10px;
@@ -260,7 +292,7 @@ main {
       }
 
       > div {
-        margin: 10px 20px 0;
+        margin: 10px 10px 0;
         flex: 1;
         font-size: 14px;
         color: #2a303d;
@@ -268,14 +300,14 @@ main {
       }
 
       .list-box {
-        width: 550px;
+        width: 570px;
         margin-top: 10px;
         border: 1px solid #c9cfe0;
         border-radius: 4px;
         overflow: auto;
         height: 100px;
 
-        .line{
+        .line {
           padding-left: 5px;
           white-space: nowrap;
         }

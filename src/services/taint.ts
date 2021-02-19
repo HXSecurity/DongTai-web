@@ -12,11 +12,6 @@ interface methodPoolSearchParams {
   propagators?: string[]
 }
 
-enum engineVulRuleType{
-  user,
-  system
-}
-
 export default () =>
   new (class {
     methodList(params: {
