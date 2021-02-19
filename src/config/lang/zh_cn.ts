@@ -20,7 +20,8 @@ export default {
     user: '角色管理',
     talent: '租户管理',
     department: '组织管理',
-    taintPool: '污点池'
+    taintPool: '污点池',
+    search: '污点搜索',
   },
   views: {
     login: {
@@ -32,6 +33,10 @@ export default {
       passwordPlaceholder: '请输入密码，默认admin',
       captcha: '验证码',
       captchaPlaceholder: '请输入验证码',
+    },
+    search: {
+      defPolicy: '内置策略',
+      myPolicy: '我的策略',
     },
     vulnList: {
       filter: '过滤器',
