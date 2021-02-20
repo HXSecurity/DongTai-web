@@ -31,6 +31,7 @@ export interface methodPoolSearchParams {
   sources?: string[]
   propagators?: string[]
   filters?: string[]
+  [key: string]: any
 }
 
 export interface DataObj{
@@ -59,4 +60,28 @@ export interface VulRuleObj{
   sources?: string[]
   propagators?: string[]
   filters?: string[]
+}
+
+export interface VulObj{
+  language: string
+  method_pool: string
+  req_header: string
+  res_body: string
+  url: string
+}
+
+export interface TaintLinkObj{
+  args: string
+  callerClass: string
+  callerLineNumber: number
+  callerMethod: string
+  className: string
+  interfaces: string[]
+  invokeId: number
+  methodName: string
+  retClassName: ""
+  signature: string
+  source: boolean
+  sourceHash: string[]
+  targetHash: number[]
 }

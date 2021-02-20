@@ -104,19 +104,26 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/taint/Index.vue'),
         children: [
-          {
-            path: 'Pool',
-            meta: {
-              name: i18n.t('menu.taintPool'),
-            },
-            component: () => import('@/views/taint/Pool.vue'),
-          },
+          // {
+          //   path: 'Pool',
+          //   meta: {
+          //     name: i18n.t('menu.taintPool'),
+          //   },
+          //   component: () => import('@/views/taint/Pool.vue'),
+          // },
           {
             path: 'search',
             meta: {
               name: i18n.t('menu.taintPool'),
             },
             component: () => import('@/views/taint/Search.vue'),
+          },
+          {
+            path: 'poolDetail/:id',
+            meta: {
+              name: i18n.t('menu.poolDetail'),
+            },
+            component: () => import('@/views/taint/PoolDetail.vue'),
           },
         ],
       },

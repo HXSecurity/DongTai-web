@@ -1,7 +1,7 @@
 <template>
-  <main class="container">
+  <main>
     <div class="search-card-list">
-      <div class="search-card" v-for="item in tableData">
+      <div class="search-card" v-for="item in tableData" :key="item.id" @click="$router.push(`/taint/poolDetail/${item.id}`)">
         <div class="card-row">
           <div>
             <label>策略：</label>
@@ -38,17 +38,13 @@
         </div>
       </div>
     </div>
-    <!--    <div class="select-pagination">-->
-    <!--      <el-pagination background layout="prev, pager, next" :total="1000">-->
-    <!--      </el-pagination>-->
-    <!--    </div>-->
   </main>
 </template>
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { DataObj,SearchParams,methodPoolSearchParams } from './types/search'
+import { DataObj, SearchParams, methodPoolSearchParams } from './types/search'
 import { formatTimestamp } from '@/utils/utils'
 import Emitter from './Emitter'
 
@@ -67,13 +63,13 @@ export default class Search extends VueBase {
       msg: searchParams.msg,
       level: searchParams.level
     }
-    searchParams.paramsList.forEach((paramsObj)=>{
-      if(!paramsObj.key){
-        return;
+    searchParams.paramsList.forEach((paramsObj) => {
+      if (!paramsObj.key) {
+        return
       }
-      if(params.hasOwnProperty(paramsObj.key)){
+      if (params.hasOwnProperty(paramsObj.key)) {
         params[paramsObj.key].push(paramsObj.value)
-      }else{
+      } else {
         params[paramsObj.key] = [paramsObj.value]
       }
     })
@@ -96,9 +92,6 @@ export default class Search extends VueBase {
 </script>
 
 <style lang="scss" scoped>
-main {
-  padding: 10px 0 80px;
-}
 .search-card-list {
   .search-card {
     border: 1px solid #d6ddec;
@@ -106,6 +99,7 @@ main {
     background: #fff;
     margin-bottom: 10px;
     padding-bottom: 10px;
+    cursor: pointer;
 
 
     .card-row {

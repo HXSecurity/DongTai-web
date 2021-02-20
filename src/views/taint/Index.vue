@@ -70,14 +70,14 @@
             <el-input v-model="form.value"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="add">+</el-button>
-            <el-button type="danger" @click="del(form)">-</el-button>
+            <el-button type="primary" size="small" class="paramsBtn" @click="add" icon="el-icon-circle-plus-outline"></el-button>
+            <el-button type="danger" size="small" class="paramsBtn" @click="del(form)" icon="el-icon-delete"></el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="search-btn-list">
-        <el-button type="primary">保存</el-button>
-        <el-button @click="search">搜索</el-button>
+        <el-button type="primary" class="btn">保存</el-button>
+        <el-button @click="search" class="btn">搜索</el-button>
       </div>
     </div>
     <router-view></router-view>
@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
+import { Component,Watch } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import { Params, SearchParams, ParamsOption, RuleObj, VulRuleObj } from './types/search'
 import Emitter from './Emitter'
@@ -132,6 +132,11 @@ export default class Index extends VueBase {
     this.search()
   }
 
+  @Watch('$route', { immediate: true, deep: true })
+  onPersonChanged() {
+    this.search()
+  }
+
   add(): void {
     this.searchParams.paramsList.push({ key: '', value: '', operate: '=', criteria: 'and' })
   }
@@ -140,7 +145,7 @@ export default class Index extends VueBase {
     this.searchParams.paramsList[0].criteria = ''
     this.searchParams.paramsList.some((item, index) => {
       if (item == i) {
-        this.paramsList.splice(index, 1)
+        this.searchParams.paramsList.splice(index, 1)
         return false
       }
     })
@@ -207,6 +212,9 @@ export default class Index extends VueBase {
   }
 
   search() {
+    if(this.$route.fullPath === '/taint/search'){
+      return
+    }
     Emitter.emit('searchParams', this.searchParams)
   }
 
@@ -232,11 +240,20 @@ main {
   background: #fff;
   margin: 10px 0;
   padding: 10px;
+
+  .paramsBtn{
+    width: 60px;
+    font-size: 18px;
+  }
 }
 
 
 .search-btn-list {
   display: flex;
   justify-content: center;
+
+  .btn{
+    width: 100px;
+  }
 }
 </style>

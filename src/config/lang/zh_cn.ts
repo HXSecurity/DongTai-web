@@ -22,6 +22,7 @@ export default {
     department: '组织管理',
     taintPool: '搜索',
     search: '污点搜索',
+    poolDetail: '污点详情'
   },
   views: {
     login: {
