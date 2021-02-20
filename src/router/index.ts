@@ -12,7 +12,7 @@ const router = new VueRouter({
   routes,
 })
 
-const whiteList = ['taint/search']
+const whiteList = ['/taint/search']
 
 const isWhiteList = (path: string) => {
   return whiteList.some((item: string) => {
@@ -43,11 +43,9 @@ router.beforeEach((to, from, next) => {
       .catch(() => {
         Nprogress.done()
         if(isWhiteList(to.fullPath)){
-          Nprogress.done()
           next()
         }else{
-
-        next('/login')
+          next('/login')
         }
       })
   } else {
@@ -62,5 +60,12 @@ router.afterEach((to) => {
     document.title = to.meta.name
   }
 })
+
+// 重复路由报错
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location: import("vue-router").RawLocation) {
+  // @ts-ignore
+  return originalPush.call(this, location).catch((err: any) => err)
+}
 
 export default router

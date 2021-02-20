@@ -4,12 +4,13 @@ import request from '@/utils/request'
 import { iResponse } from '@/services/types'
 
 interface methodPoolSearchParams {
-  id?: string
-  msg?: string
-  level?: string
+  name: string
+  msg: string
+  level: string
   sinks?: string[]
   sources?: string[]
   propagators?: string[]
+  filters?: string[]
 }
 
 export default () =>
@@ -34,10 +35,25 @@ export default () =>
     }
 
     // 策略详情
-    engineVulRuleDetail(params:{
+    engineVulRuleDetail(params: {
       rule_id: number
     }): Promise<iResponse> {
       return request.get('/engine/vul_rule/detail', { params })
+    }
+
+    // 保存策略
+    vulRuleSave(params: {}): Promise<iResponse> {
+      return request.post('/engine/vul_rule/save', params)
+    }
+
+    // 策略类型
+    vulRuleType(): Promise<iResponse> {
+      return request.get('engine/vul_rule/type')
+    }
+
+    // 污点池详情
+    methodPoolDetail(id: string, params: methodPoolSearchParams): Promise<iResponse> {
+      return request.post(`/engine/method_pool/detail?id=${id}`, params)
     }
 
   })()

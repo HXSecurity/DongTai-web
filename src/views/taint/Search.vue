@@ -1,84 +1,5 @@
 <template>
   <main class="container">
-    <div class="policy-select">
-      <el-select
-        v-model="sysRule"
-        :placeholder="$t('views.search.defPolicy')"
-        @change="sysRuleChange"
-      >
-        <el-option
-          v-for="item in sysRuleList"
-          :key="item.id"
-          :label="item.rule_name"
-          :value="item"
-        />
-      </el-select>
-      <el-select
-        v-if="userInfo"
-        v-model="userRule"
-        style="margin-left: 10px"
-        :placeholder="$t('views.search.myPolicy')"
-      >
-        <el-option
-          v-for="item in userRuleList"
-          :key="item.id"
-          :label="item.rule_name"
-          :value="item"
-        />
-      </el-select>
-    </div>
-    <div class="search-params">
-      <div
-        v-for="(form, index) in paramsList"
-        :key="index"
-        class="search-params-item"
-      >
-        <el-form :inline="true" :model="form" class="demo-form-inline">
-          <el-form-item v-if="index === 0" label="查询条件"></el-form-item>
-          <el-form-item v-else>
-            <el-select v-model="form.criteria" placeholder="查询条件">
-              <el-option
-                v-for="item in criteriaOptionS"
-                :key="item.value"
-                :label="item.label"
-                value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model="form.nodeType" placeholder="选择节点类型">
-              <el-option
-                v-for="item in nodeTypeOptionS"
-                :key="item.value"
-                :label="item.label"
-                value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model="form.select">
-              <el-option
-                v-for="item in selectOptionS"
-                :key="item.value"
-                :label="item.label"
-                value="item.value"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-input v-model="form.info"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="add">+</el-button>
-            <el-button type="primary" @click="del(form)">-</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
-    </div>
-    <div class="search-btn-list">
-      <el-button type="primary">保存</el-button>
-      <el-button>搜索</el-button>
-    </div>
     <div class="search-card-list">
       <div class="search-card" v-for="item in tableData">
         <div class="card-row">
@@ -127,91 +48,35 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import {
-  policy,
-  params,
-  criteriaOption,
-  nodeTypeOption,
-  selectOption,
-  dataObj,
-  ruleObj
-} from './types/search'
+import { DataObj,SearchParams,methodPoolSearchParams } from './types/search'
 import { formatTimestamp } from '@/utils/utils'
+import Emitter from './Emitter'
 
-enum engineVulRuleType {
-  user = 'user',
-  system = 'system'
-}
 
 @Component({ name: 'Search' })
 export default class Search extends VueBase {
-  private tableData: Array<dataObj> = []
-  private sysRule : ruleObj = null;
-  private sysRuleList: Array<ruleObj> = []
-  private userRule : ruleObj = null;
-  private userRuleList: Array<ruleObj> = []
-  private criteriaOptionS: criteriaOption[] = [
-    { label: 'AND', value: 'and' },
-    { label: 'OR', value: 'or' }
-  ]
-  private nodeTypeOptionS: nodeTypeOption[] = [
-    { label: '1', value: '节点1' },
-    { label: '2', value: '节点2' }
-  ]
-  private selectOptionS: selectOption[] = [
-    { label: '1', value: '选项1' },
-    { label: '2', value: '选项2' }
-  ]
-  paramsList: params[] = [{ criteria: '', nodeType: '', select: '', info: '' }]
-
-  get userInfo(): { username: string } {
-    return this.$store.getters.userInfo
-  }
+  private tableData: Array<DataObj> = []
 
   created() {
-    this.getTableData()
-    this.userInfo && this.engineVulRule(engineVulRuleType.user)
-    this.engineVulRule(engineVulRuleType.system)
+    Emitter.on('searchParams', this.getTableData)
   }
 
-  add(): void {
-    this.paramsList.push({ criteria: '', nodeType: '', select: '', info: '' })
-  }
-
-  del(i: params): void {
-    this.paramsList[0].criteria = ''
-    this.paramsList.some((item, index) => {
-      if (item == i) {
-        this.paramsList.splice(index, 1)
-        return false
+  private async getTableData(searchParams: SearchParams) {
+    const params: methodPoolSearchParams = {
+      name: searchParams.name,
+      msg: searchParams.msg,
+      level: searchParams.level
+    }
+    searchParams.paramsList.forEach((paramsObj)=>{
+      if(!paramsObj.key){
+        return;
+      }
+      if(params.hasOwnProperty(paramsObj.key)){
+        params[paramsObj.key].push(paramsObj.value)
+      }else{
+        params[paramsObj.key] = [paramsObj.value]
       }
     })
-  }
-
-  private async engineVulRule(type: string) {
-    const { status, msg, data } = await this.services.taint.engineVulRule({ type })
-    if (status !== 201) {
-      this.$message.error(msg)
-      return
-    }
-    if (type === engineVulRuleType.system) {
-      this.sysRuleList = data
-    }
-    if (type === engineVulRuleType.user) {
-      this.userRuleList = data
-    }
-  }
-
-  private sysRuleChange(val){
-    console.log(val)
-  }
-
-  private async engineVulRuleDetail(rule_id:number){
-    const {status,msg,data} = await this.services.taint.engineVulRuleDetail({ rule_id })
-  }
-
-  private async getTableData() {
-    const params = {}
     this.loadingStart()
     const { status, data, msg } = await this.services.taint.methodPoolSearch(params)
     this.loadingDone()
@@ -219,7 +84,7 @@ export default class Search extends VueBase {
       this.$message.error(msg)
       return
     }
-    this.tableData = data.reduce((list: dataObj[], item: dataObj) => {
+    this.tableData = data.reduce((list: DataObj[], item: DataObj) => {
       list.push({
         ...item,
         update_time: formatTimestamp(item.update_time)
@@ -230,49 +95,10 @@ export default class Search extends VueBase {
 }
 </script>
 
-<!--<style lang="scss">-->
-<!--.search-select {-->
-<!--  .el-select-dropdown__item {-->
-<!--    height: auto !important;-->
-<!--    line-height: normal;-->
-
-<!--    .select-title {-->
-<!--      border-top: 1px solid #ccc;-->
-<!--    }-->
-
-<!--    .select-info {-->
-<!--      margin-top: 6px;-->
-<!--    }-->
-<!--  }-->
-<!--}-->
-<!--</style>-->
-
 <style lang="scss" scoped>
 main {
   padding: 10px 0 80px;
 }
-
-.policy-select {
-  margin-bottom: 10px;
-
-  > div {
-    margin-left: 0px;
-  }
-}
-
-.search-params {
-  border: 1px solid #d6ddec;
-  border-radius: 4px;
-  background: #fff;
-  margin: 10px 0;
-  padding: 10px;
-}
-
-.search-btn-list {
-  display: flex;
-  justify-content: center;
-}
-
 .search-card-list {
   .search-card {
     border: 1px solid #d6ddec;

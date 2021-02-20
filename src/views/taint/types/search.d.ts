@@ -1,36 +1,39 @@
-export interface policy {
-  name: string
-  info: string
-}
 
-export interface params {
+export interface Params {
+  key: string
+  value: string
+  operate: string
   criteria: string
-  nodeType: string
-  select: string
-  info: string
 }
 
-export interface criteriaOption {
+export interface ParamsOption {
   label: string
   value: string
 }
 
-export interface nodeTypeOption {
-  label: string
-  value: string
-}
-
-export interface selectOption {
-  label: string
-  value: string
-}
-
-interface dependency{
+interface Dependency{
   package_name: string
   vul_count: number
 }
 
-export interface dataObj{
+export interface SearchParams {
+  name: string
+  msg: string
+  level: string
+  paramsList: Params[]
+}
+
+export interface methodPoolSearchParams {
+  name: string
+  msg: string
+  level: string
+  sinks?: string[]
+  sources?: string[]
+  propagators?: string[]
+  filters?: string[]
+}
+
+export interface DataObj{
   agent_name: string
   dependencies:dependency[]
   sink_rules: {value: string}[]
@@ -42,8 +45,18 @@ export interface dataObj{
   url: string
 }
 
-export interface ruleObj{
+export interface RuleObj{
   id: number
   rule_name: string
   rule_msg: string
+}
+
+export interface VulRuleObj{
+  name: string
+  msg: string
+  level: string
+  sinks?: string[]
+  sources?: string[]
+  propagators?: string[]
+  filters?: string[]
 }

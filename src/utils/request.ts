@@ -31,7 +31,7 @@ const responseError = (error: any) => {
     return
   }
   if (error.response.status === 403) {
-    store.dispatch('clearInfo')
+    store.dispatch('user/clearInfo')
     router.push('/login')
   }
   if (error.response.status === 500) {
