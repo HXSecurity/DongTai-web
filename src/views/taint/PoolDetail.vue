@@ -1,6 +1,9 @@
 <template>
   <div>
     <div class="httpTestWarp ">
+      <div class="bottom-btn-line">
+        <el-button type="primary" size="small">发送</el-button>
+      </div>
       <div class="flex-row-space-between">
         <div class="requestBox">
           <textarea v-model="vul.req_header"></textarea>
@@ -9,12 +12,27 @@
           {{ vul.res_body }}
         </div>
       </div>
-      <div class="bottom-btn-line">
-        <el-button type="primary">发送</el-button>
-      </div>
+
     </div>
     <div class="taintWarp">
-      <div class="taintLine" v-for="item in taintLinkList" :key="item"></div>
+      <div class="taintLine flex-row-space-between" v-for="(item,index) in taintLinkList" :key="item">
+        <span class="className">
+          {{`${item.className}.${item.methodName}()`}}
+           <i
+             v-if="index < taintLinkList.length - 1"
+             class="step el-icon-bottom"
+           ></i>
+        </span>
+        <span class="desc">
+          污点数据输入源，调用类及方法: {{`${item.callerClass}.${item.callerMethod}()`}}{{
+            item.callerLineNumber ? ' , 行号: '+ item.callerLineNumber: ''
+          }}{{
+            item.sourceHash.length > 0 ? ' , 污点值: '+ item.sourceHash.join(','): ''
+          }}{{
+            item.targetHash.length > 0 ? ' , 污点值2: '+ item.targetHash.join(','): ''
+          }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
@@ -100,19 +118,45 @@ export default class PoolDetail extends VueBase {
   }
 
   .bottom-btn-line {
-    text-align: center;
+    text-align: right;
+    border-bottom: 1px solid #d6ddec;
     margin-top: 10px;
+    padding-bottom: 10px;
   }
 }
 
 .taintWarp {
   margin-top: 10px;
   background: #fff;
-  border: 1px solid #d6ddec;
-  border-radius: 4px;
+
   padding: 10px;
 
   .taintLine {
+    margin-top: 20px;
+    line-height: 18px;
+
+
+    .className{
+      border: 1px solid #e9edf5;
+      background: #fff;
+      font-size: 14px;
+      color: #646e83;
+      padding: 5px;
+      width: 500px;
+      text-align: center;
+      word-break: break-all;
+    }
+
+    .desc{
+      border: 1px solid #e9edf5;
+      background: #fff;
+      font-size: 14px;
+      color: #646e83;
+      padding: 5px;
+      width: 600px;
+      text-align: center;
+      word-break: break-all;
+    }
 
   }
 }

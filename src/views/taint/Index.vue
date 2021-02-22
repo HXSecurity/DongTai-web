@@ -3,6 +3,7 @@
     <div class="policy-select">
       <el-select
         v-model="sysRule"
+        size="small"
         :placeholder="$t('views.search.defPolicy')"
         @change="sysRuleChange"
       >
@@ -16,6 +17,7 @@
       <el-select
         v-if="userInfo"
         v-model="userRule"
+        size="small"
         style="margin-left: 10px"
         :placeholder="$t('views.search.myPolicy')"
         @change="userRuleChange"
@@ -34,7 +36,7 @@
         :key="index"
         class="search-params-item"
       >
-        <el-form :inline="true" :model="form" class="demo-form-inline">
+        <el-form size="small" :inline="true" :model="form" class="demo-form-inline">
           <el-form-item v-if="index === 0" label="查询条件" label-width="100px"></el-form-item>
           <el-form-item v-else>
             <el-select v-model="form.criteria" placeholder="查询条件" style="width: 100px">
@@ -70,24 +72,40 @@
             <el-input v-model="form.value"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" class="paramsBtn" @click="add" icon="el-icon-circle-plus-outline"></el-button>
-            <el-button type="danger" size="small" class="paramsBtn" @click="del(form)" icon="el-icon-delete"></el-button>
+            <el-button type="primary" size="small" class="paramsBtn" @click="add"
+                       icon="el-icon-circle-plus-outline"></el-button>
+            <el-button type="danger" size="small" class="paramsBtn" @click="del(form)"
+                       icon="el-icon-delete"></el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="search-btn-list">
-        <el-button type="primary" class="btn">保存</el-button>
-        <el-button @click="search" class="btn">搜索</el-button>
+        <el-button type="primary" size="small" class="btn" @click="saveRule">保存</el-button>
+        <el-button size="small" class="btn" @click="search">搜索</el-button>
       </div>
     </div>
+    <el-dialog :visible.sync="saveDialogOpen" width="600px">
+      <el-form label-width="100px">
+        <el-form-item label="策略名称">
+          <el-input v-model="editSearchParams.name" size="small" placeholder="请输入策略名称"></el-input>
+        </el-form-item>
+        <el-form-item label="策略详情">
+          <el-input v-model="editSearchParams.msg" type="textarea" :autosize="{ minRows: 4, maxRows: 6}" size="small" placeholder="请输入策略名称"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button size="small" class="saveBtn" @click="saveDialogOpen = false">取消</el-button>
+          <el-button type="primary" size="small" class="saveBtn" @click="vulRuleSave">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <router-view></router-view>
   </main>
 </template>
 
 <script lang="ts">
-import { Component,Watch } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { Params, SearchParams, ParamsOption, RuleObj, VulRuleObj } from './types/search'
+import { Params, SearchParams, ParamsOption, RuleObj, VulRuleObj, methodPoolSearchParams } from './types/search'
 import Emitter from './Emitter'
 
 enum engineVulRuleType {
@@ -116,7 +134,13 @@ export default class Index extends VueBase {
     level: '',
     paramsList: [{ key: '', value: '', operate: '=', criteria: '' }]
   }
-
+  private editSearchParams: SearchParams = {
+    name: '',
+    msg: '',
+    level: '',
+    paramsList: []
+  }
+  private saveDialogOpen : boolean = false
 
   get userInfo(): { username: string } {
     return this.$store.getters.userInfo
@@ -132,9 +156,11 @@ export default class Index extends VueBase {
     this.search()
   }
 
-  @Watch('$route', { immediate: true, deep: true })
-  onPersonChanged() {
-    this.search()
+  @Watch('$route')
+  onRouteChanged() {
+    this.$nextTick(() => {
+      Emitter.emit('searchParams', this.searchParams)
+    })
   }
 
   add(): void {
@@ -211,11 +237,46 @@ export default class Index extends VueBase {
     this.keyOptionList = data
   }
 
-  search() {
-    if(this.$route.fullPath === '/taint/search'){
-      return
+  private saveRule(){
+    this.saveDialogOpen = true
+    this.editSearchParams = { ...this.searchParams }
+  }
+
+  private search() {
+    if (this.$route.fullPath !== '/taint/search') {
+      this.$router.push('/taint/search')
     }
     Emitter.emit('searchParams', this.searchParams)
+  }
+
+  private async vulRuleSave(){
+    const params: methodPoolSearchParams = {
+      name: this.editSearchParams.name,
+      msg: this.editSearchParams.msg,
+      level: this.editSearchParams.level
+    }
+    this.editSearchParams.paramsList.forEach((paramsObj) => {
+      if (!paramsObj.key) {
+        return
+      }
+      if (params.hasOwnProperty(paramsObj.key)) {
+        params[paramsObj.key].push(paramsObj.value)
+      } else {
+        params[paramsObj.key] = [paramsObj.value]
+      }
+    })
+    this.loadingStart()
+    const { status, data, msg } = await this.services.taint.vulRuleSave(params)
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.userRule = null
+    this.sysRule = null
+    this.userInfo && await this.engineVulRule(engineVulRuleType.user)
+    await this.engineVulRule(engineVulRuleType.system)
+
   }
 
 }
@@ -241,9 +302,8 @@ main {
   margin: 10px 0;
   padding: 10px;
 
-  .paramsBtn{
+  .paramsBtn {
     width: 60px;
-    font-size: 18px;
   }
 }
 
@@ -252,8 +312,12 @@ main {
   display: flex;
   justify-content: center;
 
-  .btn{
+  .btn {
     width: 100px;
   }
+}
+
+.saveBtn{
+  width: 200px;
 }
 </style>
