@@ -23,8 +23,8 @@ export default () =>
     }
 
     // 搜索接口
-    methodPoolSearch(params: methodPoolSearchParams): Promise<iResponse> {
-      return request.post('/engine/method_pool/search', params)
+    methodPoolSearch(latest: number, params: methodPoolSearchParams): Promise<iResponse> {
+      return request.post('/engine/method_pool/search?latest=' + latest, params)
     }
 
     // 我的策略/系统策略

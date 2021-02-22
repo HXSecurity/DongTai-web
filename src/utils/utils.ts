@@ -61,3 +61,12 @@ export const getPassedTime = (timestamp: number | any): string => {
     return ''
   }
 }
+
+// 防抖
+export const debounce = (fn: any, wait: number) => {
+  let timeout: any = null
+  return () => {
+    if (timeout !== null) { clearTimeout(timeout) }
+    timeout = setTimeout(fn, wait)
+  }
+}

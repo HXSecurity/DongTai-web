@@ -1,5 +1,5 @@
-import mitt from '@/utils/mitt'
+import mitt, { Emitter } from '@/utils/mitt'
 
-const emitter = mitt()
+const emitter: Emitter = mitt()
 
 export default emitter

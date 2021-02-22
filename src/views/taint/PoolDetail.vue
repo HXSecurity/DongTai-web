@@ -14,44 +14,63 @@
       </div>
 
     </div>
-    <div class="taintWarp">
-      <div class="taintLine flex-row-space-between" v-for="(item,index) in taintLinkList" :key="item">
-        <span class="className">
-          {{`${item.className}.${item.methodName}()`}}
-           <i
-             v-if="index < taintLinkList.length - 1"
-             class="step el-icon-bottom"
-           ></i>
-        </span>
-        <span class="desc">
-          污点数据输入源，调用类及方法: {{`${item.callerClass}.${item.callerMethod}()`}}{{
-            item.callerLineNumber ? ' , 行号: '+ item.callerLineNumber: ''
-          }}{{
-            item.sourceHash.length > 0 ? ' , 污点值: '+ item.sourceHash.join(','): ''
-          }}{{
-            item.targetHash.length > 0 ? ' , 污点值2: '+ item.targetHash.join(','): ''
-          }}
-        </span>
-      </div>
+    <div class="graphWarp">
+      <Dagre v-if="graphRefresh" :init-data="graphData"></Dagre>
     </div>
+    <!--    <div class="taintWarp">-->
+    <!--      <div class="taintLine flex-row-space-between" v-for="(item,index) in taintLinkList" :key="item">-->
+    <!--        <span class="className">-->
+    <!--          {{ `${item.className}.${item.methodName}()` }}-->
+    <!--           <i-->
+    <!--             v-if="index < taintLinkList.length - 1"-->
+    <!--             class="step el-icon-bottom"-->
+    <!--           ></i>-->
+    <!--        </span>-->
+    <!--        <span class="desc">-->
+    <!--          污点数据输入源，调用类及方法: {{ `${item.callerClass}.${item.callerMethod}()` }}{{-->
+    <!--            item.callerLineNumber ? ' , 行号: ' + item.callerLineNumber : ''-->
+    <!--          }}{{-->
+    <!--            item.sourceHash.length > 0 ? ' , 污点值: ' + item.sourceHash.join(',') : ''-->
+    <!--          }}{{-->
+    <!--            item.targetHash.length > 0 ? ' , 污点值2: ' + item.targetHash.join(',') : ''-->
+    <!--          }}-->
+    <!--        </span>-->
+    <!--      </div>-->
+    <!--    </div>-->
   </div>
 </template>
-
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { SearchParams, methodPoolSearchParams, VulObj, TaintLinkObj } from './types/search'
+import { SearchParams, methodPoolSearchParams, VulObj, TaintLinkObj,GraphData } from './types/search'
 import Emitter from '@/views/taint/Emitter'
+import Dagre from '@/components/G6/Dagre.vue'
 
 
-@Component({ name: 'PoolDetail' })
+@Component({
+  name: 'PoolDetail',
+  components: {
+    Dagre
+  }
+})
 export default class PoolDetail extends VueBase {
-  private vul: VulObj = {}
-  private taintLinkList: TaintLinkObj[] = []
+  private vul: VulObj = {
+    language: '',
+    method_pool: '',
+    req_header: '',
+    res_body: '',
+    url: ''
+  }
+  // private taintLinkList: TaintLinkObj[] = []
+  private graphRefresh: boolean = false
+  private graphData: GraphData = {
+    nodes:[],
+    edges:[]
+  }
 
   mounted() {
-    Emitter.on('searchParams', this.methodPoolDetail)
+    Emitter.on('searchParams', (searchParams)=>this.methodPoolDetail(searchParams))
   }
 
   private async methodPoolDetail(searchParams: SearchParams) {
@@ -74,18 +93,16 @@ export default class PoolDetail extends VueBase {
       }
     })
     this.loadingStart()
-    const {
-      status,
-      data: { vul, taint_link },
-      msg
-    } = await this.services.taint.methodPoolDetail(this.$route.params.id, params)
+    this.graphRefresh = false
+    const { status, data, msg } = await this.services.taint.methodPoolDetail(this.$route.params.id, params)
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
-    this.vul = vul
-    this.taintLinkList = taint_link
+    this.vul = data.vul
+    this.graphData = data.graphData
+    this.graphRefresh = true
   }
 }
 </script>
@@ -125,6 +142,11 @@ export default class PoolDetail extends VueBase {
   }
 }
 
+.graphWarp{
+  background: #fff;
+  margin-top: 10px;
+}
+
 .taintWarp {
   margin-top: 10px;
   background: #fff;
@@ -136,7 +158,7 @@ export default class PoolDetail extends VueBase {
     line-height: 18px;
 
 
-    .className{
+    .className {
       border: 1px solid #e9edf5;
       background: #fff;
       font-size: 14px;
@@ -147,7 +169,7 @@ export default class PoolDetail extends VueBase {
       word-break: break-all;
     }
 
-    .desc{
+    .desc {
       border: 1px solid #e9edf5;
       background: #fff;
       font-size: 14px;

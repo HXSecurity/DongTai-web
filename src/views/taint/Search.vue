@@ -1,7 +1,8 @@
 <template>
   <main>
     <div class="search-card-list">
-      <div class="search-card" v-for="item in tableData" :key="item.id" @click="$router.push(`/taint/poolDetail/${item.id}`)">
+      <div class="search-card" v-for="item in tableData" :key="item.id"
+           @click="$router.push(`/taint/poolDetail/${item.id}`)">
         <div class="card-row">
           <div>
             <label>策略：</label>
@@ -44,17 +45,51 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { DataObj, SearchParams, methodPoolSearchParams } from './types/search'
-import { formatTimestamp } from '@/utils/utils'
+import { DataObj, SearchParams, methodPoolSearchParams, Params } from './types/search'
+import { formatTimestamp, debounce } from '@/utils/utils'
 import Emitter from './Emitter'
 
 
 @Component({ name: 'Search' })
 export default class Search extends VueBase {
   private tableData: Array<DataObj> = []
+  private searchParams: SearchParams = {
+    name: '',
+    msg: '',
+    level: '',
+    paramsList: []
+  }
+  private latest: number = 0
+  private myDebounce: any
 
   created() {
-    Emitter.on('searchParams', this.getTableData)
+    Emitter.on('searchParams', (searchParams) => {
+      this.searchParams = searchParams
+      this.resetData()
+      this.getTableData(searchParams)
+    })
+  }
+
+  mounted() {
+    this.myDebounce = debounce(this.scroll, 500)
+    window.addEventListener('scroll', this.myDebounce)
+  }
+
+  beforeDestroy() {
+    Emitter.all.clear()
+    window.removeEventListener('scroll', this.myDebounce)
+  }
+
+  private resetData(){
+    this.latest = 0
+    this.tableData = []
+  }
+
+  private scroll() {
+    const bottomWindow = document.documentElement.scrollTop + window.innerHeight > document.documentElement.offsetHeight - 2
+    if (bottomWindow) {
+      this.getTableData(this.searchParams)
+    }
   }
 
   private async getTableData(searchParams: SearchParams) {
@@ -74,19 +109,27 @@ export default class Search extends VueBase {
       }
     })
     this.loadingStart()
-    const { status, data, msg } = await this.services.taint.methodPoolSearch(params)
-    this.loadingDone()
+    const startStmp = new Date()
+    const { status, data, latest, msg } = await this.services.taint.methodPoolSearch(this.latest, params)
+    const endStmp = new Date()
+    setTimeout(() => {
+      this.loadingDone()
+    }, 1000 - endStmp.getTime() + startStmp.getTime())
     if (status !== 201) {
       this.$message.error(msg)
       return
     }
-    this.tableData = data.reduce((list: DataObj[], item: DataObj) => {
+    this.latest = latest
+    this.tableData = [...this.tableData, ...data.reduce((list: DataObj[], item: DataObj) => {
       list.push({
         ...item,
         update_time: formatTimestamp(item.update_time)
       })
       return list
-    }, [])
+    }, [])]
+    if (data.length < 20) {
+      window.removeEventListener('scroll', this.myDebounce)
+    }
   }
 }
 </script>

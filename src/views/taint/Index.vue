@@ -4,29 +4,33 @@
       <el-select
         v-model="sysRule"
         size="small"
+        clearable
         :placeholder="$t('views.search.defPolicy')"
         @change="sysRuleChange"
+        @clear="resetRule"
       >
         <el-option
           v-for="item in sysRuleList"
           :key="item.id"
           :label="item.rule_name"
-          :value="item"
+          :value="item.id"
         />
       </el-select>
       <el-select
         v-if="userInfo"
         v-model="userRule"
         size="small"
+        clearable
         style="margin-left: 10px"
         :placeholder="$t('views.search.myPolicy')"
         @change="userRuleChange"
+        @clear="resetRule"
       >
         <el-option
           v-for="item in userRuleList"
           :key="item.id"
           :label="item.rule_name"
-          :value="item"
+          :value="item.id"
         />
       </el-select>
     </div>
@@ -90,7 +94,8 @@
           <el-input v-model="editSearchParams.name" size="small" placeholder="请输入策略名称"></el-input>
         </el-form-item>
         <el-form-item label="策略详情">
-          <el-input v-model="editSearchParams.msg" type="textarea" :autosize="{ minRows: 4, maxRows: 6}" size="small" placeholder="请输入策略名称"></el-input>
+          <el-input v-model="editSearchParams.msg" type="textarea" :autosize="{ minRows: 4, maxRows: 6}" size="small"
+                    placeholder="请输入策略名称"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button size="small" class="saveBtn" @click="saveDialogOpen = false">取消</el-button>
@@ -115,9 +120,9 @@ enum engineVulRuleType {
 
 @Component({ name: 'TaintIndex' })
 export default class Index extends VueBase {
-  private sysRule: RuleObj | null = null
+  private sysRule: number | null = null
   private sysRuleList: Array<RuleObj> = []
-  private userRule: RuleObj | null = null
+  private userRule: number | null = null
   private userRuleList: Array<RuleObj> = []
   private criteriaOptionList: ParamsOption[] = [
     { label: 'AND', value: 'and' },
@@ -140,26 +145,34 @@ export default class Index extends VueBase {
     level: '',
     paramsList: []
   }
-  private saveDialogOpen : boolean = false
+  private saveDialogOpen: boolean = false
 
   get userInfo(): { username: string } {
     return this.$store.getters.userInfo
   }
 
-  created() {
-    this.userInfo && this.engineVulRule(engineVulRuleType.user)
-    this.engineVulRule(engineVulRuleType.system)
-    this.vulRuleType()
+  async created() {
+    this.userInfo && await this.engineVulRule(engineVulRuleType.user)
+    await this.engineVulRule(engineVulRuleType.system)
+    await this.vulRuleType()
+
+    const sessionItem = sessionStorage.getItem('searchParams') && JSON.parse(sessionStorage.getItem('searchParams') as string)
+    if (sessionItem) {
+      this.userRule = sessionItem.userRule
+      this.sysRule = sessionItem.sysRule
+      this.searchParams = sessionItem.searchParams
+    }
+    this.emitParam()
   }
 
-  mounted() {
-    this.search()
+  beforeDestroy() {
+    sessionStorage.removeItem('searchParams')
   }
 
   @Watch('$route')
   onRouteChanged() {
     this.$nextTick(() => {
-      Emitter.emit('searchParams', this.searchParams)
+      this.emitParam()
     })
   }
 
@@ -175,6 +188,9 @@ export default class Index extends VueBase {
         return false
       }
     })
+    if(this.searchParams.paramsList.length === 0){
+      this.add()
+    }
   }
 
   private async engineVulRule(type: string) {
@@ -193,12 +209,28 @@ export default class Index extends VueBase {
 
   private sysRuleChange() {
     this.userRule = null
-    this.engineVulRuleDetail((this.sysRule as RuleObj).id)
+    if (this.sysRule) {
+      this.engineVulRuleDetail(this.sysRule)
+    }
   }
 
   private userRuleChange() {
     this.sysRule = null
-    this.engineVulRuleDetail((this.userRule as RuleObj).id)
+    if (this.userRule) {
+      this.engineVulRuleDetail(this.userRule)
+    }
+  }
+
+  private resetRule() {
+    this.userRule = null
+    this.sysRule = null
+    this.searchParams = {
+      name: '',
+      msg: '',
+      level: '',
+      paramsList: [{ key: '', value: '', operate: '=', criteria: '' }]
+    }
+    this.emitParam()
   }
 
   private async engineVulRuleDetail(rule_id: number) {
@@ -237,19 +269,28 @@ export default class Index extends VueBase {
     this.keyOptionList = data
   }
 
-  private saveRule(){
+  private saveRule() {
     this.saveDialogOpen = true
     this.editSearchParams = { ...this.searchParams }
+  }
+
+  private emitParam() {
+    Emitter.emit('searchParams', this.searchParams)
+    sessionStorage.setItem('searchParams', JSON.stringify({
+      userRule: this.userRule,
+      sysRule: this.sysRule,
+      searchParams: this.searchParams
+    }))
   }
 
   private search() {
     if (this.$route.fullPath !== '/taint/search') {
       this.$router.push('/taint/search')
     }
-    Emitter.emit('searchParams', this.searchParams)
+    this.emitParam()
   }
 
-  private async vulRuleSave(){
+  private async vulRuleSave() {
     const params: methodPoolSearchParams = {
       name: this.editSearchParams.name,
       msg: this.editSearchParams.msg,
@@ -317,7 +358,7 @@ main {
   }
 }
 
-.saveBtn{
+.saveBtn {
   width: 200px;
 }
 </style>

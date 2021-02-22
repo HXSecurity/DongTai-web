@@ -8,10 +8,12 @@
     "lint": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
+    "@antv/g6": "^4.1.11",
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "echarts": "^5.0.0",
     "element-ui": "^2.14.1",
+    "insert-css": "^2.0.0",
     "js-base64": "^3.5.2",
     "nprogress": "^0.2.0",
     "vue": "^2.6.11",

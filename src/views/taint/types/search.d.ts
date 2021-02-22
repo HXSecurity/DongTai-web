@@ -70,6 +70,11 @@ export interface VulObj{
   url: string
 }
 
+export interface GraphData{
+  nodes: any[]
+  edges: any[]
+}
+
 export interface TaintLinkObj{
   args: string
   callerClass: string
