@@ -13,7 +13,7 @@ const router = new VueRouter({
   routes
 })
 
-const whiteList = ['/taint/search']
+const whiteList = ['/taint/search', '/taint/poolDetail']
 
 const isWhiteList = (path: string) => {
   return whiteList.some((item: string) => {
@@ -48,9 +48,9 @@ router.beforeEach((to, from, next) => {
       })
       .catch(() => {
         Nprogress.done()
-        if(isWhiteList(to.fullPath)){
+        if (isWhiteList(to.fullPath)) {
           next()
-        }else{
+        } else {
           next('/login')
         }
       })

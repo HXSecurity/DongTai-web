@@ -44,7 +44,7 @@ export interface DataObj{
   rule: string | null
   update_time: string
   url: string
-  bottom_sttack: string
+  bottom_stack: string
   id: number
   link_count: number
   top_stack: string
