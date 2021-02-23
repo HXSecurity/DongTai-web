@@ -85,7 +85,7 @@
       </div>
       <div class="search-btn-list">
         <el-button type="primary" size="small" class="btn" @click="saveRule">保存</el-button>
-        <el-button size="small" class="btn" @click="search">搜索</el-button>
+        <el-button size="small" class="btn" @click="emitParam">搜索</el-button>
       </div>
     </div>
     <el-dialog :visible.sync="saveDialogOpen" width="600px">

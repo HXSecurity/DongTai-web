@@ -18,23 +18,24 @@
             <label>URL：</label>
             {{ `${item.url}${item.req_params ? `?${item.req_params}` : ''}` }}
           </div>
-        </div>
-        <div class="card-row">
           <div>
-            <label>风险函数：</label>
-            <div class="list-box">
-              <div class="line" v-for="(line,lineIndex) in item.sink_rules" :key="lineIndex">
-                {{ line.value }}
-              </div>
-            </div>
+            <label>调用链数量：</label>
+            {{ item.link_count }}
           </div>
-          <div>
-            <label>组件：</label>
-            <div class="list-box">
-              <div class="line" v-for="(line,lineIndex) in item.dependencies" :key="lineIndex">
-                {{ line.package_name }}&nbsp;存在&nbsp;{{ line.vul_count }}&nbsp;个漏洞
-              </div>
-            </div>
+        </div>
+        <div style="padding-left: 10px">
+
+          <div class="top-stack">
+            <i class="iconfont iconyuandianzhong"></i>
+            <span>
+              {{ item.top_stack }}
+            </span>
+          </div>
+          <div class="bottom-stack">
+            <i class="iconfont iconyuandianzhong"></i>
+            <span>
+              {{ item.bottom_stack }}
+            </span>
           </div>
         </div>
       </div>
@@ -161,19 +162,52 @@ export default class Search extends VueBase {
         color: #2a303d;
         word-break: break-all;
       }
+    }
 
-      .list-box {
-        width: 570px;
-        margin-top: 10px;
-        border: 1px solid #c9cfe0;
-        border-radius: 4px;
-        overflow: auto;
-        height: 100px;
+    .top-stack {
+      margin-top: 14px;
+      position: relative;
 
-        .line {
-          padding-left: 5px;
-          white-space: nowrap;
-        }
+      &:before {
+        content: '';
+        width: 1px;
+        height: 30px;
+        background: #dee4ea;
+        position: absolute;
+        left: 5px;
+        top: 18px;
+      }
+
+      i {
+        color: #5491ef;
+        font-size: 12px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+
+      span {
+        width: calc(100% - 18px);
+        word-break: break-all;
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+
+    .bottom-stack {
+      margin-top: 24px;
+
+      i {
+        color: #6ec79f;
+        font-size: 12px;
+        vertical-align: middle;
+        margin-right: 5px;
+      }
+
+      span {
+        width: calc(100% - 18px);
+        word-break: break-all;
+        display: inline-block;
+        vertical-align: top;
       }
     }
   }

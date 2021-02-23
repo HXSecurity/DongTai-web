@@ -1,22 +1,30 @@
 <template>
   <div>
-    <div class="httpTestWarp ">
-      <div class="bottom-btn-line">
-        <el-button type="primary" size="small">发送</el-button>
-      </div>
-      <div class="flex-row-space-between">
-        <div class="requestBox">
-          <textarea v-model="vul.req_header"></textarea>
+    <el-tabs class="poolDetail-tab" v-model="activeName">
+      <el-tab-pane label="图" name="first">
+        <div class="graphWarp">
+          <Dagre v-if="graphRefresh" :init-data="graphData"></Dagre>
         </div>
-        <div class="responseBox">
-          {{ vul.res_body }}
-        </div>
-      </div>
+      </el-tab-pane>
+      <el-tab-pane label="调试" name="second">
+        <div class="httpTestWarp ">
+          <div class="bottom-btn-line">
+            <el-button type="primary" size="small">发送</el-button>
+          </div>
+          <div class="flex-row-space-between">
+            <div class="requestBox">
+              <textarea v-model="vul.req_header"></textarea>
+            </div>
+            <div class="responseBox">
+              {{ vul.res_body }}
+            </div>
+          </div>
 
-    </div>
-    <div class="graphWarp">
-      <Dagre v-if="graphRefresh" :init-data="graphData"></Dagre>
-    </div>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
+
+
     <!--    <div class="taintWarp">-->
     <!--      <div class="taintLine flex-row-space-between" v-for="(item,index) in taintLinkList" :key="item">-->
     <!--        <span class="className">-->
@@ -43,7 +51,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { SearchParams, methodPoolSearchParams, VulObj, TaintLinkObj,GraphData } from './types/search'
+import { SearchParams, methodPoolSearchParams, VulObj, TaintLinkObj, GraphData } from './types/search'
 import Emitter from '@/views/taint/Emitter'
 import Dagre from '@/components/G6/Dagre.vue'
 
@@ -62,15 +70,16 @@ export default class PoolDetail extends VueBase {
     res_body: '',
     url: ''
   }
+  private activeName: string = 'first'
   // private taintLinkList: TaintLinkObj[] = []
   private graphRefresh: boolean = false
   private graphData: GraphData = {
-    nodes:[],
-    edges:[]
+    nodes: [],
+    edges: []
   }
 
   mounted() {
-    Emitter.on('searchParams', (searchParams)=>this.methodPoolDetail(searchParams))
+    Emitter.on('searchParams', (searchParams) => this.methodPoolDetail(searchParams))
   }
 
   private async methodPoolDetail(searchParams: SearchParams) {
@@ -142,7 +151,7 @@ export default class PoolDetail extends VueBase {
   }
 }
 
-.graphWarp{
+.graphWarp {
   background: #fff;
   margin-top: 10px;
 }
