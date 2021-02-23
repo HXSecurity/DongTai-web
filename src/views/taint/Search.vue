@@ -115,22 +115,22 @@ export default class Search extends VueBase {
     const endStmp = new Date()
     setTimeout(() => {
       this.loadingDone()
+      if (status !== 201) {
+        this.$message.error(msg)
+        return
+      }
+      this.latest = latest
+      this.tableData = [...this.tableData, ...data.reduce((list: DataObj[], item: DataObj) => {
+        list.push({
+          ...item,
+          update_time: formatTimestamp(item.update_time)
+        })
+        return list
+      }, [])]
+      if (data.length < 20) {
+        window.removeEventListener('scroll', this.myDebounce)
+      }
     }, 1000 - endStmp.getTime() + startStmp.getTime())
-    if (status !== 201) {
-      this.$message.error(msg)
-      return
-    }
-    this.latest = latest
-    this.tableData = [...this.tableData, ...data.reduce((list: DataObj[], item: DataObj) => {
-      list.push({
-        ...item,
-        update_time: formatTimestamp(item.update_time)
-      })
-      return list
-    }, [])]
-    if (data.length < 20) {
-      window.removeEventListener('scroll', this.myDebounce)
-    }
   }
 }
 </script>
