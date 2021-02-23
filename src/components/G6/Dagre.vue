@@ -136,6 +136,8 @@ export default class Dagre extends Vue {
       },
       fitView: true
     })
+    graph.setMinZoom(0.5)
+    graph.setMaxZoom(5)
     graph.data(this.initData)
     const edgeIds: string[] = []
     graph.edge((edge: EdgeConfig) => {
