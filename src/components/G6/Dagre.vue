@@ -37,7 +37,6 @@ export default class Dagre extends Vue {
           res = `${str.substr(0, i)}\n${fittingString(str.substr(i), maxWidth, fontSize)}`
         }
       })
-      debugger
       return res
     }
 
