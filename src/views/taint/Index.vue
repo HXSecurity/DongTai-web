@@ -342,6 +342,8 @@ main {
   background: #fff;
   margin: 10px 0;
   padding: 10px;
+  max-height: 23vh;
+  overflow-y: auto;
 
   .paramsBtn {
     width: 60px;
