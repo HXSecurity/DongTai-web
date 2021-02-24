@@ -1,13 +1,13 @@
 <template>
   <div>
     <el-tabs class="poolDetail-tab" v-model="activeName">
-      <el-tab-pane label="图" name="first">
+      <el-tab-pane label="污点调用图" name="taintGraph">
         <div class="graphWarp">
           <Dagre v-if="graphRefresh" :init-data="graphData"></Dagre>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="调试" name="second">
-        <div class="httpTestWarp ">
+      <el-tab-pane label="数据包调试" name="flowDebug">
+        <div class="httpTestWarp">
           <div class="bottom-btn-line">
             <el-button type="primary" size="small">发送</el-button>
           </div>
@@ -16,14 +16,33 @@
               <textarea v-model="vul.req_header"></textarea>
             </div>
             <div class="responseBox">
-              {{ vul.res_body }}
+              <textarea v-model="vul.res_body"></textarea>
             </div>
           </div>
-
         </div>
       </el-tab-pane>
+      <el-tab-pane label="依赖组件" name="dependency">
+        <el-table
+          class="sca-list"
+          :data="vul.dependencies"
+          style="width: 100%; margin-top: 18px; cursor: pointer"
+          @row-click="goDetail"
+        >
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.name')"
+            prop="package_name"
+          ></el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.version')"
+            prop="version"
+          ></el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.count')"
+            prop="vul_count"
+          ></el-table-column>
+        </el-table>
+      </el-tab-pane>
     </el-tabs>
-
 
     <!--    <div class="taintWarp">-->
     <!--      <div class="taintLine flex-row-space-between" v-for="(item,index) in taintLinkList" :key="item">-->
@@ -51,16 +70,21 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { SearchParams, methodPoolSearchParams, VulObj, TaintLinkObj, GraphData } from './types/search'
+import {
+  SearchParams,
+  methodPoolSearchParams,
+  VulObj,
+  TaintLinkObj,
+  GraphData,
+} from './types/search'
 import Emitter from '@/views/taint/Emitter'
 import Dagre from '@/components/G6/Dagre.vue'
-
 
 @Component({
   name: 'PoolDetail',
   components: {
-    Dagre
-  }
+    Dagre,
+  },
 })
 export default class PoolDetail extends VueBase {
   private vul: VulObj = {
@@ -68,18 +92,20 @@ export default class PoolDetail extends VueBase {
     method_pool: '',
     req_header: '',
     res_body: '',
-    url: ''
+    url: '',
   }
-  private activeName: string = 'first'
+  private activeName: string = 'taintGraph'
   // private taintLinkList: TaintLinkObj[] = []
   private graphRefresh: boolean = false
   private graphData: GraphData = {
     nodes: [],
-    edges: []
+    edges: [],
   }
 
   mounted() {
-    Emitter.on('searchParams', (searchParams) => this.methodPoolDetail(searchParams))
+    Emitter.on('searchParams', (searchParams) =>
+      this.methodPoolDetail(searchParams)
+    )
   }
 
   private async methodPoolDetail(searchParams: SearchParams) {
@@ -89,7 +115,7 @@ export default class PoolDetail extends VueBase {
     const params: methodPoolSearchParams = {
       name: searchParams.name,
       msg: searchParams.msg,
-      level: searchParams.level
+      level: searchParams.level,
     }
     searchParams.paramsList.forEach((paramsObj) => {
       if (!paramsObj.key) {
@@ -103,7 +129,10 @@ export default class PoolDetail extends VueBase {
     })
     this.loadingStart()
     this.graphRefresh = false
-    const { status, data, msg } = await this.services.taint.methodPoolDetail(this.$route.params.id, params)
+    const { status, data, msg } = await this.services.taint.methodPoolDetail(
+      this.$route.params.id,
+      params
+    )
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
@@ -117,7 +146,6 @@ export default class PoolDetail extends VueBase {
 </script>
 
 <style scoped lang="scss">
-
 .httpTestWarp {
   width: 100%;
   min-height: 200px;
@@ -134,6 +162,7 @@ export default class PoolDetail extends VueBase {
       width: 100%;
       height: 100%;
       border: none;
+      border-right: 1px solid #D3DBE6;
       outline: none;
     }
   }
@@ -141,12 +170,18 @@ export default class PoolDetail extends VueBase {
   .responseBox {
     flex: 1;
     height: 180px;
+    > textarea {
+      width: 100%;
+      height: 100%;
+      padding-right: 2px;
+      border: none;
+      outline: none;
+    }
   }
 
   .bottom-btn-line {
     text-align: right;
     border-bottom: 1px solid #d6ddec;
-    margin-top: 10px;
     padding-bottom: 10px;
   }
 }
@@ -165,7 +200,6 @@ export default class PoolDetail extends VueBase {
   .taintLine {
     margin-top: 20px;
     line-height: 18px;
-
 
     .className {
       border: 1px solid #e9edf5;
@@ -188,7 +222,6 @@ export default class PoolDetail extends VueBase {
       text-align: center;
       word-break: break-all;
     }
-
   }
 }
 </style>
