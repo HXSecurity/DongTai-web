@@ -27,6 +27,7 @@
           :data="vul.dependencies"
           style="width: 100%; margin-top: 18px; cursor: pointer"
           @row-click="goDetail"
+          sort-by="vul_count"
         >
           <el-table-column
             :label="$t('views.scaList.tableHeaders.name')"
@@ -162,7 +163,7 @@ export default class PoolDetail extends VueBase {
       width: 100%;
       height: 100%;
       border: none;
-      border-right: 1px solid #D3DBE6;
+      border-right: 1px solid #d3dbe6;
       outline: none;
     }
   }
