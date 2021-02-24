@@ -26,7 +26,6 @@
           class="sca-list"
           :data="vul.dependencies"
           style="width: 100%; margin-top: 18px; cursor: pointer"
-          @row-click="goDetail"
           sort-by="vul_count"
         >
           <el-table-column

@@ -33,6 +33,7 @@
           :value="item.id"
         />
       </el-select>
+      <el-button v-if="this.$store.getters.enterDetail" size="small" @click="goBack">返回</el-button>
     </div>
     <div class="search-params">
       <div
@@ -40,10 +41,23 @@
         :key="index"
         class="search-params-item"
       >
-        <el-form size="small" :inline="true" :model="form" class="demo-form-inline">
-          <el-form-item v-if="index === 0" label="查询条件" label-width="100px"></el-form-item>
+        <el-form
+          size="small"
+          :inline="true"
+          :model="form"
+          class="demo-form-inline"
+        >
+          <el-form-item
+            v-if="index === 0"
+            label="查询条件"
+            label-width="100px"
+          ></el-form-item>
           <el-form-item v-else>
-            <el-select v-model="form.criteria" placeholder="查询条件" style="width: 100px">
+            <el-select
+              v-model="form.criteria"
+              placeholder="查询条件"
+              style="width: 100px"
+            >
               <el-option
                 v-for="item in criteriaOptionList"
                 :key="item.value"
@@ -76,30 +90,62 @@
             <el-input v-model="form.value"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" size="small" class="paramsBtn" @click="add"
-                       icon="el-icon-circle-plus-outline"></el-button>
-            <el-button type="danger" size="small" class="paramsBtn" @click="del(form)"
-                       icon="el-icon-delete"></el-button>
+            <el-button
+              type="primary"
+              size="small"
+              class="paramsBtn"
+              @click="add"
+              icon="el-icon-circle-plus-outline"
+            ></el-button>
+            <el-button
+              type="danger"
+              size="small"
+              class="paramsBtn"
+              @click="del(form)"
+              icon="el-icon-delete"
+            ></el-button>
           </el-form-item>
         </el-form>
       </div>
       <div class="search-btn-list">
-        <el-button type="primary" size="small" class="btn" @click="saveRule">保存</el-button>
+        <el-button type="primary" size="small" class="btn" @click="saveRule"
+          >保存</el-button
+        >
         <el-button size="small" class="btn" @click="emitParam">搜索</el-button>
       </div>
     </div>
     <el-dialog :visible.sync="saveDialogOpen" width="600px">
       <el-form label-width="100px">
         <el-form-item label="策略名称">
-          <el-input v-model="editSearchParams.name" size="small" placeholder="请输入策略名称"></el-input>
+          <el-input
+            v-model="editSearchParams.name"
+            size="small"
+            placeholder="请输入策略名称"
+          ></el-input>
         </el-form-item>
         <el-form-item label="策略详情">
-          <el-input v-model="editSearchParams.msg" type="textarea" :autosize="{ minRows: 4, maxRows: 6}" size="small"
-                    placeholder="请输入策略名称"></el-input>
+          <el-input
+            v-model="editSearchParams.msg"
+            type="textarea"
+            :autosize="{ minRows: 4, maxRows: 6 }"
+            size="small"
+            placeholder="请输入策略名称"
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button size="small" class="saveBtn" @click="saveDialogOpen = false">取消</el-button>
-          <el-button type="primary" size="small" class="saveBtn" @click="vulRuleSave">确定</el-button>
+          <el-button
+            size="small"
+            class="saveBtn"
+            @click="saveDialogOpen = false"
+            >取消</el-button
+          >
+          <el-button
+            type="primary"
+            size="small"
+            class="saveBtn"
+            @click="vulRuleSave"
+            >确定</el-button
+          >
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -110,12 +156,20 @@
 <script lang="ts">
 import { Component, Watch } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { Params, SearchParams, ParamsOption, RuleObj, VulRuleObj, methodPoolSearchParams } from './types/search'
+import {
+  Params,
+  SearchParams,
+  ParamsOption,
+  RuleObj,
+  VulRuleObj,
+  methodPoolSearchParams,
+} from './types/search'
 import Emitter from './Emitter'
+import router from '@/router'
 
 enum engineVulRuleType {
   user = 'user',
-  system = 'system'
+  system = 'system',
 }
 
 @Component({ name: 'TaintIndex' })
@@ -126,24 +180,24 @@ export default class Index extends VueBase {
   private userRuleList: Array<RuleObj> = []
   private criteriaOptionList: ParamsOption[] = [
     { label: 'AND', value: 'and' },
-    { label: 'OR', value: 'or' }
+    { label: 'OR', value: 'or' },
   ]
   private keyOptionList: ParamsOption[] = []
   private operateOptionList: ParamsOption[] = [
     { label: '等于', value: '=' },
-    { label: '不等于', value: '!=' }
+    { label: '不等于', value: '!=' },
   ]
   private searchParams: SearchParams = {
     name: '',
     msg: '',
     level: '',
-    paramsList: [{ key: '', value: '', operate: '=', criteria: '' }]
+    paramsList: [{ key: '', value: '', operate: '=', criteria: '' }],
   }
   private editSearchParams: SearchParams = {
     name: '',
     msg: '',
     level: '',
-    paramsList: []
+    paramsList: [],
   }
   private saveDialogOpen: boolean = false
 
@@ -152,11 +206,13 @@ export default class Index extends VueBase {
   }
 
   async created() {
-    this.userInfo && await this.engineVulRule(engineVulRuleType.user)
+    this.userInfo && (await this.engineVulRule(engineVulRuleType.user))
     await this.engineVulRule(engineVulRuleType.system)
     await this.vulRuleType()
 
-    const sessionItem = sessionStorage.getItem('searchParams') && JSON.parse(sessionStorage.getItem('searchParams') as string)
+    const sessionItem =
+      sessionStorage.getItem('searchParams') &&
+      JSON.parse(sessionStorage.getItem('searchParams') as string)
     if (sessionItem) {
       this.userRule = sessionItem.userRule
       this.sysRule = sessionItem.sysRule
@@ -170,14 +226,24 @@ export default class Index extends VueBase {
   }
 
   @Watch('$route')
-  onRouteChanged() {
+  onRouteChanged(newVal: any) {
+    if(newVal.fullPath!=='/taint/search'){
+      this.$store.getters.enterDetail = true
+    }else{
+      this.$store.getters.enterDetail = false
+    }
     this.$nextTick(() => {
       this.emitParam()
     })
   }
 
   add(): void {
-    this.searchParams.paramsList.push({ key: '', value: '', operate: '=', criteria: 'and' })
+    this.searchParams.paramsList.push({
+      key: '',
+      value: '',
+      operate: '=',
+      criteria: 'and',
+    })
   }
 
   del(i: Params): void {
@@ -188,13 +254,15 @@ export default class Index extends VueBase {
         return false
       }
     })
-    if(this.searchParams.paramsList.length === 0){
+    if (this.searchParams.paramsList.length === 0) {
       this.add()
     }
   }
 
   private async engineVulRule(type: string) {
-    const { status, msg, data } = await this.services.taint.engineVulRule({ type })
+    const { status, msg, data } = await this.services.taint.engineVulRule({
+      type,
+    })
     if (status !== 201) {
       this.$message.error(msg)
       return
@@ -228,14 +296,18 @@ export default class Index extends VueBase {
       name: '',
       msg: '',
       level: '',
-      paramsList: [{ key: '', value: '', operate: '=', criteria: '' }]
+      paramsList: [{ key: '', value: '', operate: '=', criteria: '' }],
     }
     this.emitParam()
   }
 
   private async engineVulRuleDetail(rule_id: number) {
     this.loadingStart()
-    const { status, msg, data } = await this.services.taint.engineVulRuleDetail({ rule_id })
+    const {
+      status,
+      msg,
+      data,
+    } = await this.services.taint.engineVulRuleDetail({ rule_id })
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
@@ -245,12 +317,15 @@ export default class Index extends VueBase {
     this.searchParams.name = vulRuleObj.name
     this.searchParams.msg = vulRuleObj.msg
     this.searchParams.level = vulRuleObj.level
-    this.searchParams.paramsList = [];
-    ['sinks', 'sources', 'propagators', 'filters'].forEach(key => {
+    this.searchParams.paramsList = []
+    ;['sinks', 'sources', 'propagators', 'filters'].forEach((key) => {
       if (vulRuleObj.hasOwnProperty(key)) {
-        vulRuleObj.sinks?.forEach(value => {
+        vulRuleObj.sinks?.forEach((value) => {
           this.searchParams.paramsList.push({
-            key, value, operate: '=', criteria: 'and'
+            key,
+            value,
+            operate: '=',
+            criteria: 'and',
           })
         })
       }
@@ -258,7 +333,8 @@ export default class Index extends VueBase {
     this.search()
   }
 
-  private async vulRuleType() {    // 策略类型
+  private async vulRuleType() {
+    // 策略类型
     this.loadingStart()
     const { status, msg, data } = await this.services.taint.vulRuleType()
     this.loadingDone()
@@ -276,11 +352,14 @@ export default class Index extends VueBase {
 
   private emitParam() {
     Emitter.emit('searchParams', this.searchParams)
-    sessionStorage.setItem('searchParams', JSON.stringify({
-      userRule: this.userRule,
-      sysRule: this.sysRule,
-      searchParams: this.searchParams
-    }))
+    sessionStorage.setItem(
+      'searchParams',
+      JSON.stringify({
+        userRule: this.userRule,
+        sysRule: this.sysRule,
+        searchParams: this.searchParams,
+      })
+    )
   }
 
   private search() {
@@ -294,7 +373,7 @@ export default class Index extends VueBase {
     const params: methodPoolSearchParams = {
       name: this.editSearchParams.name,
       msg: this.editSearchParams.msg,
-      level: this.editSearchParams.level
+      level: this.editSearchParams.level,
     }
     this.editSearchParams.paramsList.forEach((paramsObj) => {
       if (!paramsObj.key) {
@@ -315,11 +394,13 @@ export default class Index extends VueBase {
     }
     this.userRule = null
     this.sysRule = null
-    this.userInfo && await this.engineVulRule(engineVulRuleType.user)
+    this.userInfo && (await this.engineVulRule(engineVulRuleType.user))
     await this.engineVulRule(engineVulRuleType.system)
-
   }
 
+  private async goBack() {
+    router.back()
+  }
 }
 </script>
 
@@ -349,7 +430,6 @@ main {
     width: 60px;
   }
 }
-
 
 .search-btn-list {
   display: flex;
