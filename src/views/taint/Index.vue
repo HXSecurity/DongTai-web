@@ -318,33 +318,9 @@ export default class Index extends VueBase {
     this.searchParams.msg = vulRuleObj.msg
     this.searchParams.level = vulRuleObj.level
     this.searchParams.paramsList = [];
-    ['sinks', 'sources', 'propagators', 'filters'].forEach((key) => {
+    ['sinks', 'sources', 'propagators', 'filters'].forEach((key: string) => {
       if (vulRuleObj.hasOwnProperty(key)) {
-        vulRuleObj.sinks?.forEach((value) => {
-          this.searchParams.paramsList.push({
-            key,
-            value,
-            operate: '=',
-            criteria: 'and',
-          })
-        })
-        vulRuleObj.sources?.forEach((value) => {
-          this.searchParams.paramsList.push({
-            key,
-            value,
-            operate: '=',
-            criteria: 'and',
-          })
-        })
-        vulRuleObj.propagators?.forEach((value) => {
-          this.searchParams.paramsList.push({
-            key,
-            value,
-            operate: '=',
-            criteria: 'and',
-          })
-        })
-        vulRuleObj.filters?.forEach((value) => {
+        vulRuleObj[key]?.forEach((value:string) => {
           this.searchParams.paramsList.push({
             key,
             value,
