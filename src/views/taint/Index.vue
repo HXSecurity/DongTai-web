@@ -317,10 +317,34 @@ export default class Index extends VueBase {
     this.searchParams.name = vulRuleObj.name
     this.searchParams.msg = vulRuleObj.msg
     this.searchParams.level = vulRuleObj.level
-    this.searchParams.paramsList = []
-    ;['sinks', 'sources', 'propagators', 'filters'].forEach((key) => {
+    this.searchParams.paramsList = [];
+    ['sinks', 'sources', 'propagators', 'filters'].forEach((key) => {
       if (vulRuleObj.hasOwnProperty(key)) {
         vulRuleObj.sinks?.forEach((value) => {
+          this.searchParams.paramsList.push({
+            key,
+            value,
+            operate: '=',
+            criteria: 'and',
+          })
+        })
+        vulRuleObj.sources?.forEach((value) => {
+          this.searchParams.paramsList.push({
+            key,
+            value,
+            operate: '=',
+            criteria: 'and',
+          })
+        })
+        vulRuleObj.propagators?.forEach((value) => {
+          this.searchParams.paramsList.push({
+            key,
+            value,
+            operate: '=',
+            criteria: 'and',
+          })
+        })
+        vulRuleObj.filters?.forEach((value) => {
           this.searchParams.paramsList.push({
             key,
             value,
@@ -391,6 +415,14 @@ export default class Index extends VueBase {
     if (status !== 201) {
       this.$message.error(msg)
       return
+    }
+    this.$message.success(msg)
+    this.saveDialogOpen = false
+    this.editSearchParams = {
+      name: '',
+      msg: '',
+      level: '',
+      paramsList: [],
     }
     this.userRule = null
     this.sysRule = null

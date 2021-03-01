@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import G6, { Algorithm, Graph, ShapeOptions, ModelConfig, IGroup } from '@antv/g6'
+import G6, { Graph, ShapeOptions, ModelConfig, IGroup } from '@antv/g6'
 
 import { EdgeConfig } from '@antv/g6-core/lib/types'
 

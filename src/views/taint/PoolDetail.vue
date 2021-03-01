@@ -43,27 +43,6 @@
         </el-table>
       </el-tab-pane>
     </el-tabs>
-
-    <!--    <div class="taintWarp">-->
-    <!--      <div class="taintLine flex-row-space-between" v-for="(item,index) in taintLinkList" :key="item">-->
-    <!--        <span class="className">-->
-    <!--          {{ `${item.className}.${item.methodName}()` }}-->
-    <!--           <i-->
-    <!--             v-if="index < taintLinkList.length - 1"-->
-    <!--             class="step el-icon-bottom"-->
-    <!--           ></i>-->
-    <!--        </span>-->
-    <!--        <span class="desc">-->
-    <!--          污点数据输入源，调用类及方法: {{ `${item.callerClass}.${item.callerMethod}()` }}{{-->
-    <!--            item.callerLineNumber ? ' , 行号: ' + item.callerLineNumber : ''-->
-    <!--          }}{{-->
-    <!--            item.sourceHash.length > 0 ? ' , 污点值: ' + item.sourceHash.join(',') : ''-->
-    <!--          }}{{-->
-    <!--            item.targetHash.length > 0 ? ' , 污点值2: ' + item.targetHash.join(',') : ''-->
-    <!--          }}-->
-    <!--        </span>-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
 </template>
 
