@@ -42,8 +42,12 @@ export default () =>
     }
 
     // 保存策略
-    vulRuleSave(params: {}): Promise<iResponse> {
-      return request.post('/engine/vul_rule/save', params)
+    vulRuleSave(params: {}, id?: number): Promise<iResponse> {
+      var url = '/engine/vul_rule/save'
+      if (id) {
+        url = url + '?id=' + id
+      }
+      return request.post(url, params)
     }
 
     // 策略类型

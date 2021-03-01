@@ -386,7 +386,17 @@ export default class Index extends VueBase {
       }
     })
     this.loadingStart()
-    const { status, data, msg } = await this.services.taint.vulRuleSave(params)
+    var rule_id = null
+    if(this.userRule != null){
+      rule_id = this.userRule
+    }else if(this.sysRule != null){
+      rule_id = this.sysRule
+    }
+    console.log(rule_id)
+    const { status, data, msg } = rule_id == null ?
+      await this.services.taint.vulRuleSave(params):
+      await this.services.taint.vulRuleSave(params, rule_id);
+
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
