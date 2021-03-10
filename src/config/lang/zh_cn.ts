@@ -13,6 +13,7 @@ export default {
     setting: '系统配置',
     agentManage: '引擎管理',
     strategyManage: '策略管理',
+    hookRule: 'HOOK规则',
     upgradeOnline: '系统升级',
     sysInfo: '系统信息',
     changePassword: '密码修改',
@@ -22,7 +23,7 @@ export default {
     department: '组织管理',
     taintPool: '搜索',
     search: '污点搜索',
-    poolDetail: '污点详情'
+    poolDetail: '污点详情',
   },
   views: {
     login: {
@@ -246,6 +247,6 @@ export default {
         submit: '确认',
         cancel: '取消',
       },
-    }
+    },
   },
 }

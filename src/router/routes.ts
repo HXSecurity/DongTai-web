@@ -150,6 +150,13 @@ const routes: Array<RouteConfig> = [
             component: () => import('@/views/setting/StrategyManage.vue'),
           },
           {
+            path: 'hookRule',
+            meta: {
+              name: i18n.t('menu.hookRule'),
+            },
+            component: () => import('@/views/setting/hookRule.vue'),
+          },
+          {
             path: 'upgradeOnline',
             meta: {
               name: i18n.t('menu.upgradeOnline'),

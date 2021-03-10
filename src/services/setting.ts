@@ -98,4 +98,18 @@ export default () =>
     strategyUserAdd(params: { ids: string; name: string }): Promise<iResponse> {
       return request.post('/strategy/user/add', params)
     }
+
+    // HOOK规则-规则概览
+    hookRuleSummary(): Promise<iResponse> {
+      return request.get('/engine/hook/rule/summary')
+    }
+
+    // HOOK规则-规则列表
+    hookRuleList(params: {
+      type: string
+      page: number
+      pageSize: number
+    }): Promise<iResponse> {
+      return request.get('/engine/hook/rules', { params })
+    }
   })()

@@ -20,6 +20,13 @@
           {{ $t('menu.strategyManage') }}
         </div>
         <div
+          class="menu-item"
+          :class="curModule('/setting/hookRule') ? 'currentModule' : ''"
+          @click="$router.push('/setting/hookRule')"
+        >
+          {{ $t('menu.hookRule') }}
+        </div>
+        <div
           v-if="userInfo.role === 1"
           class="menu-item"
           :class="curModule('/setting/upgradeOnline') ? 'currentModule' : ''"
