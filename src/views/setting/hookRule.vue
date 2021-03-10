@@ -16,11 +16,11 @@
     </div>
     <div class="info-body">
       <el-tabs v-model="type">
-        <el-tab-pane label="污点源方法规则" name="1">
-          <HookTable v-if="type === '1'" :rule-type="type"
-        /></el-tab-pane>
-        <el-tab-pane label="传播方法规则" name="2">
+        <el-tab-pane label="污点源方法规则" name="2">
           <HookTable v-if="type === '2'" :rule-type="type"
+        /></el-tab-pane>
+        <el-tab-pane label="传播方法规则" name="1">
+          <HookTable v-if="type === '1'" :rule-type="type"
         /></el-tab-pane>
         <el-tab-pane label="过滤方法规则" name="3">
           <HookTable v-if="type === '3'" :rule-type="type"

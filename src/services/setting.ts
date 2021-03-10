@@ -112,4 +112,57 @@ export default () =>
     }): Promise<iResponse> {
       return request.get('/engine/hook/rules', { params })
     }
+
+    // HOOK规则-添加规则类型
+    ruleTypes(params: { type: string }): Promise<iResponse> {
+      return request.get('/engine/hook/rule_types', { params })
+    }
+    ruleTypeAdd(params: {
+      type: string
+      name: string
+      short_name: string
+      enable: number
+    }): Promise<iResponse> {
+      return request.post('/engine/hook/rule_type/add', params)
+    }
+
+    // HOOK规则-添加规则
+    ruleAdd(params: {
+      rule_type_id: string
+      rule_value: string
+      rule_source: string
+      rule_target: string
+      inherit: string
+      track: string
+    }): Promise<iResponse> {
+      return request.post('/engine/hook/rule/add', params)
+    }
+
+    // HOOK规则-添加规则
+    modifyAdd(params: {
+      rule_id: number
+      rule_type_id: string
+      rule_value: string
+      rule_source: string
+      rule_target: string
+      inherit: string
+      track: string
+    }): Promise<iResponse> {
+      return request.post('/engine/hook/rule/modify', params)
+    }
+
+    // HOOK规则-禁用规则
+    ruleDisable(params: { rule_id: string }): Promise<iResponse> {
+      return request.get('/engine/hook/rule/disable', { params })
+    }
+
+    // HOOK规则-禁用规则
+    ruleEnable(params: { rule_id: string }): Promise<iResponse> {
+      return request.get('/engine/hook/rule/enable', { params })
+    }
+
+    // HOOK规则-删除规则
+    ruleDelete(params: { rule_id: string }): Promise<iResponse> {
+      return request.get('/engine/hook/rule/delete', { params })
+    }
   })()
