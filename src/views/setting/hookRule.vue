@@ -15,17 +15,17 @@
       </div>
     </div>
     <div class="info-body">
-      <el-tabs v-model="type">
-        <el-tab-pane label="污点源方法规则" name="2">
+      <el-tabs v-model="type" class="info-tabs" type="card">
+        <el-tab-pane label="污点源方法规则" name="2" class="info-tab">
           <HookTable v-if="type === '2'" :rule-type="type"
         /></el-tab-pane>
-        <el-tab-pane label="传播方法规则" name="1">
+        <el-tab-pane label="传播方法规则" name="1" class="info-tab">
           <HookTable v-if="type === '1'" :rule-type="type"
         /></el-tab-pane>
-        <el-tab-pane label="过滤方法规则" name="3">
+        <el-tab-pane label="过滤方法规则" name="3" class="info-tab">
           <HookTable v-if="type === '3'" :rule-type="type"
         /></el-tab-pane>
-        <el-tab-pane label="危险方法规则" name="4">
+        <el-tab-pane label="危险方法规则" name="4" class="info-tab">
           <DangerTable v-if="type === '4'" :rule-type="type" />
         </el-tab-pane>
       </el-tabs>
@@ -67,6 +67,47 @@ export default class ChangePassword extends VueBase {
   }
 }
 </script>
+
+<style lang="scss">
+.hook-rule {
+  .info-tabs {
+    .el-tabs__header {
+      margin: 12px 20px 0px 20px;
+    }
+    .el-tabs__item {
+      &:hover {
+        color: #000;
+      }
+      &.is-active {
+        color: #1a80f2;
+      }
+    }
+
+    //.el-tabs__header {
+    //  background: #fff;
+    //  .el-tabs__nav-wrap {
+    //    &::after {
+    //      display: none;
+    //    }
+    //  }
+    //  .el-tabs__active-bar {
+    //    display: none;
+    //  }
+    //  .el-tabs__item {
+    //    border: 1px solid #ccc;
+    //    height: 32px;
+    //    padding: 10px 20px;
+    //    line-height: 14px;
+    //    margin-left: 12px;
+    //    border-radius: 3px;
+    //    &.is-active {
+    //      border: 1px solid #2d82ff !important;
+    //    }
+    //  }
+    //}
+  }
+}
+</style>
 
 <style scoped lang="scss">
 .hook-rule {

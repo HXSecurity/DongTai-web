@@ -1,10 +1,11 @@
 <template>
   <div class="table-body">
-    <div>
+    <div class="flex-right">
       <el-button size="small" @click="hookTypeDialog = true"
+                 class="resetAllBtn"
         >添加规则类型</el-button
       >
-      <el-button size="small" @click="hookDialog = true">添加规则</el-button>
+      <el-button size="small" @click="hookDialog = true" class="resetAllBtn">添加规则</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%">
       <el-table-column prop="rule_type" label="规则类型" width="180">
@@ -538,8 +539,20 @@ export default class HookTable extends VueBase {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .table-body {
   padding: 20px;
+  .flex-right {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 6px;
+  }
+  .resetAllBtn {
+    height: 28px;
+    line-height: 0;
+    background: #4a72ae;
+    border-radius: 2px;
+    color: #fff;
+  }
 }
 </style>
