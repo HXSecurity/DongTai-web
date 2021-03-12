@@ -99,10 +99,10 @@
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
         <el-form-item label="类型名称">
-          <el-input v-model="hookType.name"></el-input>
+          <el-input v-model="hookType.name" placeholder="请输入类型名称，如：String、StringBuilder等，建议使用类名"></el-input>
         </el-form-item>
         <el-form-item label="类型简称">
-          <el-input v-model="hookType.short_name"></el-input>
+          <el-input v-model="hookType.short_name" placeholder="请输入类型简称，如：字符串-01、字符串-02，方便自己查看"></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch
@@ -141,7 +141,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="规则详情">
-          <el-input v-model="hook.rule_value"></el-input>
+          <el-input v-model="hook.rule_value" placeholder="请输入HOOK规则，格式如：java.lang.String.<init>(java.lang.String)"></el-input>
         </el-form-item>
         <template v-for="(item, key) in hook.source">
           <el-form-item
@@ -184,6 +184,7 @@
             <el-input
               v-if="item.origin === 'P'"
               v-model="item.param"
+              placeholder="参数编号，从1开始"
               style="width: 10%; margin-left: 10px"
             ></el-input>
             <div style="float: right">
