@@ -26,22 +26,22 @@
         >
           {{ $t('menu.hookRule') }}
         </div>
-        <div
+        <!-- <div
           v-if="userInfo.role === 1"
           class="menu-item"
           :class="curModule('/setting/upgradeOnline') ? 'currentModule' : ''"
           @click="$router.push('/setting/upgradeOnline')"
         >
           {{ $t('menu.upgradeOnline') }}
-        </div>
-        <div
+        </div> -->
+        <!-- <div
           v-if="userInfo.role === 1"
           class="menu-item"
           :class="curModule('/setting/sysInfo') ? 'currentModule' : ''"
           @click="$router.push('/setting/sysInfo')"
         >
           {{ $t('menu.sysInfo') }}
-        </div>
+        </div> -->
         <div
           class="menu-item"
           :class="curModule('/setting/changePassword') ? 'currentModule' : ''"

@@ -66,7 +66,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <el-form-item style="width: 140px">
             <el-select v-model="form.key" placeholder="选择节点类型">
               <el-option
                 v-for="item in keyOptionList"
@@ -76,7 +76,7 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item>
+          <el-form-item style="width: 100px">
             <el-select v-model="form.operate">
               <el-option
                 v-for="item in operateOptionList"
@@ -87,7 +87,7 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="form.value"></el-input>
+            <el-input style="min-width: 360px" v-model="form.value" placeholder="请输入Java方法签名，如：java.lang.String.<init>"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button
