@@ -21,10 +21,11 @@
         prop="owner"
         width="120px"
       ></el-table-column>
-      <el-table-column
-        :label="$t('views.agentManage.timestapm')"
-        :prop="formatTimestamp(latest_time)"
-      ></el-table-column>
+      <el-table-column :label="$t('views.agentManage.timestapm')">
+        <template slot-scope="scope">
+          {{ scope.row.latest_time | formatTimestamp }}
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('views.agentManage.manage')" width="100px">
         <template slot-scope="{ row }">
           <i
@@ -53,13 +54,21 @@
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
 import { AgentListObj } from '@/views/setting/types'
+import { formatTimestamp } from '@/utils/utils'
 
-@Component({ name: 'AgentManage' })
+@Component({
+  name: 'AgentManage',
+  filters: {
+    formatTimestamp(date: number | any) {
+      return formatTimestamp(date)
+    },
+  },
+})
 export default class AgentManage extends VueBase {
   private tableData: Array<AgentListObj> = []
   private total = 0
   private page = 1
-  private pageSize = 20
+  private pageSize = 10
 
   created() {
     this.getTableData()
