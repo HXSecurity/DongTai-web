@@ -7,29 +7,27 @@
       <el-button size="small" @click="hookDialog = true" class="resetAllBtn">添加规则</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="rule_type" label="规则类型" width="180">
+      <el-table-column align="center" prop="rule_type" label="规则类型" width="160">
       </el-table-column>
-      <el-table-column prop="value" label="规则详情" width="180">
+      <el-table-column align="center" prop="value" label="规则详情" width="340">
       </el-table-column>
-      <el-table-column prop="source" label="污点输入" width="180">
+      <el-table-column align="center" prop="source" label="污点输入" max-width="100">
       </el-table-column>
-      <el-table-column prop="target" label="污点输出" width="180">
+      <el-table-column prop="target" label="污点输出" max-width="100">
       </el-table-column>
-      <el-table-column prop="inherit" label="是否继承" width="180">
+      <el-table-column prop="inherit" label="HOOK深度" width="140">
         <template slot-scope="scope">
-          {{ scope.row.inherit === 'true' ? '是' : '否' }}
+          {{ scope.row.inherit === 'true' ? '子类' : scope.row.inherit === 'all'?'当前类及子类':'当前类' }}
         </template>
       </el-table-column>
-      <el-table-column prop="update_time" label="修改时间" width="180">
+      <el-table-column prop="update_time" label="修改时间" sortable="true" width="180">
         <template slot-scope="scope">
           {{ scope.row.update_time | formatTimestamp }}
         </template>
       </el-table-column>
       <el-table-column prop="user" label="创建者" width="180">
       </el-table-column>
-      <el-table-column prop="user" label="控制规则" width="180">
-      </el-table-column>
-      <el-table-column prop="address" label="操作" width="360">
+      <el-table-column prop="address" label="操作" align="center" width="290">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
@@ -45,7 +43,7 @@
           <el-button
             type="success"
             size="small"
-            style="margin-left: 20px"
+            style="margin-left: 10px"
             @click="editRow(scope.row)"
           >
             编辑
