@@ -13,7 +13,7 @@ export default {
     setting: '系统配置',
     agentManage: '引擎管理',
     strategyManage: '策略管理',
-    hookRule: 'HOOK规则',
+    hookRule: '自定义规则',
     upgradeOnline: '系统升级',
     sysInfo: '系统信息',
     changePassword: '密码修改',
@@ -146,6 +146,8 @@ export default {
       payload: '服务器负载',
       status: '运行状态',
       manage: '管理',
+      owner: '负责人',
+      timestapm: '时间'
     },
     strategyManage: {
       name: '策略名称',
