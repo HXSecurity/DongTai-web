@@ -54,7 +54,7 @@
         </el-button>
       </div>
       <div v-show="selectTab === 'desc'">
-        <div class="module flex-row-space-between">
+        <div class="module flex-row-space-between" id="type_summary_level_count">
           <div class="module-content">
             <div class="module-title">
               {{ $t('views.projectDetail.vulNum') }}
@@ -121,6 +121,17 @@ export default class ProjectDetail extends VueBase {
       this.$message.error(msg)
       return
     }
+
+    const type_summary = document.getElementById('type_summary') as HTMLElement
+    const level_count = document.getElementById('level_count') as HTMLElement
+    const type_summary_level_count = document.getElementById('type_summary_level_count') as HTMLElement
+
+    const height = Math.ceil(data.type_summary.length / 5) * 30
+    const domHeight = type_summary.offsetHeight
+    type_summary.style.height = domHeight + height + 'px'
+    level_count.style.height = domHeight + height + 'px'
+    type_summary_level_count.style.height = domHeight + 40 + height + 'px'
+
     this.projectObj = {
       ...data,
       name: data.name,
@@ -135,9 +146,9 @@ export default class ProjectDetail extends VueBase {
         trigger: 'axis',
       },
       grid: {
+        height: domHeight + height - 100,
         left: '3%',
         right: '4%',
-        bottom: '3%',
         containLabel: true,
       },
       xAxis: {
@@ -165,17 +176,14 @@ export default class ProjectDetail extends VueBase {
       ],
     }
     levelCountChart.setOption(levelCountOption)
-
-    const typeSummaryChart = echarts.init(
-      document.getElementById('type_summary') as HTMLElement
-    )
+    const typeSummaryChart = echarts.init(type_summary as HTMLElement)
     const typeSummaryOption: EChartsOption = {
       tooltip: {
         trigger: 'item',
       },
       legend: {
-        orient: 'vertical',
-        left: 'right',
+        orient: 'horizontal',
+        bottom: 10,
         data: data.type_summary.map((item: { type_name: string }) => {
           return item.type_name
         }),
@@ -183,6 +191,8 @@ export default class ProjectDetail extends VueBase {
       series: [
         {
           type: 'pie',
+          width: 580,
+          height: 300,
           data: data.type_summary.reduce(
             (
               list: { name: any; value: any; tooltip: { formatter: string } }[],
