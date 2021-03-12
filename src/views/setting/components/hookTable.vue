@@ -90,7 +90,7 @@
     </el-pagination>
 
     <el-dialog :visible.sync="hookTypeDialog">
-      <el-form :model="hookType" label-width="80px">
+      <el-form :model="hookType" label-width="80px" size="small" >
         <el-form-item label="规则集">
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
@@ -114,13 +114,13 @@
         </el-form-item>
       </el-form>
       <template slot="footer">
-        <el-button @click="clearHookType">取消</el-button>
-        <el-button type="primary" @click="enterHookType">确定</el-button>
+        <el-button size="small" @click="clearHookType">取消</el-button>
+        <el-button size="small" type="primary" @click="enterHookType">确定</el-button>
       </template>
     </el-dialog>
 
     <el-dialog :visible.sync="hookDialog">
-      <el-form :model="hook" label-width="80px">
+      <el-form :model="hook" size="small" label-width="80px">
         <el-form-item label="规则集">
           <span>{{ fmtType(hook.type) }}</span>
         </el-form-item>
@@ -148,7 +148,7 @@
               v-if="key > 0"
               v-model="item.relation"
               placeholder="请选择逻辑关系"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%;"
             >
               <el-option
                 v-for="r in relations"
@@ -161,7 +161,7 @@
             <el-select
               v-model="item.origin"
               placeholder="请选择数据源"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%;"
               @change="changeOrigin(item)"
             >
               <el-option
@@ -180,7 +180,7 @@
             <el-input
               v-if="item.origin === 'P'"
               v-model="item.param"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%; margin-left: 10px"
             ></el-input>
             <div style="float: right">
               <el-button type="text" @click="addSource(hook.source)"
@@ -204,7 +204,7 @@
               v-if="key > 0"
               v-model="item.relation"
               placeholder="请选择逻辑关系"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%;"
             >
               <el-option
                 v-for="r in relations"
@@ -217,7 +217,7 @@
             <el-select
               v-model="item.origin"
               placeholder="请选择数据源"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%;"
               @change="changeOrigin(item)"
             >
               <el-option
@@ -236,7 +236,7 @@
             <el-input
               v-if="item.origin === 'P'"
               v-model="item.param"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%; margin-left: 10px"
             ></el-input>
             <div style="float: right">
               <el-button type="text" @click="addSource(hook.target)"
@@ -252,14 +252,14 @@
           </el-form-item>
         </template>
         <el-form-item label="继承深度">
-          <el-radio v-model="hook.inherit" label="false">仅当前类</el-radio>
+          <el-radio v-model="hook.inherit" selected label="false">仅当前类</el-radio>
           <el-radio v-model="hook.inherit" label="true">仅子类</el-radio>
           <el-radio v-model="hook.inherit" label="all">当前类及其子类</el-radio>
         </el-form-item>
       </el-form>
       <template slot="footer">
-        <el-button @click="clearHook">取消</el-button>
-        <el-button type="primary" @click="enterHook">确定</el-button>
+        <el-button size="small" @click="clearHook">取消</el-button>
+        <el-button size="small" type="primary" @click="enterHook">确定</el-button>
       </template>
     </el-dialog>
   </div>
@@ -407,7 +407,7 @@ export default class HookTable extends VueBase {
 
   async deleteRule(row: any) {
     this.loadingStart()
-    const { status, msg } = await this.services.setting.ruleDisable({
+    const { status, msg } = await this.services.setting.ruleDelete({
       rule_id: row.id,
     })
     this.loadingDone()

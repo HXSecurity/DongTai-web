@@ -14,12 +14,12 @@
       </el-table-column>
       <el-table-column prop="source" label="污点输入" width="180">
       </el-table-column>
-      <el-table-column prop="inherit" label="是否继承" width="180">
+      <el-table-column prop="inherit" label="HOOK深度" width="180">
         <template slot-scope="scope">
-          {{ scope.row.inherit === 'true' ? '是' : '否' }}
+          {{ scope.row.inherit === 'true' ? '子类' : scope.row.inherit === 'all'?'当前类及子类':'当前类' }}
         </template>
       </el-table-column>
-      <el-table-column prop="track" label="污点跟踪" width="180">
+      <el-table-column prop="track" label="开启污点跟踪" width="180">
         <template slot-scope="scope">
           {{ scope.row.track === 'true' ? '是' : '否' }}
         </template>
@@ -94,7 +94,7 @@
     </el-pagination>
 
     <el-dialog :visible.sync="hookTypeDialog">
-      <el-form :model="hookType" label-width="80px">
+      <el-form :model="hookType" label-width="80px" size="small">
         <el-form-item label="规则集">
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
@@ -118,13 +118,13 @@
         </el-form-item>
       </el-form>
       <template slot="footer">
-        <el-button @click="clearHookType">取消</el-button>
-        <el-button type="primary" @click="enterHookType">确定</el-button>
+        <el-button size="small" @click="clearHookType">取消</el-button>
+        <el-button size="small" type="primary" @click="enterHookType">确定</el-button>
       </template>
     </el-dialog>
 
     <el-dialog :visible.sync="hookDialog">
-      <el-form :model="hook" label-width="80px">
+      <el-form :model="hook" size="small" label-width="80px">
         <el-form-item label="规则集">
           <span>{{ fmtType(hook.type) }}</span>
         </el-form-item>
@@ -152,7 +152,7 @@
               v-if="key > 0"
               v-model="item.relation"
               placeholder="请选择逻辑关系"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%;"
             >
               <el-option
                 v-for="r in relations"
@@ -165,7 +165,7 @@
             <el-select
               v-model="item.origin"
               placeholder="请选择数据源"
-              style="width: 25%; margin-left: 2%"
+              style="width: 18%;"
               @change="changeOrigin(item)"
             >
               <el-option
@@ -184,13 +184,14 @@
             <el-input
               v-if="item.origin === 'P'"
               v-model="item.param"
-              style="width: 25%; margin-left: 2%"
+              style="width: 10%; margin-left: 10px"
             ></el-input>
             <div style="float: right">
-              <el-button type="text" @click="addSource(hook.source)"
+              <el-button type="text" size="small"  @click="addSource(hook.source)"
                 >增加</el-button
               >
               <el-button
+                size="small"
                 v-if="hook.source.length > 1"
                 type="text"
                 @click="deleteSource(hook.source, key)"
@@ -210,8 +211,8 @@
         </el-form-item>
       </el-form>
       <template slot="footer">
-        <el-button @click="clearHook">取消</el-button>
-        <el-button type="primary" @click="enterHook">确定</el-button>
+        <el-button size="small" @click="clearHook">取消</el-button>
+        <el-button size="small" type="primary" @click="enterHook">确定</el-button>
       </template>
     </el-dialog>
   </div>

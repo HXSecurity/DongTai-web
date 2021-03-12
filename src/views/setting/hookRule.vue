@@ -46,7 +46,7 @@ import HookTable from '@/views/setting/components/hookTable.vue'
   },
 })
 export default class ChangePassword extends VueBase {
-  type = '1'
+  type = '2'
   base = {
     ruleCount: 0,
     typeCount: 0,
