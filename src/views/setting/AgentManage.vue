@@ -16,6 +16,15 @@
         prop="running_status"
         width="90px"
       ></el-table-column>
+      <el-table-column
+        :label="$t('views.agentManage.owner')"
+        prop="owner"
+        width="120px"
+      ></el-table-column>
+      <el-table-column
+        :label="$t('views.agentManage.timestapm')"
+        :prop="formatTimestamp(latest_time)"
+      ></el-table-column>
       <el-table-column :label="$t('views.agentManage.manage')" width="100px">
         <template slot-scope="{ row }">
           <i
@@ -30,7 +39,7 @@
       </el-table-column>
     </el-table>
     <el-pagination
-      style="float:right"
+      style="float: right"
       :total="total"
       :current-page="page"
       :page-size="pageSize"

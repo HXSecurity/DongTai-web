@@ -136,6 +136,8 @@ export default {
       payload: '服务器负载',
       status: '运行状态',
       manage: '管理',
+      owner: '负责人',
+      timestapm: '时间'
     },
     strategyManage: {
       name: '策略名称',
