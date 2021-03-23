@@ -1,4 +1,7 @@
 # lingzhi-web
+[![django-project](https://img.shields.io/badge/django%20versions-3.0.3-blue)](https://www.djangoproject.com/)
+[![dongtai-project](https://img.shields.io/badge/dongtai%20versions-beta-green)](https://github.com/huoxianclub/dongtai)
+[![dongtai--web](https://img.shields.io/badge/dongtai--web-v1.0.0-lightgrey)](https://github.com/huoxianclub/dongtai-web)
 
 ## 项目介绍
 “火线～洞态IAST”是一款专为甲方安全人员、甲乙代码审计工程师和0 Day漏洞挖掘人员量身打造的辅助工具，可用于集成devops环境进行漏洞检测、作为代码审计的辅助工具和自动化挖掘0 Day。
