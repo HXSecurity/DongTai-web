@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -17,14 +16,13 @@ jobs:
 
     steps:
       - name: checkout
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
 
       - name: setup nodejs
         uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
       
       - name: test and build
-      - run: npm ci
-      - run: npm test
-      - run: npm run build --if-present
+        run: |
+          npm ci
+          npm test
+          npm run build --if-present
