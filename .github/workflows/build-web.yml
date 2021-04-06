@@ -1,0 +1,28 @@
+name: Build DongTai-Web
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: setup nodejs
+        uses: actions/setup-node@v1
+      
+      - name: test and build
+        run: |
+          npm ci
+          npm test
+          npm run build --if-present
