@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="container scroll-class">
     <div class="fixed-warp">
       <div class="slider-warp">
         <div class="title flex-column-center" style="height: 54px">
@@ -201,6 +201,7 @@
           width="160px"
         ></el-table-column>
       </el-table>
+      <ScrollToTop></ScrollToTop>
     </div>
   </main>
 </template>
@@ -210,8 +211,9 @@ import { Component } from 'vue-property-decorator'
 import { formatTimestamp, debounce } from '@/utils/utils'
 import VueBase from '@/VueBase'
 import { ScaListObj } from './types'
+import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
 
-@Component({ name: 'ScaList' })
+@Component({ name: 'ScaList', components: { ScrollToTop } })
 export default class ScaList extends VueBase {
   private debounceMyScroll: any
   private page = 1
@@ -297,7 +299,7 @@ export default class ScaList extends VueBase {
   }
 
   mounted() {
-    this.debounceMyScroll = debounce(this.myScroll, 1000)
+    this.debounceMyScroll = debounce(this.myScroll, 400)
     window.addEventListener('scroll', this.debounceMyScroll)
   }
 
