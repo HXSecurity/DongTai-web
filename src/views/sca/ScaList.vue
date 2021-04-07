@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main class="container scroll-class">
     <div class="fixed-warp">
       <div class="slider-warp">
         <div class="title flex-column-center" style="height: 54px">
@@ -201,18 +201,21 @@
           width="160px"
         ></el-table-column>
       </el-table>
+      <ScrollToTop></ScrollToTop>
     </div>
   </main>
 </template>
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
-import { formatTimestamp } from '@/utils/utils'
+import { formatTimestamp, debounce } from '@/utils/utils'
 import VueBase from '@/VueBase'
 import { ScaListObj } from './types'
+import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
 
-@Component({ name: 'ScaList' })
+@Component({ name: 'ScaList', components: { ScrollToTop } })
 export default class ScaList extends VueBase {
+  private debounceMyScroll: any
   private page = 1
   private pageSize = 20
   private dataEnd = false
@@ -296,11 +299,12 @@ export default class ScaList extends VueBase {
   }
 
   mounted() {
-    window.addEventListener('scroll', this.myScroll)
+    this.debounceMyScroll = debounce(this.myScroll, 400)
+    window.addEventListener('scroll', this.debounceMyScroll)
   }
 
   beforeDestroy() {
-    window.removeEventListener('scroll', this.myScroll)
+    window.removeEventListener('scroll', this.debounceMyScroll)
   }
 
   private myScroll() {
@@ -311,6 +315,8 @@ export default class ScaList extends VueBase {
       if (!this.dataEnd) {
         this.page += 1
         this.getTableData()
+        document.documentElement.scrollTop =
+          document.documentElement.scrollTop - 10
       }
     }
   }
@@ -345,7 +351,7 @@ export default class ScaList extends VueBase {
     if (tableData.length < 20) {
       this.dataEnd = true
     }
-    this.tableData = [...this.tableData, ...tableData]
+    this.tableData.push(...tableData)
   }
 
   private async scaSummary() {
@@ -457,7 +463,6 @@ export default class ScaList extends VueBase {
 .main-warp {
   padding-top: 14px;
   margin-left: 248px;
-  padding-bottom: 32px;
 
   .selectForm {
     width: 100%;
