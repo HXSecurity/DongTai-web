@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lingzhi-web
-  namespace: huoqi-prod
+  name: dongtai-web
+  namespace: iast-test
   annotations:
-    kubesphere.io/description: lingzhi前端
+    kubesphere.io/description: dongtai前端项目
   labels:
-    app: lingzhi-web
+    app: dongtai-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: lingzhi-web
+      app: dongtai-web
   template:
     metadata:
       labels:
-        app: lingzhi-web
+        app: dongtai-web
     spec:
       containers:
-        - name: lingzhi-web-container
-          image: registry-vpc.cn-beijing.aliyuncs.com/secnium/lingzhi-web:VERSION
+        - name: dongtai-web-container
+          image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:VERSION
           imagePullPolicy: IfNotPresent
 
           resources:
@@ -30,4 +30,4 @@ spec:
               cpu: "500m"
               memory: 1000Mi
       imagePullSecrets:
-        - name: huoqi-regsecret-huoqi-prod
+        - name: aliyun-registry-secret
