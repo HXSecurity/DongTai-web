@@ -1,4 +1,4 @@
-name: Build DongTai-Web
+name: Deploy DongTai-Web to AWS
 
 on:
   pull_request:
