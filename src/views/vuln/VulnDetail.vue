@@ -265,7 +265,7 @@
                     ? { color: '#5491ef' }
                     : index === vulnObj.vul.graphy.length - 1
                     ? { color: '#ec984f' }
-                    : {}
+                    : { color: '#f3bc3f' }
                 "
               ></i>
             </div>
@@ -285,6 +285,44 @@
             style="background: #f8f9fb"
             :row-class-name="tableRowClassName"
           >
+            <el-table-column type="expand">
+              <template slot-scope="{ row }">
+                <div class="expand-form">
+                  <div class="expand-item">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.type') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.type }}
+                    </div>
+                  </div>
+                  <div class="expand-item">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.file') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.file }}
+                    </div>
+                  </div>
+                  <div class="expand-item">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.num') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.line_number }}
+                    </div>
+                  </div>
+                  <div class="expand-item">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.wuDianZhi') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.target }}
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </el-table-column>
             <el-table-column
               align="left"
               :label="$t('views.vulnDetail.type')"
@@ -296,15 +334,21 @@
               min-width="100px"
             >
               <template slot-scope="{ row }">
-                <div>{{ row.file }}</div>
-                <div v-if="row.line_number">{{ row.line_number }}</div>
+                <div class="file_and_num">
+                  <div>{{ row.file }}</div>
+                  <div v-if="row.line_number">{{ row.line_number }}</div>
+                </div>
               </template>
             </el-table-column>
             <el-table-column
               align="right"
               :label="$t('views.vulnDetail.wuDianZhi')"
               prop="target"
-            ></el-table-column>
+            >
+              <tamplate slot-scope="{ row }">
+                <div class="stain">{{ row.target }}</div>
+              </tamplate>
+            </el-table-column>
           </el-table>
         </div>
       </div>
@@ -843,6 +887,27 @@ export default class VulnDetail extends VueBase {
   }
 }
 
+.file_and_num {
+  height: 51px;
+  line-height: 51px;
+  display: flex;
+  div {
+    flex: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  div + div {
+    flex: 1;
+  }
+}
+.stain {
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .confirmDel {
   width: 124px;
   height: 38px;
@@ -858,5 +923,26 @@ export default class VulnDetail extends VueBase {
   border-radius: 2px;
   border: 1px solid #4a72ae;
   color: #4a72ae;
+}
+
+.expand-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  .expand-item {
+    margin-top: 20px;
+    display: flex;
+    .expand-label {
+      min-width: 70px;
+      color: #99a9bf;
+    }
+    .expand-info {
+      word-wrap: break-word;
+      white-space: normal;
+      word-break: break-all;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+  }
 }
 </style>
