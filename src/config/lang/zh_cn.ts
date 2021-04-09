@@ -78,6 +78,8 @@ export default {
       level: '等级',
       counts: '出现次数',
       type: '类型',
+      file: '文件',
+      num: '行号',
       fileAndNum: '文件及行号',
       wuDianZhi: '污点值',
       route: '路径',
