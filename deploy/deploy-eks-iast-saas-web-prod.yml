@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dongtai-web
+  name: lingzhi-web
   namespace: iast-test
   annotations:
     kubesphere.io/description: dongtai前端项目
   labels:
-    app: dongtai-web
+    app: lingzhi-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dongtai-web
+      app: lingzhi-web
   template:
     metadata:
       labels:
-        app: dongtai-web
+        app: lingzhi-web
     spec:
       containers:
-        - name: dongtai-web-container
+        - name: lingzhi-web-container
           image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:VERSION
           imagePullPolicy: IfNotPresent
 
