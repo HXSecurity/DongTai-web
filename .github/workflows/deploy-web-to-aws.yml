@@ -25,15 +25,6 @@ jobs:
       - name: setup nodejs
         uses: actions/setup-node@v1
       
-      - name: test and build
-        run: |
-          npm ci
-          npm test
-          npm run build --if-present
-      
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -46,6 +37,12 @@ jobs:
           registry: ${{ secrets.ALIYUN_REGISTRY }}
           username: ${{ secrets.ALIYUN_DOCKERHUB_USER }}
           password: ${{ secrets.ALIYUN_DOCKERHUB_PASSWORD }}
+      
+      - name: test and build
+        run: |
+          npm ci
+          npm test
+          npm run build --if-present
 
       - name: Build and push
         uses: docker/build-push-action@v2
