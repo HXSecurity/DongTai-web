@@ -26,20 +26,24 @@
           {{ scope.row.latest_time | formatTimestamp }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('views.agentManage.manage')" width="100px">
+      <el-table-column :label="$t('views.agentManage.manage')" width="140px">
         <template slot-scope="{ row }">
-          <i
-            class="iconfont iconshengji install"
-            @click="agentInstall(row.id)"
-          ></i>
-          <i
-            class="iconfont iconshanchu-4 uninstall"
-            @click="agentUninstall(row.id)"
-          ></i>
-          <i
-            class="iconfont iconshanchu-4 uninstall"
-            @click="doDelete(row.id)"
-          ></i>
+          <div class="icon-box">
+            <i
+              v-if="row.running_status == '未运行'"
+              class="icon el-icon-video-play"
+              @click="agentInstall(row.id)"
+            ></i>
+            <i
+              v-else
+              class="icon el-icon-video-pause"
+              @click="agentUninstall(row.id)"
+            ></i>
+            <i
+              class="icon el-icon-delete"
+              @click="doDelete(row.id)"
+            ></i>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -179,6 +183,19 @@ export default class AgentManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
+.icon-box{
+  display: flex;
+  align-items: center;
+  .icon{
+    font-size: 18px;
+    line-height: 100%;
+    color: #888;
+    +.icon{
+      margin-left: 12px;
+    }
+  }
+}
+
 .content-warp {
   padding: 38px 14px 40px 14px;
 }

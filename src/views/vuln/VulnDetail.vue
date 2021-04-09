@@ -751,7 +751,7 @@ export default class VulnDetail extends VueBase {
     border-bottom: 1px solid #e6e9ec;
 
     .btnWarp {
-      width: 190px;
+      width: 240px;
       .btn {
         width: 80px;
         height: 32px;
