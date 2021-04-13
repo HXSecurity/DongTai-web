@@ -149,7 +149,8 @@ export default {
       status: '运行状态',
       manage: '管理',
       owner: '负责人',
-      timestapm: '时间'
+      timestapm: '时间',
+      projectName: '项目名称'
     },
     strategyManage: {
       name: '策略名称',

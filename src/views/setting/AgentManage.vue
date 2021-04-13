@@ -8,6 +8,11 @@
         min-width="50px"
       ></el-table-column>
       <el-table-column
+        :label="$t('views.agentManage.projectName')"
+        prop="project_name"
+        min-width="50px"
+      ></el-table-column>
+      <el-table-column
         :label="$t('views.agentManage.payload')"
         prop="system_load"
       ></el-table-column>
@@ -61,11 +66,10 @@
         <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
       </div>
       <div slot="footer" style="text-align: center">
-        <el-button type="text" class="confirmDel" @click="agentDelete">
+        <el-button class="confirmDel" @click="agentDelete">
           确认删除
         </el-button>
         <el-button
-          type="text"
           class="cancelDel"
           @click="deleteDialogOpen = false"
         >
@@ -184,6 +188,7 @@ export default class AgentManage extends VueBase {
 
 <style scoped lang="scss">
 .icon-box{
+  cursor: pointer;
   display: flex;
   align-items: center;
   .icon{
