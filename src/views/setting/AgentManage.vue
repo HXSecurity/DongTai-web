@@ -44,10 +44,7 @@
               class="icon el-icon-video-pause"
               @click="agentUninstall(row.id)"
             ></i>
-            <i
-              class="icon el-icon-delete"
-              @click="doDelete(row.id)"
-            ></i>
+            <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
           </div>
         </template>
       </el-table-column>
@@ -69,10 +66,7 @@
         <el-button class="confirmDel" @click="agentDelete">
           确认删除
         </el-button>
-        <el-button
-          class="cancelDel"
-          @click="deleteDialogOpen = false"
-        >
+        <el-button class="cancelDel" @click="deleteDialogOpen = false">
           取消
         </el-button>
       </div>
@@ -187,15 +181,15 @@ export default class AgentManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
-.icon-box{
+.icon-box {
   cursor: pointer;
   display: flex;
   align-items: center;
-  .icon{
+  .icon {
     font-size: 18px;
     line-height: 100%;
     color: #888;
-    +.icon{
+    + .icon {
       margin-left: 12px;
     }
   }
