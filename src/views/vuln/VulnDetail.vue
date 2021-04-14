@@ -111,7 +111,7 @@
       "
     >
       <div class="vuln-title flex-row-space-between">
-        <div>
+        <div style="flex:1">
           {{
             `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${
               vulnObj.vul.type
@@ -143,14 +143,16 @@
               <i class="iconfont iconfuwuqi-3"></i>
               {{ $t('views.vulnDetail.serverIp') }}:
             </span>
-            {{ vulnObj.server.ip }}
+            <el-tooltip class="item" effect="dark" :content="vulnObj.server.ip" placement="top-start">
+              <span class="dot">{{ vulnObj.server.ip }}</span>
+            </el-tooltip>
           </div>
           <div class="info">
             <span class="label">
               <i class="iconfont iconproject"></i>
               {{ $t('views.vulnDetail.projectName') }}:
             </span>
-            {{ vulnObj.vul.project_name }}
+            <span>{{ vulnObj.vul.project_name }}</span>
           </div>
           <div class="info">
             <span class="label">
@@ -158,15 +160,15 @@
               {{ $t('views.vulnDetail.middleware') }}:
             </span>
             <span style="width: 140px; overflow: hidden">
-              {{ vulnObj.server.container }}
+              <span>{{ vulnObj.server.container }}</span>
             </span>
           </div>
-          <div class="info">
+          <div class="info" style="flex:1.5">
             <span class="label">
               <i class="iconfont iconshijian-3"></i>
               {{ $t('views.vulnDetail.first_time') }}:
             </span>
-            {{ vulnObj.vul.first_time }}
+              <span>{{ vulnObj.vul.first_time }}</span>
           </div>
         </div>
         <div class="infoLine flex-row-space-between">
@@ -175,28 +177,28 @@
               <i class="iconfont iconIp"></i>
               {{ $t('views.vulnDetail.clientIp') }}:
             </span>
-            {{ vulnObj.vul.client_ip }}
+            <span>{{ vulnObj.vul.client_ip }}</span>
           </div>
           <div class="info">
             <span class="label">
               <i class="iconfont iconyuyan-2"></i>
               {{ $t('views.vulnDetail.language') }}:
             </span>
-            {{ vulnObj.vul.language }}
+            <span>{{ vulnObj.vul.language }}</span>
           </div>
           <div class="info">
             <span class="label">
               <i class="iconfont iconweixian-2"></i>
               {{ $t('views.vulnDetail.level') }}:
             </span>
-            {{ vulnObj.vul.level }}
+            <span>{{ vulnObj.vul.level }}</span>
           </div>
-          <div class="info">
+          <div class="info"  style="flex:1.5">
             <span class="label">
               <i class="iconfont iconcishu-2"></i>
               {{ $t('views.vulnDetail.counts') }}:
             </span>
-            {{ vulnObj.vul.counts }}
+            <span>{{ vulnObj.vul.counts }}</span>
           </div>
         </div>
       </div>
@@ -751,7 +753,8 @@ export default class VulnDetail extends VueBase {
     border-bottom: 1px solid #e6e9ec;
 
     .btnWarp {
-      width: 240px;
+      width: 200px;
+      margin-left: 20px;
       .btn {
         width: 80px;
         height: 32px;
@@ -786,6 +789,14 @@ export default class VulnDetail extends VueBase {
       .info {
         flex: 1;
         color: #38435a;
+        .dot{
+          display: inline-block;
+          width: 100px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          vertical-align: bottom;
+        }
         .label {
           color: #5782db;
           font-size: 14px;

@@ -158,7 +158,7 @@
             style="font-size: 14px; font-weight: bold; height: 32px"
           >
             {{
-              `${item.url}的${item.http_method}请求出现${item.type}漏洞${
+              `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
                 item.taint_position ? `，位置：${item.taint_position}` : ''
               }`
             }}
@@ -185,10 +185,12 @@
           </div>
           <div class="infoLine flex-row-space-between">
             <div class="flex-row-space-between" style="width: 65%">
-              <span class="info">
+              <el-tooltip class="item" effect="dark" :content="item.project_name" placement="top-start">
+              <div class="info">
                 <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
                 {{ item.project_name }}
-              </span>
+              </div>
+              </el-tooltip>
               <span class="info" style="flex: 2">
                 <i
                   class="iconfont"
@@ -609,6 +611,9 @@ export default class VulListComponent extends VueBase {
 
         .info {
           flex: 1;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
 
         .tag {
