@@ -363,7 +363,7 @@ export default class HookTable extends VueBase {
   }
   async deleteRule(row: any) {
     this.loadingStart()
-    const { status, msg } = await this.services.setting.ruleDisable({
+    const { status, msg } = await this.services.setting.ruleDelete({
       rule_id: row.id,
     })
     this.loadingDone()
@@ -419,6 +419,7 @@ export default class HookTable extends VueBase {
       this.$message.error(msg)
       return
     }
+    await this.getTypes()
     this.clearHookType()
   }
   fmtType(type: string) {

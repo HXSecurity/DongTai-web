@@ -69,7 +69,7 @@
           {{ item.count }}
         </div>
       </div>
-            <div
+      <div
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
@@ -185,11 +185,16 @@
           </div>
           <div class="infoLine flex-row-space-between">
             <div class="flex-row-space-between" style="width: 65%">
-              <el-tooltip class="item" effect="dark" :content="item.project_name" placement="top-start">
-              <div class="info">
-                <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
-                {{ item.project_name }}
-              </div>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="item.project_name"
+                placement="top-start"
+              >
+                <div class="info">
+                  <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
+                  {{ item.project_name }}
+                </div>
               </el-tooltip>
               <span class="info" style="flex: 2">
                 <i
