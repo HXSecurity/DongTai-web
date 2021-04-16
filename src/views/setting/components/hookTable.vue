@@ -479,6 +479,7 @@ export default class HookTable extends VueBase {
       this.$message.error(msg)
       return
     }
+    await this.getTypes()
     this.clearHookType()
   }
   fmtType(type: string) {
