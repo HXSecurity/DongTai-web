@@ -8,18 +8,32 @@
       >
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.project_name }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.project_name"
+              placement="top-start"
+            >
+              <span>{{ row.project_name }}</span>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.address')"
         prop="server"
-        width="400px"
+        width="180px"
       >
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.server }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.server"
+              placement="top-start"
+            >
+              <span>{{ row.server }}</span>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -82,7 +96,14 @@
       <el-table-column label="Agent" width="320" prop="token">
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.token }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.token"
+              placement="top-start"
+            >
+              <span>{{ row.token }}</span>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -238,12 +259,10 @@ export default class AgentManage extends VueBase {
 }
 
 .dot {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
   width: 100%;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
-  min-height: 44px;
 }
 
 .install {
