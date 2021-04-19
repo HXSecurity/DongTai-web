@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: lingzhi-web
-  namespace: iast-test
+  namespace: iast-prod
   annotations:
     kubesphere.io/description: dongtai前端项目
   labels:
