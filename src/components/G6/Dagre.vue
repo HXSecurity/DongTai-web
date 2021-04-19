@@ -21,6 +21,8 @@ export default class Dagre extends Vue {
     this.graphInit()
   }
 
+
+
   graphInit() {
     const fittingString = (str: string, maxWidth: number, fontSize: number) => {
       let currentWidth = 0
@@ -45,12 +47,20 @@ export default class Dagre extends Vue {
       'sql',
       {
         drawShape(cfg: ModelConfig, group: IGroup) {
+          const computLength=(value:string):number=>{
+            const ch_value_arr = value.match(/[\u4e00-\u9fa5]/g) || []
+            const ch_value_length = ch_value_arr.length
+            const upper_case_arr = value.match(/[A-Z]/g) || []
+            const upper_case_length = upper_case_arr.length
+            const length = (String(value).length) * 1.27
+            return length
+          }
           const rect = group.addShape('rect', {
             attrs: {
               x: -75,
               y: -25,
-              width: 150,
-              height: Math.floor((cfg.name as string).length * 14 / 140) * 14 > 50 ? Math.floor((cfg.name as string).length * 14 / 140) * 14 : 50,
+              width: 180,
+              height: Math.floor(computLength(cfg.name as string)) > 50 ? Math.floor(computLength(cfg.name as string)) : 50,
               radius: 10,
               textAlign: 'center',
               stroke: '#5B8FF9',
@@ -63,13 +73,13 @@ export default class Dagre extends Vue {
             group.addShape('text', {
               attrs: {
                 text: fittingString(cfg.name as string, 140, 14),
-                x: 0,
-                y: 4,
+                x: 14,
+                y: -16,
                 fill: '#00287E',
                 fontSize: 14,
                 lineHeight: 16,
                 textAlign: 'center',
-                textBaseline: 'middle',
+                textBaseline: 'top',
                 fontWeight: 'bold'
               },
               name: 'text-shape'

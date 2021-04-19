@@ -8,7 +8,14 @@
       >
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.project_name }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.project_name"
+              placement="top-start"
+            >
+              <span>{{ row.project_name }}</span>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -19,7 +26,14 @@
       >
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.server }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.server"
+              placement="top-start"
+            >
+              <span>{{ row.server }}</span>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -82,7 +96,14 @@
       <el-table-column label="Agent" width="320" prop="token">
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.token }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.token"
+              placement="top-start"
+            >
+              <span>{{ row.token }}</span>
+            </el-tooltip>
           </div>
         </template>
       </el-table-column>
@@ -101,113 +122,119 @@
         <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
       </div>
       <div slot="footer" style="text-align: center">
-        <el-button class="confirmDel" @click="agentDelete"> 确认删除 </el-button>
-        <el-button class="cancelDel" @click="deleteDialogOpen = false"> 取消 </el-button>
+        <el-button class="confirmDel" @click="agentDelete">
+          确认删除
+        </el-button>
+        <el-button class="cancelDel" @click="deleteDialogOpen = false">
+          取消
+        </el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import VueBase from "@/VueBase";
-import { Component } from "vue-property-decorator";
-import { AgentListObj } from "@/views/setting/types";
-import { formatTimestamp } from "@/utils/utils";
+import VueBase from '@/VueBase'
+import { Component } from 'vue-property-decorator'
+import { AgentListObj } from '@/views/setting/types'
+import { formatTimestamp } from '@/utils/utils'
 
 @Component({
-  name: "AgentManage",
+  name: 'AgentManage',
   filters: {
     formatTimestamp(date: number | any) {
-      return formatTimestamp(date);
+      return formatTimestamp(date)
     },
   },
 })
 export default class AgentManage extends VueBase {
-  private tableData: Array<AgentListObj> = [];
-  private total = 0;
-  private page = 1;
-  private pageSize = 10;
-  private currentPageSize = 0;
-  private currentPageDelete = 0;
-  private deleteDialogOpen = false;
-  private deleteSelectId = 0;
+  private tableData: Array<AgentListObj> = []
+  private total = 0
+  private page = 1
+  private pageSize = 10
+  private currentPageSize = 0
+  private currentPageDelete = 0
+  private deleteDialogOpen = false
+  private deleteSelectId = 0
 
   created() {
-    this.getTableData();
+    this.getTableData()
   }
 
   private currentChange(val: number | string) {
-    this.page = parseInt(`${val}`);
-    this.getTableData();
+    this.page = parseInt(`${val}`)
+    this.getTableData()
   }
 
   private async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
-    };
-    this.loadingStart();
-    const { status, msg, data, page } = await this.services.setting.agentList(params);
-    this.loadingDone();
-    if (status !== 201) {
-      this.$message.error(msg);
-      return;
     }
-    this.tableData = data;
-    this.currentPageSize = data.length;
-    this.total = page.alltotal;
-    this.currentPageDelete = 0;
-    console.log(this.currentPageSize);
+    this.loadingStart()
+    const { status, msg, data, page } = await this.services.setting.agentList(
+      params
+    )
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.tableData = data
+    this.currentPageSize = data.length
+    this.total = page.alltotal
+    this.currentPageDelete = 0
+    console.log(this.currentPageSize)
   }
 
   private async agentInstall(id: string | number) {
-    this.loadingStart();
+    this.loadingStart()
     const { status, msg } = await this.services.setting.agentInstall({
       id: parseInt(`${id}`),
-    });
-    this.loadingDone();
+    })
+    this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg);
-      return;
+      this.$message.error(msg)
+      return
     }
-    await this.getTableData();
+    await this.getTableData()
   }
 
   private async agentUninstall(id: string | number) {
-    this.loadingStart();
+    this.loadingStart()
     const { status, msg } = await this.services.setting.agentUninstall({
       id: parseInt(`${id}`),
-    });
-    this.loadingDone();
+    })
+    this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg);
-      return;
+      this.$message.error(msg)
+      return
     }
-    await this.getTableData();
+    await this.getTableData()
   }
 
   private async doDelete(id: string | number) {
-    this.deleteDialogOpen = true;
-    this.deleteSelectId = parseInt(`${id}`);
+    this.deleteDialogOpen = true
+    this.deleteSelectId = parseInt(`${id}`)
   }
 
   private async agentDelete() {
-    this.deleteDialogOpen = false;
-    this.loadingStart();
+    this.deleteDialogOpen = false
+    this.loadingStart()
     const { status, msg } = await this.services.setting.agentDelete({
       id: this.deleteSelectId,
-    });
-    this.loadingDone();
+    })
+    this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg);
-      return;
+      this.$message.error(msg)
+      return
     }
-    this.currentPageDelete = this.currentPageDelete + 1;
+    this.currentPageDelete = this.currentPageDelete + 1
     if (this.currentPageDelete === this.currentPageSize) {
-      this.page = this.page - 1;
+      this.page = this.page - 1
     }
-    await this.getTableData();
-    this.deleteSelectId = 0;
+    await this.getTableData()
+    this.deleteSelectId = 0
   }
 }
 </script>
