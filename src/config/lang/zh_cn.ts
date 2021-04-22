@@ -80,6 +80,7 @@ export default {
       type: '类型',
       file: '文件',
       num: '行号',
+      caller: '调用方法',
       fileAndNum: '文件及行号',
       wuDianZhi: '污点值',
       route: '路径',
