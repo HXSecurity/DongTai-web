@@ -193,7 +193,7 @@
             </span>
             <span>{{ vulnObj.vul.level }}</span>
           </div>
-          <div class="info"  style="flex:1.5">
+          <div class="info" style="flex:1.5">
             <span class="label">
               <i class="iconfont iconcishu-2"></i>
               {{ $t('views.vulnDetail.counts') }}:
@@ -304,6 +304,14 @@
                     </div>
                     <div class="expand-info">
                       {{ row.file }}
+                    </div>
+                  </div>
+                  <div class="expand-item">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.caller') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.caller }}
                     </div>
                   </div>
                   <div class="expand-item">
