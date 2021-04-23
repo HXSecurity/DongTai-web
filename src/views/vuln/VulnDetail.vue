@@ -111,7 +111,7 @@
       "
     >
       <div class="vuln-title flex-row-space-between">
-        <div style="flex:1">
+        <div style="flex: 1; max-width: 700px">
           {{
             `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${
               vulnObj.vul.type
@@ -143,7 +143,12 @@
               <i class="iconfont iconfuwuqi-3"></i>
               {{ $t('views.vulnDetail.serverIp') }}:
             </span>
-            <el-tooltip class="item" effect="dark" :content="vulnObj.server.ip" placement="top-start">
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="vulnObj.server.ip"
+              placement="top-start"
+            >
               <span class="dot">{{ vulnObj.server.ip }}</span>
             </el-tooltip>
           </div>
@@ -163,12 +168,12 @@
               <span>{{ vulnObj.server.container }}</span>
             </span>
           </div>
-          <div class="info" style="flex:1.5">
+          <div class="info" style="flex: 1.5">
             <span class="label">
               <i class="iconfont iconshijian-3"></i>
               {{ $t('views.vulnDetail.first_time') }}:
             </span>
-              <span>{{ vulnObj.vul.first_time }}</span>
+            <span>{{ vulnObj.vul.first_time }}</span>
           </div>
         </div>
         <div class="infoLine flex-row-space-between">
@@ -193,7 +198,7 @@
             </span>
             <span>{{ vulnObj.vul.level }}</span>
           </div>
-          <div class="info" style="flex:1.5">
+          <div class="info" style="flex: 1.5">
             <span class="label">
               <i class="iconfont iconcishu-2"></i>
               {{ $t('views.vulnDetail.counts') }}:
@@ -308,20 +313,37 @@
                   </div>
                   <div class="expand-item">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.caller') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.caller }}
-                    </div>
-                  </div>
-                  <div class="expand-item">
-                    <div class="expand-label">
                       {{ $t('views.vulnDetail.num') }}
                     </div>
                     <div class="expand-info">
                       {{ row.line_number }}
                     </div>
                   </div>
+                  <div class="expand-item">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.caller') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.caller }}
+                    </div>
+                  </div>
+                  <div class="expand-item"  v-if="row.source_value">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.source_value') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.source_value }}
+                    </div>
+                  </div>
+                  <div class="expand-item" v-if="row.target_value">
+                    <div class="expand-label">
+                      {{ $t('views.vulnDetail.target_value') }}
+                    </div>
+                    <div class="expand-info">
+                      {{ row.target_value }}
+                    </div>
+                  </div>
+
                   <div class="expand-item">
                     <div class="expand-label">
                       {{ $t('views.vulnDetail.wuDianZhi') }}
@@ -355,9 +377,9 @@
               :label="$t('views.vulnDetail.wuDianZhi')"
               prop="target"
             >
-              <tamplate slot-scope="{ row }">
+              <template slot-scope="{ row }">
                 <div class="stain">{{ row.target }}</div>
-              </tamplate>
+              </template>
             </el-table-column>
           </el-table>
         </div>
@@ -759,7 +781,7 @@ export default class VulnDetail extends VueBase {
     color: #38435a;
     font-weight: 600;
     border-bottom: 1px solid #e6e9ec;
-
+    word-wrap: break-word;
     .btnWarp {
       width: 200px;
       margin-left: 20px;
@@ -797,7 +819,7 @@ export default class VulnDetail extends VueBase {
       .info {
         flex: 1;
         color: #38435a;
-        .dot{
+        .dot {
           display: inline-block;
           width: 100px;
           overflow: hidden;
@@ -952,7 +974,7 @@ export default class VulnDetail extends VueBase {
     margin-top: 20px;
     display: flex;
     .expand-label {
-      min-width: 70px;
+      min-width: 80px;
       color: #99a9bf;
     }
     .expand-info {

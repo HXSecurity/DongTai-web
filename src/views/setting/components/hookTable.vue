@@ -1,33 +1,86 @@
 <template>
   <div class="table-body">
-    <div class="flex-right">
-      <el-button size="small" @click="hookTypeDialog = true" class="resetAllBtn"
-        >添加规则类型</el-button
-      >
-      <el-button size="small" @click="hookDialog = true" class="resetAllBtn">添加规则</el-button>
+    <div class="flex-between">
+      <div style="flex: 1">
+<!--        <el-input-->
+<!--          v-model="searchValue"-->
+<!--          class="search-input"-->
+<!--          size="mini"-->
+<!--          placeholder="输入策略详情搜索"-->
+<!--        ></el-input-->
+<!--        ><el-button size="small" class="resetAllBtn">搜索</el-button>-->
+      </div>
+      <div>
+        <el-button
+          size="small"
+          class="resetAllBtn"
+          @click="hookTypeDialog = true"
+          >添加规则类型</el-button
+        >
+        <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
+          >添加规则</el-button
+        >
+      </div>
     </div>
     <el-table :data="tableData" style="width: 100%">
-      <el-table-column align="center" prop="rule_type" label="规则类型" width="160">
+      <template slot="empty">
+        <div style="text-align: left; width: 100%; padding-left: 400px">
+          暂无数据
+        </div>
+      </template>
+      <el-table-column
+        align="center"
+        prop="rule_type"
+        label="规则类型"
+        width="160"
+      >
       </el-table-column>
       <el-table-column align="center" prop="value" label="规则详情" width="340">
       </el-table-column>
-      <el-table-column align="center" prop="source" label="污点输入" max-width="100">
+      <el-table-column
+        align="center"
+        prop="source"
+        label="污点输入"
+        max-width="100"
+      >
       </el-table-column>
       <el-table-column prop="target" label="污点输出" max-width="100">
       </el-table-column>
       <el-table-column prop="inherit" label="HOOK深度" width="140">
         <template slot-scope="scope">
-          {{ scope.row.inherit === 'true' ? '子类' : scope.row.inherit === 'all'?'当前类及子类':'当前类' }}
+          {{
+            scope.row.inherit === 'true'
+              ? '子类'
+              : scope.row.inherit === 'all'
+              ? '当前类及子类'
+              : '当前类'
+          }}
         </template>
       </el-table-column>
-      <el-table-column prop="update_time" label="修改时间" sortable="true" width="180">
+      <el-table-column
+        prop="update_time"
+        label="修改时间"
+        sortable="true"
+        width="180"
+      >
         <template slot-scope="scope">
           {{ scope.row.update_time | formatTimestamp }}
         </template>
       </el-table-column>
-      <el-table-column prop="user" label="创建者" width="180">
+      <el-table-column
+        v-if="rolesCheck(['system_admin', 'talent_admin'], true)"
+        prop="user"
+        label="创建者"
+        width="180"
+      >
       </el-table-column>
-      <el-table-column prop="address" label="操作" align="center" width="290">
+      <el-table-column
+        prop="address"
+        label="操作"
+        align="center"
+        width="290"
+        fixed="right"
+      >
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
@@ -90,15 +143,21 @@
     </el-pagination>
 
     <el-dialog :visible.sync="hookTypeDialog">
-      <el-form :model="hookType" label-width="80px" size="small" >
+      <el-form :model="hookType" label-width="80px" size="small">
         <el-form-item label="规则集">
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
         <el-form-item label="类型名称">
-          <el-input v-model="hookType.name" placeholder="请输入类型名称，如：String、StringBuilder等，建议使用类名"></el-input>
+          <el-input
+            v-model="hookType.name"
+            placeholder="请输入类型名称，如：String、StringBuilder等，建议使用类名"
+          ></el-input>
         </el-form-item>
         <el-form-item label="类型简称">
-          <el-input v-model="hookType.short_name" placeholder="请输入类型简称，如：字符串-01、字符串-02，方便自己查看"></el-input>
+          <el-input
+            v-model="hookType.short_name"
+            placeholder="请输入类型简称，如：字符串-01、字符串-02，方便自己查看"
+          ></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch
@@ -115,7 +174,9 @@
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHookType">取消</el-button>
-        <el-button size="small" type="primary" @click="enterHookType">确定</el-button>
+        <el-button size="small" type="primary" @click="enterHookType"
+          >确定</el-button
+        >
       </template>
     </el-dialog>
 
@@ -137,7 +198,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="规则详情">
-          <el-input v-model="hook.rule_value" placeholder="请输入HOOK规则，格式如：java.lang.String.<init>(java.lang.String)"></el-input>
+          <el-input
+            v-model="hook.rule_value"
+            placeholder="请输入HOOK规则，格式如：java.lang.String.<init>(java.lang.String)"
+          ></el-input>
         </el-form-item>
         <template v-for="(item, key) in hook.source">
           <el-form-item
@@ -148,7 +212,7 @@
               v-if="key > 0"
               v-model="item.relation"
               placeholder="请选择逻辑关系"
-              style="width: 18%;"
+              style="width: 18%"
             >
               <el-option
                 v-for="r in relations"
@@ -161,7 +225,7 @@
             <el-select
               v-model="item.origin"
               placeholder="请选择数据源"
-              style="width: 18%;"
+              style="width: 18%"
               @change="changeOrigin(item)"
             >
               <el-option
@@ -205,7 +269,7 @@
               v-if="key > 0"
               v-model="item.relation"
               placeholder="请选择逻辑关系"
-              style="width: 18%;"
+              style="width: 18%"
             >
               <el-option
                 v-for="r in relations"
@@ -218,7 +282,7 @@
             <el-select
               v-model="item.origin"
               placeholder="请选择数据源"
-              style="width: 18%;"
+              style="width: 18%"
               @change="changeOrigin(item)"
             >
               <el-option
@@ -254,14 +318,18 @@
           </el-form-item>
         </template>
         <el-form-item label="继承深度">
-          <el-radio v-model="hook.inherit" selected label="false">仅当前类</el-radio>
+          <el-radio v-model="hook.inherit" selected label="false"
+            >仅当前类</el-radio
+          >
           <el-radio v-model="hook.inherit" label="true">仅子类</el-radio>
           <el-radio v-model="hook.inherit" label="all">当前类及其子类</el-radio>
         </el-form-item>
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHook">取消</el-button>
-        <el-button size="small" type="primary" @click="enterHook">确定</el-button>
+        <el-button size="small" type="primary" @click="enterHook"
+          >确定</el-button
+        >
       </template>
     </el-dialog>
   </div>
@@ -281,6 +349,7 @@ import { formatTimestamp } from '@/utils/utils'
 })
 export default class HookTable extends VueBase {
   @Prop({ default: '0', type: String }) ruleType!: string
+  searchValue = ''
   hookTypeDialog = false
   hookDialog = false
   hookType = { type: '1', name: '', short_name: '', enable: 0 }
@@ -607,10 +676,14 @@ export default class HookTable extends VueBase {
 <style scoped lang="scss">
 .table-body {
   padding: 20px;
-  .flex-right {
+  .flex-between {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding-bottom: 6px;
+    .search-input {
+      width: 140px;
+      margin-right: 10px;
+    }
   }
   .resetAllBtn {
     height: 28px;
