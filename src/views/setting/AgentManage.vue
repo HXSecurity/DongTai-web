@@ -7,16 +7,17 @@
         width="120px"
       >
         <template slot-scope="{ row }">
-          <div class="dot">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="row.project_name"
-              placement="top-start"
-            >
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="row.project_name"
+            placement="top-start"
+            :disabled="row.project_name.length < 14"
+          >
+            <div class="dot">
               <span>{{ row.project_name }}</span>
-            </el-tooltip>
-          </div>
+            </div>
+          </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column
@@ -25,16 +26,17 @@
         width="180px"
       >
         <template slot-scope="{ row }">
-          <div class="dot">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="row.server"
-              placement="top-start"
-            >
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="row.server"
+            placement="top-start"
+            :disabled="row.server.length < 20"
+          >
+            <div class="dot">
               <span>{{ row.server }}</span>
-            </el-tooltip>
-          </div>
+            </div>
+          </el-tooltip>
         </template>
       </el-table-column>
 
@@ -96,16 +98,17 @@
       </el-table-column>
       <el-table-column label="Agent" width="320" prop="token">
         <template slot-scope="{ row }">
-          <div class="dot">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="row.token"
-              placement="top-start"
-            >
+          <el-tooltip
+            class="item"
+            effect="dark"
+            :content="row.token"
+            placement="top-start"
+            :disabled="row.token.length < 45"
+          >
+            <div class="dot">
               <span>{{ row.token }}</span>
-            </el-tooltip>
-          </div>
+            </div>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>

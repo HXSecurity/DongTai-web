@@ -24,8 +24,8 @@
     </div>
     <el-table :data="tableData" style="width: 100%">
       <template slot="empty">
-        <div style="text-align: left; width: 100%; padding-left: 400px">
-          暂无数据
+        <div class="empty-box">
+          <span>暂无数据</span>
         </div>
       </template>
       <el-table-column
@@ -79,7 +79,7 @@
         label="操作"
         align="center"
         width="290"
-        fixed="right"
+        :fixed="tableData.length?'right':false"
       >
         <template slot-scope="scope">
           <el-switch

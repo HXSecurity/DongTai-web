@@ -9,8 +9,8 @@
     </div>
     <el-table :data="tableData" style="width: 100%">
       <template slot="empty">
-        <div style="text-align: left;width: 100%;padding-left: 400px">
-          暂无数据
+        <div class="empty-box">
+          <span>暂无数据</span>
         </div>
       </template>
       <el-table-column prop="rule_type" label="规则类型" width="180">
@@ -36,7 +36,7 @@
       </el-table-column>
       <el-table-column prop="user" label="创建者" width="180" v-if="rolesCheck(['system_admin', 'talent_admin'], true)">
       </el-table-column>
-      <el-table-column prop="address" label="操作" width="360" fixed="right">
+      <el-table-column prop="address" label="操作" width="360" :fixed="tableData.length?'right':false">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
