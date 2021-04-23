@@ -57,6 +57,8 @@ export default {
       },
     },
     vulnDetail: {
+      source_value: '初始污点',
+      target_value: '传播后污点',
       baseInfo: '基本信息',
       vulnDesc: '漏洞描述',
       export: '导出',

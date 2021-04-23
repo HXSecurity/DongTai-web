@@ -159,8 +159,8 @@
     <div class="main-warp">
       <div class="selectForm">
         <el-select
-          style="width: 160px; font-size: 14px"
           v-model="searchObj.order"
+          style="width: 160px; font-size: 14px"
           class="commonSelect"
           placeholder="请选择排序条件"
           clearable
@@ -244,7 +244,14 @@
             <div class="flex-row-space-between" style="width: 65%">
               <span class="info">
                 <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
-                {{ projectNameSplit(item.project_name, 6) }}
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  :content="item.project_name"
+                  placement="top-start"
+                >
+                  <span class="dot"> {{ item.project_name }}</span>
+                </el-tooltip>
               </span>
               <span class="info" style="flex: 2">
                 <i
@@ -579,6 +586,16 @@ export default class VulnList extends VueBase {
       color: #0366d6;
     }
   }
+}
+
+.dot {
+  display: inline-block;
+  width: 100px;
+  padding-left: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
 }
 
 .main-warp {

@@ -8,6 +8,11 @@
       <el-button size="small" @click="hookDialog = true" class="resetAllBtn">添加规则</el-button>
     </div>
     <el-table :data="tableData" style="width: 100%">
+      <template slot="empty">
+        <div style="text-align: left;width: 100%;padding-left: 400px">
+          暂无数据
+        </div>
+      </template>
       <el-table-column prop="rule_type" label="规则类型" width="180">
       </el-table-column>
       <el-table-column prop="value" label="规则详情" width="180">
@@ -29,9 +34,9 @@
           {{ scope.row.update_time | formatTimestamp }}
         </template>
       </el-table-column>
-      <el-table-column prop="user" label="创建者" width="180">
+      <el-table-column prop="user" label="创建者" width="180" v-if="rolesCheck(['system_admin', 'talent_admin'], true)">
       </el-table-column>
-      <el-table-column prop="address" label="操作" width="360">
+      <el-table-column prop="address" label="操作" width="360" fixed="right">
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"

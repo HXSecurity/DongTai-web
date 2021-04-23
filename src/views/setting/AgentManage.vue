@@ -67,6 +67,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="rolesCheck(['system_admin', 'talent_admin'], true)"
         :label="$t('views.agentManage.owner')"
         prop="owner"
         width="120px"
