@@ -249,6 +249,7 @@
                   effect="dark"
                   :content="item.project_name"
                   placement="top-start"
+                  :disabled="item.project_name.length<=11"
                 >
                   <span class="dot"> {{ item.project_name }}</span>
                 </el-tooltip>
