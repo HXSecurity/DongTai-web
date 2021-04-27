@@ -4,7 +4,7 @@
     :style="{ display: projectId && 'flex' }"
   >
     <div :class="projectId ? '' : 'fixed-warp'">
-      <div class="slider-warp">
+      <div class="slider-warp" :style="{marginTop:projectId&&'14px'}">
         <div class="title flex-column-center" style="height: 54px">
           <div class="flex-row-space-between">
             <span style="font-size: 16px; font-weight: bold">{{
@@ -123,7 +123,7 @@
 
     <div
       class="main-warp"
-      :style="{ marginLeft: projectId && '48px', width: projectId && '850px' }"
+      :style="{ marginLeft: projectId && '28px', width: projectId && '910px' }"
     >
       <div class="selectForm">
         <el-select
