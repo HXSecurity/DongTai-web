@@ -52,6 +52,15 @@
           <i class="iconfont iconloudong"></i>
           {{ $t('views.projectDetail.projectVul') }}
         </el-button>
+        <el-button
+          type="text"
+          class="pTab"
+          :class="selectTab === 'component' ? 'selected' : ''"
+          @click="selectTab = 'component'"
+        >
+          <i class="el-icon-menu"></i>
+          {{ $t('views.projectDetail.projectComponent') }}
+        </el-button>
       </div>
       <div v-show="selectTab === 'desc'">
         <div class="module flex-row-space-between" id="type_summary_level_count">
@@ -80,6 +89,11 @@
           :project-id="$route.params.pid"
         ></vul-list-component>
       </div>
+      <div v-if="selectTab === 'component'">
+        <ScaList
+          :project-id="$route.params.pid"
+        ></ScaList>
+      </div>
     </div>
   </main>
 </template>
@@ -93,12 +107,14 @@ import request from '@/utils/request'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
+import ScaList from '../sca/ScaList.vue'
 import { Message } from 'element-ui'
 
 @Component({
   name: 'ProjectDetail',
   components: {
     VulListComponent,
+    ScaList
   },
 })
 export default class ProjectDetail extends VueBase {

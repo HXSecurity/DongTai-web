@@ -1,55 +1,68 @@
 <template>
-  <main class="container scroll-class">
-    <div class="fixed-warp">
+  <main
+    class="container scroll-class"
+    :style="{ display: projectId && 'flex' }"
+  >
+    <div :class="projectId ? '' : 'fixed-warp'">
       <div class="slider-warp">
         <div class="title flex-column-center" style="height: 54px">
           <div class="flex-row-space-between">
             <span style="font-size: 16px; font-weight: bold">{{
-              $t("views.vulnList.filter")
+              $t('views.vulnList.filter')
             }}</span>
             <el-button type="text" class="resetAllBtn" @click="reset">
-              <span style="font-size: 12px">{{ $t("views.vulnList.resetAll") }}</span>
+              <span style="font-size: 12px">{{
+                $t('views.vulnList.resetAll')
+              }}</span>
             </el-button>
           </div>
         </div>
-        <div
-          class="module-title flex-row-space-between"
-          style="margin-top: 14px; margin-bottom: 0px"
-        >
-          <span style="font-size: 14px">{{ $t("views.scaList.project_name") }}</span>
-          <div class="reset-btn" @click="projectNameChange('')">
-            <span style="font-size: 14px">{{ $t("views.vulnList.reset") }}</span>
+        <template v-if="!projectId">
+          <div
+            class="module-title flex-row-space-between"
+            style="margin-top: 14px; margin-bottom: 0px"
+          >
+            <span style="font-size: 14px">{{
+              $t('views.scaList.project_name')
+            }}</span>
+            <div class="reset-btn" @click="projectNameChange('')">
+              <span style="font-size: 14px">{{
+                $t('views.vulnList.reset')
+              }}</span>
+            </div>
           </div>
-        </div>
-        <div
-          v-for="item in searchOptionsObj.projects"
-          :key="item.project_name"
-          class="flex-row-space-between module-line"
-          :class="searchObj.project_name === item.project_name ? 'selectedLine' : ''"
-          :style="
-            item.count === 0
-              ? { cursor: 'not-allowed', height: '30px' }
-              : { height: '30px' }
-          "
-          @click="projectNameChange(item.project_name, item.count === 0)"
-        >
-          <div class="selectOption">
-            {{ projectNameSplit(item.project_name, 12) }}
+          <div
+            v-for="item in searchOptionsObj.projects"
+            :key="item.project_name"
+            class="flex-row-space-between module-line"
+            :class="
+              searchObj.project_name === item.project_name ? 'selectedLine' : ''
+            "
+            :style="
+              item.count === 0
+                ? { cursor: 'not-allowed', height: '30px' }
+                : { height: '30px' }
+            "
+            @click="projectNameChange(item.project_name, item.count === 0)"
+          >
+            <div class="selectOption">
+              {{ projectNameSplit(item.project_name, 12) }}
+            </div>
+            <div class="num">
+              {{ item.count }}
+            </div>
           </div>
-          <div class="num">
-            {{ item.count }}
-          </div>
-        </div>
+        </template>
         <div
           class="module-title flex-row-space-between"
           style="margin-top: 14px; margin-bottom: 0px"
         >
           <span style="font-size: 14px">
-            {{ $t("views.scaList.level") }}
+            {{ $t('views.scaList.level') }}
           </span>
           <div class="reset-btn" @click="levelChange('')">
             <span style="font-size: 14px">
-              {{ $t("views.vulnList.reset") }}
+              {{ $t('views.vulnList.reset') }}
             </span>
           </div>
         </div>
@@ -77,12 +90,12 @@
           style="margin-top: 14px; margin-bottom: 0px"
         >
           <span style="font-size: 14px">
-            {{ $t("views.scaList.language") }}
+            {{ $t('views.scaList.language') }}
           </span>
 
           <div class="reset-btn" @click="levelChange('')">
             <span style="font-size: 14px">
-              {{ $t("views.vulnList.reset") }}
+              {{ $t('views.vulnList.reset') }}
             </span>
           </div>
         </div>
@@ -108,7 +121,10 @@
       </div>
     </div>
 
-    <div class="main-warp">
+    <div
+      class="main-warp"
+      :style="{ marginLeft: projectId && '48px', width: projectId && '850px' }"
+    >
       <div class="selectForm">
         <el-select
           v-model="searchObj.order"
@@ -255,115 +271,121 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import { formatTimestamp, debounce } from "@/utils/utils";
-import VueBase from "@/VueBase";
-import { ScaListObj } from "./types";
-import ScrollToTop from "@/components/scrollToTop/scrollToTop.vue";
+import { Component, Prop } from 'vue-property-decorator'
+import { formatTimestamp, debounce } from '@/utils/utils'
+import VueBase from '@/VueBase'
+import { ScaListObj } from './types'
+import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
 
-@Component({ name: "ScaList", components: { ScrollToTop } })
+@Component({ name: 'ScaList', components: { ScrollToTop } })
 export default class ScaList extends VueBase {
-  private debounceMyScroll: any;
-  private page = 1;
-  private pageSize = 20;
-  private dataEnd = false;
-  private tableData: Array<ScaListObj> = [];
+  @Prop(String) projectId!: string
+  private debounceMyScroll: any
+  private page = 1
+  private pageSize = 20
+  private dataEnd = false
+  private tableData: Array<ScaListObj> = []
   private searchOptionsObj = {
     language: [],
     level: [],
     projects: [],
     orderOptions: [
       {
-        label: this.$t("views.scaList.orderOptions.level"),
-        value: "level",
+        label: this.$t('views.scaList.orderOptions.level'),
+        value: 'level',
       },
       {
-        label: this.$t("views.scaList.orderOptions.package_name"),
-        value: "package_name",
+        label: this.$t('views.scaList.orderOptions.package_name'),
+        value: 'package_name',
       },
       {
-        label: this.$t("views.scaList.orderOptions.version"),
-        value: "version",
+        label: this.$t('views.scaList.orderOptions.version'),
+        value: 'version',
       },
       {
-        label: this.$t("views.scaList.orderOptions.language"),
-        value: "language",
+        label: this.$t('views.scaList.orderOptions.language'),
+        value: 'language',
       },
       {
-        label: this.$t("views.scaList.orderOptions.vul_count"),
-        value: "vul_count",
+        label: this.$t('views.scaList.orderOptions.vul_count'),
+        value: 'vul_count',
       },
     ],
-  };
+  }
 
   private searchObj = {
-    language: "",
-    level: "",
-    project_name: "",
-    keyword: "",
-    order: "",
-  };
+    language: '',
+    level: '',
+    project_name: '',
+    keyword: '',
+    order: '',
+    project_id: '',
+  }
 
   created() {
-    this.getTableData();
-    this.scaSummary();
+    if (this.projectId) {
+      this.searchObj.project_id = this.projectId
+    }
+    this.getTableData()
+    this.scaSummary()
   }
   private reset() {
-    this.searchObj.language = "";
-    this.searchObj.level = "";
-    this.searchObj.project_name = "";
-    this.newSelectData();
+    this.searchObj.language = ''
+    this.searchObj.level = ''
+    this.searchObj.project_name = ''
+    this.newSelectData()
   }
 
   private languageChange(val: string, stop: boolean) {
     if (stop) {
-      return;
+      return
     }
-    this.searchObj.language = val;
-    this.newSelectData();
+    this.searchObj.language = val
+    this.newSelectData()
   }
 
   private levelChange(val: string, stop: boolean) {
     if (stop) {
-      return;
+      return
     }
-    this.searchObj.level = val;
-    this.newSelectData();
+    this.searchObj.level = val
+    this.newSelectData()
   }
 
   private projectNameChange(val: string, stop: boolean) {
     if (stop) {
-      return;
+      return
     }
-    this.searchObj.project_name = val;
-    this.newSelectData();
+    this.searchObj.project_name = val
+    this.newSelectData()
   }
 
   private newSelectData() {
-    this.page = 1;
-    this.tableData = [];
-    this.scaSummary();
-    this.getTableData();
+    this.page = 1
+    this.tableData = []
+    this.scaSummary()
+    this.getTableData()
   }
 
   mounted() {
-    this.debounceMyScroll = debounce(this.myScroll, 400);
-    window.addEventListener("scroll", this.debounceMyScroll);
+    this.debounceMyScroll = debounce(this.myScroll, 400)
+    window.addEventListener('scroll', this.debounceMyScroll)
   }
 
   beforeDestroy() {
-    window.removeEventListener("scroll", this.debounceMyScroll);
+    window.removeEventListener('scroll', this.debounceMyScroll)
   }
 
   private myScroll() {
     const bottomWindow =
       document.documentElement.scrollTop + window.innerHeight >
-      document.documentElement.offsetHeight - 1;
+      document.documentElement.offsetHeight - 1
     if (bottomWindow) {
       if (!this.dataEnd) {
-        this.page += 1;
-        this.getTableData();
-        document.documentElement.scrollTop = document.documentElement.scrollTop - 10;
+        this.page += 1
+        this.getTableData()
+        document.documentElement.scrollTop =
+          document.documentElement.scrollTop - 10
       }
     }
   }
@@ -377,25 +399,29 @@ export default class ScaList extends VueBase {
       project_name: this.searchObj.project_name,
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
-    };
-    this.loadingStart();
-    const { status, data, msg } = await this.services.sca.scaList(params);
-    this.loadingDone();
+      project_id: this.searchObj.project_id,
+    }
+    this.loadingStart()
+    const { status, data, msg } = await this.services.sca.scaList(params)
+    this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg);
-      return;
+      this.$message.error(msg)
+      return
     }
-    const tableData = data.reduce((list: Array<ScaListObj>, item: ScaListObj) => {
-      list.push({
-        ...item,
-        dt: formatTimestamp(item.dt),
-      });
-      return list;
-    }, []);
+    const tableData = data.reduce(
+      (list: Array<ScaListObj>, item: ScaListObj) => {
+        list.push({
+          ...item,
+          dt: formatTimestamp(item.dt),
+        })
+        return list
+      },
+      []
+    )
     if (tableData.length < 20) {
-      this.dataEnd = true;
+      this.dataEnd = true
     }
-    this.tableData.push(...tableData);
+    this.tableData.push(...tableData)
   }
 
   private async scaSummary() {
@@ -405,27 +431,27 @@ export default class ScaList extends VueBase {
       project_name: this.searchObj.project_name,
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
-    };
-    this.loadingStart();
-    const { status, data, msg } = await this.services.sca.scaSummary(params);
-    this.loadingDone();
-    if (status !== 201) {
-      this.$message.error(msg);
-      return;
     }
-    this.searchOptionsObj.language = data.language;
-    this.searchOptionsObj.level = data.level;
-    this.searchOptionsObj.projects = data.projects;
+    this.loadingStart()
+    const { status, data, msg } = await this.services.sca.scaSummary(params)
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.searchOptionsObj.language = data.language
+    this.searchOptionsObj.level = data.level
+    this.searchOptionsObj.projects = data.projects
   }
 
   private goDetail(row: any) {
-    this.$router.push(`/sca/scaDetail/${this.page}/${row.id}`);
+    this.$router.push(`/sca/scaDetail/${this.page}/${row.id}`)
   }
   projectNameSplit(name: string, total: number) {
     if (name.length > total) {
-      return name.substring(0, total);
+      return name.substring(0, total)
     }
-    return name;
+    return name
   }
 }
 </script>

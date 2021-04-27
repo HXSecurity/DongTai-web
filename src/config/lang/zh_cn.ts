@@ -206,6 +206,7 @@ export default {
       latest_time: '最新时间',
       projectDesc: '项目概况',
       projectVul: '项目漏洞',
+      projectComponent: '项目组件',
       vulNum: '漏洞数量',
       type: '类型分布',
       owner: '负责人',

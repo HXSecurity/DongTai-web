@@ -2,13 +2,13 @@
   <div class="table-body">
     <div class="flex-between">
       <div style="flex: 1">
-<!--        <el-input-->
-<!--          v-model="searchValue"-->
-<!--          class="search-input"-->
-<!--          size="mini"-->
-<!--          placeholder="输入策略详情搜索"-->
-<!--        ></el-input-->
-<!--        ><el-button size="small" class="resetAllBtn">搜索</el-button>-->
+        <!--        <el-input-->
+        <!--          v-model="searchValue"-->
+        <!--          class="search-input"-->
+        <!--          size="mini"-->
+        <!--          placeholder="输入策略详情搜索"-->
+        <!--        ></el-input-->
+        <!--        ><el-button size="small" class="resetAllBtn">搜索</el-button>-->
       </div>
       <div>
         <el-button
@@ -22,7 +22,7 @@
         >
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table :data="tableData">
       <template slot="empty">
         <div class="empty-box">
           <span>暂无数据</span>
@@ -79,7 +79,7 @@
         label="操作"
         align="center"
         width="290"
-        :fixed="tableData.length?'right':false"
+        :fixed="tableData.length ? 'right' : false"
       >
         <template slot-scope="scope">
           <el-switch
@@ -101,31 +101,15 @@
           >
             编辑
           </el-button>
-          <el-popover v-model="scope.row.visible" placement="top" width="160">
-            <p>确定删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button
-                size="mini"
-                type="text"
-                @click="scope.row.visible = false"
-                >取消</el-button
-              >
-              <el-button
-                type="primary"
-                size="mini"
-                @click="deleteRule(scope.row)"
-                >确定</el-button
-              >
-            </div>
+          <el-popconfirm title="确定删除吗？" @confirm="deleteRule(scope.row)">
             <el-button
               slot="reference"
-              type="danger"
-              style="margin-left: 20px"
+              style="margin-left: 10px"
               size="small"
+              type="danger"
+              >删除</el-button
             >
-              删除
-            </el-button>
-          </el-popover>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
