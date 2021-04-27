@@ -1,11 +1,12 @@
 <template>
   <div class="table-body">
     <div class="flex-right">
-      <el-button size="small" @click="hookTypeDialog = true"
-                 class="resetAllBtn"
+      <el-button size="small" class="resetAllBtn" @click="hookTypeDialog = true"
         >添加规则类型</el-button
       >
-      <el-button size="small" @click="hookDialog = true" class="resetAllBtn">添加规则</el-button>
+      <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
+        >添加规则</el-button
+      >
     </div>
     <el-table :data="tableData" style="width: 100%">
       <template slot="empty">
@@ -21,7 +22,13 @@
       </el-table-column>
       <el-table-column prop="inherit" label="HOOK深度" width="180">
         <template slot-scope="scope">
-          {{ scope.row.inherit === 'true' ? '子类' : scope.row.inherit === 'all'?'当前类及子类':'当前类' }}
+          {{
+            scope.row.inherit === 'true'
+              ? '子类'
+              : scope.row.inherit === 'all'
+              ? '当前类及子类'
+              : '当前类'
+          }}
         </template>
       </el-table-column>
       <el-table-column prop="track" label="开启污点跟踪" width="180">
@@ -34,9 +41,19 @@
           {{ scope.row.update_time | formatTimestamp }}
         </template>
       </el-table-column>
-      <el-table-column prop="user" label="创建者" width="180" v-if="rolesCheck(['system_admin', 'talent_admin'], true)">
+      <el-table-column
+        v-if="rolesCheck(['system_admin', 'talent_admin'], true)"
+        prop="user"
+        label="创建者"
+        width="180"
+      >
       </el-table-column>
-      <el-table-column prop="address" label="操作" width="360" :fixed="tableData.length?'right':false">
+      <el-table-column
+        prop="address"
+        label="操作"
+        width="360"
+        :fixed="tableData.length ? 'right' : false"
+      >
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
@@ -57,31 +74,15 @@
           >
             编辑
           </el-button>
-          <el-popover v-model="scope.row.visible" placement="top" width="160">
-            <p>确定删除吗？</p>
-            <div style="text-align: right; margin: 0">
-              <el-button
-                size="mini"
-                type="text"
-                @click="scope.row.visible = false"
-                >取消</el-button
-              >
-              <el-button
-                type="primary"
-                size="mini"
-                @click="deleteRule(scope.row)"
-                >确定</el-button
-              >
-            </div>
+          <el-popconfirm title="确定删除吗？" @confirm="deleteRule(scope.row)">
             <el-button
               slot="reference"
-              type="danger"
-              style="margin-left: 20px"
               size="small"
+              style="margin-left: 10px"
+              type="danger"
+              >删除</el-button
             >
-              删除
-            </el-button>
-          </el-popover>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -104,10 +105,16 @@
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
         <el-form-item label="类型名称">
-          <el-input v-model="hookType.name" placeholder="请输入类型名称，如：String、StringBuilder等，建议使用类名"></el-input>
+          <el-input
+            v-model="hookType.name"
+            placeholder="请输入类型名称，如：String、StringBuilder等，建议使用类名"
+          ></el-input>
         </el-form-item>
         <el-form-item label="类型简称">
-          <el-input v-model="hookType.short_name" placeholder="请输入类型简称，如：字符串-01、字符串-02，方便自己查看"></el-input>
+          <el-input
+            v-model="hookType.short_name"
+            placeholder="请输入类型简称，如：字符串-01、字符串-02，方便自己查看"
+          ></el-input>
         </el-form-item>
         <el-form-item label="是否启用">
           <el-switch
@@ -124,7 +131,9 @@
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHookType">取消</el-button>
-        <el-button size="small" type="primary" @click="enterHookType">确定</el-button>
+        <el-button size="small" type="primary" @click="enterHookType"
+          >确定</el-button
+        >
       </template>
     </el-dialog>
 
@@ -146,7 +155,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="规则详情">
-          <el-input v-model="hook.rule_value" placeholder="请输入HOOK规则，格式如：java.lang.String.<init>(java.lang.String)"></el-input>
+          <el-input
+            v-model="hook.rule_value"
+            placeholder="请输入HOOK规则，格式如：java.lang.String.<init>(java.lang.String)"
+          ></el-input>
         </el-form-item>
         <template v-for="(item, key) in hook.source">
           <el-form-item
@@ -157,7 +169,7 @@
               v-if="key > 0"
               v-model="item.relation"
               placeholder="请选择逻辑关系"
-              style="width: 18%;"
+              style="width: 18%"
             >
               <el-option
                 v-for="r in relations"
@@ -170,7 +182,7 @@
             <el-select
               v-model="item.origin"
               placeholder="请选择数据源"
-              style="width: 18%;"
+              style="width: 18%"
               @change="changeOrigin(item)"
             >
               <el-option
@@ -193,12 +205,15 @@
               style="width: 10%; margin-left: 10px"
             ></el-input>
             <div style="float: right">
-              <el-button type="text" size="small"  @click="addSource(hook.source)"
+              <el-button
+                type="text"
+                size="small"
+                @click="addSource(hook.source)"
                 >增加</el-button
               >
               <el-button
-                size="small"
                 v-if="hook.source.length > 1"
+                size="small"
                 type="text"
                 @click="deleteSource(hook.source, key)"
                 >删除</el-button
@@ -218,7 +233,9 @@
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHook">取消</el-button>
-        <el-button size="small" type="primary" @click="enterHook">确定</el-button>
+        <el-button size="small" type="primary" @click="enterHook"
+          >确定</el-button
+        >
       </template>
     </el-dialog>
   </div>
