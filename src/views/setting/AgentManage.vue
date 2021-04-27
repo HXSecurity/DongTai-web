@@ -161,7 +161,8 @@ export default class AgentManage extends VueBase {
   private deleteDialogOpen = false
   private deleteSelectId = 0
 
-  created() {
+  async created() {
+
     this.getTableData()
   }
 
@@ -176,6 +177,7 @@ export default class AgentManage extends VueBase {
       pageSize: this.pageSize,
     }
     this.loadingStart()
+    await this.services.setting.agentUpdate()
     const { status, msg, data, page } = await this.services.setting.agentList(
       params
     )

@@ -9,6 +9,11 @@ interface agentListParams {
 export default () =>
   new (class {
     // 引擎管理-引擎列表
+    agentUpdate(): Promise<iResponse> {
+      return request.get('/agent/status/update',{timeout:1000})
+    }
+
+    // 引擎管理-引擎列表
     agentList(params: agentListParams): Promise<iResponse> {
       return request.get('/agents', { params })
     }
