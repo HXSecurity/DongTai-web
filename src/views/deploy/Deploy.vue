@@ -26,7 +26,7 @@
               <div class="title">第一步，选择Agent类型</div>
             </el-form-item>
             <el-form-item>
-              <div style="label" class="label">请选择Agent类型</div>
+              <div class="label">请选择Agent类型</div>
               <el-select
                 v-model="deployForm.agent"
                 class="deploySelect"
@@ -61,7 +61,7 @@
               <div class="title">第二步，选择应用的运行环境</div>
             </el-form-item>
             <el-form-item>
-              <div style="label" class="label">Java版本</div>
+              <div class="label">Java版本</div>
               <el-select
                 v-model="deployForm.javaVersion"
                 class="deploySelect"
@@ -77,7 +77,7 @@
               </el-select>
             </el-form-item>
             <el-form-item>
-              <div style="label" class="label">中间件</div>
+              <div class="label">中间件</div>
               <el-select
                 v-model="deployForm.middleware"
                 class="deploySelect"
@@ -93,7 +93,7 @@
               </el-select>
             </el-form-item>
             <el-form-item>
-              <div style="label" class="label">操作系统</div>
+              <div class="label">操作系统</div>
               <el-select
                 v-model="deployForm.system"
                 class="deploySelect"
@@ -107,6 +107,13 @@
                   :value="item"
                 ></el-option>
               </el-select>
+            </el-form-item>
+            <el-form-item>
+              <div class="label">项目名称</div>
+              <el-input
+                v-model="deployForm.projectName"
+                style="width: 514px"
+              ></el-input>
             </el-form-item>
             <el-form-item style="margin-top: 50px">
               <el-button type="text" class="prevBtn" @click="curStep = 1">
@@ -128,7 +135,7 @@
               </div>
             </el-form-item>
             <el-form-item style="margin-bottom: 0">
-              <div style="label" class="label">下载</div>
+              <div class="label">下载</div>
               <div class="downloadInfo">
                 <div class="desc">
                   下载洞态IAST的Agent，将agent.jar文件放入WEB服务器（中间件）所在机器上，保证agent.jar文件所在目录具有可写权限
@@ -149,14 +156,14 @@
                   {{
                     `curl -X GET "${url}/api/v1/agent/download?url=${url}&jdk.version=${encodeURI(
                       this.deployForm.javaVersion
-                    )}" -H
+                    )}&projectName=${encodeURI(deployForm.projectName)}" -H
                   'Authorization: Token ${userToken}' -o agent.jar -k`
                   }}
                 </div>
               </div>
             </el-form-item>
             <el-form-item>
-              <div style="label" class="label">配置</div>
+              <div class="label">配置</div>
               <div class="descWarp">
                 <MyMarkdownIt :content="desc"></MyMarkdownIt>
               </div>
@@ -188,11 +195,13 @@ export default class Deploy extends VueBase {
     javaVersion: string
     middleware: string
     system: string
+    projectName: string
   } = {
     agent: '',
     javaVersion: '',
     middleware: '',
     system: '',
+    projectName: 'Demo Project',
   }
   private agents: Array<string> = []
   private javaVersion: Array<string> = []
@@ -241,6 +250,7 @@ export default class Deploy extends VueBase {
       javaVersion: data.java_version,
       middleware: data.middleware,
       system: data.system,
+      projectName: data.project_name||'Demo Project',
     }
   }
   private async agentDeployInfo() {
@@ -262,7 +272,8 @@ export default class Deploy extends VueBase {
     this.loadingStart()
     await this.services.deploy.agentDownload(
       this.url,
-      this.deployForm.javaVersion
+      this.deployForm.javaVersion,
+      this.deployForm.projectName
     )
     this.loadingDone()
   }

@@ -16,11 +16,19 @@ export default () =>
     }
 
     // 下载引擎
-    agentDownload(url: String, jdkVersion: String) {
+    agentDownload(url: string, jdkVersion: string, projectName: string) {
       request
-        .get('agent/download?url=' + url + '&jdk.version=' + jdkVersion, {
-          responseType: 'blob', // 告诉服务器我们需要的响应格式
-        })
+        .get(
+          'agent/download?url=' +
+            url +
+            '&jdk.version=' +
+            jdkVersion +
+            '&projectName=' +
+            projectName,
+          {
+            responseType: 'blob', // 告诉服务器我们需要的响应格式
+          }
+        )
         .then((res: any) => {
           const blob = new Blob([res], {
             type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
