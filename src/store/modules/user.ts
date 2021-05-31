@@ -1,14 +1,21 @@
 import { Commit } from 'vuex'
 import createUserServices from '@/services/user'
+import createRoleServices from '@/services/role'
+
 import { Message } from 'element-ui'
 
 const userServices = createUserServices()
+const roleServices = createRoleServices()
 
 const state: any = {
   userInfo: null,
+  routers: [],
 }
 
 const mutations: any = {
+  SET_ROUTER(state: any, routers: []) {
+    state.routers = routers
+  },
   UPDATE_USER_INFO(state: any, userInfo: any) {
     state.userInfo = userInfo
   },
@@ -17,6 +24,8 @@ const mutations: any = {
 const actions: any = {
   async getUserInfo(context: { commit: Commit }) {
     const { status, msg, data } = await userServices.getUserInfo()
+    const res = await roleServices.getRoute()
+    context.commit('SET_ROUTER', res.data)
     if (status !== 201) {
       Message.error(msg)
     }

@@ -110,7 +110,9 @@ export default class Header extends VueBase {
   get userInfo(): { username: string } {
     return this.$store.getters.userInfo
   }
-
+  canShow(name: string) {
+    return this.$store.getters.routers.includes(name)
+  }
   private currentRoute(path: string): boolean {
     return this.$route.matched.some((item) => item.path === path)
   }
