@@ -24,8 +24,8 @@ const mutations: any = {
 const actions: any = {
   async getUserInfo(context: { commit: Commit }) {
     const { status, msg, data } = await userServices.getUserInfo()
-    const res = await roleServices.getRoute()
-    context.commit('SET_ROUTER', res.data)
+    // const res = await roleServices.getRoute()
+    // context.commit('SET_ROUTER', res.data)
     if (status !== 201) {
       Message.error(msg)
     }
