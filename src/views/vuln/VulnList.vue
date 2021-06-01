@@ -241,7 +241,7 @@
             </span>
           </div>
           <div class="infoLine flex-row-space-between">
-            <div class="flex-row-space-between" style="width: 65%">
+            <div class="flex-row-space-between" style="width: 75%">
               <span class="info">
                 <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
                 <el-tooltip
@@ -260,6 +260,13 @@
                   :class="switchServerType(item.server_type)"
                 ></i>
                 {{ item.server_name }}
+              </span>
+              <span
+                class="info"
+                style="color: #67c23a"
+              >
+                <i class="el-icon-s-opportunity"></i>
+                {{ item.status }}
               </span>
               <span
                 class="info"
@@ -591,7 +598,7 @@ export default class VulnList extends VueBase {
 
 .dot {
   display: inline-block;
-  width: 100px;
+  width: 90px;
   padding-left: 10px;
   overflow: hidden;
   white-space: nowrap;

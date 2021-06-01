@@ -24,6 +24,8 @@ export default {
     taintPool: '搜索',
     search: '污点搜索',
     poolDetail: '污点详情',
+    projectManage: '项目管理',
+    
   },
   views: {
     login: {
@@ -232,6 +234,9 @@ export default {
       rePassPlaceholder: '请再次输入密码',
       submit: '确认',
       cancel: '取消',
+      isActive: '状态',
+      dateJoined: '创建时间',
+      lastLogin: '登陆时间',
     },
     talent: {
       title: {

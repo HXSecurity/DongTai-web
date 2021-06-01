@@ -159,6 +159,7 @@
             </span>
             <span>{{ vulnObj.vul.project_name }}</span>
           </div>
+
           <div class="info">
             <span class="label">
               <i class="iconfont iconzhongjianjian"></i>
@@ -204,6 +205,26 @@
               {{ $t('views.vulnDetail.counts') }}:
             </span>
             <span>{{ vulnObj.vul.counts }}</span>
+          </div>
+          <div class="info">
+            <span class="label"> 状态: </span>
+            <el-select
+              v-model="vulnObj.vul.status"
+              placeholder="未处理"
+              size="mini"
+              style="width: 50%"
+              filterable
+              allow-create
+              @change="changeStatus"
+            >
+              <el-option
+                v-for="item in statusOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </div>
         </div>
       </div>
@@ -467,6 +488,24 @@ import { VulnListObj, VulnObj } from './types'
 export default class VulnDetail extends VueBase {
   private sliderWarpContract = false
   private deleteDialogOpen = false
+  private statusOptions: Array<any> = [
+    {
+      value: '已上报',
+      label: '已上报',
+    },
+    {
+      value: '已确认',
+      label: '已确认',
+    },
+    {
+      value: '已修复',
+      label: '已修复',
+    },
+    {
+      value: '已忽略',
+      label: '已忽略',
+    },
+  ]
   private vulnObj: VulnObj = {
     vul: {
       url: '',
@@ -554,6 +593,18 @@ export default class VulnDetail extends VueBase {
   private currentChange(val: number) {
     this.page = val
     this.getTableData()
+  }
+
+  private async changeStatus(val: any) {
+    const res = await this.services.vuln.changeStatus({
+      id: this.selectedId,
+      status: val,
+    })
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+    } else {
+      this.$message.error(res.msg)
+    }
   }
 
   private async getTableData() {

@@ -116,43 +116,43 @@ const routes: Array<RouteConfig> = [
           },
         ],
       },
-      // {
-      //   path: 'taint',
-      //   name: 'taint',
-      //   redirect: '/taint/search',
-      //   meta: {
-      //     disabled: true,
-      //     name: i18n.t('menu.taintPool'),
-      //   },
-      //   component: () => import('@/views/taint/Index.vue'),
-      //   children: [
-      //     // {
-      //     //   path: 'Pool',
-      //     //   meta: {
-      //     //     name: i18n.t('menu.taintPool'),
-      //     //   },
-      //     //   component: () => import('@/views/taint/Pool.vue'),
-      //     // },
-      //     {
-      //       path: 'search',
-      //       name: 'search',
-      //       meta: {
-      //         disabled: true,
-      //         name: i18n.t('menu.taintPool'),
-      //       },
-      //       component: () => import('@/views/taint/Search.vue'),
-      //     },
-      //     {
-      //       path: 'poolDetail/:id',
-      //       name: 'poolDetail/:id',
-      //       meta: {
-      //         disabled: true,
-      //         name: i18n.t('menu.poolDetail'),
-      //       },
-      //       component: () => import('@/views/taint/PoolDetail.vue'),
-      //     },
-      //   ],
-      // },
+      {
+        path: 'taint',
+        name: 'taint',
+        redirect: '/taint/search',
+        meta: {
+          disabled: true,
+          name: i18n.t('menu.taintPool'),
+        },
+        component: () => import('@/views/taint/Index.vue'),
+        children: [
+          // {
+          //   path: 'Pool',
+          //   meta: {
+          //     name: i18n.t('menu.taintPool'),
+          //   },
+          //   component: () => import('@/views/taint/Pool.vue'),
+          // },
+          {
+            path: 'search',
+            name: 'search',
+            meta: {
+              disabled: true,
+              name: i18n.t('menu.taintPool'),
+            },
+            component: () => import('@/views/taint/Search.vue'),
+          },
+          {
+            path: 'poolDetail/:id',
+            name: 'poolDetail/:id',
+            meta: {
+              disabled: true,
+              name: i18n.t('menu.poolDetail'),
+            },
+            component: () => import('@/views/taint/PoolDetail.vue'),
+          },
+        ],
+      },
       {
         path: 'setting',
         name: 'setting',
