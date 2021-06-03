@@ -241,7 +241,7 @@
             </span>
           </div>
           <div class="infoLine flex-row-space-between">
-            <div class="flex-row-space-between" style="width: 65%">
+            <div class="flex-row-space-between" style="width: 60%">
               <span class="info">
                 <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
                 <el-tooltip
@@ -254,13 +254,14 @@
                   <span class="dot"> {{ item.project_name }}</span>
                 </el-tooltip>
               </span>
-              <span class="info" style="flex: 2">
+              <span class="info" style="flex: 1.5">
                 <i
                   class="iconfont"
                   :class="switchServerType(item.server_type)"
                 ></i>
                 {{ item.server_name }}
               </span>
+
               <span
                 class="info"
                 :style="
@@ -287,12 +288,37 @@
               </span>
             </div>
             <div>
-              <div class="tag">
+              <!-- <div class="tag">
                 {{ item.language }}
               </div>
               <div class="tag2" style="margin-left: 20px">
                 {{ item.type }}
+              </div> -->
+                <div class="tageIcon" style="margin-left: 20px">
+                <i class="iconfont iconicon_yingyong_table" style="color:#E7F5E4"></i>
+                <span style="background:#E7F5E4;color:#63974E;">
+                  {{ item.language }}
+                </span>
               </div>
+
+
+
+              <div class="tageIcon" style="margin-left: 20px">
+                <i class="iconfont iconicon_yingyong_table" style="color:#FCE9DE"></i>
+                <span style="background:#FCE9DE;color:#E07D43;">
+                  {{ item.type }}
+                </span>
+              </div>
+
+
+
+              <div class="tageIcon" style="margin-left: 20px">
+                <i class="iconfont iconicon_yingyong_table" style="color:#E5F3F3"></i>
+                <span style="background:#E5F3F3;color:#3C9AA2;">
+                  {{ item.status }}
+                </span>
+              </div>
+
             </div>
           </div>
         </div>
@@ -520,6 +546,25 @@ export default class VulnList extends VueBase {
   bottom: 0;
   width: 238px;
 }
+.tageIcon{
+  display: inline-flex;
+  justify-content:center;
+  align-items: center;
+  i{
+    font-size: 20px;
+  }
+  span{
+    margin-left: -3px;
+    display: inline-block;
+    line-height: 150%;
+    height: 20px;
+    font-size: 14px;
+    padding-right: 6px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    font-weight: 500;
+  }
+}
 
 .slider-warp {
   width: 234px;
@@ -591,7 +636,7 @@ export default class VulnList extends VueBase {
 
 .dot {
   display: inline-block;
-  width: 100px;
+  width: 90px;
   padding-left: 10px;
   overflow: hidden;
   white-space: nowrap;

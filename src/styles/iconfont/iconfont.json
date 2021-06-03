@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22010179",
+      "name": "icon_yingyong_zhuagntai",
+      "font_class": "icon_yingyong_zhuagntai",
+      "unicode": "e606",
+      "unicode_decimal": 58886
+    },
+    {
+      "icon_id": "22007745",
+      "name": "icon_yingyong_table",
+      "font_class": "icon_yingyong_table",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
       "icon_id": "14919887",
       "name": "user",
       "font_class": "gerenzhongxin",

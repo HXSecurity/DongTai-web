@@ -34,4 +34,8 @@ export default () =>
     vulnDelete(id: number): Promise<iResponse> {
       return request.post(`/vuln/delete/${id}`)
     }
+
+    changeStatus(data: any): Promise<iResponse> {
+      return request.post(`/vuln/status`, data)
+    }
   })()

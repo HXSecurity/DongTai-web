@@ -7,6 +7,7 @@ import createDeployServices from './deploy'
 import createTalentServices from './talent'
 import createDepartmentServices from './department'
 import createTaintService from './taint'
+import createRoleService from './role'
 
 const createServices = () =>
   new (class {
@@ -19,6 +20,7 @@ const createServices = () =>
     project = createProjectServices()
     deploy = createDeployServices()
     taint = createTaintService()
+    role = createRoleService()
   })()
 
 const services = createServices()

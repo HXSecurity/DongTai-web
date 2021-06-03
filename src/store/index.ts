@@ -10,5 +10,6 @@ export default new Vuex.Store({
   },
   getters: {
     userInfo: (state: any) => state.user.userInfo,
+    routers: (state: any) => state.user.routers,
   },
 })

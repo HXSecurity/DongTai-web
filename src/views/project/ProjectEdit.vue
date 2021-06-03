@@ -27,11 +27,11 @@
             :label="$t('views.projectEdit.mode1')"
             >{{ $t('views.projectEdit.mode1') }}</el-radio
           >
-          <el-radio
+          <!-- <el-radio
             v-model="submitForm.mode"
             :label="$t('views.projectEdit.mode2')"
             >{{ $t('views.projectEdit.mode2') }}</el-radio
-          >
+          > -->
         </el-form-item>
         <el-form-item :label="$t('views.projectEdit.agent')">
           <el-select

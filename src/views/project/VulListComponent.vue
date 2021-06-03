@@ -4,11 +4,11 @@
       <div class="title flex-column-center">
         <div class="flex-row-space-between">
           <span style="font-size: 16px; font-weight: bold">{{
-            $t('views.vulnList.filter')
+            $t("views.vulnList.filter")
           }}</span>
           <el-button type="text" class="resetAllBtn" @click="reset">
             <span style="font-size: 12px">
-              {{ $t('views.vulnList.resetAll') }}
+              {{ $t("views.vulnList.resetAll") }}
             </span>
           </el-button>
         </div>
@@ -17,9 +17,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t('views.vulnList.type') }}</span>
+        <span style="font-size: 14px">{{ $t("views.vulnList.type") }}</span>
         <div class="reset-btn" @click="typeChange('')">
-          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
+          <span style="font-size: 14px">{{ $t("views.vulnList.reset") }}</span>
         </div>
       </div>
       <div
@@ -45,9 +45,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t('views.vulnList.level') }}</span>
+        <span style="font-size: 14px">{{ $t("views.vulnList.level") }}</span>
         <div class="reset-btn" @click="levelChange('')">
-          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
+          <span style="font-size: 14px">{{ $t("views.vulnList.reset") }}</span>
         </div>
       </div>
       <div
@@ -73,9 +73,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t('views.vulnList.language') }}</span>
+        <span style="font-size: 14px">{{ $t("views.vulnList.language") }}</span>
         <div class="reset-btn" @click="languageChange('')">
-          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
+          <span style="font-size: 14px">{{ $t("views.vulnList.reset") }}</span>
         </div>
       </div>
       <div
@@ -159,14 +159,11 @@
           >
             {{
               `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
-                item.taint_position ? `，位置：${item.taint_position}` : ''
+                item.taint_position ? `，位置：${item.taint_position}` : ""
               }`
             }}
           </span>
-          <span
-            class="time flex-column-center"
-            style="font-size: 12px; height: 32px"
-          >
+          <span class="time flex-column-center" style="font-size: 12px; height: 32px">
             {{ item.first_time }}
           </span>
         </div>
@@ -184,7 +181,7 @@
             </span>
           </div>
           <div class="infoLine flex-row-space-between">
-            <div class="flex-row-space-between" style="width: 65%">
+            <div class="flex-row-space-between" style="width: 60%">
               <el-tooltip
                 class="item"
                 effect="dark"
@@ -196,11 +193,8 @@
                   {{ item.project_name }}
                 </div>
               </el-tooltip>
-              <span class="info" style="flex: 2">
-                <i
-                  class="iconfont"
-                  :class="switchServerType(item.server_type)"
-                ></i>
+              <span class="info" style="flex: 1.5">
+                <i class="iconfont" :class="switchServerType(item.server_type)"></i>
                 {{ item.server_name }}
               </span>
               <span
@@ -229,11 +223,31 @@
               </span>
             </div>
             <div>
-              <div class="tag">
+              <!-- <div class="tag">
                 {{ item.language }}
               </div>
               <div class="tag2" style="margin-left: 20px">
                 {{ item.type }}
+              </div> -->
+              <div class="tageIcon" style="margin-left: 20px">
+                <i class="iconfont iconicon_yingyong_table" style="color: #e7f5e4"></i>
+                <span style="background: #e7f5e4; color: #63974e">
+                  {{ item.language }}
+                </span>
+              </div>
+
+              <div class="tageIcon" style="margin-left: 20px">
+                <i class="iconfont iconicon_yingyong_table" style="color: #fce9de"></i>
+                <span style="background: #fce9de; color: #e07d43">
+                  {{ item.type }}
+                </span>
+              </div>
+
+              <div class="tageIcon" style="margin-left: 20px">
+                <i class="iconfont iconicon_yingyong_table" style="color: #e5f3f3"></i>
+                <span style="background: #e5f3f3; color: #3c9aa2">
+                  {{ item.status }}
+                </span>
               </div>
             </div>
           </div>
@@ -244,18 +258,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
-import { formatTimestamp, getPassedTime } from '@/utils/utils'
-import VueBase from '@/VueBase'
-import { VulnListObj } from '@/views/vuln/types'
+import { Component, Prop } from "vue-property-decorator";
+import { formatTimestamp, getPassedTime } from "@/utils/utils";
+import VueBase from "@/VueBase";
+import { VulnListObj } from "@/views/vuln/types";
 
-@Component({ name: 'VulListComponent' })
+@Component({ name: "VulListComponent" })
 export default class VulListComponent extends VueBase {
-  @Prop(String) projectId!: string
-  private page = 1
-  private pageSize = 20
-  private dataEnd = false
-  private tableData: Array<VulnListObj> = []
+  @Prop(String) projectId!: string;
+  private page = 1;
+  private pageSize = 20;
+  private dataEnd = false;
+  private tableData: Array<VulnListObj> = [];
   private searchOptionsObj = {
     language: [],
     level: [],
@@ -263,105 +277,105 @@ export default class VulListComponent extends VueBase {
     projects: [],
     orderOptions: [
       {
-        label: this.$t('views.vulnList.orderOptions.type'),
-        value: 'type',
+        label: this.$t("views.vulnList.orderOptions.type"),
+        value: "type",
       },
       {
-        label: this.$t('views.vulnList.orderOptions.level'),
-        value: 'level',
+        label: this.$t("views.vulnList.orderOptions.level"),
+        value: "level",
       },
       {
-        label: this.$t('views.vulnList.orderOptions.url'),
-        value: 'url',
+        label: this.$t("views.vulnList.orderOptions.url"),
+        value: "url",
       },
       {
-        label: this.$t('views.vulnList.orderOptions.latest_time'),
-        value: 'latest_time',
+        label: this.$t("views.vulnList.orderOptions.latest_time"),
+        value: "latest_time",
       },
       {
-        label: this.$t('views.vulnList.orderOptions.first_time'),
-        value: 'first_time',
+        label: this.$t("views.vulnList.orderOptions.first_time"),
+        value: "first_time",
       },
     ],
-  }
+  };
 
   private searchObj = {
-    language: '',
-    level: '',
-    type: '',
-    project_name: '',
-    url: '',
-    order: '',
-  }
+    language: "",
+    level: "",
+    type: "",
+    project_name: "",
+    url: "",
+    order: "",
+  };
 
   created() {
-    this.getTableData()
-    this.vulnSummary()
+    this.getTableData();
+    this.vulnSummary();
   }
 
   private reset() {
-    this.searchObj.language = ''
-    this.searchObj.level = ''
-    this.searchObj.type = ''
-    this.searchObj.project_name = ''
-    this.newSelectData()
+    this.searchObj.language = "";
+    this.searchObj.level = "";
+    this.searchObj.type = "";
+    this.searchObj.project_name = "";
+    this.newSelectData();
   }
 
   private languageChange(val: string, stop: boolean) {
     if (stop) {
-      return
+      return;
     }
-    this.searchObj.language = val
-    this.newSelectData()
+    this.searchObj.language = val;
+    this.newSelectData();
   }
 
   private levelChange(val: string, stop: boolean) {
     if (stop) {
-      return
+      return;
     }
-    this.searchObj.level = val
-    this.newSelectData()
+    this.searchObj.level = val;
+    this.newSelectData();
   }
 
   private typeChange(val: string, stop: boolean) {
     if (stop) {
-      return
+      return;
     }
-    this.searchObj.type = val
-    this.newSelectData()
+    this.searchObj.type = val;
+    this.newSelectData();
   }
 
   private projectNameChange(val: string, stop: boolean) {
     if (stop) {
-      return
+      return;
     }
-    this.searchObj.project_name = val
-    this.newSelectData()
+    this.searchObj.project_name = val;
+    this.newSelectData();
   }
 
   private newSelectData() {
-    this.page = 1
-    this.tableData = []
-    this.vulnSummary()
-    this.getTableData()
+    this.page = 1;
+    this.tableData = [];
+    this.vulnSummary();
+    this.getTableData();
   }
 
   mounted() {
-    window.addEventListener('scroll', this.myScroll)
+    window.addEventListener("scroll", this.myScroll);
   }
 
   beforeDestroy() {
-    window.removeEventListener('scroll', this.myScroll)
+    window.removeEventListener("scroll", this.myScroll);
   }
 
   private myScroll() {
     const bottomWindow =
       document.documentElement.scrollTop + window.innerHeight >
-      document.documentElement.offsetHeight - 1
+      document.documentElement.offsetHeight - 1;
     if (bottomWindow) {
       if (!this.dataEnd) {
-        this.page += 1
-        this.getTableData()
+        this.page += 1;
+        this.getTableData();
       }
     }
   }
@@ -377,29 +391,26 @@ export default class VulListComponent extends VueBase {
       url: this.searchObj.url,
       order: this.searchObj.order,
       project_id: this.projectId,
-    }
-    this.loadingStart()
-    const { status, data, msg } = await this.services.vuln.vulnList(params)
-    this.loadingDone()
+    };
+    this.loadingStart();
+    const { status, data, msg } = await this.services.vuln.vulnList(params);
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
-    const tableData = data.reduce(
-      (list: Array<VulnListObj>, item: VulnListObj) => {
-        list.push({
-          ...item,
-          first_time: formatTimestamp(item.first_time),
-          latest_time: getPassedTime(item.latest_time),
-        })
-        return list
-      },
-      []
-    )
+    const tableData = data.reduce((list: Array<VulnListObj>, item: VulnListObj) => {
+      list.push({
+        ...item,
+        first_time: formatTimestamp(item.first_time),
+        latest_time: getPassedTime(item.latest_time),
+      });
+      return list;
+    }, []);
     if (tableData.length < 20) {
-      this.dataEnd = true
+      this.dataEnd = true;
     }
-    this.tableData = [...this.tableData, ...tableData]
+    this.tableData = [...this.tableData, ...tableData];
   }
 
   private async vulnSummary() {
@@ -411,47 +422,66 @@ export default class VulListComponent extends VueBase {
       url: this.searchObj.url,
       order: this.searchObj.order,
       projectId: this.projectId,
-    }
-    this.loadingStart()
-    const { status, data, msg } = await this.services.vuln.vulnSummary(params)
-    this.loadingDone()
+    };
+    this.loadingStart();
+    const { status, data, msg } = await this.services.vuln.vulnSummary(params);
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
-    this.searchOptionsObj.language = data.language
-    this.searchOptionsObj.level = data.level
-    this.searchOptionsObj.type = data.type
-    this.searchOptionsObj.projects = data.projects
+    this.searchOptionsObj.language = data.language;
+    this.searchOptionsObj.level = data.level;
+    this.searchOptionsObj.type = data.type;
+    this.searchOptionsObj.projects = data.projects;
   }
 
   private goDetail(id: number) {
-    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
+    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`);
   }
 
   switchServerType(serverType: string) {
     switch (serverType) {
-      case 'tomcat':
-        return 'icontomcat'
-      case 'jetty':
-        return 'iconJetty'
-      case 'resin':
-        return 'iconresin'
-      case 'weblogic':
-        return 'iconwebLogic'
-      case 'websphere':
-        return 'iconwebSphere'
-      case 'jboss':
-        return 'iconJBoss'
+      case "tomcat":
+        return "icontomcat";
+      case "jetty":
+        return "iconJetty";
+      case "resin":
+        return "iconresin";
+      case "weblogic":
+        return "iconwebLogic";
+      case "websphere":
+        return "iconwebSphere";
+      case "jboss":
+        return "iconJBoss";
 
       default:
-        return 'iconyingyong'
+        return "iconyingyong";
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+.tageIcon {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  i {
+    font-size: 20px;
+  }
+  span {
+    margin-left: -3px;
+    display: inline-block;
+    line-height: 150%;
+    height: 20px;
+    font-size: 14px;
+    padding-right: 6px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    font-weight: 500;
+  }
+}
 .slider-warp {
   width: 234px;
   margin-top: 14px;
@@ -569,7 +599,7 @@ export default class VulListComponent extends VueBase {
         position: relative;
 
         &:before {
-          content: '';
+          content: "";
           width: 1px;
           height: 30px;
           background: #dee4ea;
@@ -635,10 +665,10 @@ export default class VulListComponent extends VueBase {
           &:before {
             position: absolute;
             left: -17px;
-            content: '';
+            content: "";
             height: 20px;
             width: 18px;
-            background-image: url('../../assets/img/tag.png');
+            background-image: url("../../assets/img/tag.png");
           }
         }
 
@@ -656,10 +686,10 @@ export default class VulListComponent extends VueBase {
           &:before {
             position: absolute;
             left: -17px;
-            content: '';
+            content: "";
             height: 20px;
             width: 18px;
-            background-image: url('../../assets/img/tag2.png');
+            background-image: url("../../assets/img/tag2.png");
           }
         }
       }
