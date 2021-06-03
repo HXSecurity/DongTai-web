@@ -49,7 +49,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: "registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:latest,registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:1.0.${{github.run_number}}"
+          tags: "registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:latest,registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:1.0.${{github.run_number}},registry.cn-beijing.aliyuncs.com/huoxian_pub/dongtai-web:latest"
 
       - uses: actions/checkout@master
       - name: deploy to cluster
