@@ -251,7 +251,19 @@ export default class ProjectDetail extends VueBase {
           data: data.day_num.map((item: { day_num: any }) => {
             return item.day_num
           }),
+          itemStyle: {
+                color: 'rgba(99, 161, 242,1)'
+            },
           type: 'line',
+          areaStyle: {
+                color: new (echarts as any).graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: 'rgba(99, 161, 242,1)'
+                }, {
+                    offset: 1,
+                    color: 'rgba(99, 161, 242,0.3)'
+                }])
+            },
         },
       ],
     }

@@ -34,18 +34,12 @@
             </div>
             <div class="flex-column-center">
               <span style="color: #969ba4; line-height: 25px">
-                <strong style="color: #38435a; font-weight: 400">{{
-                  page
-                }}</strong
+                <strong style="color: #38435a; font-weight: 400">{{ page }}</strong
                 >/{{ Math.ceil(total / 20) }}
               </span>
             </div>
             <div class="flex-column-center">
-              <el-button
-                type="text"
-                style="color: #5782db"
-                @click="getTableData"
-              >
+              <el-button type="text" style="color: #5782db" @click="getTableData">
                 刷新
               </el-button>
             </div>
@@ -91,10 +85,7 @@
         </div>
       </div>
     </div>
-    <div
-      class="operateCol"
-      :style="sliderWarpContract ? {} : { 'margin-left': '228px' }"
-    >
+    <div class="operateCol" :style="sliderWarpContract ? {} : { 'margin-left': '228px' }">
       <div style="height: 100%">
         <i
           class="iconfont operateIcon"
@@ -106,9 +97,7 @@
     <div
       v-if="vulnObj.vul.url"
       class="vuln-warp"
-      :class="
-        sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'
-      "
+      :class="sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'"
     >
       <div class="vuln-title flex-row-space-between">
         <div style="flex: 1; max-width: 700px">
@@ -116,32 +105,30 @@
             `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${
               vulnObj.vul.type
             }漏洞${
-              vulnObj.vul.taint_position
-                ? `，位置：${vulnObj.vul.taint_position}`
-                : ''
+              vulnObj.vul.taint_position ? `，位置：${vulnObj.vul.taint_position}` : ""
             }`
           }}
         </div>
         <div class="btnWarp">
           <el-button type="text" class="btn" @click="exportVul">
             <i class="iconfont icondaochu-5"></i>
-            {{ $t('views.vulnDetail.export') }}
+            {{ $t("views.vulnDetail.export") }}
           </el-button>
           <el-button type="text" class="btn" @click="deleteDialogOpen = true">
             <i class="iconfont iconshanchu-6"></i>
-            {{ $t('views.vulnDetail.delete') }}
+            {{ $t("views.vulnDetail.delete") }}
           </el-button>
         </div>
       </div>
       <div class="module-title">
-        {{ $t('views.vulnDetail.baseInfo') }}
+        {{ $t("views.vulnDetail.baseInfo") }}
       </div>
       <div class="infoWarp">
         <div class="infoLine flex-row-space-between">
           <div class="info">
             <span class="label">
               <i class="iconfont iconfuwuqi-3"></i>
-              {{ $t('views.vulnDetail.serverIp') }}:
+              {{ $t("views.vulnDetail.serverIp") }}:
             </span>
             <el-tooltip
               class="item"
@@ -155,7 +142,7 @@
           <div class="info">
             <span class="label">
               <i class="iconfont iconproject"></i>
-              {{ $t('views.vulnDetail.projectName') }}:
+              {{ $t("views.vulnDetail.projectName") }}:
             </span>
             <span>{{ vulnObj.vul.project_name }}</span>
           </div>
@@ -163,7 +150,7 @@
           <div class="info">
             <span class="label">
               <i class="iconfont iconzhongjianjian"></i>
-              {{ $t('views.vulnDetail.middleware') }}:
+              {{ $t("views.vulnDetail.middleware") }}:
             </span>
             <span style="width: 140px; overflow: hidden">
               <span>{{ vulnObj.server.container }}</span>
@@ -172,7 +159,7 @@
           <div class="info" style="flex: 1.5">
             <span class="label">
               <i class="iconfont iconshijian-3"></i>
-              {{ $t('views.vulnDetail.first_time') }}:
+              {{ $t("views.vulnDetail.first_time") }}:
             </span>
             <span>{{ vulnObj.vul.first_time }}</span>
           </div>
@@ -181,38 +168,43 @@
           <div class="info">
             <span class="label">
               <i class="iconfont iconIp"></i>
-              {{ $t('views.vulnDetail.clientIp') }}:
+              {{ $t("views.vulnDetail.clientIp") }}:
             </span>
             <span>{{ vulnObj.vul.client_ip }}</span>
           </div>
           <div class="info">
             <span class="label">
               <i class="iconfont iconyuyan-2"></i>
-              {{ $t('views.vulnDetail.language') }}:
+              {{ $t("views.vulnDetail.language") }}:
             </span>
             <span>{{ vulnObj.vul.language }}</span>
           </div>
           <div class="info">
             <span class="label">
               <i class="iconfont iconweixian-2"></i>
-              {{ $t('views.vulnDetail.level') }}:
+              {{ $t("views.vulnDetail.level") }}:
             </span>
             <span>{{ vulnObj.vul.level }}</span>
           </div>
-          <div class="info" style="flex: 1.5">
+          <div class="info"  style="flex: 1.5">
             <span class="label">
               <i class="iconfont iconcishu-2"></i>
-              {{ $t('views.vulnDetail.counts') }}:
+              {{ $t("views.vulnDetail.counts") }}:
             </span>
             <span>{{ vulnObj.vul.counts }}</span>
           </div>
+        </div>
+
+        <div class="infoLine flex-row-space-between">
           <div class="info">
-            <span class="label"> 状态: </span>
+            <span class="label">
+              <i class="iconfont iconicon_yingyong_zhuagntai"></i>
+              状态: </span>
             <el-select
               v-model="vulnObj.vul.status"
               placeholder="未处理"
               size="mini"
-              style="width: 50%"
+              style="width: 13%"
               filterable
               allow-create
               @change="changeStatus"
@@ -229,14 +221,14 @@
         </div>
       </div>
       <div class="module-title">
-        {{ $t('views.vulnDetail.vulnDesc') }}
+        {{ $t("views.vulnDetail.vulnDesc") }}
       </div>
       <div class="vulnDesc">
         {{ vulnObj.strategy.desc }}
       </div>
 
       <div class="module-title">
-        {{ $t('views.vulnDetail.httpRequest') }}
+        {{ $t("views.vulnDetail.httpRequest") }}
       </div>
       <div class="markdownContent httpRequest">
         <MyMarkdownIt
@@ -249,7 +241,7 @@
         v-if="vulnObj.vul.graphy && vulnObj.vul.graphy.length > 0"
         class="module-title"
       >
-        {{ $t('views.vulnDetail.graphy') }}
+        {{ $t("views.vulnDetail.graphy") }}
       </div>
       <div
         v-if="vulnObj.vul.graphy && vulnObj.vul.graphy.length > 0"
@@ -318,7 +310,7 @@
                 <div class="expand-form">
                   <div class="expand-item">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.type') }}
+                      {{ $t("views.vulnDetail.type") }}
                     </div>
                     <div class="expand-info">
                       {{ row.type }}
@@ -326,7 +318,7 @@
                   </div>
                   <div class="expand-item">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.file') }}
+                      {{ $t("views.vulnDetail.file") }}
                     </div>
                     <div class="expand-info">
                       {{ row.file }}
@@ -334,7 +326,7 @@
                   </div>
                   <div class="expand-item">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.num') }}
+                      {{ $t("views.vulnDetail.num") }}
                     </div>
                     <div class="expand-info">
                       {{ row.line_number }}
@@ -342,15 +334,15 @@
                   </div>
                   <div class="expand-item">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.caller') }}
+                      {{ $t("views.vulnDetail.caller") }}
                     </div>
                     <div class="expand-info">
                       {{ row.caller }}
                     </div>
                   </div>
-                  <div class="expand-item"  v-if="row.source_value">
+                  <div class="expand-item" v-if="row.source_value">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.source_value') }}
+                      {{ $t("views.vulnDetail.source_value") }}
                     </div>
                     <div class="expand-info">
                       {{ row.source_value }}
@@ -358,7 +350,7 @@
                   </div>
                   <div class="expand-item" v-if="row.target_value">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.target_value') }}
+                      {{ $t("views.vulnDetail.target_value") }}
                     </div>
                     <div class="expand-info">
                       {{ row.target_value }}
@@ -367,7 +359,7 @@
 
                   <div class="expand-item">
                     <div class="expand-label">
-                      {{ $t('views.vulnDetail.wuDianZhi') }}
+                      {{ $t("views.vulnDetail.wuDianZhi") }}
                     </div>
                     <div class="expand-info">
                       {{ row.target }}
@@ -406,16 +398,14 @@
         </div>
       </div>
       <div v-if="vulnObj.strategy.repair_suggestion" class="module-title">
-        {{ $t('views.vulnDetail.suggest') }}
+        {{ $t("views.vulnDetail.suggest") }}
       </div>
       <div v-if="vulnObj.strategy.repair_suggestion" class="markdownContent">
-        <MyMarkdownIt
-          :content="vulnObj.strategy.repair_suggestion"
-        ></MyMarkdownIt>
+        <MyMarkdownIt :content="vulnObj.strategy.repair_suggestion"></MyMarkdownIt>
       </div>
       <!--运行时环境-->
       <div v-if="vulnObj.server.runtime" class="module-title">
-        {{ $t('views.vulnDetail.devEnv') }}
+        {{ $t("views.vulnDetail.devEnv") }}
       </div>
       <div v-if="vulnObj.server.runtime" class="baseInfo">
         <div class="base-line" style="padding: 10px 0px; height: 10px">
@@ -424,7 +414,7 @@
       </div>
       <!--      环境变量-->
       <div class="module-title">
-        {{ $t('views.vulnDetail.path') }}
+        {{ $t("views.vulnDetail.path") }}
       </div>
       <div class="baseInfo">
         <div class="base-line">
@@ -435,23 +425,18 @@
               display: block;
             "
           >
-            {{ $t('views.vulnDetail.command') }}
+            {{ $t("views.vulnDetail.command") }}
           </span>
           <span style="display: block; margin-top: 6px">{{
             vulnObj.server.command
           }}</span>
         </div>
         <div v-if="vulnObj.server.environment" class="base-line">
-          <span
-            style="color: black; font-family: PingFangSC-Medium, PingFang SC"
-            >{{ $t('views.vulnDetail.other') }}</span
-          >
+          <span style="color: black; font-family: PingFangSC-Medium, PingFang SC">{{
+            $t("views.vulnDetail.other")
+          }}</span>
         </div>
-        <div
-          v-if="vulnObj.server.environment"
-          class="base-line"
-          style="padding-top: 6px"
-        >
+        <div v-if="vulnObj.server.environment" class="base-line" style="padding-top: 6px">
           <span style="color: #849ed8">{{ vulnObj.server.environment }} </span>
         </div>
       </div>
@@ -465,11 +450,7 @@
         <el-button type="text" class="confirmDel" @click="vulnDelete">
           确认删除
         </el-button>
-        <el-button
-          type="text"
-          class="cancelDel"
-          @click="deleteDialogOpen = false"
-        >
+        <el-button type="text" class="cancelDel" @click="deleteDialogOpen = false">
           取消
         </el-button>
       </div>
@@ -478,132 +459,132 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
-import { formatTimestamp, getPassedTime } from '@/utils/utils'
-import VueBase from '@/VueBase'
-import request from '@/utils/request'
-import { VulnListObj, VulnObj } from './types'
+import { Component } from "vue-property-decorator";
+import { formatTimestamp, getPassedTime } from "@/utils/utils";
+import VueBase from "@/VueBase";
+import request from "@/utils/request";
+import { VulnListObj, VulnObj } from "./types";
 
-@Component({ name: 'VulnDetail' })
+@Component({ name: "VulnDetail" })
 export default class VulnDetail extends VueBase {
-  private sliderWarpContract = false
-  private deleteDialogOpen = false
+  private sliderWarpContract = false;
+  private deleteDialogOpen = false;
   private statusOptions: Array<any> = [
     {
-      value: '已上报',
-      label: '已上报',
+      value: "已上报",
+      label: "已上报",
     },
     {
-      value: '已确认',
-      label: '已确认',
+      value: "已确认",
+      label: "已确认",
     },
     {
-      value: '已修复',
-      label: '已修复',
+      value: "已修复",
+      label: "已修复",
     },
     {
-      value: '已忽略',
-      label: '已忽略',
+      value: "已忽略",
+      label: "已忽略",
     },
-  ]
+  ];
   private vulnObj: VulnObj = {
     vul: {
-      url: '',
-      uri: '',
-      http_method: '',
-      type: '',
-      taint_position: '',
+      url: "",
+      uri: "",
+      http_method: "",
+      type: "",
+      taint_position: "",
       first_time: 0,
       latest_time: 0,
-      project_name: '',
-      language: '',
-      level: '',
+      project_name: "",
+      language: "",
+      level: "",
       counts: 0,
-      req_header: '',
+      req_header: "",
       graphy: [],
-      context_path: '',
+      context_path: "",
     },
     server: {
-      name: '',
-      hostname: '',
-      ip: '',
+      name: "",
+      hostname: "",
+      ip: "",
       port: 0,
-      container: '',
-      container_path: '',
-      runtime: '',
-      environment: '',
-      command: '',
+      container: "",
+      container_path: "",
+      runtime: "",
+      environment: "",
+      command: "",
     },
     strategy: {
-      desc: '',
-      sample_code: '',
-      repair_suggestion: '',
+      desc: "",
+      sample_code: "",
+      repair_suggestion: "",
     },
-  }
-  private tableData: Array<VulnListObj> = []
-  private page = 1
-  private selectedId = 0
-  private total = 0
-  private cardIndex = 0
+  };
+  private tableData: Array<VulnListObj> = [];
+  private page = 1;
+  private selectedId = 0;
+  private total = 0;
+  private cardIndex = 0;
   private searchObj = {
-    language: '',
-    level: '',
-    type: '',
-    project_name: '',
-    url: '',
-    order: '',
-  }
+    language: "",
+    level: "",
+    type: "",
+    project_name: "",
+    url: "",
+    order: "",
+  };
 
   private orderOptions = [
     {
-      label: this.$t('views.vulnList.orderOptions.type'),
-      value: 'type',
+      label: this.$t("views.vulnList.orderOptions.type"),
+      value: "type",
     },
     {
-      label: this.$t('views.vulnList.orderOptions.level'),
-      value: 'level',
+      label: this.$t("views.vulnList.orderOptions.level"),
+      value: "level",
     },
     {
-      label: this.$t('views.vulnList.orderOptions.url'),
-      value: 'url',
+      label: this.$t("views.vulnList.orderOptions.url"),
+      value: "url",
     },
     {
-      label: this.$t('views.vulnList.orderOptions.latest_time'),
-      value: 'latest_time',
+      label: this.$t("views.vulnList.orderOptions.latest_time"),
+      value: "latest_time",
     },
     {
-      label: this.$t('views.vulnList.orderOptions.first_time'),
-      value: 'first_time',
+      label: this.$t("views.vulnList.orderOptions.first_time"),
+      value: "first_time",
     },
-  ]
+  ];
 
   async created() {
-    this.page = parseInt(this.$route.params.page)
-    this.selectedId = parseInt(this.$route.params.id)
-    this.cardIndex = 0
-    await this.getVulnDetail()
-    await this.getTableData()
+    this.page = parseInt(this.$route.params.page);
+    this.selectedId = parseInt(this.$route.params.id);
+    this.cardIndex = 0;
+    await this.getVulnDetail();
+    await this.getTableData();
   }
 
   private newSelectData() {
-    this.page = 1
-    this.getTableData()
+    this.page = 1;
+    this.getTableData();
   }
 
   private currentChange(val: number) {
-    this.page = val
-    this.getTableData()
+    this.page = val;
+    this.getTableData();
   }
 
   private async changeStatus(val: any) {
     const res = await this.services.vuln.changeStatus({
       id: this.selectedId,
       status: val,
-    })
+    });
     if (res.status === 201) {
-      this.$message.success(res.msg)
+      this.$message.success(res.msg);
     } else {
-      this.$message.error(res.msg)
+      this.$message.error(res.msg);
     }
   }
 
@@ -617,49 +598,42 @@ export default class VulnDetail extends VueBase {
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order,
-    }
-    this.loadingStart()
-    const { status, data, page, msg } = await this.services.vuln.vulnList(
-      params
-    )
-    this.loadingDone()
+    };
+    this.loadingStart();
+    const { status, data, page, msg } = await this.services.vuln.vulnList(params);
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
-    this.tableData = data.reduce(
-      (list: Array<VulnListObj>, item: VulnListObj) => {
-        list.push({
-          ...item,
-          latest_time: getPassedTime(item.latest_time),
-        })
-        return list
-      },
-      []
-    )
-    this.total = page.alltotal
+    this.tableData = data.reduce((list: Array<VulnListObj>, item: VulnListObj) => {
+      list.push({
+        ...item,
+        latest_time: getPassedTime(item.latest_time),
+      });
+      return list;
+    }, []);
+    this.total = page.alltotal;
   }
 
   private idChange(id: number) {
-    this.selectedId = id
-    this.getVulnDetail()
+    this.selectedId = id;
+    this.getVulnDetail();
   }
 
   private async getVulnDetail() {
-    this.loadingStart()
-    const { data, status, msg } = await this.services.vuln.getVulnDetail(
-      this.selectedId
-    )
-    this.loadingDone()
+    this.loadingStart();
+    const { data, status, msg } = await this.services.vuln.getVulnDetail(this.selectedId);
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
     this.$nextTick(() => {
       this.vulnObj = {
         vul: {
           ...data.vul,
-          req_header: data.vul.req_header.replace(/\n/g, '<br/>'),
+          req_header: data.vul.req_header.replace(/\n/g, "<br/>"),
           first_time: formatTimestamp(data.vul.first_time),
           latest_time: formatTimestamp(data.vul.latest_time),
           graphy: data.vul.graphy,
@@ -670,60 +644,60 @@ export default class VulnDetail extends VueBase {
         strategy: {
           ...data.strategy,
         },
-      }
-    })
+      };
+    });
   }
 
   private async vulnDelete() {
-    this.loadingStart()
-    const { status, msg } = await this.services.vuln.vulnDelete(this.selectedId)
-    this.loadingDone()
+    this.loadingStart();
+    const { status, msg } = await this.services.vuln.vulnDelete(this.selectedId);
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message.error(msg);
     }
-    this.$message.success(msg)
-    this.$router.push('/vuln/vulnList')
+    this.$message.success(msg);
+    this.$router.push("/vuln/vulnList");
   }
 
   tableRowClassName() {
-    return 'diy-row'
+    return "diy-row";
   }
 
   cardRowClassName(select: boolean, index: number) {
-    var className = ''
+    var className = "";
     if (select) {
-      className = 'selected'
+      className = "selected";
     } else {
       if (index % 2 === 0) {
-        className = 'card-gap'
+        className = "card-gap";
       }
     }
-    return className
+    return className;
   }
 
   exportVul() {
-    var projectName = this.vulnObj.vul.project_name
+    var projectName = this.vulnObj.vul.project_name;
     request
       .get(`project/export?pname=${projectName}&vid=${this.selectedId}`, {
-        responseType: 'blob', // 告诉服务器我们需要的响应格式
+        responseType: "blob", // 告诉服务器我们需要的响应格式
       })
       .then((res: any) => {
-        if (res.hasOwnProperty('response')) {
-          this.$message.error({ message: '报告导出失败', showClose: true })
+        if (res.hasOwnProperty("response")) {
+          this.$message.error({ message: "报告导出失败", showClose: true });
         } else {
           const blob = new Blob([res], {
-            type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
-          })
-          const link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = projectName + '.doc'
-          link.click()
-          this.$message.success({ message: '报告导出成功', showClose: true })
+            type: "application/octet-stream", // 将会被放入到blob中的数组内容的MIME类型
+          });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = projectName + ".doc";
+          link.click();
+          this.$message.success({ message: "报告导出成功", showClose: true });
         }
       })
       .catch((error) => {
-        this.$message.error({ message: '报告导出失败', showClose: true })
-      })
+        this.$message.error({ message: "报告导出失败", showClose: true });
+      });
   }
 }
 </script>
