@@ -82,6 +82,26 @@
             {{ $t('views.projectEdit.scanAdd') }}
           </i>
         </el-form-item>
+        <el-form-item
+          :label="$t('views.projectEdit.version_name')"
+          prop="version_name"
+        >
+          <el-input
+            v-model="submitForm.version_name"
+            style="width: 412px"
+            :placeholder="$t('views.projectEdit.versionNamePlaceholder')"
+          ></el-input>
+        </el-form-item>
+        <el-form-item
+          :label="$t('views.projectEdit.description')"
+          prop="description"
+        >
+          <el-input
+            v-model="submitForm.description"
+            style="width: 412px"
+            :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
+          ></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button
             type="text"
@@ -173,11 +193,15 @@ export default class ProjectEdit extends VueBase {
     mode: string
     agentIdList: Array<number>
     scanId: number | undefined
+    version_name: string
+    description: string
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
     agentIdList: [],
     scanId: undefined,
+    version_name: '',
+    description: '',
   }
   private engineList: Array<{
     id: number
@@ -260,6 +284,8 @@ export default class ProjectEdit extends VueBase {
       return item.id
     })
     this.submitForm.scanId = data.scan_id
+    this.submitForm.version_name = data.version_name
+    this.submitForm.description = data.description
     this.agentChange()
   }
 
@@ -431,11 +457,19 @@ export default class ProjectEdit extends VueBase {
           agent_ids: string
           scan_id: number
           pid?: string
+          version_name: string | undefined
+          description: string | undefined
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
           agent_ids: this.submitForm.agentIdList.join(','),
           scan_id: this.submitForm.scanId as number,
+          version_name: this.submitForm.version_name
+            ? this.submitForm.version_name
+            : undefined,
+          description: this.submitForm.description
+            ? this.submitForm.description
+            : undefined,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid

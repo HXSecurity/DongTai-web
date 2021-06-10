@@ -25,7 +25,6 @@ export default {
     search: '污点搜索',
     poolDetail: '污点详情',
     projectManage: '项目管理',
-    
   },
   views: {
     login: {
@@ -155,7 +154,7 @@ export default {
       manage: '管理',
       owner: '负责人',
       timestapm: '时间',
-      projectName: '项目名称'
+      projectName: '项目名称',
     },
     strategyManage: {
       name: '策略名称',
@@ -202,6 +201,10 @@ export default {
       scanAdd: '新增策略模板',
       added: '已添加',
       submit: '保存',
+      version_name: '版本号',
+      versionNamePlaceholder: '请输入版本号',
+      description: '版本描述',
+      descriptionPlaceholder: '请输入版本描述',
     },
     projectDetail: {
       mode: '扫描模式',
@@ -212,6 +215,23 @@ export default {
       vulNum: '漏洞数量',
       type: '类型分布',
       owner: '负责人',
+      version: '版本',
+      add_version: '新增版本',
+      version_dialog: '版本管理',
+      version_name: '版本名称',
+      description: '版本描述',
+      handle: '操作',
+      current_version: '当前版本',
+      versionCurrent: '设为当前版本',
+      editVersion: '修改',
+      enterVersion: '确定',
+      dialogEnterVersion: '确 定',
+      cancelVersion: '取消',
+      deleteVersion: '删除',
+      hasEdit: '有版本处于编辑状态',
+      hasSame: '存在相同版本名称',
+      warning: '提示',
+      warningInfo: '此操作将永久删除该版本, 是否继续?',
     },
     userList: {
       keywordPlaceholder: '请输入名称关键字',

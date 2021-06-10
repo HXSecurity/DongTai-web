@@ -16,6 +16,17 @@
             <i class="iconfont iconshijian00"></i>
             {{ $t('views.projectDetail.latest_time') }}
             <i style="margin-right: 40px">{{ projectObj.latest_time }}</i>
+
+            <i class="iconfont iconicon_details_banben"></i>
+            {{ $t('views.projectDetail.version') }}
+            <i style="margin-right: 6px">{{
+              projectObj.versionData.version_name
+            }}</i>
+            <i
+              class="iconfont iconicon_details_edit"
+              style="cursor: pointer; color: #4fb794"
+              @click="showVersion"
+            ></i>
           </div>
           <div class="operate">
             <el-button type="text" class="operateBtn" @click="projectExport">
@@ -63,7 +74,10 @@
         </el-button>
       </div>
       <div v-show="selectTab === 'desc'">
-        <div class="module flex-row-space-between" id="type_summary_level_count">
+        <div
+          id="type_summary_level_count"
+          class="module flex-row-space-between"
+        >
           <div class="module-content">
             <div class="module-title">
               {{ $t('views.projectDetail.vulNum') }}
@@ -90,11 +104,115 @@
         ></vul-list-component>
       </div>
       <div v-if="selectTab === 'component'">
-        <ScaList
-          :project-id="$route.params.pid"
-        ></ScaList>
+        <ScaList :project-id="$route.params.pid"></ScaList>
       </div>
     </div>
+
+    <el-dialog
+      :title="$t('views.projectDetail.version_dialog')"
+      :visible.sync="versionFlag"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <div class="version-dialog-btn-list">
+        <el-tag
+          size="small"
+          effect="plain"
+          class="version-dialog-btn"
+          @click="addVersion"
+        >
+          <i class="el-icon-plus"></i>
+          {{ $t('views.projectDetail.add_version') }}
+        </el-tag>
+      </div>
+      <el-table
+        border
+        :data="versionList"
+        :header-cell-style="{ background: '#F1F8FF' }"
+        height="350"
+      >
+        <el-table-column
+          property="version_name"
+          min-width="120px"
+          :label="$t('views.projectDetail.version_name')"
+        >
+          <template slot-scope="scope">
+            <div v-if="!scope.row.isEdit">
+              <span>{{ scope.row.version_name }}</span>
+              <el-tag
+                v-if="scope.row.current_version === 1"
+                style="margin-left: 22px"
+                size="small"
+                effect="plain"
+              >
+                {{ $t('views.projectDetail.current_version') }}
+              </el-tag>
+            </div>
+            <el-input v-else v-model="scope.row.version_name" />
+          </template>
+        </el-table-column>
+        <el-table-column
+          min-width="200px"
+          property="description"
+          :label="$t('views.projectDetail.description')"
+        >
+          <template slot-scope="scope">
+            <span v-if="!scope.row.isEdit">{{ scope.row.description }}</span>
+            <el-input v-else v-model="scope.row.description" />
+          </template>
+        </el-table-column>
+        <el-table-column
+          header-align="right"
+          min-width="200px"
+          :label="$t('views.projectDetail.handle')"
+        >
+          <template slot-scope="scope">
+            <div class="btn-list">
+              <el-button
+                v-if="!scope.row.isEdit && scope.row.current_version !== 1"
+                type="text"
+                @click="versionCurrent(scope.row)"
+                >{{ $t('views.projectDetail.versionCurrent') }}</el-button
+              >
+              <el-button
+                v-if="!scope.row.isEdit"
+                type="text"
+                @click="editVersion(scope.row)"
+                >{{ $t('views.projectDetail.editVersion') }}</el-button
+              >
+              <el-button
+                v-if="scope.row.isEdit"
+                type="text"
+                @click="enterVersion(scope.row)"
+                >{{ $t('views.projectDetail.enterVersion') }}</el-button
+              >
+              <el-button
+                v-if="scope.row.isEdit"
+                type="text"
+                @click="cancelVersion(scope.row, scope.$index)"
+                >{{ $t('views.projectDetail.cancelVersion') }}</el-button
+              >
+              <span style="color: #d8d8d8">|</span>
+              <el-button
+                type="text"
+                style="color: #ea3838"
+                :disabled="
+                  !scope.row.version_id || scope.row.current_version === 1
+                "
+                @click="deleteVersion(scope.row, scope.$index)"
+                >{{ $t('views.projectDetail.deleteVersion') }}</el-button
+              >
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="enterVersionDialog">{{
+          $t('views.projectDetail.dialogEnterVersion')
+        }}</el-button>
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -114,10 +232,11 @@ import { Message } from 'element-ui'
   name: 'ProjectDetail',
   components: {
     VulListComponent,
-    ScaList
+    ScaList,
   },
 })
 export default class ProjectDetail extends VueBase {
+  version_name
   private selectTab = SelectTabs.desc
   private projectObj: ProjectObj = {
     id: 0,
@@ -125,7 +244,120 @@ export default class ProjectDetail extends VueBase {
     name: '',
     owner: '',
     latest_time: '',
+    versionData: {},
   }
+  private versionTemp: any = {}
+  private versionList: any[] = []
+  private versionFlag = false
+  private enterVersionDialog() {
+    this.versionFlag = false
+    this.projectsSummary()
+  }
+  private async versionCurrent(item: any) {
+    const res: any = await this.services.project.versionCurrent({
+      version_id: item.version_id,
+      project_id: this.projectObj.id,
+    })
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+    } else {
+      this.$message.success(res.msg)
+      this.versionList.forEach((i) => (i.current_version = 0))
+      item.current_version = 1
+    }
+  }
+
+  private editVersion(item: any) {
+    if (this.versionList.some((item) => item.isEdit)) {
+      this.$message.error(this.$t('views.projectDetail.hasEdit'))
+      return
+    }
+    this.$set(item, 'isEdit', true)
+    Object.assign(this.versionTemp, item)
+  }
+  private async enterVersion(item: any) {
+    if (this.versionList.some((i) => i.version_name == item.version_name)) {
+      this.$message.warning(this.$t('views.projectDetail.hasSame'))
+      return
+    }
+    if (!item.version_id) {
+      const res: any = await this.services.project.versionAdd({
+        ...item,
+        project_id: this.projectObj.id,
+      })
+      if (res.status !== 201) {
+        this.$message.error(res.msg)
+        return
+      }
+      this.$message.success(res.msg)
+      item.version_id = res.data.version_id
+      this.versionTemp = {}
+      this.$set(item, 'isEdit', false)
+    } else {
+      const res: any = await this.services.project.versionEdit({
+        ...item,
+        project_id: this.projectObj.id,
+      })
+      console.log(res)
+      if (res.status !== 201) {
+        this.$message.error(res.msg)
+        return
+      }
+      this.$message.success(res.msg)
+      this.versionTemp = {}
+      this.$set(item, 'isEdit', false)
+    }
+  }
+  private cancelVersion(item: any, index: number) {
+    if (!item.version_id) {
+      this.versionList.splice(index, 1)
+      return
+    }
+    Object.assign(item, this.versionTemp)
+    this.$set(item, 'isEdit', false)
+    this.versionTemp = {}
+  }
+  private deleteVersion(item: any, index: number) {
+    this.$confirm(
+      this.$t('views.projectDetail.warningInfo'),
+      this.$t('views.projectDetail.warning'),
+      {
+        confirmButtonText: this.$t('views.projectDetail.enterVersion'),
+        cancelButtonText: this.$t('views.projectDetail.cancelVersion'),
+        type: 'warning',
+      }
+    ).then(async () => {
+      const res: any = await this.services.project.versionDelete({
+        version_id: item.version_id,
+        project_id: this.projectObj.id,
+      })
+      if (res.status != 201) {
+        this.$message({
+          type: 'error',
+          message: res.msg,
+        })
+      } else {
+        this.$message({
+          type: 'success',
+          message: res.msg,
+        })
+        this.versionList.splice(index, 1)
+      }
+    })
+  }
+
+  private addVersion() {
+    if (this.versionList.some((item) => item.isEdit)) {
+      this.$message.error(this.$t('views.projectDetail.hasEdit'))
+      return
+    }
+    this.versionList.push({
+      version_name: '',
+      description: '',
+      isEdit: true,
+    })
+  }
+
   mounted() {
     this.projectsSummary()
   }
@@ -140,14 +372,15 @@ export default class ProjectDetail extends VueBase {
 
     const type_summary = document.getElementById('type_summary') as HTMLElement
     const level_count = document.getElementById('level_count') as HTMLElement
-    const type_summary_level_count = document.getElementById('type_summary_level_count') as HTMLElement
+    const type_summary_level_count = document.getElementById(
+      'type_summary_level_count'
+    ) as HTMLElement
 
     const height = Math.ceil(data.type_summary.length / 5) * 30
     const domHeight = type_summary.offsetHeight
     type_summary.style.height = domHeight + height + 'px'
     level_count.style.height = domHeight + height + 'px'
     type_summary_level_count.style.height = domHeight + 40 + height + 'px'
-
     this.projectObj = {
       ...data,
       name: data.name,
@@ -252,24 +485,36 @@ export default class ProjectDetail extends VueBase {
             return item.day_num
           }),
           itemStyle: {
-                color: 'rgba(99, 161, 242,1)'
-            },
+            color: 'rgba(99, 161, 242,1)',
+          },
           type: 'line',
           areaStyle: {
-                color: new (echarts as any).graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: 'rgba(99, 161, 242,1)'
-                }, {
-                    offset: 1,
-                    color: 'rgba(99, 161, 242,0.3)'
-                }])
-            },
+            color: new (echarts as any).graphic.LinearGradient(0, 0, 0, 1, [
+              {
+                offset: 0,
+                color: 'rgba(99, 161, 242,1)',
+              },
+              {
+                offset: 1,
+                color: 'rgba(99, 161, 242,0.3)',
+              },
+            ]),
+          },
         },
       ],
     }
     dayNumChart.setOption(dayNumOption)
   }
-
+  showVersion() {
+    this.services.project.versionList(this.projectObj.id).then((res: any) => {
+      if (res.status === 201) {
+        this.versionList = res.data
+        this.versionFlag = true
+      } else {
+        this.$message.error('msg')
+      }
+    })
+  }
   projectExport() {
     request
       .get(`/project/export?pid=${this.$route.params.pid}`, {
@@ -405,5 +650,30 @@ export default class ProjectDetail extends VueBase {
       }
     }
   }
+}
+.btn-list {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .el-button {
+    padding: 0 16px;
+  }
+}
+.version-dialog-btn-list {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 0 18px 0;
+  .version-dialog-btn {
+    cursor: pointer;
+  }
+}
+
+/deep/.el-dialog__body {
+  padding: 0 20px;
+}
+.dialog-footer {
+  display: flex;
+  justify-content: center;
 }
 </style>

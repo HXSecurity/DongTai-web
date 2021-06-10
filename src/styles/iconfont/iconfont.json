@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "22165944",
+      "name": "icon_details_edit",
+      "font_class": "icon_details_edit",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "22165945",
+      "name": "icon_details_banben",
+      "font_class": "icon_details_banben",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
       "icon_id": "22010179",
       "name": "icon_yingyong_zhuagntai",
       "font_class": "icon_yingyong_zhuagntai",

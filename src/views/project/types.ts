@@ -19,6 +19,7 @@ export interface ProjectObj {
   name: string
   owner: string
   latest_time: string
+  versionData: any
 }
 
 export const enum SelectTabs {
