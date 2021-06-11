@@ -20,7 +20,7 @@
             <i class="iconfont iconicon_details_banben"></i>
             {{ $t('views.projectDetail.version') }}
             <i style="margin-right: 6px">{{
-              projectObj.versionData.version_name
+              projectObj.versionData && projectObj.versionData.version_name
             }}</i>
             <i
               class="iconfont iconicon_details_edit"
@@ -236,7 +236,6 @@ import { Message } from 'element-ui'
   },
 })
 export default class ProjectDetail extends VueBase {
-  version_name
   private selectTab = SelectTabs.desc
   private projectObj: ProjectObj = {
     id: 0,
@@ -251,7 +250,6 @@ export default class ProjectDetail extends VueBase {
   private versionFlag = false
   private enterVersionDialog() {
     this.versionFlag = false
-    this.projectsSummary()
   }
   private async versionCurrent(item: any) {
     const res: any = await this.services.project.versionCurrent({
@@ -264,12 +262,13 @@ export default class ProjectDetail extends VueBase {
       this.$message.success(res.msg)
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
+      this.projectsSummary()
     }
   }
 
   private editVersion(item: any) {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit'))
+      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
       return
     }
     this.$set(item, 'isEdit', true)
@@ -277,7 +276,7 @@ export default class ProjectDetail extends VueBase {
   }
   private async enterVersion(item: any) {
     if (this.versionList.some((i) => i.version_name == item.version_name)) {
-      this.$message.warning(this.$t('views.projectDetail.hasSame'))
+      this.$message.warning(this.$t('views.projectDetail.hasSame') as string)
       return
     }
     if (!item.version_id) {
@@ -319,11 +318,15 @@ export default class ProjectDetail extends VueBase {
   }
   private deleteVersion(item: any, index: number) {
     this.$confirm(
-      this.$t('views.projectDetail.warningInfo'),
-      this.$t('views.projectDetail.warning'),
+      this.$t('views.projectDetail.warningInfo') as string,
+      this.$t('views.projectDetail.warning') as string,
       {
-        confirmButtonText: this.$t('views.projectDetail.enterVersion'),
-        cancelButtonText: this.$t('views.projectDetail.cancelVersion'),
+        confirmButtonText: this.$t(
+          'views.projectDetail.enterVersion'
+        ) as string,
+        cancelButtonText: this.$t(
+          'views.projectDetail.cancelVersion'
+        ) as string,
         type: 'warning',
       }
     ).then(async () => {
@@ -348,7 +351,7 @@ export default class ProjectDetail extends VueBase {
 
   private addVersion() {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit'))
+      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
       return
     }
     this.versionList.push({

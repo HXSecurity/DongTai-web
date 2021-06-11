@@ -225,7 +225,7 @@ export default {
       versionCurrent: '设为当前版本',
       editVersion: '修改',
       enterVersion: '确定',
-      dialogEnterVersion: '确 定',
+      dialogEnterVersion: '关 闭',
       cancelVersion: '取消',
       deleteVersion: '删除',
       hasEdit: '有版本处于编辑状态',
