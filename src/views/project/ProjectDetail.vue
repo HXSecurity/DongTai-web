@@ -184,7 +184,7 @@
               <el-button
                 v-if="scope.row.isEdit"
                 type="text"
-                @click="enterVersion(scope.row)"
+                @click="enterVersion(scope.row, scope.$index)"
                 >{{ $t('views.projectDetail.enterVersion') }}</el-button
               >
               <el-button
@@ -274,8 +274,12 @@ export default class ProjectDetail extends VueBase {
     this.$set(item, 'isEdit', true)
     Object.assign(this.versionTemp, item)
   }
-  private async enterVersion(item: any) {
-    if (this.versionList.some((i) => i.version_name == item.version_name)) {
+  private async enterVersion(item: any, index: number) {
+    if (
+      this.versionList.some(
+        (i, k) => i.version_name === item.version_name && k !== index
+      )
+    ) {
       this.$message.warning(this.$t('views.projectDetail.hasSame') as string)
       return
     }
