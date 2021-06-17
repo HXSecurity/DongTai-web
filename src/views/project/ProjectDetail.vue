@@ -149,7 +149,12 @@
                 {{ $t('views.projectDetail.current_version') }}
               </el-tag>
             </div>
-            <el-input v-else v-model="scope.row.version_name" size="small" placeholder="版本名称，如：v1"/>
+            <el-input
+              v-else
+              v-model="scope.row.version_name"
+              size="small"
+              placeholder="版本名称，如：v1"
+            />
           </template>
         </el-table-column>
         <el-table-column
@@ -159,7 +164,12 @@
         >
           <template slot-scope="scope">
             <span v-if="!scope.row.isEdit">{{ scope.row.description }}</span>
-            <el-input v-else v-model="scope.row.description"  size="small" placeholder="版本描述，如：xxx业务第x次迭代"/>
+            <el-input
+              v-else
+              v-model="scope.row.description"
+              size="small"
+              placeholder="版本描述，如：xxx业务第x次迭代"
+            />
           </template>
         </el-table-column>
         <el-table-column

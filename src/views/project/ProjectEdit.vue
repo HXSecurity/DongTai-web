@@ -284,8 +284,8 @@ export default class ProjectEdit extends VueBase {
       return item.id
     })
     this.submitForm.scanId = data.scan_id
-    this.submitForm.version_name = data.version_name
-    this.submitForm.description = data.description
+    this.submitForm.version_name = data.versionData?.version_name
+    this.submitForm.description = data.versionData?.description
     this.agentChange()
   }
 
