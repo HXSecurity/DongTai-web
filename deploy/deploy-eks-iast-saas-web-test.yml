@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lingzhi-web
+  namespace: iast-test
+  annotations:
+    kubesphere.io/description: dongtai前端项目
+  labels:
+    app: lingzhi-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lingzhi-web
+  template:
+    metadata:
+      labels:
+        app: lingzhi-web
+    spec:
+      containers:
+        - name: lingzhi-web-container
+          image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:VERSION
+          imagePullPolicy: IfNotPresent
+
+          resources:
+            limits:
+              cpu: "500m"
+              memory: 1000Mi
+            requests:
+              cpu: "500m"
+              memory: 1000Mi
+      imagePullSecrets:
+        - name: aliyun-registry-secret
