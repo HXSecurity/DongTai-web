@@ -7,17 +7,9 @@
         width="120px"
       >
         <template slot-scope="{ row }">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="row.project_name"
-            placement="top-start"
-            :disabled="row.project_name.length < 14"
-          >
-            <div class="dot">
-              <span>{{ row.project_name }}</span>
-            </div>
-          </el-tooltip>
+          <div class="dot">
+            {{ row.project_name }}
+          </div>
         </template>
       </el-table-column>
       <el-table-column
@@ -26,17 +18,9 @@
         width="180px"
       >
         <template slot-scope="{ row }">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="row.server"
-            placement="top-start"
-            :disabled="row.server.length < 20"
-          >
-            <div class="dot">
-              <span>{{ row.server }}</span>
-            </div>
-          </el-tooltip>
+          <div class="dot">
+            {{ row.server }}
+          </div>
         </template>
       </el-table-column>
 
@@ -54,12 +38,23 @@
 
       <el-table-column
         :label="$t('views.agentManage.status')"
+        prop="is_core_running"
+        width="90px"
+      >
+        <template slot-scope="{ row }">
+          <div>
+            {{ row.is_core_running==1?'核心组件运行中':'核心组件未运行中' }}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('views.agentManage.healthy')"
         prop="running_status"
         width="90px"
       >
         <template slot-scope="{ row }">
           <div>
-            {{ row.running_status }}
+            {{ row.running_status=='未运行'?'下线':'正常' }}
           </div>
         </template>
       </el-table-column>
@@ -69,7 +64,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        v-if="rolesCheck(['system_admin', 'talent_admin'], true)"
         :label="$t('views.agentManage.owner')"
         prop="owner"
         width="120px"
@@ -83,14 +77,14 @@
         <template slot-scope="{ row }">
           <div class="icon-box">
             <i
-              v-if="row.running_status == '未运行'"
+              v-if="row.is_core_running == 0"
               class="icon el-icon-video-play"
-              @click="agentInstall(row.id)"
+              @click="agentStart(row.id)"
             ></i>
             <i
               v-else
               class="icon el-icon-video-pause"
-              @click="agentUninstall(row.id)"
+              @click="agentStop(row.id)"
             ></i>
             <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
           </div>
@@ -98,17 +92,9 @@
       </el-table-column>
       <el-table-column label="Agent" width="320" prop="token">
         <template slot-scope="{ row }">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            :content="row.token"
-            placement="top-start"
-            :disabled="row.token.length < 45"
-          >
-            <div class="dot">
-              <span>{{ row.token }}</span>
-            </div>
-          </el-tooltip>
+          <div class="dot">
+            {{ row.token }}
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -126,121 +112,141 @@
         <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
       </div>
       <div slot="footer" style="text-align: center">
-        <el-button class="confirmDel" @click="agentDelete">
-          确认删除
-        </el-button>
-        <el-button class="cancelDel" @click="deleteDialogOpen = false">
-          取消
-        </el-button>
+        <el-button class="confirmDel" @click="agentDelete"> 确认删除 </el-button>
+        <el-button class="cancelDel" @click="deleteDialogOpen = false"> 取消 </el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script lang="ts">
-import VueBase from '@/VueBase'
-import { Component } from 'vue-property-decorator'
-import { AgentListObj } from '@/views/setting/types'
-import { formatTimestamp } from '@/utils/utils'
+import VueBase from "@/VueBase";
+import { Component } from "vue-property-decorator";
+import { AgentListObj } from "@/views/setting/types";
+import { formatTimestamp } from "@/utils/utils";
 
 @Component({
-  name: 'AgentManage',
+  name: "AgentManage",
   filters: {
     formatTimestamp(date: number | any) {
-      return formatTimestamp(date)
+      return formatTimestamp(date);
     },
   },
 })
 export default class AgentManage extends VueBase {
-  private tableData: Array<AgentListObj> = []
-  private total = 0
-  private page = 1
-  private pageSize = 10
-  private currentPageSize = 0
-  private currentPageDelete = 0
-  private deleteDialogOpen = false
-  private deleteSelectId = 0
+  private tableData: Array<AgentListObj> = [];
+  private total = 0;
+  private page = 1;
+  private pageSize = 10;
+  private currentPageSize = 0;
+  private currentPageDelete = 0;
+  private deleteDialogOpen = false;
+  private deleteSelectId = 0;
 
-  async created() {
-
-    this.getTableData()
+  created() {
+    this.getTableData();
   }
 
   private currentChange(val: number | string) {
-    this.page = parseInt(`${val}`)
-    this.getTableData()
+    this.page = parseInt(`${val}`);
+    this.getTableData();
   }
 
   private async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
-    }
-    this.loadingStart()
-    await this.services.setting.agentUpdate()
-    const { status, msg, data, page } = await this.services.setting.agentList(
-      params
-    )
-    this.loadingDone()
+    };
+    this.loadingStart();
+    const { status, msg, data, page } = await this.services.setting.agentList(params);
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
-    this.tableData = data
-    this.currentPageSize = data.length
-    this.total = page.alltotal
-    this.currentPageDelete = 0
-    console.log(this.currentPageSize)
+    this.tableData = data;
+    this.currentPageSize = data.length;
+    this.total = page.alltotal;
+    this.currentPageDelete = 0;
+    console.log(this.currentPageSize);
   }
 
   private async agentInstall(id: string | number) {
-    this.loadingStart()
+    this.loadingStart();
     const { status, msg } = await this.services.setting.agentInstall({
       id: parseInt(`${id}`),
-    })
-    this.loadingDone()
+    });
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
-    await this.getTableData()
+    await this.getTableData();
+  }
+
+  private async agentStart(id: string | number) {
+    this.loadingStart();
+    const { status, msg } = await this.services.setting.agentStart({
+      id: parseInt(`${id}`),
+    });
+    this.loadingDone();
+    if (status !== 201) {
+      this.$message.error(msg);
+      return;
+    }
+    this.$message.success(msg);
+    await this.getTableData();
+  }
+
+  private async agentStop(id: string | number) {
+    this.loadingStart();
+    const { status, msg } = await this.services.setting.agentStop({
+      id: parseInt(`${id}`),
+    });
+    this.loadingDone();
+    if (status !== 201) {
+      this.$message.error(msg);
+      return;
+    }
+    this.$message.success(msg);
+    await this.getTableData();
   }
 
   private async agentUninstall(id: string | number) {
-    this.loadingStart()
+    this.loadingStart();
     const { status, msg } = await this.services.setting.agentUninstall({
       id: parseInt(`${id}`),
-    })
-    this.loadingDone()
+    });
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
-    await this.getTableData()
+    await this.getTableData();
   }
 
   private async doDelete(id: string | number) {
-    this.deleteDialogOpen = true
-    this.deleteSelectId = parseInt(`${id}`)
+    this.deleteDialogOpen = true;
+    this.deleteSelectId = parseInt(`${id}`);
   }
 
   private async agentDelete() {
-    this.deleteDialogOpen = false
-    this.loadingStart()
+    this.deleteDialogOpen = false;
+    this.loadingStart();
     const { status, msg } = await this.services.setting.agentDelete({
       id: this.deleteSelectId,
-    })
-    this.loadingDone()
+    });
+    this.loadingDone();
     if (status !== 201) {
-      this.$message.error(msg)
-      return
+      this.$message.error(msg);
+      return;
     }
-    this.currentPageDelete = this.currentPageDelete + 1
+    this.currentPageDelete = this.currentPageDelete + 1;
     if (this.currentPageDelete === this.currentPageSize) {
-      this.page = this.page - 1
+      this.page = this.page - 1;
     }
-    await this.getTableData()
-    this.deleteSelectId = 0
+    await this.getTableData();
+    this.deleteSelectId = 0;
   }
 }
 </script>

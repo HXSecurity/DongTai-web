@@ -22,6 +22,26 @@ export default () =>
       return request.get('/projects', { params })
     }
 
+    versionList(id: any): Promise<iResponse> {
+      return request.get(`/project/version/list/${id}`)
+    }
+
+    versionAdd(params: any): Promise<iResponse> {
+      return request.post(`/project/version/add`, params)
+    }
+
+    versionEdit(params: any): Promise<iResponse> {
+      return request.post(`/project/version/update`, params)
+    }
+
+    versionCurrent(params: any): Promise<iResponse> {
+      return request.post(`/project/version/current`, params)
+    }
+
+    versionDelete(params: any): Promise<iResponse> {
+      return request.post(`/project/version/delete`, params)
+    }
+
     //新增项目 编辑
     projectAdd(params: ProjectAddParams): Promise<iResponse> {
       return request.post('/project/add', params)
