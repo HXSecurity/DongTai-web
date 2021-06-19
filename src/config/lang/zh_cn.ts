@@ -155,6 +155,7 @@ export default {
       owner: '负责人',
       timestapm: '时间',
       projectName: '项目名称',
+      healthy: '健康'
     },
     strategyManage: {
       name: '策略名称',
