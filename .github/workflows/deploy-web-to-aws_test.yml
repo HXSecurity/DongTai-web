@@ -3,8 +3,6 @@ name: Deploy DongTai-Web to AWS Test
 on:
   pull_request:
     branches: [ develop ]
-  push:
-    branches: [ develop ]
 
 jobs:
   build:

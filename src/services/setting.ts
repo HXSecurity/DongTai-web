@@ -28,6 +28,16 @@ export default () =>
       return request.post('/agent/uninstall', params)
     }
 
+        // 引擎管理-开启工作
+        agentStart(params: { id: number }): Promise<iResponse> {
+          return request.post('/agent/start', params)
+        }
+    
+        // 引擎管理-暂停
+        agentStop(params: { id: number }): Promise<iResponse> {
+          return request.post('/agent/stop', params)
+        }
+
     // 引擎管理-删除
     agentDelete(params: { id: number }): Promise<iResponse> {
       return request.get('/agent/' + params.id + '/delete')

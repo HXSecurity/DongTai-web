@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lingzhi-web
+  name: dongtai-web
   namespace: iast-test
   annotations:
     kubesphere.io/description: dongtai前端项目
   labels:
-    app: lingzhi-web
+    app: dongtai-web
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: lingzhi-web
+      app: dongtai-web
   template:
     metadata:
       labels:
-        app: lingzhi-web
+        app: dongtai-web
     spec:
       containers:
-        - name: lingzhi-web-container
+        - name: dongtai-web-container
           image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:VERSION
           imagePullPolicy: IfNotPresent
 
@@ -31,3 +31,19 @@ spec:
               memory: 1000Mi
       imagePullSecrets:
         - name: aliyun-registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dongtai-web
+  name: dongtai-web-pub-svc
+  namespace: iast-test
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: dongtai-web
+  type: LoadBalancer
