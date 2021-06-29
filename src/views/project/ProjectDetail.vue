@@ -119,7 +119,6 @@
         <el-tag
           size="small"
           effect="plain"
-          class="version-dialog-btn"
           @click="addVersion"
         >
           <i class="el-icon-plus"></i>
