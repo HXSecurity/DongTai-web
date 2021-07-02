@@ -123,6 +123,10 @@
           }}
         </div>
         <div class="btnWarp">
+          <el-button type="text" class="btn" @click="recheckVul">
+            <i class="iconfont icondaochu-5"></i>
+            {{ $t('views.vulnDetail.recheck') }}
+          </el-button>
           <el-button type="text" class="btn" @click="exportVul">
             <i class="iconfont icondaochu-5"></i>
             {{ $t('views.vulnDetail.export') }}
@@ -159,7 +163,6 @@
             </span>
             <span>{{ vulnObj.vul.project_name }}</span>
           </div>
-
           <div class="info">
             <span class="label">
               <i class="iconfont iconzhongjianjian"></i>
@@ -212,7 +215,7 @@
           <div class="info">
             <span class="label">
               <i class="iconfont iconicon_yingyong_zhuagntai"></i>
-              状态:
+              {{ $t('views.vulnDetail.state') }}:
             </span>
             <el-select
               v-model="vulnObj.vul.status"
@@ -232,6 +235,24 @@
               </el-option>
             </el-select>
           </div>
+
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconicon_yingyong_zhuagntai"></i>
+              {{ $t('views.vulnDetail.taintParamName') }}:
+            </span>
+            <span>{{ vulnObj.vul.param_name }}</span>
+          </div>
+
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconicon_yingyong_zhuagntai"></i>
+              {{ $t('views.vulnDetail.taintValue') }}:
+            </span>
+            <span>{{ vulnObj.vul.taint_value }}</span>
+          </div>
+
+          <div class="info"></div>
         </div>
       </div>
       <div class="module-title">
@@ -354,7 +375,10 @@
                       {{ row.caller }}
                     </div>
                   </div>
-                  <div v-if="row.source_value" class="expand-item">
+                  <div
+                    v-if="row.source_value && row.source_value != 'NULL'"
+                    class="expand-item"
+                  >
                     <div class="expand-label">
                       {{ $t('views.vulnDetail.source_value') }}
                     </div>
@@ -362,7 +386,10 @@
                       {{ row.source_value }}
                     </div>
                   </div>
-                  <div v-if="row.target_value" class="expand-item">
+                  <div
+                    v-if="row.target_value && row.target_value != 'NULL'"
+                    class="expand-item"
+                  >
                     <div class="expand-label">
                       {{ $t('views.vulnDetail.target_value') }}
                     </div>
@@ -528,6 +555,8 @@ export default class VulnDetail extends VueBase {
       req_header: '',
       graphy: [],
       context_path: '',
+      taint_value: '',
+      param_name: '',
     },
     server: {
       name: '',
@@ -677,6 +706,7 @@ export default class VulnDetail extends VueBase {
           ...data.strategy,
         },
       }
+      console.log(this.vulnObj.vul.param_name)
     })
   }
 
@@ -686,9 +716,10 @@ export default class VulnDetail extends VueBase {
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
+    } else {
+      this.$message.success(msg)
+      this.$router.push('/vuln/vulnList')
     }
-    this.$message.success(msg)
-    this.$router.push('/vuln/vulnList')
   }
 
   tableRowClassName() {
@@ -730,6 +761,18 @@ export default class VulnDetail extends VueBase {
       .catch((error) => {
         this.$message.error({ message: '报告导出失败', showClose: true })
       })
+  }
+
+  private async recheckVul() {
+    const params = {
+      ids: this.selectedId.toString(),
+    }
+    const { status, data, msg } = await this.services.vuln.vulRecheck(params)
+    if (status !== 201) {
+      this.$message.error(msg)
+    } else {
+      this.$message.success(msg)
+    }
   }
 }
 </script>

@@ -62,6 +62,7 @@ export default {
       target_value: '传播后污点',
       baseInfo: '基本信息',
       vulnDesc: '漏洞描述',
+      recheck: '验证',
       export: '导出',
       delete: '删除',
       httpRequest: 'HTTP请求',
@@ -90,6 +91,9 @@ export default {
       middleware: '中间件',
       command: '启动命令',
       other: '其他',
+      state: '状态',
+      taintValue: '污点值',
+      taintParamName: '参数'
     },
     scaList: {
       filter: '过滤器',
