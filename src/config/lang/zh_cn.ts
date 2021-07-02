@@ -237,6 +237,9 @@ export default {
       hasSame: '存在相同版本名称',
       warning: '提示',
       warningInfo: '此操作将永久删除该版本, 是否继续?',
+      setting: '设置',
+      export: '报告导出',
+      recheck: '漏洞验证'
     },
     userList: {
       keywordPlaceholder: '请输入名称关键字',
