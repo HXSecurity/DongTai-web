@@ -38,4 +38,8 @@ export default () =>
     changeStatus(data: any): Promise<iResponse> {
       return request.post(`/vuln/status`, data)
     }
+
+    vulRecheck(data: any): Promise<iResponse> {
+      return request.post(`/vul/recheck`, data)
+    }
   })()

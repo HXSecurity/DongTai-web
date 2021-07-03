@@ -291,25 +291,25 @@ const routes: Array<RouteConfig> = [
           },
         ],
       },
-      // {
-      //   path: 'talent',
-      //   name: 'talent',
-      //   redirect: '/talent/talentList',
-      //   meta: {
-      //     name: i18n.t('menu.talent'),
-      //   },
-      //   component: () => import('@/views/talent/Index.vue'),
-      //   children: [
-      //     {
-      //       path: 'talentList',
-      //       name: 'talentList',
-      //       meta: {
-      //         name: i18n.t('menu.talent'),
-      //       },
-      //       component: () => import('@/views/talent/TalentList.vue'),
-      //     },
-      //   ],
-      // },
+      {
+        path: 'talent',
+        name: 'talent',
+        redirect: '/talent/talentList',
+        meta: {
+          name: i18n.t('menu.talent'),
+        },
+        component: () => import('@/views/talent/Index.vue'),
+        children: [
+          {
+            path: 'talentList',
+            name: 'talentList',
+            meta: {
+              name: i18n.t('menu.talent'),
+            },
+            component: () => import('@/views/talent/TalentList.vue'),
+          },
+        ],
+      },
       {
         path: '/deploy',
         name: '/deploy',
