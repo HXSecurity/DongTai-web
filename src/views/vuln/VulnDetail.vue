@@ -217,7 +217,11 @@
               <i class="iconfont iconshuju1"></i>
               {{ $t('views.vulnDetail.taintParamName') }}:
             </span>
-            <span>{{ (vulnObj.vul.param_name&&Object.values(vulnObj.vul.param_name)) || '无' }}</span>
+            <span>{{
+              (vulnObj.vul.param_name &&
+                Object.values(vulnObj.vul.param_name).join(',')) ||
+              '无'
+            }}</span>
           </div>
 
           <div class="info">
@@ -251,9 +255,7 @@
             </el-select>
           </div>
           <div class="info"></div>
-
-
-          </div>
+        </div>
       </div>
       <div class="module-title">
         {{ $t('views.vulnDetail.vulnDesc') }}
