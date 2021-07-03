@@ -22,6 +22,13 @@ export default {
     // this.initData()
     this.$refs.markdown.innerHTML = markdownParser.render(this.content)
   },
+  watch:{
+    content(val){
+      if(this.$refs.markdown){
+        this.$refs.markdown.innerHTML = markdownParser.render(val)
+      }
+    }
+  }
   // methods: {
   //   // initData () {
   //   // }

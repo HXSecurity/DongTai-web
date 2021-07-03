@@ -43,6 +43,8 @@ export interface VulnObj {
     req_header: string
     graphy: Array<Graphy>
     context_path: string
+    taint_value: string,
+    param_name: {}
   }
   server: {
     name: string

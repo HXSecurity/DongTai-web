@@ -29,9 +29,13 @@
             ></i>
           </div>
           <div class="operate">
+            <el-button type="text" class="operateBtn" @click="projectRecheck">
+              <i class="iconfont iconjiance-copy"></i>
+              {{ $t('views.projectDetail.recheck') }}
+            </el-button>
             <el-button type="text" class="operateBtn" @click="projectExport">
               <i class="iconfont icondaochu-5"></i>
-              导出
+              {{ $t('views.projectDetail.export') }}
             </el-button>
             <el-button
               type="text"
@@ -39,7 +43,7 @@
               @click="$router.push(`/project/projectEdit/${projectObj.id}`)"
             >
               <i class="iconfont iconshezhi-2"></i>
-              设置
+              {{ $t('views.projectDetail.setting') }}
             </el-button>
           </div>
         </div>
@@ -116,12 +120,7 @@
       :show-close="false"
     >
       <div class="version-dialog-btn-list">
-        <el-tag
-          size="small"
-          effect="plain"
-          class="version-dialog-btn"
-          @click="addVersion"
-        >
+        <el-tag size="small" effect="plain" @click="addVersion">
           <i class="el-icon-plus"></i>
           {{ $t('views.projectDetail.add_version') }}
         </el-tag>
@@ -555,6 +554,17 @@ export default class ProjectDetail extends VueBase {
         this.$message.error({ message: '报告导出失败', showClose: true })
       })
   }
+
+  private async projectRecheck() {
+    const { status, msg, data } = await this.services.project.projectsRecheck(
+      this.$route.params.pid
+    )
+    if (status !== 201) {
+      this.$message.error(msg)
+    } else {
+      this.$message.success(msg)
+    }
+  }
 }
 </script>
 
@@ -595,7 +605,7 @@ export default class ProjectDetail extends VueBase {
         // color: #b1b9c4;
 
         .operateBtn {
-          width: 80px;
+          width: 90px;
           height: 32px;
           line-height: 0;
           border-radius: 2px;

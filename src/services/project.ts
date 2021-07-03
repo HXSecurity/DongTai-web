@@ -65,4 +65,9 @@ export default () =>
     projectsSummary(id: string): Promise<iResponse> {
       return request.get(`/projects/summary/${id}`)
     }
+
+    //项目详情 - 漏洞验证
+    projectsRecheck(id: string): Promise<iResponse> {
+      return request.get(`/vul/recheck?projectId=${id}`)
+    }
   })()
