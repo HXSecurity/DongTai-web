@@ -30,7 +30,7 @@
           </div>
           <div class="operate">
             <el-button type="text" class="operateBtn" @click="projectRecheck">
-              <i class="iconfont icondaochu-5"></i>
+              <i class="iconfont iconjiance-copy"></i>
               {{ $t('views.projectDetail.recheck') }}
             </el-button>
             <el-button type="text" class="operateBtn" @click="projectExport">
@@ -605,7 +605,7 @@ export default class ProjectDetail extends VueBase {
         // color: #b1b9c4;
 
         .operateBtn {
-          width: 80px;
+          width: 90px;
           height: 32px;
           line-height: 0;
           border-radius: 2px;

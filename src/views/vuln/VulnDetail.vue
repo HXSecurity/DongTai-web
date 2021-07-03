@@ -214,6 +214,21 @@
         <div class="infoLine flex-row-space-between">
           <div class="info">
             <span class="label">
+              <i class="iconfont iconshuju1"></i>
+              {{ $t('views.vulnDetail.taintParamName') }}:
+            </span>
+            <span>{{ (vulnObj.vul.param_name&&Object.values(vulnObj.vul.param_name)) || '无' }}</span>
+          </div>
+
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconloudong"></i>
+              {{ $t('views.vulnDetail.taintValue') }}:
+            </span>
+            <span>{{ vulnObj.vul.taint_value || 0 }}</span>
+          </div>
+          <div class="info" style="flex: 1.5">
+            <span class="label">
               <i class="iconfont iconicon_yingyong_zhuagntai"></i>
               {{ $t('views.vulnDetail.state') }}:
             </span>
@@ -221,7 +236,7 @@
               v-model="vulnObj.vul.status"
               placeholder="未处理"
               size="mini"
-              style="width: 13%"
+              style="width: 40%"
               filterable
               allow-create
               @change="changeStatus"
@@ -235,25 +250,10 @@
               </el-option>
             </el-select>
           </div>
-
-          <div class="info">
-            <span class="label">
-              <i class="iconfont iconicon_yingyong_zhuagntai"></i>
-              {{ $t('views.vulnDetail.taintParamName') }}:
-            </span>
-            <span>{{ vulnObj.vul.param_name }}</span>
-          </div>
-
-          <div class="info">
-            <span class="label">
-              <i class="iconfont iconicon_yingyong_zhuagntai"></i>
-              {{ $t('views.vulnDetail.taintValue') }}:
-            </span>
-            <span>{{ vulnObj.vul.taint_value }}</span>
-          </div>
-
           <div class="info"></div>
-        </div>
+
+
+          </div>
       </div>
       <div class="module-title">
         {{ $t('views.vulnDetail.vulnDesc') }}
@@ -883,7 +883,7 @@ export default class VulnDetail extends VueBase {
     border-bottom: 1px solid #e6e9ec;
     word-wrap: break-word;
     .btnWarp {
-      width: 200px;
+      width: 260px;
       margin-left: 20px;
       .btn {
         width: 80px;
