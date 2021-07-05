@@ -111,7 +111,7 @@
       "
     >
       <div class="vuln-title flex-row-space-between">
-        <div style="flex: 1; max-width: 700px">
+        <div style="flex: 1; max-width: 700px; word-break: break-all">
           {{
             `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${
               vulnObj.vul.type
