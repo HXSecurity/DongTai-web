@@ -263,7 +263,7 @@
                   effect="dark"
                   :content="item.project_name"
                   placement="top-start"
-                  :disabled="item.project_name.length<=11"
+                  :disabled="item.project_name.length <= 11"
                 >
                   <span class="dot"> {{ item.project_name }}</span>
                 </el-tooltip>
@@ -308,31 +308,35 @@
               <div class="tag2" style="margin-left: 20px">
                 {{ item.type }}
               </div> -->
-                <div class="tageIcon" style="margin-left: 20px">
-                <i class="iconfont iconicon_yingyong_table" style="color:#E7F5E4"></i>
-                <span style="background:#E7F5E4;color:#63974E;">
+              <div class="tageIcon" style="margin-left: 20px">
+                <i
+                  class="iconfont iconicon_yingyong_table"
+                  style="color: #e7f5e4"
+                ></i>
+                <span style="background: #e7f5e4; color: #63974e">
                   {{ item.language }}
                 </span>
               </div>
 
-
-
               <div class="tageIcon" style="margin-left: 20px">
-                <i class="iconfont iconicon_yingyong_table" style="color:#FCE9DE"></i>
-                <span style="background:#FCE9DE;color:#E07D43;">
+                <i
+                  class="iconfont iconicon_yingyong_table"
+                  style="color: #fce9de"
+                ></i>
+                <span style="background: #fce9de; color: #e07d43">
                   {{ item.type }}
                 </span>
               </div>
 
-
-
               <div class="tageIcon" style="margin-left: 20px">
-                <i class="iconfont iconicon_yingyong_table" style="color:#E5F3F3"></i>
-                <span style="background:#E5F3F3;color:#3C9AA2;">
+                <i
+                  class="iconfont iconicon_yingyong_table"
+                  style="color: #e5f3f3"
+                ></i>
+                <span style="background: #e5f3f3; color: #3c9aa2">
                   {{ item.status }}
                 </span>
               </div>
-
             </div>
           </div>
         </div>
@@ -509,7 +513,7 @@ export default class VulnList extends VueBase {
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order,
-      status: this.searchObj.status
+      status: this.searchObj.status,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)
@@ -564,14 +568,14 @@ export default class VulnList extends VueBase {
   bottom: 0;
   width: 238px;
 }
-.tageIcon{
+.tageIcon {
   display: inline-flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
-  i{
+  i {
     font-size: 20px;
   }
-  span{
+  span {
     margin-left: -3px;
     display: inline-block;
     line-height: 150%;
