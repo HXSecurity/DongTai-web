@@ -265,6 +265,7 @@ export default {
       isActive: '状态',
       dateJoined: '创建时间',
       lastLogin: '登陆时间',
+      reset: '重置密码',
     },
     talent: {
       title: {

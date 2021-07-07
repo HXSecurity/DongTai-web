@@ -184,6 +184,20 @@
           <el-option label="JAVA" value="JAVA"></el-option>
           <el-option label=".NET" value=".NET"></el-option>
         </el-select>
+        <el-select
+          v-model="searchObj.status"
+          placeholder="请选择漏洞状态"
+          style="margin-left: 10px; width: 160px; font-size: 14px"
+          class="commonSelect"
+          clearable
+          @change="newSelectData"
+        >
+          <el-option label="待验证" value="待验证"></el-option>
+          <el-option label="验证中" value="验证中"></el-option>
+          <el-option label="已确认" value="已确认"></el-option>
+          <el-option label="已忽略" value="已忽略"></el-option>
+          <el-option label="已处理" value="已处理"></el-option>
+        </el-select>
         <div class="selectInput">
           <el-input
             v-model="searchObj.url"
@@ -375,6 +389,7 @@ export default class VulnList extends VueBase {
     project_name: '',
     url: '',
     order: '',
+    status: '已确认',
   }
 
   created() {
@@ -387,6 +402,7 @@ export default class VulnList extends VueBase {
     this.searchObj.level = ''
     this.searchObj.type = ''
     this.searchObj.project_name = ''
+    this.searchObj.status = '已确认'
     this.newSelectData()
   }
 
@@ -459,6 +475,7 @@ export default class VulnList extends VueBase {
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order,
+      status: this.searchObj.status,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnList(params)
@@ -492,6 +509,7 @@ export default class VulnList extends VueBase {
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order,
+      status: this.searchObj.status
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)
