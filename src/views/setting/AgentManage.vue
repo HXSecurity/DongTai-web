@@ -1,20 +1,16 @@
 <template>
   <div class="content-warp">
     <div class="selectForm">
-      <el-select
-        v-model="state"
-        style="width: 160px; font-size: 14px"
-        class="commonSelect"
-        placeholder="选择排序状态"
-        @change="getTableData"
+      <div class="select-item">运行状态：</div>
+      <div
+        v-for="item in stateOptions"
+        :key="item.value"
+        class="select-item"
+        :class="item.value === state && 'active'"
+        @click="changeState(item)"
       >
-        <el-option
-          v-for="item in stateOptions"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        ></el-option>
-      </el-select>
+        {{ item.label }}
+      </div>
     </div>
     <el-table :data="tableData" class="agentManageTable" header-align="center">
       <el-table-column
@@ -166,11 +162,15 @@ export default class AgentManage extends VueBase {
   private deleteDialogOpen = false
   private deleteSelectId = 0
   private stateOptions = [
-    { value: 0, label: '未运行' },
     { value: 1, label: '运行中' },
+    { value: 0, label: '未运行' },
   ]
 
   created() {
+    this.getTableData()
+  }
+  private changeState(item:any) {
+    this.state = item.value
     this.getTableData()
   }
   private currentChange(val: number | string) {
@@ -281,8 +281,28 @@ export default class AgentManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
-.selectForm{
-  padding-bottom: 16px;
+.selectForm {
+  display: flex;
+  padding: 0 10px 16px;
+  .select-item {
+    font-size: 16px;
+    font-weight: 500;
+    color: #959fb4;
+    text-align: center;
+    cursor: context-menu;
+  }
+  .select-item + .select-item {
+    cursor: pointer;
+    margin-left: 12px;
+    width: 80px;
+    height: 28px;
+    line-height: 28px;
+    border-radius: 28px;
+  }
+  .select-item.active {
+    color: #1a80f2;
+    background: #f6f8fa;
+  }
 }
 .icon-box {
   cursor: pointer;
