@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2239779 */
-  src: url('iconfont.woff2?t=1623297307682') format('woff2'),
-       url('iconfont.woff?t=1623297307682') format('woff'),
-       url('iconfont.ttf?t=1623297307682') format('truetype');
+  src: url('iconfont.woff2?t=1625645841334') format('woff2'),
+       url('iconfont.woff?t=1625645841334') format('woff'),
+       url('iconfont.ttf?t=1625645841334') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconzhongzhimima:before {
+  content: "\e60a";
 }
 
 .iconicon_details_edit:before {
