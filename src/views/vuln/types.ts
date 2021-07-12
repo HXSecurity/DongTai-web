@@ -14,6 +14,7 @@ export interface VulnListObj {
   latest_time: string
   first_time: string
   language: string
+  checked: boolean
 }
 
 interface Graphy {
