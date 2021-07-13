@@ -509,6 +509,7 @@ export default class VulnList extends VueBase {
 
   private newSelectData() {
     this.page = 1
+    this.dataEnd = false
     this.tableData = []
     this.vulnSummary()
     this.getTableData()
