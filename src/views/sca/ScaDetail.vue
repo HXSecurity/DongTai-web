@@ -151,6 +151,20 @@
           </span>
           {{ scaObj.signature_value }}
         </div>
+        <div class="info-line">
+          <span>
+            <i class="iconfont iconapp"></i>
+            {{ $t('views.scaDetail.agent') }}：
+          </span>
+          {{ scaObj.agent_name }}
+        </div>
+        <div class="info-line">
+          <span>
+            <i class="iconfont iconicon_details_banben"></i>
+            {{ $t('views.scaDetail.version_now') }}：
+          </span>
+          {{ scaObj.project_version }}
+        </div>
       </div>
       <div class="module-title">
         {{ $t('views.scaDetail.vulList') }}

@@ -93,7 +93,9 @@ export default {
       other: '其他',
       state: '状态',
       taintValue: '污点值',
-      taintParamName: '参数'
+      taintParamName: '参数',
+      agent: 'agent',
+      version: '项目版本',
     },
     scaList: {
       filter: '过滤器',
@@ -122,6 +124,8 @@ export default {
       },
     },
     scaDetail: {
+      agent: 'agent',
+      version_now: '所属版本',
       version: '版本',
       level: '风险',
       project_name: '项目',

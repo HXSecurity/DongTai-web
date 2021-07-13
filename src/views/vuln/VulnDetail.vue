@@ -210,7 +210,6 @@
             <span>{{ vulnObj.vul.counts }}</span>
           </div>
         </div>
-
         <div class="infoLine flex-row-space-between">
           <div class="info">
             <span class="label">
@@ -230,6 +229,13 @@
               {{ $t('views.vulnDetail.taintValue') }}:
             </span>
             <span>{{ vulnObj.vul.taint_value || 0 }}</span>
+          </div>
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconicon_details_banben"></i>
+              {{ $t('views.vulnDetail.version') }}:
+            </span>
+            <span>{{ vulnObj.vul.project_version }}</span>
           </div>
           <div class="info" style="flex: 1.5">
             <span class="label">
@@ -254,7 +260,15 @@
               </el-option>
             </el-select>
           </div>
-          <div class="info"></div>
+        </div>
+        <div class="infoLine flex-row-space-between">
+          <div class="info" style="flex: 2.5">
+            <span class="label">
+              <i class="iconfont iconapp"></i>
+              {{ $t('views.vulnDetail.agent') }}:
+            </span>
+            <span>{{ vulnObj.vul.agent_name }}</span>
+          </div>
         </div>
       </div>
       <div class="module-title">
