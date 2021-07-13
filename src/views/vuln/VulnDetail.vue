@@ -27,7 +27,7 @@
                 layout="prev, next"
                 :total="total"
                 :current-page="page"
-                :page-size="20"
+                :page-size="10"
                 @current-change="currentChange"
               >
               </el-pagination>
@@ -37,7 +37,7 @@
                 <strong style="color: #38435a; font-weight: 400">{{
                   page
                 }}</strong
-                >/{{ Math.ceil(total / 20) }}
+                >/{{ Math.ceil(total / 10) }}
               </span>
             </div>
             <div class="flex-column-center">
@@ -268,10 +268,7 @@
         {{ $t('views.vulnDetail.httpRequest') }}
       </div>
       <div class="markdownContent httpRequest">
-        <MyMarkdownIt
-          :content="vulnObj.vul.req_header"
-          style="color: #747c8c"
-        ></MyMarkdownIt>
+        <MyMarkdownIt :content="req_md" style="color: #747c8c"></MyMarkdownIt>
       </div>
       <!-- 污点流图-->
       <div
@@ -518,6 +515,7 @@ import { formatTimestamp, getPassedTime } from '@/utils/utils'
 import VueBase from '@/VueBase'
 import request from '@/utils/request'
 import { VulnListObj, VulnObj } from './types'
+import qs from 'qs'
 
 @Component({ name: 'VulnDetail' })
 export default class VulnDetail extends VueBase {
@@ -643,7 +641,7 @@ export default class VulnDetail extends VueBase {
       this.$message.error(res.msg)
     }
   }
-
+  private req_md = ''
   private async getTableData() {
     const params = {
       page: this.page,
@@ -693,10 +691,65 @@ export default class VulnDetail extends VueBase {
       return
     }
     this.$nextTick(() => {
+      function toRed(str: any, red: any) {
+        const pattern = new RegExp(red, 'gi')
+        return str.replace(pattern, function (match: string) {
+          return "<span style='color:red'>" + match + '</span>'
+        })
+      }
+
+      const strArr = data.vul.req_header.split(`\n`)
+      for (const key in data.vul.param_name) {
+        switch (key) {
+          case 'GET':
+            const strG = strArr[0].split('?')
+            const getObj = qs.parse(strG[1])
+            const getRedStr = toRed(strG[1], getObj[data.vul.param_name[key]])
+            strG[1] = getRedStr
+            strArr[0] = strG.join('?')
+            break
+          case 'POST':
+            const postObj = qs.parse(strArr[strArr.length - 1])
+            const postRedStr = toRed(
+              strArr[strArr.length - 1],
+              postObj[data.vul.param_name[key]]
+            )
+            strArr[strArr.length - 1] = postRedStr
+            break
+          case 'COOKIE':
+            strArr.forEach((item: any) => {
+              if (item.indexOf('cookie:') > -1) {
+                const cookieG = item.split(':')
+                const cookieObj = qs.parse(cookieG[1])
+                const cookieRedStr = toRed(
+                  cookieG[1],
+                  cookieObj[data.vul.param_name[key]]
+                )
+                cookieG[1] = cookieRedStr
+                item = cookieG.join(':')
+              }
+            })
+
+            break
+          case 'PATH':
+            const strP = strArr[0].split('?')
+            const pathRedStr = toRed(strP[0], data.vul.param_name[key])
+            strP[0] = pathRedStr
+            strArr[0] = strP.join('?')
+            break
+          case 'HEADER':
+            strArr.forEach((item: any) => {
+              if (item.indexOf(data.vul.param_name[key]) > -1) {
+                item = toRed(strP[0], data.vul.param_name[key])
+              }
+            })
+            break
+        }
+      }
+      this.req_md = strArr.join('<br/>')
       this.vulnObj = {
         vul: {
           ...data.vul,
-          req_header: data.vul.req_header.replace(/\n/g, '<br/>'),
           first_time: formatTimestamp(data.vul.first_time),
           latest_time: formatTimestamp(data.vul.latest_time),
           graphy: data.vul.graphy,
@@ -708,7 +761,6 @@ export default class VulnDetail extends VueBase {
           ...data.strategy,
         },
       }
-      console.log(this.vulnObj.vul.param_name)
     })
   }
 

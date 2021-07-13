@@ -214,25 +214,44 @@
           </el-input>
         </div>
       </div>
-      <div
-        v-for="item in tableData"
-        :key="item.id"
-        class="card"
-        @click="goDetail(item.id)"
-      >
+      <div class="checked-bar">
+        <el-checkbox
+          :value="
+            tableData.length > 0 && tableData.every((item) => item.checked)
+          "
+          @change="selectAll"
+          >已选中{{
+            tableData.filter((item) => item.checked).length
+          }}项</el-checkbox
+        >
+        <div>
+          <el-button class="checkedAllBtn" @click="recheck('project')">
+            批量验证
+          </el-button>
+          <el-button class="checkedAllBtn" @click="recheck('all')">
+            全量验证
+          </el-button>
+        </div>
+      </div>
+      <div v-for="item in tableData" :key="item.id" class="card">
         <div
           class="card-title flex-row-space-between"
           style="height: 33px; min-height: 32px"
         >
           <span
-            class="title flex-column-center"
+            class="title"
             style="font-size: 14px; font-weight: bold; height: 32px"
-          >
-            {{
-              `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
-                item.taint_position ? `，位置：${item.taint_position}` : ''
-              }`
-            }}
+            ><el-checkbox
+              v-model="item.checked"
+              style="margin-right: 12px; margin-top: 2px"
+            ></el-checkbox>
+            <span @click="goDetail(item.id)">
+              {{
+                `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
+                  item.taint_position ? `，位置：${item.taint_position}` : ''
+                }`
+              }}
+            </span>
           </span>
           <span
             class="time flex-column-center"
@@ -401,6 +420,52 @@ export default class VulnList extends VueBase {
     this.vulnSummary()
   }
 
+  private recheck(type: string) {
+    this.$confirm(
+      `即将进行${type === 'all' ? '全量' : '选中条目'}验证，是否继续?`,
+      '提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(async () => {
+      let res: any = {}
+      if (type === 'all') {
+        res = await this.services.vuln.vulRecheckAll({ type })
+      } else {
+        const ids = this.tableData
+          .map((item) => {
+            if (item.checked) {
+              return item.id
+            }
+          })
+          .filter((item) => item)
+        res = await this.services.vuln.vulRecheck({
+          ids: String(ids),
+        })
+      }
+
+      if (res.status !== 201) {
+        this.$message.error(res.msg)
+      } else {
+        this.$message.success(res.msg)
+        await this.newSelectData()
+      }
+    })
+  }
+
+  private selectAll(e: any) {
+    const flag =
+      this.tableData.length > 0 && this.tableData.every((item) => item.checked)
+    if (flag) {
+      this.tableData.forEach((item) => this.$set(item, 'checked', false))
+    } else {
+      this.tableData.forEach((item) => this.$set(item, 'checked', true))
+    }
+    console.log(e)
+  }
+
   private reset() {
     this.searchObj.language = ''
     this.searchObj.level = ''
@@ -444,6 +509,7 @@ export default class VulnList extends VueBase {
 
   private newSelectData() {
     this.page = 1
+    this.dataEnd = false
     this.tableData = []
     this.vulnSummary()
     this.getTableData()
@@ -678,7 +744,22 @@ export default class VulnList extends VueBase {
       float: right;
     }
   }
-
+  .checked-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0 12px 12px;
+    .checkedAllBtn {
+      height: 28px;
+      line-height: 0;
+      background: #4a72ae;
+      border-radius: 2px;
+      color: #fff;
+      & + .checkedAllBtn {
+        margin-left: 12px;
+      }
+    }
+  }
   .card {
     margin-top: 14px;
     width: 100%;
@@ -686,7 +767,6 @@ export default class VulnList extends VueBase {
     background: #ffffff;
     border-radius: 8px;
     border: 1px solid #dee4ea;
-    cursor: pointer;
 
     .card-title {
       width: 100%;
@@ -695,11 +775,16 @@ export default class VulnList extends VueBase {
       border-radius: 8px 8px 0 0;
       border-bottom: 1px solid #c8e0ff;
       padding: 0 12px;
+      span {
+        cursor: pointer;
+      }
 
       .title {
         color: #38435a;
         font-size: 16px;
         max-width: 780px;
+        display: flex;
+        align-items: center;
       }
 
       .time {
