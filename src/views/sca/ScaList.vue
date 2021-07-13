@@ -184,6 +184,7 @@
               class="item"
               effect="dark"
               :content="row.package_name"
+              :disabled="row.package_name.length < 35"
               placement="top-start"
             >
               <div class="dot">
@@ -202,6 +203,7 @@
               class="item"
               effect="dark"
               :content="row.version"
+              :disabled="row.version.length < 10"
               placement="top-start"
             >
               <div class="dot">
