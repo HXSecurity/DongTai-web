@@ -688,7 +688,7 @@ export default class VulnList extends VueBase {
   text-align: center;
   line-height: 36px;
   font-size: 14px;
-  font-width: 600;
+  cursor: pointer;
 }
 .slider-warp {
   width: 234px;
