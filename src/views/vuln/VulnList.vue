@@ -173,6 +173,21 @@
             :value="item.value"
           ></el-option>
         </el-select>
+        <i
+          v-if="searchObj.sort === null"
+          class="el-icon-sort sort-btn"
+          @click="sortSelect(true)"
+        ></i>
+        <i
+          v-if="searchObj.sort === true"
+          class="el-icon-sort-up sort-btn"
+          @click="sortSelect(false)"
+        ></i>
+        <i
+          v-if="searchObj.sort === false"
+          class="el-icon-sort-down sort-btn"
+          @click="sortSelect(null)"
+        ></i>
         <el-select
           v-model="searchObj.language"
           placeholder="请选择开发语言"
@@ -406,6 +421,7 @@ export default class VulnList extends VueBase {
   }
 
   private searchObj = {
+    sort: null,
     language: '',
     level: '',
     type: '',
@@ -419,7 +435,10 @@ export default class VulnList extends VueBase {
     this.getTableData()
     this.vulnSummary()
   }
-
+  private sortSelect(flag: any) {
+    this.searchObj.sort = flag
+    this.newSelectData()
+  }
   private recheck(type: string) {
     this.$confirm(
       `即将进行${type === 'all' ? '全量' : '选中条目'}验证，是否继续?`,
@@ -467,6 +486,7 @@ export default class VulnList extends VueBase {
   }
 
   private reset() {
+    this.searchObj.sort = null
     this.searchObj.language = ''
     this.searchObj.level = ''
     this.searchObj.type = ''
@@ -544,7 +564,9 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order,
+      order: `${this.searchObj.sort === false ? '-' : ''}${
+        this.searchObj.order
+      }`,
       status: this.searchObj.status,
     }
     this.loadingStart()
@@ -578,7 +600,9 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order,
+      order: `${this.searchObj.sort === false ? '-' : ''}${
+        this.searchObj.order
+      }`,
       status: this.searchObj.status,
     }
     this.loadingStart()
@@ -653,7 +677,19 @@ export default class VulnList extends VueBase {
     font-weight: 500;
   }
 }
-
+.sort-btn {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  display: inline-block;
+  background: #fff;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 36px;
+  font-size: 14px;
+  font-width: 600;
+}
 .slider-warp {
   width: 234px;
   margin-top: 78px;
