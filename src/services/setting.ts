@@ -182,6 +182,10 @@ export default () =>
       return request.post('/engine/hook/rule/status', data)
     }
 
+    // HOOK规则-禁用规则
+    changeStatus(params: any): Promise<iResponse> {
+      return request.get('/engine/hook/rule/status', { params })
+    }
     // HOOK规则-删除规则
     ruleDelete(params: { rule_id: string }): Promise<iResponse> {
       return request.get('/engine/hook/rule/delete', { params })

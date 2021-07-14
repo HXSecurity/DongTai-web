@@ -158,10 +158,10 @@
           </div>
           <div class="info">
             <span class="label">
-              <i class="iconfont iconproject"></i>
-              {{ $t('views.vulnDetail.projectName') }}:
+              <i class="iconfont iconIp"></i>
+              {{ $t('views.vulnDetail.clientIp') }}:
             </span>
-            <span>{{ vulnObj.vul.project_name }}</span>
+            <span>{{ vulnObj.vul.client_ip }}</span>
           </div>
           <div class="info">
             <span class="label">
@@ -174,43 +174,27 @@
           </div>
           <div class="info" style="flex: 1.5">
             <span class="label">
-              <i class="iconfont iconshijian-3"></i>
-              {{ $t('views.vulnDetail.first_time') }}:
-            </span>
-            <span>{{ vulnObj.vul.first_time }}</span>
-          </div>
-        </div>
-        <div class="infoLine flex-row-space-between">
-          <div class="info">
-            <span class="label">
-              <i class="iconfont iconIp"></i>
-              {{ $t('views.vulnDetail.clientIp') }}:
-            </span>
-            <span>{{ vulnObj.vul.client_ip }}</span>
-          </div>
-          <div class="info">
-            <span class="label">
               <i class="iconfont iconyuyan-2"></i>
               {{ $t('views.vulnDetail.language') }}:
             </span>
             <span>{{ vulnObj.vul.language }}</span>
           </div>
-          <div class="info">
-            <span class="label">
-              <i class="iconfont iconweixian-2"></i>
-              {{ $t('views.vulnDetail.level') }}:
-            </span>
-            <span>{{ vulnObj.vul.level }}</span>
-          </div>
-          <div class="info" style="flex: 1.5">
-            <span class="label">
-              <i class="iconfont iconcishu-2"></i>
-              {{ $t('views.vulnDetail.counts') }}:
-            </span>
-            <span>{{ vulnObj.vul.counts }}</span>
-          </div>
         </div>
         <div class="infoLine flex-row-space-between">
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconproject"></i>
+              {{ $t('views.vulnDetail.projectName') }}:
+            </span>
+            <span>{{ vulnObj.vul.project_name }}</span>
+          </div>
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconicon_details_banben"></i>
+              {{ $t('views.vulnDetail.version') }}:
+            </span>
+            <span>{{ vulnObj.vul.project_version }}</span>
+          </div>
           <div class="info">
             <span class="label">
               <i class="iconfont iconshuju1"></i>
@@ -222,20 +206,35 @@
               '无'
             }}</span>
           </div>
-
-          <div class="info">
+          <div class="info" style="flex: 1.5">
             <span class="label">
               <i class="iconfont iconloudong"></i>
               {{ $t('views.vulnDetail.taintValue') }}:
             </span>
             <span>{{ vulnObj.vul.taint_value || 0 }}</span>
           </div>
+        </div>
+        <div class="infoLine flex-row-space-between">
           <div class="info">
             <span class="label">
-              <i class="iconfont iconicon_details_banben"></i>
-              {{ $t('views.vulnDetail.version') }}:
+              <i class="iconfont iconshijian-3"></i>
+              {{ $t('views.vulnDetail.first_time') }}:
             </span>
-            <span>{{ vulnObj.vul.project_version }}</span>
+            <span>{{ vulnObj.vul.first_time }}</span>
+          </div>
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconcishu-2"></i>
+              {{ $t('views.vulnDetail.counts') }}:
+            </span>
+            <span>{{ vulnObj.vul.counts }}</span>
+          </div>
+          <div class="info">
+            <span class="label">
+              <i class="iconfont iconweixian-2"></i>
+              {{ $t('views.vulnDetail.level') }}:
+            </span>
+            <span>{{ vulnObj.vul.level }}</span>
           </div>
           <div class="info" style="flex: 1.5">
             <span class="label">
@@ -280,6 +279,9 @@
 
       <div class="module-title">
         {{ $t('views.vulnDetail.httpRequest') }}
+        <el-button style="margin-left: 12px" size="mini" @click="goToPoolDetail"
+          >请求重放</el-button
+        >
       </div>
       <div class="markdownContent httpRequest">
         <MyMarkdownIt :content="req_md" style="color: #747c8c"></MyMarkdownIt>
@@ -632,6 +634,16 @@ export default class VulnDetail extends VueBase {
     this.cardIndex = 0
     await this.getVulnDetail()
     await this.getTableData()
+  }
+
+  private goToPoolDetail() {
+    if (this.vulnObj.vul.method_pool_id) {
+      this.$router.push(
+        `/taint/poolDetail/${this.vulnObj.vul.method_pool_id}?activeName=flowDebug`
+      )
+    } else {
+      this.$message.error('历史数据不支持重放')
+    }
   }
 
   private newSelectData() {

@@ -20,24 +20,24 @@
         </el-select>
       </div>
       <div>
-        <el-popover placement="bottom" width="400" trigger="click">
+        <el-popover placement="bottom" width="220" trigger="click">
           <el-button
             size="small"
             class="resetAllBtn"
             @click="changeStatusBatch('enable')"
-            >批量启用</el-button
+            >启用</el-button
           >
           <el-button
             size="small"
             class="resetAllBtn"
             @click="changeStatusBatch('disable')"
-            >批量禁用</el-button
+            >禁用</el-button
           >
           <el-button
             size="small"
             class="resetAllBtn"
             @click="changeStatusBatch('delete')"
-            >批量删除</el-button
+            >删除</el-button
           >
           <el-button
             slot="reference"
@@ -138,7 +138,10 @@
           >
             编辑
           </el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="deleteRule(scope.row)">
+          <el-popconfirm
+            title="确定删除吗？"
+            @confirm="changeStatus(scope.row, 'delete')"
+          >
             <el-button
               slot="reference"
               style="margin-left: 10px"
@@ -565,26 +568,15 @@ export default class HookTable extends VueBase {
     })
   }
 
-  async changeStatus(row: any) {
+  async changeStatus(row: any, status = '') {
     this.loadingStart()
-    let status, msg
-    if (row.enable === 0) {
-      const obj = await this.services.setting.ruleDisable({
-        rule_id: row.id,
-      })
-      status = obj.status
-      msg = obj.msg
-    } else {
-      const obj = await this.services.setting.ruleEnable({
-        rule_id: row.id,
-      })
-      status = obj.status
-      msg = obj.msg
-    }
+    const obj = await this.services.setting.changeStatus({
+      rule_id: row.id,
+      op: status || (row.enable === 0 ? 'disable' : 'enable'),
+    })
     this.loadingDone()
-
-    if (status !== 201) {
-      this.$message.error(msg)
+    if (obj.status !== 201) {
+      this.$message.error(obj.msg)
       return
     }
     await this.getTable()

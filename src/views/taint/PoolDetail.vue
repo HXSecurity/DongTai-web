@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs class="poolDetail-tab" v-model="activeName">
+    <el-tabs v-model="activeName" class="poolDetail-tab">
       <el-tab-pane label="污点调用图" name="taintGraph">
         <div class="graphWarp">
           <Dagre v-if="graphRefresh" :init-data="graphData"></Dagre>
@@ -9,7 +9,9 @@
       <el-tab-pane label="数据包调试" name="flowDebug">
         <div class="httpTestWarp">
           <div class="bottom-btn-line">
-            <el-button type="primary" size="small">发送</el-button>
+            <el-button type="primary" size="small" @click="send"
+              >发送</el-button
+            >
           </div>
           <div class="flex-row-space-between">
             <div class="requestBox">
@@ -73,15 +75,32 @@ export default class PoolDetail extends VueBase {
     res_body: '',
     url: '',
   }
-  private activeName: string = 'taintGraph'
+  private activeName = 'taintGraph'
   // private taintLinkList: TaintLinkObj[] = []
-  private graphRefresh: boolean = false
+  private graphRefresh = false
   private graphData: GraphData = {
     nodes: [],
     edges: [],
   }
 
+  private async send() {
+    this.loadingStart()
+    const res = await this.services.taint.replay({
+      methodPoolId: this.$route.params.id,
+      replayRequest: this.vul.req_header,
+    })
+    this.loadingDone()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.vul.res_body = JSON.stringify(res.data)
+  }
+
   mounted() {
+    if (this.$route.query.activeName) {
+      this.activeName = this.$route.query.activeName as string
+    }
     Emitter.on('searchParams', (searchParams) =>
       this.methodPoolDetail(searchParams)
     )
