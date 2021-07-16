@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" class="poolDetail-tab">
+    <el-tabs
+      v-model="activeName"
+      class="poolDetail-tab"
+      @tab-click="changeActive"
+    >
       <el-tab-pane label="污点调用图" name="taintGraph">
         <div class="graphWarp">
           <Dagre v-if="graphRefresh" :init-data="graphData"></Dagre>
@@ -15,10 +19,10 @@
           </div>
           <div class="flex-row-space-between">
             <div class="requestBox">
-              <textarea v-model="vul.req_header"></textarea>
+              <textarea v-model="vul.request"></textarea>
             </div>
             <div class="responseBox">
-              <textarea v-model="vul.res_body"></textarea>
+              <textarea v-model="vul.response"></textarea>
             </div>
           </div>
         </div>
@@ -50,6 +54,7 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
+import merge from 'webpack-merge'
 import VueBase from '@/VueBase'
 import {
   SearchParams,
@@ -71,8 +76,8 @@ export default class PoolDetail extends VueBase {
   private vul: VulObj = {
     language: '',
     method_pool: '',
-    req_header: '',
-    res_body: '',
+    request: '',
+    response: '',
     url: '',
   }
   private activeName = 'taintGraph'
@@ -83,18 +88,24 @@ export default class PoolDetail extends VueBase {
     edges: [],
   }
 
+  private changeActive(e: any) {
+    this.$router.replace({
+      query: merge(this.$route.query, { activeName: e.name }) as any,
+    })
+  }
+
   private async send() {
     this.loadingStart()
     const res = await this.services.taint.replay({
       methodPoolId: this.$route.params.id,
-      replayRequest: this.vul.req_header,
+      replayRequest: this.vul.request,
     })
     this.loadingDone()
     if (res.status !== 201) {
       this.$message.error(res.msg)
       return
     }
-    this.vul.res_body = JSON.stringify(res.data)
+    this.vul.response = res.data
   }
 
   mounted() {

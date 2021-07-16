@@ -37,7 +37,7 @@
       </el-table-column>
 
       <el-table-column
-        width="400"
+        width="150"
         :label="$t('views.agentManage.payload')"
         prop="system_load"
       >
@@ -51,7 +51,7 @@
       <el-table-column
         :label="$t('views.agentManage.status')"
         prop="is_core_running"
-        width="90px"
+        width="120px"
       >
         <template slot-scope="{ row }">
           <div>
@@ -82,7 +82,17 @@
         prop="owner"
         width="120px"
       ></el-table-column>
-
+      <el-table-column
+        :label="$t('views.agentManage.language')"
+        prop="language"
+        width="120px"
+      >
+        <template slot-scope="{ row }">
+          <div class="dot">
+            {{ row.language }}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.manage')"
         width="140px"
@@ -169,7 +179,7 @@ export default class AgentManage extends VueBase {
   created() {
     this.getTableData()
   }
-  private changeState(item:any) {
+  private changeState(item: any) {
     this.state = item.value
     this.getTableData()
   }
@@ -285,23 +295,24 @@ export default class AgentManage extends VueBase {
   display: flex;
   padding: 0 10px 16px;
   .select-item {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    color: #959fb4;
+    color: #333;
     text-align: center;
+    line-height: 28px;
     cursor: context-menu;
   }
   .select-item + .select-item {
+    color: #959fb4;
     cursor: pointer;
     margin-left: 12px;
     width: 80px;
     height: 28px;
-    line-height: 28px;
     border-radius: 28px;
   }
   .select-item.active {
-    color: #1a80f2;
-    background: #f6f8fa;
+    color: #4a72ae;
+    background: aliceblue;
   }
 }
 .icon-box {

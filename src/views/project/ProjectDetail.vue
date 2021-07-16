@@ -29,10 +29,6 @@
             ></i>
           </div>
           <div class="operate">
-            <el-button type="text" class="operateBtn" @click="projectRecheck">
-              <i class="iconfont iconjiance-copy"></i>
-              {{ $t('views.projectDetail.recheck') }}
-            </el-button>
             <el-button type="text" class="operateBtn" @click="projectExport">
               <i class="iconfont icondaochu-5"></i>
               {{ $t('views.projectDetail.export') }}
@@ -53,7 +49,7 @@
           type="text"
           class="pTab"
           :class="selectTab === 'desc' ? 'selected' : ''"
-          @click="selectTab = 'desc'"
+          @click="changeActive('desc')"
         >
           <i class="iconfont iconshuju1"></i>
           {{ $t('views.projectDetail.projectDesc') }}
@@ -62,7 +58,7 @@
           type="text"
           class="pTab"
           :class="selectTab === 'vul' ? 'selected' : ''"
-          @click="selectTab = 'vul'"
+          @click="changeActive('vul')"
         >
           <i class="iconfont iconloudong"></i>
           {{ $t('views.projectDetail.projectVul') }}
@@ -71,9 +67,9 @@
           type="text"
           class="pTab"
           :class="selectTab === 'component' ? 'selected' : ''"
-          @click="selectTab = 'component'"
+          @click="changeActive('component')"
         >
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-menu" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
       </div>
@@ -97,7 +93,7 @@
         </div>
         <div class="module">
           <div class="module-title">
-            {{ $t('views.projectDetail.vulNum') }}
+            {{ $t('views.projectDetail.trend') }}
           </div>
           <div id="day_num" class="module-card"></div>
         </div>
@@ -236,6 +232,7 @@ import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
 import ScaList from '../sca/ScaList.vue'
 import { Message } from 'element-ui'
+import merge from 'webpack-merge'
 
 @Component({
   name: 'ProjectDetail',
@@ -245,7 +242,7 @@ import { Message } from 'element-ui'
   },
 })
 export default class ProjectDetail extends VueBase {
-  private selectTab = SelectTabs.desc
+  private selectTab = "desc"
   private projectObj: ProjectObj = {
     id: 0,
     mode: '',
@@ -273,6 +270,13 @@ export default class ProjectDetail extends VueBase {
       item.current_version = 1
       this.projectsSummary()
     }
+  }
+
+  private changeActive(e: any) {
+    this.selectTab = e
+    this.$router.replace({
+      query: merge(this.$route.query, { activeName: e }) as any,
+    })
   }
 
   private editVersion(item: any) {
@@ -375,6 +379,9 @@ export default class ProjectDetail extends VueBase {
   }
 
   mounted() {
+    if (this.$route.query.activeName) {
+      this.selectTab = this.$route.query.activeName as string
+    }
     this.projectsSummary()
   }
   private async projectsSummary() {

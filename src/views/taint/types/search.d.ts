@@ -69,8 +69,8 @@ export interface VulRuleObj{
 export interface VulObj{
   language: string
   method_pool: string
-  req_header: string
-  res_body: string
+  request: string
+  response: string
   url: string
 }
 

@@ -9,13 +9,13 @@ import './styles/iconfont/iconfont'
 import ElementUI from 'element-ui'
 import { i18n } from '@/config/lang'
 import MyMarkdownIt from '@/components/markdownNice/Index'
-
+import { dot } from '@/directive/dot'
 
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
 Vue.component('MyMarkdownIt', MyMarkdownIt)
-
+dot(Vue)
 new Vue({
   router,
   store,

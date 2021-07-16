@@ -135,17 +135,17 @@
             fixed="right"
           >
             <template slot-scope="{ row }">
+              <i
+                v-if="$store.getters.userInfo.role === 1"
+                class="iconfont iconzhongzhimima pIcon"
+                @click="resetPwd(row)"
+              ></i
+              >
               <i class="iconfont iconshezhi-2 pIcon" @click="userEdit(row)"></i>
               <i
                 class="iconfont iconshanchu-6 pIcon"
                 @click="userDelete(row.id)"
               ></i>
-              <i
-                v-if="$store.getters.userInfo.role === 1"
-                class="iconfont iconzhongzhimima pIcon"
-                @click="resetPwd(row)"
-                ></i
-              >
             </template>
           </el-table-column>
         </el-table>

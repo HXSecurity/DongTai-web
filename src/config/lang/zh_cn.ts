@@ -65,9 +65,9 @@ export default {
       recheck: '验证',
       export: '导出',
       delete: '删除',
-      httpRequest: 'HTTP请求',
+      httpRequest: '资源包',
       codeDemo: '漏洞代码示例',
-      graphy: '污点流图',
+      graph: '污点流图',
       suggest: '修复建议',
       appInfo: '应用信息',
       devEnv: '运行时环境',
@@ -163,7 +163,8 @@ export default {
       owner: '负责人',
       timestapm: '时间',
       projectName: '项目名称',
-      healthy: '健康'
+      healthy: '健康',
+      language: '语言'
     },
     strategyManage: {
       name: '策略名称',
@@ -221,7 +222,8 @@ export default {
       projectDesc: '项目概况',
       projectVul: '项目漏洞',
       projectComponent: '项目组件',
-      vulNum: '漏洞数量',
+      vulNum: '漏洞分布',
+      trend: '风险趋势',
       type: '类型分布',
       owner: '负责人',
       version: '版本',

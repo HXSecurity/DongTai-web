@@ -17,7 +17,7 @@ export interface VulnListObj {
   checked: boolean
 }
 
-interface Graphy {
+interface Graph {
   type: string
   file: string
   line_number: string
@@ -42,7 +42,7 @@ export interface VulnObj {
     level: string
     counts: number
     req_header: string
-    graphy: Array<Graphy>
+    graph: Array<Graph>
     context_path: string
     taint_value: string
     param_name: {}
