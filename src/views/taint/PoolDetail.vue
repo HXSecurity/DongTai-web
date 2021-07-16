@@ -113,7 +113,7 @@ export default class PoolDetail extends VueBase {
       this.buttonLoading = true
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
-        this.vul.response = resT.data
+        this.vul.response = resT.data.response
         clearInterval(timer)
         this.buttonLoading = false
       }
