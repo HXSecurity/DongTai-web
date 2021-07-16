@@ -282,7 +282,7 @@
         <el-button
           style="
             margin-left: 8px;
-            padding: 4px;
+            padding: 6px;
             background: #4a72ae;
             color: #fff;
           "

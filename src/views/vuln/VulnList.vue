@@ -567,9 +567,9 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: `${this.searchObj.sort === false ? '-' : ''}${
-        this.searchObj.order
-      }`,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
       status: this.searchObj.status,
     }
     this.loadingStart()
@@ -603,7 +603,7 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: `${this.searchObj.sort === false ? '-' : ''}${
+      order: `${this.searchObj.sort === false && this.searchObj.order ? '-' : ''}${
         this.searchObj.order
       }`,
       status: this.searchObj.status,

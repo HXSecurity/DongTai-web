@@ -47,7 +47,19 @@
           </div>
         </template>
       </el-table-column>
-
+      <el-table-column
+        :label="$t('views.agentManage.flow')"
+        prop="is_core_running"
+        width="100px"
+      >
+        <template slot-scope="{ row }">
+          <div>
+            {{
+              row.flow||0 + ' 次'
+            }}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.status')"
         prop="is_core_running"

@@ -156,6 +156,7 @@ export default {
       submit: '确认',
     },
     agentManage: {
+      flow:'请求次数',
       address: '服务器地址',
       payload: '服务器负载',
       status: '运行状态',
