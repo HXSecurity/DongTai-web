@@ -13,8 +13,12 @@
       <el-tab-pane label="数据包调试" name="flowDebug">
         <div class="httpTestWarp">
           <div class="bottom-btn-line">
-            <el-button type="primary" size="small" @click="send"
-              >发送</el-button
+            <el-button
+              type="primary"
+              size="small"
+              :loading="buttonLoading"
+              @click="send"
+              >{{ buttonLoading ? '重放中' : '发送' }}</el-button
             >
           </div>
           <div class="flex-row-space-between">
@@ -93,7 +97,7 @@ export default class PoolDetail extends VueBase {
       query: merge(this.$route.query, { activeName: e.name }) as any,
     })
   }
-
+  private buttonLoading = false
   private async send() {
     this.loadingStart()
     const res = await this.services.taint.replay({
@@ -105,7 +109,15 @@ export default class PoolDetail extends VueBase {
       this.$message.error(res.msg)
       return
     }
-    this.vul.response = res.data
+    const timer = setInterval(async () => {
+      this.buttonLoading = true
+      const resT = await this.services.taint.getReplay(res.data)
+      if (resT.status === 201) {
+        this.vul.response = resT.data
+        clearInterval(timer)
+        this.buttonLoading = false
+      }
+    }, 1000)
   }
 
   mounted() {

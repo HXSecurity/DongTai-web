@@ -55,7 +55,7 @@
         <template slot-scope="{ row }">
           <div>
             {{
-              row.flow||0 + ' 次'
+              (row.flow||0) + ' 次'
             }}
           </div>
         </template>

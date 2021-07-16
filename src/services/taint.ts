@@ -63,4 +63,8 @@ export default () =>
     replay(data: any): Promise<iResponse> {
       return request.post(`/engine/request/replay`, data)
     }
+    // 重放
+    getReplay(params: any): Promise<iResponse> {
+      return request.get(`/engine/request/replay`, { params })
+    }
   })()
