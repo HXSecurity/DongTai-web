@@ -65,7 +65,7 @@ export default {
       recheck: '验证',
       export: '导出',
       delete: '删除',
-      httpRequest: '资源包',
+      httpRequest: '请求包',
       codeDemo: '漏洞代码示例',
       graph: '污点流图',
       suggest: '修复建议',

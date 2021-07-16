@@ -411,7 +411,10 @@ export default class VulListComponent extends VueBase {
     ).then(async () => {
       let res: any = {}
       if (type === 'all') {
-        res = await this.services.vuln.vulRecheckAll({ type: 'project',projectId:this.projectId })
+        res = await this.services.vuln.vulRecheckAll({
+          type: 'project',
+          projectId: this.projectId,
+        })
       } else {
         const ids = this.tableData
           .map((item) => {
@@ -508,9 +511,9 @@ export default class VulListComponent extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: `${this.searchObj.sort === false && this.searchObj.order ? '-' : ''}${
-        this.searchObj.order
-      }`,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
       status: this.searchObj.status,
       project_id: this.projectId,
     }
@@ -545,9 +548,9 @@ export default class VulListComponent extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: `${this.searchObj.sort === false && this.searchObj.order ? '-' : ''}${
-        this.searchObj.order
-      }`,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
       status: this.searchObj.status,
       projectId: this.projectId,
     }
