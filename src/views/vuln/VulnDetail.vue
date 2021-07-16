@@ -836,7 +836,7 @@ export default class VulnDetail extends VueBase {
             case 'HEADER':
               strArr.forEach((item: any, index: number) => {
                 if (item.indexOf(data.vul.param_name[key]) > -1) {
-                  strArr[index] = toRed(item, item.split(":")[1])
+                  strArr[index] = toRed(item, item.split(':')[1])
                 }
               })
               break
