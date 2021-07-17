@@ -37,7 +37,7 @@
       </el-table-column>
 
       <el-table-column
-        width="400"
+        width="150"
         :label="$t('views.agentManage.payload')"
         prop="system_load"
       >
@@ -47,17 +47,25 @@
           </div>
         </template>
       </el-table-column>
-
       <el-table-column
-        :label="$t('views.agentManage.status')"
+        :label="$t('views.agentManage.flow')"
         prop="is_core_running"
-        width="90px"
+        width="100px"
       >
         <template slot-scope="{ row }">
           <div>
-            {{
-              row.is_core_running == 1 ? '核心组件运行中' : '核心组件未运行中'
-            }}
+            {{ (row.flow || 0) + ' 次' }}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('views.agentManage.status')"
+        prop="is_core_running"
+        width="120px"
+      >
+        <template slot-scope="{ row }">
+          <div>
+            {{ row.is_core_running == 1 ? '核心组件运行中' : '核心组件未运行' }}
           </div>
         </template>
       </el-table-column>
@@ -82,7 +90,17 @@
         prop="owner"
         width="120px"
       ></el-table-column>
-
+      <el-table-column
+        :label="$t('views.agentManage.language')"
+        prop="language"
+        width="120px"
+      >
+        <template slot-scope="{ row }">
+          <div class="dot">
+            {{ row.language }}
+          </div>
+        </template>
+      </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.manage')"
         width="140px"
@@ -90,16 +108,22 @@
       >
         <template slot-scope="{ row }">
           <div class="icon-box">
-            <i
-              v-if="row.is_core_running == 0"
-              class="icon el-icon-video-play"
-              @click="agentStart(row.id)"
-            ></i>
-            <i
-              v-else
-              class="icon el-icon-video-pause"
-              @click="agentStop(row.id)"
-            ></i>
+            <template v-if="row.is_control === 1">
+              <i class="icon el-icon-loading"></i>
+            </template>
+            <template v-else>
+              <i
+                v-if="row.is_core_running == 0"
+                class="icon el-icon-video-play"
+                @click="agentStart(row.id)"
+              ></i>
+              <i
+                v-else
+                class="icon el-icon-video-pause"
+                @click="agentStop(row.id)"
+              ></i>
+            </template>
+
             <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
           </div>
         </template>
@@ -165,13 +189,27 @@ export default class AgentManage extends VueBase {
     { value: 1, label: '运行中' },
     { value: 0, label: '未运行' },
   ]
-
+  timer: any = null
   created() {
     this.getTableData()
+    this.timer = setInterval(() => {
+      this.getTableData()
+    }, 5000)
   }
-  private changeState(item:any) {
+  private beforeDestroy() {
+    clearInterval(this.timer)
+  }
+  private changeState(item: any) {
     this.state = item.value
     this.getTableData()
+    if (this.state == 1) {
+      this.timer = setInterval(() => {
+        this.getTableData()
+      }, 5000)
+    } else {
+      clearInterval(this.timer)
+      this.timer = null
+    }
   }
   private currentChange(val: number | string) {
     this.page = parseInt(`${val}`)
@@ -285,23 +323,24 @@ export default class AgentManage extends VueBase {
   display: flex;
   padding: 0 10px 16px;
   .select-item {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
-    color: #959fb4;
+    color: #333;
     text-align: center;
+    line-height: 28px;
     cursor: context-menu;
   }
   .select-item + .select-item {
+    color: #959fb4;
     cursor: pointer;
     margin-left: 12px;
     width: 80px;
     height: 28px;
-    line-height: 28px;
     border-radius: 28px;
   }
   .select-item.active {
-    color: #1a80f2;
-    background: #f6f8fa;
+    color: #4a72ae;
+    background: aliceblue;
   }
 }
 .icon-box {

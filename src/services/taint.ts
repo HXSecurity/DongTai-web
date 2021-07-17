@@ -15,35 +15,31 @@ interface methodPoolSearchParams {
 
 export default () =>
   new (class {
-    methodList(params: {
-      page: number
-      pageSize: number
-    }): Promise<iResponse> {
+    methodList(params: { page: number; pageSize: number }): Promise<iResponse> {
       return request.get('/method_pools', { params })
     }
 
     // 搜索接口
-    methodPoolSearch(latest: number, params: methodPoolSearchParams): Promise<iResponse> {
+    methodPoolSearch(
+      latest: number,
+      params: methodPoolSearchParams
+    ): Promise<iResponse> {
       return request.post('/engine/method_pool/search?latest=' + latest, params)
     }
 
     // 我的策略/系统策略
-    engineVulRule(params: {
-      type: string
-    }): Promise<iResponse> {
+    engineVulRule(params: { type: string }): Promise<iResponse> {
       return request.get('/engine/vul_rule', { params })
     }
 
     // 策略详情
-    engineVulRuleDetail(params: {
-      rule_id: number
-    }): Promise<iResponse> {
+    engineVulRuleDetail(params: { rule_id: number }): Promise<iResponse> {
       return request.get('/engine/vul_rule/detail', { params })
     }
 
     // 保存策略
     vulRuleSave(params: {}, id?: number): Promise<iResponse> {
-      var url = '/engine/vul_rule/save'
+      let url = '/engine/vul_rule/save'
       if (id) {
         url = url + '?id=' + id
       }
@@ -56,8 +52,19 @@ export default () =>
     }
 
     // 污点池详情
-    methodPoolDetail(id: string, params: methodPoolSearchParams): Promise<iResponse> {
+    methodPoolDetail(
+      id: string,
+      params: methodPoolSearchParams
+    ): Promise<iResponse> {
       return request.post(`/engine/method_pool/detail?id=${id}`, params)
     }
 
+    // 重放
+    replay(data: any): Promise<iResponse> {
+      return request.post(`/engine/request/replay`, data)
+    }
+    // 重放
+    getReplay(params: any): Promise<iResponse> {
+      return request.get(`/engine/request/replay`, { params })
+    }
   })()

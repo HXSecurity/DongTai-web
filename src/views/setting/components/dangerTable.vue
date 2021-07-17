@@ -1,14 +1,69 @@
 <template>
   <div class="table-body">
-    <div class="flex-right">
-      <el-button size="small" class="resetAllBtn" @click="hookTypeDialog = true"
-        >添加规则类型</el-button
-      >
-      <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
-        >添加规则</el-button
-      >
+    <div class="flex-between">
+      <div style="flex: 1">
+        <el-select
+          v-model="rule_type"
+          class="search-input"
+          size="mini"
+          placeholder="请选择规则类型"
+          filterable
+          clearable
+          @change="getTable"
+        >
+          <el-option
+            v-for="item in types"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </div>
+      <div>
+        <el-popover placement="bottom" width="220" trigger="click">
+          <el-button
+            size="small"
+            class="resetAllBtn"
+            @click="changeStatusBatch('enable')"
+            >启用</el-button
+          >
+          <el-button
+            size="small"
+            class="resetAllBtn"
+            @click="changeStatusBatch('disable')"
+            >禁用</el-button
+          >
+          <el-button
+            size="small"
+            class="resetAllBtn"
+            @click="changeStatusBatch('delete')"
+            >删除</el-button
+          >
+          <el-button
+            slot="reference"
+            size="small"
+            class="resetAllBtn"
+            style="margin-right: 10px"
+            >批量操作</el-button
+          >
+        </el-popover>
+        <el-button
+          size="small"
+          class="resetAllBtn"
+          @click="hookTypeDialog = true"
+          >添加规则类型</el-button
+        >
+        <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
+          >添加规则</el-button
+        >
+      </div>
     </div>
-    <el-table :data="tableData" style="width: 100%">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="55"> </el-table-column>
       <template slot="empty">
         <div class="empty-box">
           <span>暂无数据</span>
@@ -74,7 +129,10 @@
           >
             编辑
           </el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="deleteRule(scope.row)">
+          <el-popconfirm
+            title="确定删除吗？"
+            @confirm="changeStatus(scope.row, 'delete')"
+          >
             <el-button
               slot="reference"
               size="small"
@@ -257,6 +315,7 @@ export default class HookTable extends VueBase {
   @Prop({ default: '0', type: String }) ruleType!: string
   hookTypeDialog = false
   hookDialog = false
+  rule_type = ''
   hookType = { type: '1', name: '', short_name: '', enable: 0 }
   types = []
   hook = {
@@ -281,6 +340,47 @@ export default class HookTable extends VueBase {
   pageSize = 20
   currentPage = 1
   total = 0
+
+  multipleSelection = []
+  handleSelectionChange(val: any) {
+    this.multipleSelection = val
+  }
+
+  async changeStatusBatch(op: string) {
+    let str = ''
+    switch (op) {
+      case 'delete':
+        str = '删除'
+        break
+      case 'enable':
+        str = '启用'
+        break
+      case 'disable':
+        str = '禁用'
+        break
+    }
+    this.$confirm(`此操作将批量${str}数据, 是否继续?`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning('请先选择需要操作的数据')
+        return
+      }
+      const ids = this.multipleSelection.map((item: any) => item.id)
+      const { status, msg } = await this.services.setting.changeStatusBatch({
+        ids: String(ids),
+        op,
+      })
+      if (status !== 201) {
+        this.$message.error(msg)
+        return
+      }
+      this.$message.success(msg)
+      await this.getTable()
+    })
+  }
 
   splitAndIn(str: string, key: string) {
     const arr = str.split(key)
@@ -397,26 +497,15 @@ export default class HookTable extends VueBase {
     await this.getTable()
   }
 
-  async changeStatus(row: any) {
+  async changeStatus(row: any, status = '') {
     this.loadingStart()
-    let status, msg
-    if (row.enable === 0) {
-      const obj = await this.services.setting.ruleDisable({
-        rule_id: row.id,
-      })
-      status = obj.status
-      msg = obj.msg
-    } else {
-      const obj = await this.services.setting.ruleEnable({
-        rule_id: row.id,
-      })
-      status = obj.status
-      msg = obj.msg
-    }
+    const obj = await this.services.setting.changeStatus({
+      rule_id: row.id,
+      op: status || (row.enable === 0 ? 'disable' : 'enable'),
+    })
     this.loadingDone()
-
-    if (status !== 201) {
-      this.$message.error(msg)
+    if (obj.status !== 201) {
+      this.$message.error(obj.msg)
       return
     }
     await this.getTable()
@@ -526,6 +615,10 @@ export default class HookTable extends VueBase {
       this.clearHook()
     }
   }
+  async changeRuleType() {
+    this.currentPage = 1
+    await this.getTable()
+  }
   async getTable() {
     this.loadingStart()
     const {
@@ -537,6 +630,7 @@ export default class HookTable extends VueBase {
       page: this.currentPage,
       pageSize: this.pageSize,
       type: this.ruleType,
+      strategy_type: this.rule_type,
     })
     this.loadingDone()
     if (status !== 201) {
@@ -567,17 +661,21 @@ export default class HookTable extends VueBase {
 <style scoped lang="scss">
 .table-body {
   padding: 20px;
-  .flex-right {
+  .flex-between {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding-bottom: 6px;
+    .search-input {
+      width: 140px;
+      margin-right: 10px;
+    }
   }
-  .resetAllBtn {
-    height: 28px;
-    line-height: 0;
-    background: #4a72ae;
-    border-radius: 2px;
-    color: #fff;
-  }
+}
+.resetAllBtn {
+  height: 28px;
+  line-height: 0;
+  background: #4a72ae;
+  border-radius: 2px;
+  color: #fff;
 }
 </style>

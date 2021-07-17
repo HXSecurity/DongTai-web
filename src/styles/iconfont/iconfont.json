@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "5560689",
+      "name": "gears",
+      "font_class": "gears",
+      "unicode": "e751",
+      "unicode_decimal": 59217
+    },
+    {
       "icon_id": "22730256",
       "name": "重置密码",
       "font_class": "zhongzhimima",

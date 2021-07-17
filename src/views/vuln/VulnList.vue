@@ -157,82 +157,100 @@
     </div>
 
     <div class="main-warp">
-      <div class="selectForm">
-        <el-select
-          v-model="searchObj.order"
-          style="width: 160px; font-size: 14px"
-          class="commonSelect"
-          placeholder="请选择排序条件"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option
-            v-for="item in searchOptionsObj.orderOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <el-select
-          v-model="searchObj.language"
-          placeholder="请选择开发语言"
-          style="margin-left: 10px; width: 160px; font-size: 14px"
-          class="commonSelect"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option label="JAVA" value="JAVA"></el-option>
-          <el-option label=".NET" value=".NET"></el-option>
-        </el-select>
-        <el-select
-          v-model="searchObj.status"
-          placeholder="请选择漏洞状态"
-          style="margin-left: 10px; width: 160px; font-size: 14px"
-          class="commonSelect"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option label="待验证" value="待验证"></el-option>
-          <el-option label="验证中" value="验证中"></el-option>
-          <el-option label="已确认" value="已确认"></el-option>
-          <el-option label="已忽略" value="已忽略"></el-option>
-          <el-option label="已处理" value="已处理"></el-option>
-        </el-select>
-        <div class="selectInput">
-          <el-input
-            v-model="searchObj.url"
-            placeholder="请输入搜索条件，如：http://127.0.0.1:8080"
-            class="commonInput"
-            style="width: 412px"
-            @keyup.enter.native="newSelectData"
+      <div class="tool-box">
+        <div class="selectForm">
+          <el-select
+            v-model="searchObj.order"
+            style="width: 160px; font-size: 14px"
+            class="commonSelect"
+            placeholder="请选择排序条件"
+            clearable
+            @change="newSelectData"
           >
-            <i
-              slot="suffix"
-              class="el-input__icon el-icon-search"
-              @click="newSelectData"
-            />
-          </el-input>
+            <el-option
+              v-for="item in searchOptionsObj.orderOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <i
+            v-if="searchObj.sort === null"
+            class="el-icon-sort sort-btn"
+            @click="sortSelect(true)"
+          ></i>
+          <i
+            v-if="searchObj.sort === true"
+            class="el-icon-sort-up sort-btn"
+            @click="sortSelect(false)"
+          ></i>
+          <i
+            v-if="searchObj.sort === false"
+            class="el-icon-sort-down sort-btn"
+            @click="sortSelect(null)"
+          ></i>
+          <el-select
+            v-model="searchObj.language"
+            placeholder="请选择开发语言"
+            style="margin-left: 10px; width: 160px; font-size: 14px"
+            class="commonSelect"
+            clearable
+            @change="newSelectData"
+          >
+            <el-option label="JAVA" value="JAVA"></el-option>
+            <el-option label=".NET" value=".NET"></el-option>
+          </el-select>
+          <el-select
+            v-model="searchObj.status"
+            placeholder="请选择漏洞状态"
+            style="margin-left: 10px; width: 160px; font-size: 14px"
+            class="commonSelect"
+            clearable
+            @change="newSelectData"
+          >
+            <el-option label="待验证" value="待验证"></el-option>
+            <el-option label="验证中" value="验证中"></el-option>
+            <el-option label="已确认" value="已确认"></el-option>
+            <el-option label="已忽略" value="已忽略"></el-option>
+            <el-option label="已处理" value="已处理"></el-option>
+          </el-select>
+          <div class="selectInput">
+            <el-input
+              v-model="searchObj.url"
+              placeholder="请输入搜索条件，如：http://127.0.0.1:8080"
+              class="commonInput"
+              style="width: 400px"
+              @keyup.enter.native="newSelectData"
+            >
+              <i
+                slot="suffix"
+                class="el-input__icon el-icon-search"
+                @click="newSelectData"
+              />
+            </el-input>
+          </div>
+        </div>
+        <div class="checked-bar">
+          <el-checkbox
+            :value="
+              tableData.length > 0 && tableData.every((item) => item.checked)
+            "
+            @change="selectAll"
+            >已选中{{
+              tableData.filter((item) => item.checked).length
+            }}项</el-checkbox
+          >
+          <div>
+            <el-button class="checkedAllBtn" @click="recheck('project')">
+              批量验证
+            </el-button>
+            <el-button class="checkedAllBtn" @click="recheck('all')">
+              全量验证
+            </el-button>
+          </div>
         </div>
       </div>
-      <div class="checked-bar">
-        <el-checkbox
-          :value="
-            tableData.length > 0 && tableData.every((item) => item.checked)
-          "
-          @change="selectAll"
-          >已选中{{
-            tableData.filter((item) => item.checked).length
-          }}项</el-checkbox
-        >
-        <div>
-          <el-button class="checkedAllBtn" @click="recheck('project')">
-            批量验证
-          </el-button>
-          <el-button class="checkedAllBtn" @click="recheck('all')">
-            全量验证
-          </el-button>
-        </div>
-      </div>
+      <div class="tool-box-placeholder"></div>
       <div v-for="item in tableData" :key="item.id" class="card">
         <div
           class="card-title flex-row-space-between"
@@ -406,6 +424,7 @@ export default class VulnList extends VueBase {
   }
 
   private searchObj = {
+    sort: null,
     language: '',
     level: '',
     type: '',
@@ -419,7 +438,10 @@ export default class VulnList extends VueBase {
     this.getTableData()
     this.vulnSummary()
   }
-
+  private sortSelect(flag: any) {
+    this.searchObj.sort = flag
+    this.newSelectData()
+  }
   private recheck(type: string) {
     this.$confirm(
       `即将进行${type === 'all' ? '全量' : '选中条目'}验证，是否继续?`,
@@ -467,6 +489,7 @@ export default class VulnList extends VueBase {
   }
 
   private reset() {
+    this.searchObj.sort = null
     this.searchObj.language = ''
     this.searchObj.level = ''
     this.searchObj.type = ''
@@ -544,7 +567,9 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
       status: this.searchObj.status,
     }
     this.loadingStart()
@@ -578,7 +603,9 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order,
+      order: `${this.searchObj.sort === false && this.searchObj.order ? '-' : ''}${
+        this.searchObj.order
+      }`,
       status: this.searchObj.status,
     }
     this.loadingStart()
@@ -653,7 +680,19 @@ export default class VulnList extends VueBase {
     font-weight: 500;
   }
 }
-
+.sort-btn {
+  width: 38px;
+  height: 38px;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  display: inline-block;
+  background: #fff;
+  border-radius: 4px;
+  text-align: center;
+  line-height: 36px;
+  font-size: 14px;
+  cursor: pointer;
+}
 .slider-warp {
   width: 234px;
   margin-top: 78px;
@@ -736,7 +775,17 @@ export default class VulnList extends VueBase {
   padding-top: 14px;
   margin-left: 248px;
   padding-bottom: 10px;
-
+  .tool-box {
+    position: fixed;
+    padding-top: 15px;
+    width: 952px;
+    top: 65px;
+    background: #f4f4f4;
+    z-index: 900;
+  }
+  .tool-box-placeholder {
+    height: 80px;
+  }
   .selectForm {
     width: 100%;
 

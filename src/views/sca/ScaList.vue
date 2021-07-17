@@ -4,7 +4,7 @@
     :style="{ display: projectId && 'flex' }"
   >
     <div :class="projectId ? '' : 'fixed-warp'">
-      <div class="slider-warp" :style="{marginTop:projectId&&'14px'}">
+      <div class="slider-warp" :style="{ marginTop: projectId && '14px' }">
         <div class="title flex-column-center" style="height: 54px">
           <div class="flex-row-space-between">
             <span style="font-size: 16px; font-weight: bold">{{
@@ -184,6 +184,7 @@
               class="item"
               effect="dark"
               :content="row.package_name"
+              :disabled="row.package_name.length < 35"
               placement="top-start"
             >
               <div class="dot">
@@ -202,6 +203,7 @@
               class="item"
               effect="dark"
               :content="row.version"
+              :disabled="row.version.length < 10"
               placement="top-start"
             >
               <div class="dot">
@@ -326,8 +328,6 @@ export default class ScaList extends VueBase {
     if (this.projectId) {
       this.searchObj.project_id = this.projectId
     }
-    this.getTableData()
-    this.scaSummary()
   }
   private reset() {
     this.searchObj.language = ''
@@ -368,6 +368,9 @@ export default class ScaList extends VueBase {
   }
 
   mounted() {
+    this.pageSize = Math.ceil((document.body.clientHeight + 200) / 46)
+    this.getTableData()
+    this.scaSummary()
     this.debounceMyScroll = debounce(this.myScroll, 400)
     window.addEventListener('scroll', this.debounceMyScroll)
   }

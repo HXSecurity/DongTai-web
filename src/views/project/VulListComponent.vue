@@ -4,11 +4,11 @@
       <div class="title flex-column-center">
         <div class="flex-row-space-between">
           <span style="font-size: 16px; font-weight: bold">{{
-            $t("views.vulnList.filter")
+            $t('views.vulnList.filter')
           }}</span>
           <el-button type="text" class="resetAllBtn" @click="reset">
             <span style="font-size: 12px">
-              {{ $t("views.vulnList.resetAll") }}
+              {{ $t('views.vulnList.resetAll') }}
             </span>
           </el-button>
         </div>
@@ -17,9 +17,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t("views.vulnList.type") }}</span>
+        <span style="font-size: 14px">{{ $t('views.vulnList.type') }}</span>
         <div class="reset-btn" @click="typeChange('')">
-          <span style="font-size: 14px">{{ $t("views.vulnList.reset") }}</span>
+          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
@@ -45,9 +45,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t("views.vulnList.level") }}</span>
+        <span style="font-size: 14px">{{ $t('views.vulnList.level') }}</span>
         <div class="reset-btn" @click="levelChange('')">
-          <span style="font-size: 14px">{{ $t("views.vulnList.reset") }}</span>
+          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
@@ -73,9 +73,9 @@
         class="module-title flex-row-space-between"
         style="margin-top: 14px; margin-bottom: 0px"
       >
-        <span style="font-size: 14px">{{ $t("views.vulnList.language") }}</span>
+        <span style="font-size: 14px">{{ $t('views.vulnList.language') }}</span>
         <div class="reset-btn" @click="languageChange('')">
-          <span style="font-size: 14px">{{ $t("views.vulnList.reset") }}</span>
+          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
         </div>
       </div>
       <div
@@ -116,6 +116,21 @@
             :value="item.value"
           ></el-option>
         </el-select>
+        <i
+          v-if="searchObj.sort === null"
+          class="el-icon-sort sort-btn"
+          @click="sortSelect(true)"
+        ></i>
+        <i
+          v-if="searchObj.sort === true"
+          class="el-icon-sort-up sort-btn"
+          @click="sortSelect(false)"
+        ></i>
+        <i
+          v-if="searchObj.sort === false"
+          class="el-icon-sort-down sort-btn"
+          @click="sortSelect(null)"
+        ></i>
         <el-select
           v-model="searchObj.language"
           placeholder="请选择开发语言"
@@ -127,12 +142,26 @@
           <el-option label="JAVA" value="JAVA"></el-option>
           <el-option label=".NET" value=".NET"></el-option>
         </el-select>
+        <el-select
+          v-model="searchObj.status"
+          placeholder="请选择漏洞状态"
+          style="margin-left: 10px; width: 160px; font-size: 14px"
+          class="commonSelect"
+          clearable
+          @change="newSelectData"
+        >
+          <el-option label="待验证" value="待验证"></el-option>
+          <el-option label="验证中" value="验证中"></el-option>
+          <el-option label="已确认" value="已确认"></el-option>
+          <el-option label="已忽略" value="已忽略"></el-option>
+          <el-option label="已处理" value="已处理"></el-option>
+        </el-select>
         <div class="selectInput">
           <el-input
             v-model="searchObj.url"
             placeholder="请输入搜索条件，如：http://127.0.0.1:8080"
             class="commonInput"
-            style="width: 412px"
+            style="width: 312px"
             @keyup.enter.native="newSelectData"
           >
             <i
@@ -143,27 +172,50 @@
           </el-input>
         </div>
       </div>
-      <div
-        v-for="item in tableData"
-        :key="item.id"
-        class="card"
-        @click="goDetail(item.id)"
-      >
+      <div class="checked-bar">
+        <el-checkbox
+          :value="
+            tableData.length > 0 && tableData.every((item) => item.checked)
+          "
+          @change="selectAll"
+          >已选中{{
+            tableData.filter((item) => item.checked).length
+          }}项</el-checkbox
+        >
+        <div>
+          <el-button class="checkedAllBtn" @click="recheck('project')">
+            批量验证
+          </el-button>
+          <el-button class="checkedAllBtn" @click="recheck('all')">
+            全量验证
+          </el-button>
+        </div>
+      </div>
+      <div v-for="item in tableData" :key="item.id" class="card">
         <div
           class="card-title flex-row-space-between"
           style="height: 33px; min-height: 32px"
         >
           <span
-            class="title flex-column-center"
+            class="title"
             style="font-size: 14px; font-weight: bold; height: 32px"
           >
-            {{
-              `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
-                item.taint_position ? `，位置：${item.taint_position}` : ""
-              }`
-            }}
+            <el-checkbox
+              v-model="item.checked"
+              style="margin-right: 12px; margin-top: 2px"
+            ></el-checkbox>
+            <span @click="goDetail(item.id)">
+              {{
+                `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
+                  item.taint_position ? `，位置：${item.taint_position}` : ''
+                }`
+              }}
+            </span>
           </span>
-          <span class="time flex-column-center" style="font-size: 12px; height: 32px">
+          <span
+            class="time flex-column-center"
+            style="font-size: 12px; height: 32px"
+          >
             {{ item.first_time }}
           </span>
         </div>
@@ -194,7 +246,10 @@
                 </div>
               </el-tooltip>
               <span class="info" style="flex: 1.5">
-                <i class="iconfont" :class="switchServerType(item.server_type)"></i>
+                <i
+                  class="iconfont"
+                  :class="switchServerType(item.server_type)"
+                ></i>
                 {{ item.server_name }}
               </span>
               <span
@@ -230,21 +285,30 @@
                 {{ item.type }}
               </div> -->
               <div class="tageIcon" style="margin-left: 20px">
-                <i class="iconfont iconicon_yingyong_table" style="color: #e7f5e4"></i>
+                <i
+                  class="iconfont iconicon_yingyong_table"
+                  style="color: #e7f5e4"
+                ></i>
                 <span style="background: #e7f5e4; color: #63974e">
                   {{ item.language }}
                 </span>
               </div>
 
               <div class="tageIcon" style="margin-left: 20px">
-                <i class="iconfont iconicon_yingyong_table" style="color: #fce9de"></i>
+                <i
+                  class="iconfont iconicon_yingyong_table"
+                  style="color: #fce9de"
+                ></i>
                 <span style="background: #fce9de; color: #e07d43">
                   {{ item.type }}
                 </span>
               </div>
 
               <div class="tageIcon" style="margin-left: 20px">
-                <i class="iconfont iconicon_yingyong_table" style="color: #e5f3f3"></i>
+                <i
+                  class="iconfont iconicon_yingyong_table"
+                  style="color: #e5f3f3"
+                ></i>
                 <span style="background: #e5f3f3; color: #3c9aa2">
                   {{ item.status }}
                 </span>
@@ -258,18 +322,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import { formatTimestamp, getPassedTime } from "@/utils/utils";
-import VueBase from "@/VueBase";
-import { VulnListObj } from "@/views/vuln/types";
+import { Component, Prop } from 'vue-property-decorator'
+import { formatTimestamp, getPassedTime } from '@/utils/utils'
+import VueBase from '@/VueBase'
+import { VulnListObj } from '@/views/vuln/types'
 
-@Component({ name: "VulListComponent" })
+@Component({ name: 'VulListComponent' })
 export default class VulListComponent extends VueBase {
-  @Prop(String) projectId!: string;
-  private page = 1;
-  private pageSize = 20;
-  private dataEnd = false;
-  private tableData: Array<VulnListObj> = [];
+  @Prop(String) projectId!: string
+  private page = 1
+  private pageSize = 20
+  private dataEnd = false
+  private tableData: Array<VulnListObj> = []
   private searchOptionsObj = {
     language: [],
     level: [],
@@ -277,105 +341,163 @@ export default class VulListComponent extends VueBase {
     projects: [],
     orderOptions: [
       {
-        label: this.$t("views.vulnList.orderOptions.type"),
-        value: "type",
+        label: this.$t('views.vulnList.orderOptions.type'),
+        value: 'type',
       },
       {
-        label: this.$t("views.vulnList.orderOptions.level"),
-        value: "level",
+        label: this.$t('views.vulnList.orderOptions.level'),
+        value: 'level',
       },
       {
-        label: this.$t("views.vulnList.orderOptions.url"),
-        value: "url",
+        label: this.$t('views.vulnList.orderOptions.url'),
+        value: 'url',
       },
       {
-        label: this.$t("views.vulnList.orderOptions.latest_time"),
-        value: "latest_time",
+        label: this.$t('views.vulnList.orderOptions.latest_time'),
+        value: 'latest_time',
       },
       {
-        label: this.$t("views.vulnList.orderOptions.first_time"),
-        value: "first_time",
+        label: this.$t('views.vulnList.orderOptions.first_time'),
+        value: 'first_time',
       },
     ],
-  };
+  }
 
   private searchObj = {
-    language: "",
-    level: "",
-    type: "",
-    project_name: "",
-    url: "",
-    order: "",
-  };
+    sort: null,
+    language: '',
+    level: '',
+    type: '',
+    project_name: '',
+    url: '',
+    order: '',
+    status: '已确认',
+  }
 
   created() {
-    this.getTableData();
-    this.vulnSummary();
+    this.getTableData()
+    this.vulnSummary()
   }
 
   private reset() {
-    this.searchObj.language = "";
-    this.searchObj.level = "";
-    this.searchObj.type = "";
-    this.searchObj.project_name = "";
-    this.newSelectData();
+    this.searchObj.sort = null
+    this.searchObj.language = ''
+    this.searchObj.level = ''
+    this.searchObj.type = ''
+    this.searchObj.project_name = ''
+    this.searchObj.status = '已确认'
+    this.newSelectData()
+  }
+
+  private selectAll(e: any) {
+    const flag =
+      this.tableData.length > 0 && this.tableData.every((item) => item.checked)
+    if (flag) {
+      this.tableData.forEach((item) => this.$set(item, 'checked', false))
+    } else {
+      this.tableData.forEach((item) => this.$set(item, 'checked', true))
+    }
+  }
+
+  private recheck(type: string) {
+    this.$confirm(
+      `即将进行${type === 'all' ? '全量' : '选中条目'}验证，是否继续?`,
+      '提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(async () => {
+      let res: any = {}
+      if (type === 'all') {
+        res = await this.services.vuln.vulRecheckAll({
+          type: 'project',
+          projectId: this.projectId,
+        })
+      } else {
+        const ids = this.tableData
+          .map((item) => {
+            if (item.checked) {
+              return item.id
+            }
+          })
+          .filter((item) => item)
+        res = await this.services.vuln.vulRecheck({
+          ids: String(ids),
+        })
+      }
+
+      if (res.status !== 201) {
+        this.$message.error(res.msg)
+      } else {
+        this.$message.success(res.msg)
+        await this.newSelectData()
+      }
+    })
   }
 
   private languageChange(val: string, stop: boolean) {
     if (stop) {
-      return;
+      return
     }
-    this.searchObj.language = val;
-    this.newSelectData();
+    this.searchObj.language = val
+    this.newSelectData()
   }
 
   private levelChange(val: string, stop: boolean) {
     if (stop) {
-      return;
+      return
     }
-    this.searchObj.level = val;
-    this.newSelectData();
+    this.searchObj.level = val
+    this.newSelectData()
   }
 
   private typeChange(val: string, stop: boolean) {
     if (stop) {
-      return;
+      return
     }
-    this.searchObj.type = val;
-    this.newSelectData();
+    this.searchObj.type = val
+    this.newSelectData()
   }
 
   private projectNameChange(val: string, stop: boolean) {
     if (stop) {
-      return;
+      return
     }
-    this.searchObj.project_name = val;
-    this.newSelectData();
+    this.searchObj.project_name = val
+    this.newSelectData()
+  }
+
+  private sortSelect(flag: any) {
+    this.searchObj.sort = flag
+    this.newSelectData()
   }
 
   private newSelectData() {
-    this.page = 1;
-    this.tableData = [];
-    this.vulnSummary();
-    this.getTableData();
+    this.page = 1
+    this.dataEnd = false
+    this.tableData = []
+    this.vulnSummary()
+    this.getTableData()
   }
 
   mounted() {
-    window.addEventListener("scroll", this.myScroll);
+    window.addEventListener('scroll', this.myScroll)
   }
 
   beforeDestroy() {
-    window.removeEventListener("scroll", this.myScroll);
+    window.removeEventListener('scroll', this.myScroll)
   }
 
   private myScroll() {
     const bottomWindow =
       document.documentElement.scrollTop + window.innerHeight >
-      document.documentElement.offsetHeight - 1;
+      document.documentElement.offsetHeight - 1
     if (bottomWindow) {
       if (!this.dataEnd) {
-        this.page += 1;
-        this.getTableData();
+        this.page += 1
+        this.getTableData()
       }
     }
   }
@@ -389,28 +511,34 @@ export default class VulListComponent extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
+      status: this.searchObj.status,
       project_id: this.projectId,
-    };
-    this.loadingStart();
-    const { status, data, msg } = await this.services.vuln.vulnList(params);
-    this.loadingDone();
+    }
+    this.loadingStart()
+    const { status, data, msg } = await this.services.vuln.vulnList(params)
+    this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg);
-      return;
+      this.$message.error(msg)
+      return
     }
-    const tableData = data.reduce((list: Array<VulnListObj>, item: VulnListObj) => {
-      list.push({
-        ...item,
-        first_time: formatTimestamp(item.first_time),
-        latest_time: getPassedTime(item.latest_time),
-      });
-      return list;
-    }, []);
+    const tableData = data.reduce(
+      (list: Array<VulnListObj>, item: VulnListObj) => {
+        list.push({
+          ...item,
+          first_time: formatTimestamp(item.first_time),
+          latest_time: getPassedTime(item.latest_time),
+        })
+        return list
+      },
+      []
+    )
     if (tableData.length < 20) {
-      this.dataEnd = true;
+      this.dataEnd = true
     }
-    this.tableData = [...this.tableData, ...tableData];
+    this.tableData = [...this.tableData, ...tableData]
   }
 
   private async vulnSummary() {
@@ -420,43 +548,46 @@ export default class VulListComponent extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: this.searchObj.order,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
+      status: this.searchObj.status,
       projectId: this.projectId,
-    };
-    this.loadingStart();
-    const { status, data, msg } = await this.services.vuln.vulnSummary(params);
-    this.loadingDone();
-    if (status !== 201) {
-      this.$message.error(msg);
-      return;
     }
-    this.searchOptionsObj.language = data.language;
-    this.searchOptionsObj.level = data.level;
-    this.searchOptionsObj.type = data.type;
-    this.searchOptionsObj.projects = data.projects;
+    this.loadingStart()
+    const { status, data, msg } = await this.services.vuln.vulnSummary(params)
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    this.searchOptionsObj.language = data.language
+    this.searchOptionsObj.level = data.level
+    this.searchOptionsObj.type = data.type
+    this.searchOptionsObj.projects = data.projects
   }
 
   private goDetail(id: number) {
-    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`);
+    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
   }
 
   switchServerType(serverType: string) {
     switch (serverType) {
-      case "tomcat":
-        return "icontomcat";
-      case "jetty":
-        return "iconJetty";
-      case "resin":
-        return "iconresin";
-      case "weblogic":
-        return "iconwebLogic";
-      case "websphere":
-        return "iconwebSphere";
-      case "jboss":
-        return "iconJBoss";
+      case 'tomcat':
+        return 'icontomcat'
+      case 'jetty':
+        return 'iconJetty'
+      case 'resin':
+        return 'iconresin'
+      case 'weblogic':
+        return 'iconwebLogic'
+      case 'websphere':
+        return 'iconwebSphere'
+      case 'jboss':
+        return 'iconJBoss'
 
       default:
-        return "iconyingyong";
+        return 'iconyingyong'
     }
   }
 }
@@ -553,10 +684,37 @@ export default class VulListComponent extends VueBase {
   padding-top: 14px;
   padding-bottom: 32px;
   width: 910px;
-
+  .checked-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0 12px 12px;
+    .checkedAllBtn {
+      height: 28px;
+      line-height: 0;
+      background: #4a72ae;
+      border-radius: 2px;
+      color: #fff;
+      & + .checkedAllBtn {
+        margin-left: 12px;
+      }
+    }
+  }
   .selectForm {
     width: 100%;
-
+    .sort-btn {
+      width: 38px;
+      height: 38px;
+      border: 1px solid #dcdfe6;
+      color: #606266;
+      display: inline-block;
+      background: #fff;
+      border-radius: 4px;
+      text-align: center;
+      line-height: 36px;
+      font-size: 14px;
+      cursor: pointer;
+    }
     .selectInput {
       float: right;
     }
@@ -578,11 +736,15 @@ export default class VulListComponent extends VueBase {
       border-radius: 8px 8px 0 0;
       border-bottom: 1px solid #c8e0ff;
       padding: 0 12px;
-
+      span {
+        cursor: pointer;
+      }
       .title {
         color: #38435a;
         font-size: 16px;
         max-width: 780px;
+        display: flex;
+        align-items: center;
       }
 
       .time {
@@ -599,7 +761,7 @@ export default class VulListComponent extends VueBase {
         position: relative;
 
         &:before {
-          content: "";
+          content: '';
           width: 1px;
           height: 30px;
           background: #dee4ea;
@@ -665,10 +827,10 @@ export default class VulListComponent extends VueBase {
           &:before {
             position: absolute;
             left: -17px;
-            content: "";
+            content: '';
             height: 20px;
             width: 18px;
-            background-image: url("../../assets/img/tag.png");
+            background-image: url('../../assets/img/tag.png');
           }
         }
 
@@ -686,10 +848,10 @@ export default class VulListComponent extends VueBase {
           &:before {
             position: absolute;
             left: -17px;
-            content: "";
+            content: '';
             height: 20px;
             width: 18px;
-            background-image: url("../../assets/img/tag2.png");
+            background-image: url('../../assets/img/tag2.png');
           }
         }
       }

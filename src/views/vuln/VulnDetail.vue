@@ -124,7 +124,7 @@
         </div>
         <div class="btnWarp">
           <el-button type="text" class="btn" @click="recheckVul">
-            <i class="iconfont icondaochu-5"></i>
+            <i class="iconfont iconjiance-copy"></i>
             {{ $t('views.vulnDetail.recheck') }}
           </el-button>
           <el-button type="text" class="btn" @click="exportVul">
@@ -142,7 +142,7 @@
       </div>
       <div class="infoWarp">
         <div class="infoLine flex-row-space-between">
-          <div class="info">
+          <div v-dot class="info">
             <span class="label">
               <i class="iconfont iconfuwuqi-3"></i>
               {{ $t('views.vulnDetail.serverIp') }}:
@@ -156,14 +156,14 @@
               <span class="dot">{{ vulnObj.server.ip }}</span>
             </el-tooltip>
           </div>
-          <div class="info">
+          <div v-dot class="info">
             <span class="label">
-              <i class="iconfont iconproject"></i>
-              {{ $t('views.vulnDetail.projectName') }}:
+              <i class="iconfont iconIp"></i>
+              {{ $t('views.vulnDetail.clientIp') }}:
             </span>
-            <span>{{ vulnObj.vul.project_name }}</span>
+            <span>{{ vulnObj.vul.client_ip }}</span>
           </div>
-          <div class="info">
+          <div v-dot class="info">
             <span class="label">
               <i class="iconfont iconzhongjianjian"></i>
               {{ $t('views.vulnDetail.middleware') }}:
@@ -172,47 +172,30 @@
               <span>{{ vulnObj.server.container }}</span>
             </span>
           </div>
-          <div class="info" style="flex: 1.5">
-            <span class="label">
-              <i class="iconfont iconshijian-3"></i>
-              {{ $t('views.vulnDetail.first_time') }}:
-            </span>
-            <span>{{ vulnObj.vul.first_time }}</span>
-          </div>
-        </div>
-        <div class="infoLine flex-row-space-between">
-          <div class="info">
-            <span class="label">
-              <i class="iconfont iconIp"></i>
-              {{ $t('views.vulnDetail.clientIp') }}:
-            </span>
-            <span>{{ vulnObj.vul.client_ip }}</span>
-          </div>
-          <div class="info">
+          <div v-dot class="info">
             <span class="label">
               <i class="iconfont iconyuyan-2"></i>
               {{ $t('views.vulnDetail.language') }}:
             </span>
             <span>{{ vulnObj.vul.language }}</span>
           </div>
-          <div class="info">
-            <span class="label">
-              <i class="iconfont iconweixian-2"></i>
-              {{ $t('views.vulnDetail.level') }}:
-            </span>
-            <span>{{ vulnObj.vul.level }}</span>
-          </div>
-          <div class="info" style="flex: 1.5">
-            <span class="label">
-              <i class="iconfont iconcishu-2"></i>
-              {{ $t('views.vulnDetail.counts') }}:
-            </span>
-            <span>{{ vulnObj.vul.counts }}</span>
-          </div>
         </div>
-
         <div class="infoLine flex-row-space-between">
-          <div class="info">
+          <div v-dot class="info">
+            <span class="label">
+              <i class="iconfont iconproject"></i>
+              {{ $t('views.vulnDetail.projectName') }}:
+            </span>
+            <span>{{ vulnObj.vul.project_name }}</span>
+          </div>
+          <div v-dot class="info">
+            <span class="label">
+              <i class="iconfont iconicon_details_banben"></i>
+              {{ $t('views.vulnDetail.version') }}:
+            </span>
+            <span>{{ vulnObj.vul.project_version }}</span>
+          </div>
+          <div v-dot class="info">
             <span class="label">
               <i class="iconfont iconshuju1"></i>
               {{ $t('views.vulnDetail.taintParamName') }}:
@@ -223,15 +206,37 @@
               '无'
             }}</span>
           </div>
-
-          <div class="info">
+          <div v-dot class="info">
             <span class="label">
               <i class="iconfont iconloudong"></i>
               {{ $t('views.vulnDetail.taintValue') }}:
             </span>
             <span>{{ vulnObj.vul.taint_value || 0 }}</span>
           </div>
-          <div class="info" style="flex: 1.5">
+        </div>
+        <div class="infoLine flex-row-space-between">
+          <div v-dot class="info">
+            <span class="label">
+              <i class="iconfont iconshijian-3"></i>
+              {{ $t('views.vulnDetail.first_time') }}:
+            </span>
+            <span>{{ vulnObj.vul.first_time }}</span>
+          </div>
+          <div v-dot class="info">
+            <span class="label">
+              <i class="iconfont iconcishu-2"></i>
+              {{ $t('views.vulnDetail.counts') }}:
+            </span>
+            <span>{{ vulnObj.vul.counts }}</span>
+          </div>
+          <div v-dot class="info">
+            <span class="label">
+              <i class="iconfont iconweixian-2"></i>
+              {{ $t('views.vulnDetail.level') }}:
+            </span>
+            <span>{{ vulnObj.vul.level }}</span>
+          </div>
+          <div v-dot class="info">
             <span class="label">
               <i class="iconfont iconicon_yingyong_zhuagntai"></i>
               {{ $t('views.vulnDetail.state') }}:
@@ -254,7 +259,15 @@
               </el-option>
             </el-select>
           </div>
-          <div class="info"></div>
+        </div>
+        <div class="infoLine flex-row-space-between">
+          <div v-dot class="info" style="flex: 2.5">
+            <span class="label">
+              <i class="iconfont iconapp"></i>
+              {{ $t('views.vulnDetail.agent') }}:
+            </span>
+            <span>{{ vulnObj.vul.agent_name }}</span>
+          </div>
         </div>
       </div>
       <div class="module-title">
@@ -266,20 +279,50 @@
 
       <div class="module-title">
         {{ $t('views.vulnDetail.httpRequest') }}
+        <el-button
+          style="
+            margin-left: 8px;
+            padding: 6px;
+            background: #4a72ae;
+            color: #fff;
+          "
+          size="mini"
+          @click="goToPoolDetail"
+          ><i
+            class="iconfont icongears"
+            style="margin-right: 6px; font-size: 12px"
+          ></i
+          >请求重放</el-button
+        >
       </div>
-      <div class="markdownContent httpRequest">
+      <div class="selectForm">
+        <div class="select-item"></div>
+        <div
+          v-for="item in httpOptions"
+          :key="item.value"
+          class="select-item"
+          :class="item.value === state && 'active'"
+          @click="state = item.value"
+        >
+          {{ item.label }}
+        </div>
+      </div>
+      <div v-show="state === 1" class="markdownContent httpRequest">
         <MyMarkdownIt :content="req_md" style="color: #747c8c"></MyMarkdownIt>
+      </div>
+      <div v-show="state === 0" class="markdownContent httpRequest">
+        <MyMarkdownIt :content="res_md" style="color: #747c8c"></MyMarkdownIt>
       </div>
       <!-- 污点流图-->
       <div
-        v-if="vulnObj.vul.graphy && vulnObj.vul.graphy.length > 0"
+        v-if="vulnObj.vul.graph && vulnObj.vul.graph.length > 0"
         class="module-title"
       >
-        {{ $t('views.vulnDetail.graphy') }}
+        {{ $t('views.vulnDetail.graph') }}
       </div>
       <div
-        v-if="vulnObj.vul.graphy && vulnObj.vul.graphy.length > 0"
-        class="graphyModule flex-row-space-between"
+        v-if="vulnObj.vul.graph && vulnObj.vul.graph.length > 0"
+        class="graphModule flex-row-space-between"
       >
         <div class="left-warp">
           <div class="flex-row-space-between">
@@ -306,9 +349,10 @@
             </div>
           </div>
           <div
-            v-for="(item, index) in vulnObj.vul.graphy"
+            v-for="(item, index) in vulnObj.vul.graph"
             :key="index"
             class="nodeLine flex-row-space-between"
+            @click="openTarget(index)"
           >
             <div class="flex-column-center" style="padding: 0 5px">
               <i
@@ -317,7 +361,7 @@
                 :style="
                   index === 0
                     ? { color: '#5491ef' }
-                    : index === vulnObj.vul.graphy.length - 1
+                    : index === vulnObj.vul.graph.length - 1
                     ? { color: '#ec984f' }
                     : { color: '#f3bc3f' }
                 "
@@ -327,15 +371,16 @@
               {{ item.node }}
             </div>
             <i
-              v-if="index < vulnObj.vul.graphy.length - 1"
+              v-if="index < vulnObj.vul.graph.length - 1"
               class="step el-icon-bottom"
             ></i>
           </div>
         </div>
         <div class="right-warp">
           <el-table
-            class="graphyTable"
-            :data="vulnObj.vul.graphy"
+            ref="graphTable"
+            class="graphTable"
+            :data="vulnObj.vul.graph"
             style="background: #f8f9fb"
             :row-class-name="tableRowClassName"
           >
@@ -539,6 +584,12 @@ export default class VulnDetail extends VueBase {
       label: '已忽略',
     },
   ]
+  private state = 1
+  private httpOptions = [
+    { value: 1, label: '请求' },
+    { value: 0, label: '响应' },
+  ]
+
   private vulnObj: VulnObj = {
     vul: {
       url: '',
@@ -553,7 +604,7 @@ export default class VulnDetail extends VueBase {
       level: '',
       counts: 0,
       req_header: '',
-      graphy: [],
+      graph: [],
       context_path: '',
       taint_value: '',
       param_name: '',
@@ -589,6 +640,17 @@ export default class VulnDetail extends VueBase {
     order: '',
   }
 
+  private openTarget(i: number) {
+    const graphTable: any = this.$refs.graphTable
+    this.vulnObj.vul.graph.forEach((item: any, index: number) => {
+      if (index === i) {
+        graphTable.toggleRowExpansion(item)
+      } else {
+        graphTable.toggleRowExpansion(item, false)
+      }
+    })
+  }
+
   private orderOptions = [
     {
       label: this.$t('views.vulnList.orderOptions.type'),
@@ -620,6 +682,17 @@ export default class VulnDetail extends VueBase {
     await this.getTableData()
   }
 
+  private goToPoolDetail() {
+    if (this.vulnObj.vul.method_pool_id) {
+      const { href } = this.$router.resolve({
+        path: `/taint/poolDetail/${this.vulnObj.vul.method_pool_id}?activeName=flowDebug`,
+      })
+      window.open(href, '_blank')
+    } else {
+      this.$message.error('历史数据不支持重放')
+    }
+  }
+
   private newSelectData() {
     this.page = 1
     this.getTableData()
@@ -642,6 +715,7 @@ export default class VulnDetail extends VueBase {
     }
   }
   private req_md = ''
+  private res_md = ''
   private async getTableData() {
     const params = {
       page: this.page,
@@ -679,7 +753,17 @@ export default class VulnDetail extends VueBase {
     this.selectedId = id
     this.getVulnDetail()
   }
-
+  isJSON(str: string) {
+    if (typeof str == 'string') {
+      try {
+        JSON.parse(str)
+        return true
+      } catch (e) {
+        console.log(e)
+        return false
+      }
+    }
+  }
   private async getVulnDetail() {
     this.loadingStart()
     const { data, status, msg } = await this.services.vuln.getVulnDetail(
@@ -699,60 +783,77 @@ export default class VulnDetail extends VueBase {
       }
 
       const strArr = data.vul.req_header.split(`\n`)
-      for (const key in data.vul.param_name) {
-        switch (key) {
-          case 'GET':
-            const strG = strArr[0].split('?')
-            const getObj = qs.parse(strG[1])
-            const getRedStr = toRed(strG[1], getObj[data.vul.param_name[key]])
-            strG[1] = getRedStr
-            strArr[0] = strG.join('?')
-            break
-          case 'POST':
-            const postObj = qs.parse(strArr[strArr.length - 1])
-            const postRedStr = toRed(
-              strArr[strArr.length - 1],
-              postObj[data.vul.param_name[key]]
-            )
-            strArr[strArr.length - 1] = postRedStr
-            break
-          case 'COOKIE':
-            strArr.forEach((item: any) => {
-              if (item.indexOf('cookie:') > -1) {
-                const cookieG = item.split(':')
-                const cookieObj = qs.parse(cookieG[1])
-                const cookieRedStr = toRed(
-                  cookieG[1],
-                  cookieObj[data.vul.param_name[key]]
+      try {
+        for (const key in data.vul.param_name) {
+          switch (key) {
+            case 'GET':
+              const strArrNoSpace = strArr[0].split(' ')
+              const strG = strArrNoSpace[1].split('?')
+              const getObj = qs.parse(strG[1])
+              const getRedStr = toRed(strG[1], getObj[data.vul.param_name[key]])
+              strG[1] = getRedStr
+              strArrNoSpace[1] = strG.join('?')
+              strArr[0] = strArrNoSpace.join(' ')
+              break
+            case 'POST':
+              if (!this.isJSON(strArr[strArr.length - 1])) {
+                const postObj = qs.parse(strArr[strArr.length - 1])
+                const postRedStr = toRed(
+                  strArr[strArr.length - 1],
+                  postObj[data.vul.param_name[key]]
                 )
-                cookieG[1] = cookieRedStr
-                item = cookieG.join(':')
+                strArr[strArr.length - 1] = postRedStr
+              } else {
+                const obj = JSON.parse(strArr[strArr.length - 1])
+                const postRedStr = toRed(
+                  strArr[strArr.length - 1],
+                  obj[data.vul.param_name[key]]
+                )
+                strArr[strArr.length - 1] = postRedStr
               }
-            })
 
-            break
-          case 'PATH':
-            const strP = strArr[0].split('?')
-            const pathRedStr = toRed(strP[0], data.vul.param_name[key])
-            strP[0] = pathRedStr
-            strArr[0] = strP.join('?')
-            break
-          case 'HEADER':
-            strArr.forEach((item: any) => {
-              if (item.indexOf(data.vul.param_name[key]) > -1) {
-                item = toRed(strP[0], data.vul.param_name[key])
-              }
-            })
-            break
+              break
+            case 'COOKIE':
+              strArr.forEach((item: any, index: number) => {
+                if (item.indexOf('cookie:') > -1) {
+                  const cookieG = item.split(':')
+                  const cookieObj = qs.parse(cookieG[1])
+                  const cookieRedStr = toRed(
+                    cookieG[1],
+                    cookieObj[data.vul.param_name[key]]
+                  )
+                  cookieG[1] = cookieRedStr
+                  strArr[index] = cookieG.join(':')
+                }
+              })
+              break
+            case 'PATH':
+              const strP = strArr[0].split('?')
+              const pathRedStr = toRed(strP[0], data.vul.param_name[key])
+              strP[0] = pathRedStr
+              strArr[0] = strP.join('?')
+              break
+            case 'HEADER':
+              strArr.forEach((item: any, index: number) => {
+                if (item.indexOf(data.vul.param_name[key]) > -1) {
+                  strArr[index] = toRed(item, item.split(':')[1])
+                }
+              })
+              break
+          }
         }
+      } catch (e) {
+        console.log(e)
       }
       this.req_md = strArr.join('<br/>')
+      this.res_md = data.vul.response.split(`\n`).join('<br/>')
+
       this.vulnObj = {
         vul: {
           ...data.vul,
           first_time: formatTimestamp(data.vul.first_time),
           latest_time: formatTimestamp(data.vul.latest_time),
-          graphy: data.vul.graphy,
+          graph: data.vul.graph,
         },
         server: {
           ...data.server,
@@ -1000,9 +1101,10 @@ export default class VulnDetail extends VueBase {
     margin-top: 16px;
   }
 
-  .httpRequest {
+  .markdownContent.httpRequest {
     height: 196px;
     overflow-y: auto;
+    margin-top: 0;
   }
 
   .baseInfo {
@@ -1032,7 +1134,7 @@ export default class VulnDetail extends VueBase {
     border-radius: 4px;
   }
 
-  .graphyModule {
+  .graphModule {
     width: 100%;
     margin-top: 18px;
 
@@ -1053,7 +1155,7 @@ export default class VulnDetail extends VueBase {
         color: #646e83;
         margin-top: 34px;
         position: relative;
-
+        cursor: pointer;
         &:first-child {
           margin-top: 0;
         }
@@ -1138,6 +1240,28 @@ export default class VulnDetail extends VueBase {
       max-height: 200px;
       overflow-y: auto;
     }
+  }
+}
+
+.selectForm {
+  display: flex;
+  padding: 10px 0 0 0;
+  .select-item {
+    font-size: 12px;
+    font-weight: 500;
+    color: #959fb4;
+    text-align: center;
+    line-height: 28px;
+    cursor: context-menu;
+  }
+  .select-item + .select-item {
+    cursor: pointer;
+    width: 80px;
+    height: 28px;
+  }
+  .select-item.active {
+    color: #1a80f2;
+    background: #f6f8fa;
   }
 }
 </style>

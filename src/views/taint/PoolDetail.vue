@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-tabs class="poolDetail-tab" v-model="activeName">
+    <el-tabs
+      v-model="activeName"
+      class="poolDetail-tab"
+      @tab-click="changeActive"
+    >
       <el-tab-pane label="污点调用图" name="taintGraph">
         <div class="graphWarp">
           <Dagre v-if="graphRefresh" :init-data="graphData"></Dagre>
@@ -9,14 +13,20 @@
       <el-tab-pane label="数据包调试" name="flowDebug">
         <div class="httpTestWarp">
           <div class="bottom-btn-line">
-            <el-button type="primary" size="small">发送</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              :loading="buttonLoading"
+              @click="send"
+              >{{ buttonLoading ? '重放中' : '发送' }}</el-button
+            >
           </div>
           <div class="flex-row-space-between">
             <div class="requestBox">
-              <textarea v-model="vul.req_header"></textarea>
+              <textarea v-model="vul.request"></textarea>
             </div>
             <div class="responseBox">
-              <textarea v-model="vul.res_body"></textarea>
+              <textarea v-model="vul.response"></textarea>
             </div>
           </div>
         </div>
@@ -48,6 +58,7 @@
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
+import merge from 'webpack-merge'
 import VueBase from '@/VueBase'
 import {
   SearchParams,
@@ -69,19 +80,50 @@ export default class PoolDetail extends VueBase {
   private vul: VulObj = {
     language: '',
     method_pool: '',
-    req_header: '',
-    res_body: '',
+    request: '',
+    response: '',
     url: '',
   }
-  private activeName: string = 'taintGraph'
+  private activeName = 'taintGraph'
   // private taintLinkList: TaintLinkObj[] = []
-  private graphRefresh: boolean = false
+  private graphRefresh = false
   private graphData: GraphData = {
     nodes: [],
     edges: [],
   }
 
+  private changeActive(e: any) {
+    this.$router.replace({
+      query: merge(this.$route.query, { activeName: e.name }) as any,
+    })
+  }
+  private buttonLoading = false
+  private async send() {
+    this.loadingStart()
+    const res = await this.services.taint.replay({
+      methodPoolId: this.$route.params.id,
+      replayRequest: this.vul.request,
+    })
+    this.loadingDone()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    const timer = setInterval(async () => {
+      this.buttonLoading = true
+      const resT = await this.services.taint.getReplay(res.data)
+      if (resT.status === 201) {
+        this.vul.response = resT.data.response
+        clearInterval(timer)
+        this.buttonLoading = false
+      }
+    }, 1000)
+  }
+
   mounted() {
+    if (this.$route.query.activeName) {
+      this.activeName = this.$route.query.activeName as string
+    }
     Emitter.on('searchParams', (searchParams) =>
       this.methodPoolDetail(searchParams)
     )

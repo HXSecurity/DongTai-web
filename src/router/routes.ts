@@ -144,7 +144,7 @@ const routes: Array<RouteConfig> = [
           },
           {
             path: 'poolDetail/:id',
-            name: 'poolDetail/:id',
+            name: 'poolDetail',
             meta: {
               disabled: true,
               name: i18n.t('menu.poolDetail'),
