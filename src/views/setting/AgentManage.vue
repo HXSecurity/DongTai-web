@@ -54,9 +54,7 @@
       >
         <template slot-scope="{ row }">
           <div>
-            {{
-              (row.flow||0) + ' 次'
-            }}
+            {{ (row.flow || 0) + ' 次' }}
           </div>
         </template>
       </el-table-column>
@@ -67,9 +65,7 @@
       >
         <template slot-scope="{ row }">
           <div>
-            {{
-              row.is_core_running == 1 ? '核心组件运行中' : '核心组件未运行中'
-            }}
+            {{ row.is_core_running == 1 ? '核心组件运行中' : '核心组件未运行' }}
           </div>
         </template>
       </el-table-column>
@@ -112,16 +108,22 @@
       >
         <template slot-scope="{ row }">
           <div class="icon-box">
-            <i
-              v-if="row.is_core_running == 0"
-              class="icon el-icon-video-play"
-              @click="agentStart(row.id)"
-            ></i>
-            <i
-              v-else
-              class="icon el-icon-video-pause"
-              @click="agentStop(row.id)"
-            ></i>
+            <template v-if="row.is_control === 1">
+              <i class="icon el-icon-loading"></i>
+            </template>
+            <template v-else>
+              <i
+                v-if="row.is_core_running == 0"
+                class="icon el-icon-video-play"
+                @click="agentStart(row.id)"
+              ></i>
+              <i
+                v-else
+                class="icon el-icon-video-pause"
+                @click="agentStop(row.id)"
+              ></i>
+            </template>
+
             <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
           </div>
         </template>
@@ -187,13 +189,27 @@ export default class AgentManage extends VueBase {
     { value: 1, label: '运行中' },
     { value: 0, label: '未运行' },
   ]
-
+  timer: any = null
   created() {
     this.getTableData()
+    this.timer = setInterval(() => {
+      this.getTableData()
+    }, 5000)
+  }
+  private beforeDestroy() {
+    clearInterval(this.timer)
   }
   private changeState(item: any) {
     this.state = item.value
     this.getTableData()
+    if (this.state == 1) {
+      this.timer = setInterval(() => {
+        this.getTableData()
+      }, 5000)
+    } else {
+      clearInterval(this.timer)
+      this.timer = null
+    }
   }
   private currentChange(val: number | string) {
     this.page = parseInt(`${val}`)
