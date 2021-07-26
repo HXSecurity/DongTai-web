@@ -172,6 +172,7 @@ export default {
       detail: '策略详情',
       status: '启用状态',
       operate: '操作',
+      fix: '修复建议',
     },
     upgradeOnline: {
       online: '在线升级',

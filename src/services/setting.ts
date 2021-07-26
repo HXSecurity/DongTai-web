@@ -190,4 +190,14 @@ export default () =>
     ruleDelete(params: { rule_id: string }): Promise<iResponse> {
       return request.get('/engine/hook/rule/delete', { params })
     }
+
+    // 策略-删除策略
+    updateManage(id: string, data: any): Promise<iResponse> {
+      return request.put(`/strategy/${id}/update`, data )
+    }
+
+    // 策略-删除策略
+    deleteManage(id: string): Promise<iResponse> {
+      return request.delete(`/strategy/${id}/delete`)
+    }
   })()

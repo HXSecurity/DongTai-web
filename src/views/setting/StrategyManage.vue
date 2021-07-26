@@ -1,15 +1,57 @@
 <template>
   <div class="content-warp">
     <el-table :data="tableData" class="strategyManageTable">
-      <el-table-column
-        :label="$t('views.strategyManage.name')"
-        prop="vul_name"
-      ></el-table-column>
+      <el-table-column :label="$t('views.strategyManage.name')" prop="vul_name">
+        <template slot-scope="{ row }">
+          <div v-if="!row.isEdit">{{ row.vul_name }}</div>
+          <el-input
+            v-else
+            v-model="row.vul_name"
+            type="textarea"
+            autosize
+            resize="none"
+            size="mini"
+          ></el-input>
+        </template>
+      </el-table-column>
       <el-table-column
         :label="$t('views.strategyManage.detail')"
         prop="vul_desc"
+        min-width="300px"
+      >
+        <template slot-scope="{ row }">
+          <div v-if="!row.isEdit">{{ row.vul_desc }}</div>
+          <el-input
+            v-else
+            v-model="row.vul_desc"
+            type="textarea"
+            autosize
+            resize="none"
+            size="mini"
+          ></el-input>
+        </template>
+      </el-table-column>
+
+      <el-table-column
+        v-if="userInfo.role === 1"
+        :label="$t('views.strategyManage.fix')"
+        prop="vul_fix"
         min-width="200px"
-      ></el-table-column>
+        align="center"
+      >
+        <template slot-scope="{ row }">
+          <div v-if="!row.isEdit">{{ row.vul_fix || '无' }}</div>
+          <el-input
+            v-else
+            v-model="row.vul_fix"
+            type="textarea"
+            resize="none"
+            autosize
+            size="mini"
+          ></el-input>
+        </template>
+      </el-table-column>
+
       <el-table-column
         :label="$t('views.strategyManage.status')"
         prop="state"
@@ -24,6 +66,33 @@
             >
             </el-switch>
           </div>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="userInfo.role === 1" label="操作" width="160px">
+        <template slot-scope="{ row }">
+          <el-button
+            v-if="!row.isEdit"
+            size="small"
+            class="btn"
+            @click="editStart(row)"
+            >编辑</el-button
+          >
+          <template v-else>
+            <el-button size="small" class="btn" @click="editEnd(row, true)"
+              >确认</el-button
+            >
+            <el-button size="small" class="btn" @click="editEnd(row, false)"
+              >取消</el-button
+            >
+          </template>
+
+          <el-button
+            v-if="!row.isEdit"
+            size="small"
+            class="btn"
+            @click="deleteManage(row)"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -44,6 +113,48 @@ export default class StrategyManage extends VueBase {
   }
   get userInfo(): { username: string } {
     return this.$store.getters.userInfo
+  }
+
+  private backItem = {}
+  private editStart(item: any) {
+    this.backItem = JSON.parse(JSON.stringify(item))
+    this.$set(item, 'isEdit', true)
+  }
+
+  private async deleteManage(item: any) {
+    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      const { status, msg } = await this.services.setting.deleteManage(item.id)
+      if (status !== 201) {
+        this.$message.error(msg)
+      } else {
+        this.$message.success('删除成功')
+        await this.getTableData()
+      }
+    })
+  }
+
+  private async editEnd(item: any, flag: boolean) {
+    if (flag) {
+      const { status, msg } = await this.services.setting.updateManage(
+        item.id,
+        { name: item.vul_name, vul_desc: item.vul_desc, vul_fix: item.vul_fix }
+      )
+      if (status !== 201) {
+        this.$message.error(msg)
+      } else {
+        this.$message.success('修改成功')
+      }
+    } else {
+      for (const key in item) {
+        item[key] = this.backItem[key]
+      }
+      this.backItem = {}
+    }
+    this.$set(item, 'isEdit', false)
   }
 
   private async getTableData() {
@@ -101,5 +212,12 @@ export default class StrategyManage extends VueBase {
   cursor: pointer;
   color: #a7afb9;
   margin-left: 18px;
+}
+.btn {
+  height: 28px;
+  line-height: 0;
+  background: #4a72ae;
+  border-radius: 2px;
+  color: #fff;
 }
 </style>
