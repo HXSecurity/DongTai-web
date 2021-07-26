@@ -43,17 +43,15 @@
           </div>
           <div
             v-for="item in searchOptionsObj.projects"
-            :key="item.project_name"
+            :key="item.project_id"
             class="flex-row-space-between module-line"
-            :class="
-              searchObj.project_name === item.project_name ? 'selectedLine' : ''
-            "
+            :class="searchObj.project_id === item.id ? 'selectedLine' : ''"
             :style="
               item.count === 0
                 ? { cursor: 'not-allowed', height: '30px' }
                 : { height: '30px' }
             "
-            @click="projectNameChange(item.project_name, item.count === 0)"
+            @click="projectNameChange(item.project_id, item.count === 0)"
           >
             <div class="selectOption">
               {{ projectNameSplit(item.project_name, 12) }}
@@ -343,6 +341,7 @@ export default class ScaList extends VueBase {
     this.searchObj.language = ''
     this.searchObj.level = ''
     this.searchObj.project_name = ''
+    this.searchObj.project_id = ''
     this.kw = ''
     this.newSelectData()
   }
@@ -363,7 +362,7 @@ export default class ScaList extends VueBase {
   }
 
   private handleSelect(item: any) {
-    this.projectNameChange(item.value, false)
+    this.projectNameChange(item.id, false)
   }
 
   private languageChange(val: string, stop: boolean) {
@@ -386,7 +385,7 @@ export default class ScaList extends VueBase {
     if (stop) {
       return
     }
-    this.searchObj.project_name = val
+    this.searchObj.project_id = val
     this.newSelectData()
   }
 

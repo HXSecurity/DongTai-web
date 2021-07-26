@@ -44,17 +44,15 @@
         </div>
         <div
           v-for="item in searchOptionsObj.projects"
-          :key="item.project_name"
+          :key="item.id"
           class="flex-row-space-between module-line"
-          :class="
-            searchObj.project_name === item.project_name ? 'selectedLine' : ''
-          "
+          :class="searchObj.project_id === item.id ? 'selectedLine' : ''"
           :style="
             item.count === 0
               ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
               : { height: '30px' }
           "
-          @click="projectNameChange(item.project_name, item.count === 0)"
+          @click="projectNameChange(item.id, item.count === 0)"
         >
           <div class="selectOption">
             <span>
@@ -442,13 +440,13 @@ export default class VulnList extends VueBase {
     url: '',
     order: '',
     status: '已确认',
+    project_id: '',
   }
 
   created() {
     this.getTableData()
     this.vulnSummary()
   }
-
 
   private kw = ''
   private async querySearchAsync(queryString: string, cb: any) {
@@ -466,9 +464,8 @@ export default class VulnList extends VueBase {
   }
 
   private handleSelect(item: any) {
-    this.projectNameChange(item.value, false)
+    this.projectNameChange(item.id, false)
   }
-
 
   private sortSelect(flag: any) {
     this.searchObj.sort = flag
@@ -559,7 +556,7 @@ export default class VulnList extends VueBase {
     if (stop) {
       return
     }
-    this.searchObj.project_name = val
+    this.searchObj.project_id = val
     this.newSelectData()
   }
 
@@ -604,6 +601,7 @@ export default class VulnList extends VueBase {
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
       status: this.searchObj.status,
+      project_id: this.searchObj.project_id,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnList(params)
@@ -636,10 +634,11 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: `${this.searchObj.sort === false && this.searchObj.order ? '-' : ''}${
-        this.searchObj.order
-      }`,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
       status: this.searchObj.status,
+      project_id: this.searchObj.project_id,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)
@@ -1005,7 +1004,7 @@ export default class VulnList extends VueBase {
     }
   }
 }
-.search-box{
+.search-box {
   text-align: center;
 }
 </style>
