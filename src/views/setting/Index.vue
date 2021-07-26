@@ -56,6 +56,14 @@
         >
           {{ $t('menu.logManage') }}
         </div>
+        <div
+          v-if="userInfo.role === 1"
+          class="menu-item"
+          :class="curModule('/setting/serverRegister') ? 'currentModule' : ''"
+          @click="$router.push('/setting/serverRegister')"
+        >
+          {{ $t('menu.serverRegister') }}
+        </div>
       </div>
     </div>
     <div class="route-warp">

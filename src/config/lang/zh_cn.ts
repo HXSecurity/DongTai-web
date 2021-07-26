@@ -24,7 +24,7 @@ export default {
     taintPool: '搜索',
     search: '污点搜索',
     poolDetail: '污点详情',
-    projectManage: '项目管理',
+    serverRegister: '服务注册',
   },
   views: {
     login: {

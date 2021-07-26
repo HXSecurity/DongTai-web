@@ -61,7 +61,11 @@
           {{ $t('menu.talent') }}
         </div>
       </div>
-      <div v-if="!userInfo" class="url-warp" style="justify-content: space-between;">
+      <div
+        v-if="!userInfo"
+        class="url-warp"
+        style="justify-content: space-between"
+      >
         <div
           class="url flex-column-center"
           :class="currentRoute('/taint') ? 'currentRoute' : ''"
@@ -74,7 +78,7 @@
         </el-button>
       </div>
       <div v-else>
-        <el-button type="text" class="anent" @click="$router.push('/deploy')">
+        <el-button type="text" class="anent" @click="buildIAST">
           部署IAST
         </el-button>
         <el-dropdown>
@@ -107,9 +111,27 @@ import VueBase from '@/VueBase'
 
 @Component({ name: 'layoutHeader' })
 export default class Header extends VueBase {
-  get userInfo(): { username: string } {
+  get userInfo(): { role: number } {
     return this.$store.getters.userInfo
   }
+  async buildIAST() {
+    const res = await this.services.setting.openapi()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+    } else {
+      if (res.data.url) {
+        this.$router.push('/deploy')
+      } else {
+        if (this.userInfo.role === 1) {
+          this.$message.warning('请先配置openapi')
+          this.$router.push('/setting/serverRegister?needBack=1')
+        } else {
+          this.$message.warning('请联系管理员配置openapi')
+        }
+      }
+    }
+  }
+
   canShow(name: string) {
     return this.$store.getters.routers.includes(name)
   }

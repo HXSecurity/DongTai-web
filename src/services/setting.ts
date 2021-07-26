@@ -193,11 +193,22 @@ export default () =>
 
     // 策略-删除策略
     updateManage(id: string, data: any): Promise<iResponse> {
-      return request.put(`/strategy/${id}/update`, data )
+      return request.put(`/strategy/${id}/update`, data)
     }
 
     // 策略-删除策略
     deleteManage(id: string): Promise<iResponse> {
       return request.delete(`/strategy/${id}/delete`)
+    }
+    // 获取openapi
+    openapi(): Promise<iResponse> {
+      return request.get(`/openapi`)
+    }
+    setOpenapi(data: any): Promise<iResponse> {
+      return request.post(`/openapi`, data)
+    }
+
+    searchProject(params: any): Promise<iResponse> {
+      return request.get(`/project/search`,  { params })
     }
   })()

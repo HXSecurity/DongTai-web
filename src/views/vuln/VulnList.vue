@@ -32,6 +32,16 @@
             }}</span>
           </div>
         </div>
+        <div class="search-box">
+          <el-autocomplete
+            v-model="kw"
+            style="margin: 6px 0"
+            class="commonInput"
+            placeholder="请输入项目名称搜索"
+            :fetch-suggestions="querySearchAsync"
+            @select="handleSelect"
+          ></el-autocomplete>
+        </div>
         <div
           v-for="item in searchOptionsObj.projects"
           :key="item.project_name"
@@ -438,6 +448,28 @@ export default class VulnList extends VueBase {
     this.getTableData()
     this.vulnSummary()
   }
+
+
+  private kw = ''
+  private async querySearchAsync(queryString: string, cb: any) {
+    console.log(queryString)
+    const res = await this.services.setting.searchProject({ name: queryString })
+    if (res.status === 201) {
+      const data = res.data.map((item: any) => {
+        return {
+          value: item.name,
+          id: item.id,
+        }
+      })
+      cb(data)
+    }
+  }
+
+  private handleSelect(item: any) {
+    this.projectNameChange(item.value, false)
+  }
+
+
   private sortSelect(flag: any) {
     this.searchObj.sort = flag
     this.newSelectData()
@@ -495,6 +527,7 @@ export default class VulnList extends VueBase {
     this.searchObj.type = ''
     this.searchObj.project_name = ''
     this.searchObj.status = '已确认'
+    this.kw = ''
     this.newSelectData()
   }
 
@@ -971,5 +1004,8 @@ export default class VulnList extends VueBase {
       color: #ddcc9e;
     }
   }
+}
+.search-box{
+  text-align: center;
 }
 </style>

@@ -31,6 +31,16 @@
               }}</span>
             </div>
           </div>
+          <div class="search-box">
+            <el-autocomplete
+              v-model="kw"
+              style="margin: 6px 0"
+              class="commonInput"
+              placeholder="请输入项目名称搜索"
+              :fetch-suggestions="querySearchAsync"
+              @select="handleSelect"
+            ></el-autocomplete>
+          </div>
           <div
             v-for="item in searchOptionsObj.projects"
             :key="item.project_name"
@@ -333,7 +343,27 @@ export default class ScaList extends VueBase {
     this.searchObj.language = ''
     this.searchObj.level = ''
     this.searchObj.project_name = ''
+    this.kw = ''
     this.newSelectData()
+  }
+
+  private kw = ''
+  private async querySearchAsync(queryString: string, cb: any) {
+    console.log(queryString)
+    const res = await this.services.setting.searchProject({ name: queryString })
+    if (res.status === 201) {
+      const data = res.data.map((item: any) => {
+        return {
+          value: item.name,
+          id: item.id,
+        }
+      })
+      cb(data)
+    }
+  }
+
+  private handleSelect(item: any) {
+    this.projectNameChange(item.value, false)
   }
 
   private languageChange(val: string, stop: boolean) {
@@ -550,5 +580,8 @@ export default class ScaList extends VueBase {
       float: right;
     }
   }
+}
+.search-box {
+  text-align: center;
 }
 </style>
