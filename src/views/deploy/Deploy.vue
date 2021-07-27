@@ -1,183 +1,208 @@
 <template>
   <main>
-    <div class="footerBg"></div>
-    <div class="container flex-row-space-between">
-      <div class="sliderWarp">
-        <div class="step linghtStep">1</div>
-        <div
-          class="transitionline"
-          :class="curStep >= 2 ? 'lightLine' : 'grayLine'"
-        ></div>
-        <div class="step" :class="curStep >= 2 ? 'linghtStep' : 'grayStep'">
-          2
+    <div class="container">
+      <div class="container-left">
+        <div class="title">选择一种语言，开始安装</div>
+        <div class="language-box">
+          <div
+            class="language"
+            :class="language === 'java' && 'active'"
+            @click="language = 'java'"
+          >
+            <img src="../../assets/img/deploy/java.png" />
+          </div>
+          <div
+            class="language"
+            :class="language === 'python' && 'active'"
+            @click="language = 'python'"
+          >
+            <img src="../../assets/img/deploy/python.png" />
+          </div>
         </div>
-        <div
-          class="transitionline"
-          :class="curStep === 3 ? 'lightLine' : 'grayLine'"
-        ></div>
-        <div class="step" :class="curStep === 3 ? 'linghtStep' : 'grayStep'">
-          3
+        <div class="title">安装 JAVA 探针</div>
+        <div class="description">
+          <div class="description-body">
+            <div class="title-2">
+              开始安装之前，检查你的环境，确保以下条件：
+            </div>
+            <p>
+              1. 检查 Collector 端所在系统、Agent 端所在系统时间是否为墙钟时间。
+            </p>
+            <p>
+              2. 检查 Collector 端所在系统、Agent 端所在系统、Ai
+              后端服务之间网络环境可以相互连接。
+            </p>
+            <p>3. 检查 Collector 端所在系统的 19876 是否被占用。</p>
+            <p>4. 确认 Agent 端所在环境在我们的支持列表中。</p>
+          </div>
+        </div>
+        <div class="title-2 margin-t-24">
+          <span class="icon-no">1</span> 下载探针
+        </div>
+        <div class="download">
+          <p class="download-desc margin-t-8">
+            洞态 IAST 目前支持 JDK 1.6 以上版本的探针，支持 Windows/Linux
+            操作系统，支持 Docker，支持所有的 Java Web 中间件
+          </p>
+          <div class="download-item margin-t-16">
+            <div class="label">下载：</div>
+            <div class="info">
+              <el-button class="download-btn" @click="downloadAgent"
+                ><span class="el-icon-download"></span> DongTai Java
+                Agent</el-button
+              >
+            </div>
+          </div>
+          <div class="download-item margin-t-16">
+            <div class="label">shell命令：</div>
+            <div class="info">
+              <div class="markdown">
+                <span>
+                  curl -X GET "{{ openapi }}/api/v1/agent/download?url={{
+                    openapi
+                  }}" -H 'Authorization: Token {{ token }}' -o agent.jar
+                  -k</span
+                >
+                <span class="el-icon-document-copy icon"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="title-2 margin-t-24">
+          <span class="icon-no">2</span> 安装探针
+        </div>
+        <div class="install">
+          <div class="title-3 margin-t-16">1. 自动安装</div>
+          <div class="install-desc margin-t-8">
+            上传 DongTai Java Agent 探针到应用服务器，查看 Web 应用的进行
+            id，运行命令安装探针，如下：
+          </div>
+          <div class="markdown margin-t-16">
+            <span> java -jar agent.jar -m install -p &lt;pid&gt; </span>
+            <span class="el-icon-document-copy icon"></span>
+          </div>
+          <div class="title-3 margin-t-16">2. 手动安装</div>
+          <div class="install-tabs">
+            <el-tabs v-model="activeName" @tab-click="getMd">
+              <el-tab-pane label="SpringBoot" name="SpringBoot">
+                <div class="install-tab-info margin-t-8">
+                  <MyMarkdownIt
+                    :content="md[activeName]"
+                    style="color: #747c8c"
+                  ></MyMarkdownIt>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Tomcat" name="Tomcat">
+                <div class="install-tab-info margin-t-8">
+                  <MyMarkdownIt
+                    :content="md[activeName]"
+                    style="color: #747c8c"
+                  ></MyMarkdownIt>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="JBoss" name="JBoss">
+                <div class="install-tab-info margin-t-8">
+                  <MyMarkdownIt
+                    :content="md[activeName]"
+                    style="color: #747c8c"
+                  ></MyMarkdownIt>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Jetty" name="Jetty">
+                <div class="install-tab-info margin-t-8">
+                  <MyMarkdownIt
+                    :content="md[activeName]"
+                    style="color: #747c8c"
+                  ></MyMarkdownIt>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="Resin" name="Resin">
+                <div class="install-tab-info margin-t-8">
+                  <MyMarkdownIt
+                    :content="md[activeName]"
+                    style="color: #747c8c"
+                  ></MyMarkdownIt>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="WebLogic" name="WebLogic">
+                <div class="install-tab-info margin-t-8">
+                  <MyMarkdownIt
+                    :content="md[activeName]"
+                    style="color: #747c8c"
+                  ></MyMarkdownIt>
+                </div>
+              </el-tab-pane>
+              <el-tab-pane label="WebSphere" name="WebSphere">
+                <div class="install-tab-info margin-t-8">
+                  <MyMarkdownIt
+                    :content="md[activeName]"
+                    style="color: #747c8c"
+                  ></MyMarkdownIt>
+                </div>
+              </el-tab-pane>
+            </el-tabs>
+          </div>
+        </div>
+        <div class="title-2 margin-t-24">
+          <span class="icon-no">3</span> 重启应用服务（自动安装跳过此步）
+        </div>
+        <div class="reload">
+          <div class="reload-desc margin-t-8">请重启您的应用服务器。</div>
+          <div class="margin-t-16 reload-markdown">
+            <p>
+              若尚未启动 Web 应用服务器，请启动 Web
+              应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击引擎管理，查看探针是否注册成功。如果没有注册成功，按照如下步骤进行排查：
+            </p>
+            <p>1. 检查 agent.jar 文件</p>
+            <p>
+              运行 java -jar /tmp/agent.jar 命令，查看是否反馈 agent.jar
+              的使用帮助，如果没有，说明 agent.jar
+              文件不正确，请重新下载然后检查 agent.jar
+              文件，如果仍然不正确，请前往 github 给工程师提交
+              issue，我们会及时给您回复
+            </p>
+            <p>2. 检查网络情况</p>
+            <p>
+              在 Web 应用服务器中，检查是否可访问
+              {{ openapi }}
+              服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往
+              github 给工程师提交 issue，我们会及时给您回复
+            </p>
+          </div>
         </div>
       </div>
-      <div class="contentWarp">
-        <div v-if="curStep === 1" class="stepWarp">
-          <el-form label-position="top" @submit.native.prevent>
-            <el-form-item>
-              <div class="title">第一步，选择Agent类型</div>
-            </el-form-item>
-            <el-form-item>
-              <div class="label">请选择Agent类型</div>
-              <el-select
-                v-model="deployForm.agent"
-                class="deploySelect"
-                style="width: 514px"
-                placeholder="请选择Agent类型"
-              >
-                <el-option
-                  v-for="item in agents"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <div class="desc">
-                根据应用程序使用的开发语言选择对应的Agent类型，使用Java语言开发的应用程序选择Java、使用c#、.Net
-                Framework开发的应用程序选择.Net Framework、使用.Net
-                Core开发的应用程序选择.Net Core
-              </div>
-            </el-form-item>
-            <el-form-item style="margin-top: 50px">
-              <el-button type="text" class="nextBtn" @click="curStep = 2">
-                下一步
-              </el-button>
-            </el-form-item>
-          </el-form>
+      <div class="container-right">
+        <div class="title">安装帮助</div>
+        <div class="right-desc margin-t-16">Java Agent 安装方法</div>
+        <div class="right-video margin-t-8">
+          <video controls>
+            <source src="movie.mp4" type="video/mp4" />
+            <source src="movie.ogg" type="video/ogg" />
+            您的浏览器不支持 HTML5 video 标签。
+          </video>
         </div>
-        <div v-if="curStep === 2" class="stepWarp">
-          <el-form label-position="top" @submit.native.prevent>
-            <el-form-item>
-              <div class="title">第二步，选择应用的运行环境</div>
-            </el-form-item>
-            <el-form-item>
-              <div class="label">Java版本</div>
-              <el-select
-                v-model="deployForm.javaVersion"
-                class="deploySelect"
-                style="width: 514px"
-                placeholder="请选择Java版本"
-              >
-                <el-option
-                  v-for="item in javaVersion"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <div class="label">中间件</div>
-              <el-select
-                v-model="deployForm.middleware"
-                class="deploySelect"
-                style="width: 514px"
-                placeholder="请选择中间件"
-              >
-                <el-option
-                  v-for="item in middlewares"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <div class="label">操作系统</div>
-              <el-select
-                v-model="deployForm.system"
-                class="deploySelect"
-                style="width: 514px"
-                placeholder="请选择操作系统"
-              >
-                <el-option
-                  v-for="item in system"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <div class="label">项目名称</div>
-              <el-input
-                v-model="deployForm.projectName"
-                style="width: 514px"
-              ></el-input>
-            </el-form-item>
-            <el-form-item style="margin-top: 50px">
-              <el-button type="text" class="prevBtn" @click="curStep = 1">
-                上一步
-              </el-button>
-              <el-button type="text" class="nextBtn" @click="agentDeploySubmit">
-                下一步
-              </el-button>
-            </el-form-item>
-          </el-form>
+        <div class="title margin-t-32">查阅更多文档</div>
+        <div
+          v-for="(item, index) in documents"
+          :key="item.id"
+          class="help-list"
+          :class="index ? 'margin-t-24' : 'margin-t-32'"
+          @click="goDoc(item.url)"
+        >
+          {{ item.title }}
         </div>
-        <div v-if="curStep === 3" class="stepWarp">
-          <el-form label-position="top" @submit.native.prevent>
-            <el-form-item style="margin-bottom: 5px">
-              <div class="title">第三步，下载与配置</div>
-              <div class="token">
-                <p style="color: #4a72ae">为了启用洞态，需要增加如下JVM配置</p>
-                <p>-javaagent:/path/to/server/agent.jar</p>
-              </div>
-            </el-form-item>
-            <el-form-item style="margin-bottom: 0">
-              <div class="label">下载</div>
-              <div class="downloadInfo">
-                <div class="desc">
-                  下载洞态IAST的Agent，将agent.jar文件放入WEB服务器（中间件）所在机器上，保证agent.jar文件所在目录具有可写权限
-                </div>
-                <div class="moudleTitle">
-                  手动下载：
-                  <button
-                    type="text"
-                    class="downloadBtn"
-                    @click="agentDownload"
-                  >
-                    <i class="el-icon-download"></i>
-                    点击下载
-                  </button>
-                </div>
-                <div class="moudleTitle">自动下载：</div>
-                <div class="command token">
-                  {{
-                    `curl -X GET "${url}/api/v1/agent/download?url=${url}&jdk.version=${encodeURI(
-                      this.deployForm.javaVersion
-                    )}&projectName=${encodeURI(deployForm.projectName)}" -H
-                  'Authorization: Token ${userToken}' -o agent.jar -k`
-                  }}
-                </div>
-              </div>
-            </el-form-item>
-            <el-form-item>
-              <div class="label">配置</div>
-              <div class="descWarp">
-                <MyMarkdownIt :content="desc"></MyMarkdownIt>
-              </div>
-            </el-form-item>
-            <el-form-item style="margin-top: 50px">
-              <el-button type="text" class="prevBtn" @click="curStep = 2">
-                上一步
-              </el-button>
-              <el-button type="text" class="nextBtn" @click="agentDeployFinish">
-                完成
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </div>
+        <!--        <div class="help-list margin-t-24 active">Java Agent 常见问题</div>-->
+        <!--        <div class="help-list margin-t-24">Java Agent 参数配置</div>-->
+        <!--        <div class="help-list margin-t-24">DongTai IAST 如何本地部署</div>-->
+        <!--        <div class="help-list margin-t-24">DongTai IAST 最佳实践</div>-->
+        <!--        <div class="help-list margin-t-24">-->
+        <!--          DongTai IAST 如何进行漏洞复现与分析-->
+        <!--        </div>-->
+        <!--        <div class="help-list margin-t-24">DongTai IAST 如何进行漏洞挖掘</div>-->
+
+        <div class="title margin-t-32">获得更多支持</div>
+        <div class="help-list margin-t-24">提交 ISSUE</div>
+        <div class="help-list margin-t-24">Docker</div>
       </div>
     </div>
   </main>
@@ -186,126 +211,57 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
+import App from '@/App.vue'
 
 @Component({ name: 'Deploy' })
 export default class Deploy extends VueBase {
-  private curStep = 1
-  private deployForm: {
-    agent: string
-    javaVersion: string
-    middleware: string
-    system: string
-    projectName: string
-  } = {
-    agent: '',
-    javaVersion: '',
-    middleware: '',
-    system: '',
-    projectName: 'Demo Project',
-  }
-  private agents: Array<string> = []
-  private javaVersion: Array<string> = []
-  private middlewares: Array<string> = []
-  private system: Array<string> = []
-  private userToken = ''
-  private desc = ''
-  private url = ''
-
-  created() {
-    this.getDeplogInfo()
-    this.agentDeployInfo()
-    this.getOpenApiUrl()
+  private activeName = 'SpringBoot'
+  private language = 'java'
+  private token = ''
+  private openapi = ''
+  private documents = []
+  private md = {}
+  private goDoc(url: string) {
+    window.open(url)
   }
 
-  private async getOpenApiUrl() {
-    const { status, msg, data } = await this.services.deploy.getOpenApiUrl()
-    if (status !== 201) {
-      this.$message.error(msg)
+  private async getMd() {
+    if (this.md[this.activeName]) {
       return
     }
-    this.url = data.url
+    const res = await this.services.deploy.getMD({
+      language: this.language,
+      middleware: this.activeName,
+    })
+    if (res.status === 201) {
+      this.$set(this.md, this.activeName, res.data.desc)
+    } else {
+      this.$message.error(res.msg)
+    }
   }
 
-  // 获取系统部署信息
-  private async getDeplogInfo() {
-    this.loadingStart()
-    const {
-      status,
-      msg,
-      data,
-      step,
-      user_token,
-      desc,
-    } = await this.services.deploy.getDeplogInfo()
-    this.loadingDone()
-    if (status !== 201) {
-      this.$message.error(msg)
-      return
-    }
-    // this.curStep = step
-    this.userToken = user_token
-    this.desc = desc
-    this.deployForm = {
-      agent: data.agent_value,
-      javaVersion: data.java_version,
-      middleware: data.middleware,
-      system: data.system,
-      projectName: data.project_name||'Demo Project',
+  private async getOpenapi() {
+    const res = await this.services.setting.openapi()
+    if (res.status === 201) {
+      this.openapi = res.data.url
+    } else {
+      this.$message.error(res.msg)
     }
   }
-  private async agentDeployInfo() {
-    this.loadingStart()
-    const { status, msg, data } = await this.services.deploy.agentDeployInfo()
-    this.loadingDone()
-    if (status !== 201) {
-      this.$message.error(msg)
-      return
-    }
-    this.agents = data.agents
-    this.javaVersion = data.java_version
-    this.middlewares = data.middlewares
-    this.system = data.system
+  private async downloadAgent() {
+    await this.services.deploy.agentDownload(this.openapi)
   }
-
-  // 下载引擎
-  private async agentDownload() {
-    this.loadingStart()
-    await this.services.deploy.agentDownload(
-      this.url,
-      this.deployForm.javaVersion,
-      this.deployForm.projectName
-    )
-    this.loadingDone()
-  }
-
-  //系统部署信息提交
-  private async agentDeploySubmit() {
-    const params = {
-      agent_value: this.deployForm.agent,
-      java_version: this.deployForm.javaVersion,
-      middleware: this.deployForm.middleware,
-      system: this.deployForm.system,
+  private async created() {
+    const res = await this.services.deploy.getToken()
+    if (res.status === 201) {
+      this.token = res.data.token
     }
-    this.loadingStart()
-    const {
-      status,
-      msg,
-      user_token,
-      desc,
-    } = await this.services.deploy.agentDeploySubmit(params)
-    this.loadingDone()
-    if (status !== 201) {
-      this.$message.error(msg)
-      return
+    const docRes = await this.services.deploy.getDocuments()
+    if (docRes.status === 201) {
+      this.documents = docRes.data.documents
     }
-    this.curStep = 3
-    this.userToken = user_token
-    this.desc = desc
-  }
-
-  private async agentDeployFinish() {
-    this.curStep = 1
-    this.$router.push('/')
+    await this.getOpenapi()
+    await this.getMd()
   }
 }
 </script>
@@ -315,150 +271,207 @@ main {
   width: 100%;
   height: calc(100vh - 64px);
   background: #fff;
-
-  .footerBg {
-    background-image: url('../../assets/img/loginBg.png');
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 218px;
-  }
 }
 
-.sliderWarp {
-  width: 52px;
-  text-align: center;
-
-  .step {
-    width: 52px;
-    height: 52px;
-    line-height: 52px;
-    font-size: 20px;
-    color: #fff;
-    text-align: center;
-    position: relative;
-  }
-
-  .transitionline {
-    height: 182px;
-    border-right: 1px dashed;
-    width: 0;
-    display: inline-block;
-  }
-
-  .lightLine {
-    border-right-color: #4876c2;
-  }
-
-  .grayLine {
-    border-right-color: #aab0bd;
-  }
-
-  .linghtStep {
-    background: url('../../assets/img/deploy/lightIcon.png');
-    background-size: 100% 100%;
-    background-position: center center;
-  }
-  .grayStep {
-    background: url('../../assets/img/deploy/grayIcon.png');
-    background-size: 100% 100%;
-    background-position: center center;
-  }
-}
-
-.contentWarp {
-  width: 906px;
-
-  .stepWarp {
-    .title {
-      font-size: 24px;
-      color: #1e2a3b;
-      font-weight: 600;
-    }
-
-    .label {
-      font-size: 16px;
-      font-weight: 600;
-      color: #1e2a3b;
-      margin-bottom: 15px;
-    }
-
-    .desc {
-      font-size: 14px;
-      color: #9e9e9e;
-      line-height: 18px;
-      width: 524px;
-    }
-
-    .token {
-      background: #f7f7f8;
-      border-radius: 4px;
-      width: 806px;
-      padding: 11px;
-      line-height: 18px;
-    }
-
-    .downloadInfo {
-      width: 806px;
-      line-height: 1;
-
-      .desc {
-        font-size: 14px;
-        color: #808796;
-        line-height: 20px;
-        width: 100%;
-      }
-
-      .moudleTitle {
-        color: #1e2a3b;
-        font-size: 14px;
-        margin-top: 14px;
-      }
-
-      .command {
-        margin-top: 14px;
-        word-break: break-all;
-        line-height: 18px;
-      }
-
-      .downloadBtn {
-        cursor: pointer;
-        width: 94px;
-        height: 26px;
-        border-radius: 4px;
+.container {
+  width: 1200px;
+  display: flex;
+  .container-left {
+    box-sizing: border-box;
+    width: 795px;
+    padding: 24px;
+    .language-box {
+      padding: 16px 0;
+      display: flex;
+      .language {
+        width: 88px;
+        height: 88px;
         background: #fff;
-        border: 1px solid #4a72ae;
-        color: #4a72ae;
+        border: 1px solid #c4c4c4;
+        box-sizing: border-box;
+        border-radius: 4px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        img {
+          width: 40%;
+          height: 40%;
+        }
+        & + .language {
+          margin-left: 12px;
+        }
+        &.active {
+          border: 1px solid #1a80f2;
+        }
       }
     }
 
-    .descWarp {
-      width: 806px;
-      height: 282px;
-      padding: 12px;
-      background: #f9f9f9;
-      overflow: auto;
+    .description {
+      padding: 16px 8px;
+      border-bottom: 1px solid #e6e9ec;
+      .description-body {
+        background: #ebf0f5;
+        border-radius: 2px;
+        padding: 16px;
+        p {
+          margin-top: 16px;
+        }
+        p + p {
+          margin-top: 8px;
+        }
+      }
     }
-
-    .prevBtn {
-      width: 124px;
-      height: 38px;
-      line-height: 0;
-      border-radius: 2px;
-      border: 1px solid #4a72ae;
-      color: #4a72ae;
-      background: #fff;
+  }
+  .container-right {
+    width: 404px;
+    border-left: 1px solid #e6e9ec;
+  }
+}
+.title {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  color: #38435a;
+}
+.title-2 {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 22px;
+  color: #38435a;
+  .icon-no {
+    border: 2px solid #4a72ae;
+    box-sizing: border-box;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    color: #4a72ae;
+    font-size: 14px;
+  }
+}
+.title-3 {
+  font-size: 14px;
+  font-weight: 500;
+}
+.margin-t-24 {
+  margin-top: 24px;
+}
+.margin-t-16 {
+  margin-top: 16px;
+}
+.margin-t-32 {
+  margin-top: 32px;
+}
+.margin-t-8 {
+  margin-top: 8px;
+}
+.download {
+  padding: 0 30px;
+  .download-desc {
+    font-size: 14px;
+    line-height: 20px;
+    color: #38435a;
+  }
+  .download-item {
+    display: flex;
+    align-items: center;
+    .label {
+      box-sizing: border-box;
+      padding: 0 4px;
+      width: 80px;
+      text-align: right;
     }
-
-    .nextBtn {
-      width: 124px;
-      height: 38px;
-      line-height: 0;
+    .info {
+      word-wrap: break-word;
+      word-break: break-all;
+      flex: 1;
+    }
+    .download-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
+      color: #ffffff;
       background: #4a72ae;
       border-radius: 2px;
-      color: #fff;
+    }
+  }
+}
+.install {
+  /deep/.el-tabs__item:hover {
+    color: #38435a;
+  }
+  /deep/.el-tabs__item {
+    color: #38435a;
+  }
+  /deep/.el-tabs__active-bar {
+    color: #4a72ae;
+    background-color: #4a72ae;
+  }
+  padding: 0 30px;
+  .install-tab-info {
+    height: 358px;
+    overflow-y: auto;
+    padding: 24px 16px;
+    border: 1px solid #e6e9ec;
+    border-radius: 2px;
+  }
+}
+.reload {
+  padding: 0 30px;
+  .reload-markdown {
+    border: 1px solid #e6e9ec;
+    border-radius: 2px;
+    padding: 24px 16px;
+    p {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}
+.markdown {
+  background: #ebf0f5;
+  border-radius: 2px;
+  color: #38435a;
+  font-size: 14px;
+  line-height: 32px;
+  padding: 0 30px 0 16px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  .icon {
+    right: 10px;
+    bottom: 8px;
+    position: absolute;
+    display: inline-block;
+    color: #1a80f2;
+  }
+}
+
+.container-right {
+  padding: 24px;
+  .right-desc {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .right-video {
+    background: #c4c4c4;
+    border-radius: 2px;
+    height: 243px;
+    video {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .help-list {
+    font-size: 14px;
+    line-height: 20px;
+    color: #38435a;
+    cursor: pointer;
+    &.active {
+      color: #4a72ae;
     }
   }
 }
