@@ -1,11 +1,8 @@
 <template>
   <div class="content-warp">
-    <el-form ref="form" label-width="130px">
+    <el-form ref="form" label-width="140px">
       <el-form-item label="dongtai-openapi：">
-        <el-input v-model="openapi">
-          <template slot="prepend">http://</template>
-          <template slot="append">.com</template>
-        </el-input>
+        <el-input v-model="openapi" style="width: 90%"> </el-input>
       </el-form-item>
     </el-form>
     <div class="btn-box">

@@ -57,13 +57,13 @@
             <div class="label">shell命令：</div>
             <div class="info">
               <div class="markdown">
-                <span>
-                  curl -X GET "{{ openapi }}/api/v1/agent/download?url={{
-                    openapi
-                  }}" -H 'Authorization: Token {{ token }}' -o agent.jar
-                  -k</span
-                >
-                <span class="el-icon-document-copy icon"></span>
+                <span> {{ shell }}</span>
+                <span
+                  v-clipboard:error="onError"
+                  v-clipboard:copy="shell"
+                  v-clipboard:success="onCopy"
+                  class="el-icon-document-copy icon"
+                ></span>
               </div>
             </div>
           </div>
@@ -78,8 +78,13 @@
             id，运行命令安装探针，如下：
           </div>
           <div class="markdown margin-t-16">
-            <span> java -jar agent.jar -m install -p &lt;pid&gt; </span>
-            <span class="el-icon-document-copy icon"></span>
+            <span> {{ download }} </span>
+            <span
+              v-clipboard:error="onError"
+              v-clipboard:copy="download"
+              v-clipboard:success="onCopy"
+              class="el-icon-document-copy icon"
+            ></span>
           </div>
           <div class="title-3 margin-t-16">2. 手动安装</div>
           <div class="install-tabs">
@@ -221,8 +226,26 @@ export default class Deploy extends VueBase {
   private openapi = ''
   private documents = []
   private md = {}
+  private download = 'java -jar agent.jar -m install -p <pid>'
+  get shell() {
+    return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
+  }
   private goDoc(url: string) {
     window.open(url)
+  }
+
+  private onCopy() {
+    this.$message({
+      message: '已成功复制进粘贴板！',
+      type: 'success',
+    })
+  }
+
+  private onError() {
+    this.$message({
+      message: '复制失败！',
+      type: 'error',
+    })
   }
 
   private async getMd() {
@@ -447,6 +470,7 @@ main {
     position: absolute;
     display: inline-block;
     color: #1a80f2;
+    cursor: pointer;
   }
 }
 

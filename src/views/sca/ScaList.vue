@@ -36,6 +36,7 @@
               v-model="kw"
               style="margin: 6px 0"
               class="commonInput"
+              clearable
               placeholder="请输入项目名称搜索"
               :fetch-suggestions="querySearchAsync"
               @select="handleSelect"

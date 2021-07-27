@@ -10,7 +10,8 @@ import ElementUI from 'element-ui'
 import { i18n } from '@/config/lang'
 import MyMarkdownIt from '@/components/markdownNice/Index'
 import { dot } from '@/directive/dot'
-
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
