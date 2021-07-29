@@ -16,9 +16,9 @@ export default () =>
     }
 
     // 下载引擎
-    agentDownload(url: string) {
+    agentDownload(url: string, language: string) {
       request
-        .get('agent/download?url=' + url, {
+        .get('agent/download?url=' + url + '&language=' + language, {
           responseType: 'blob', // 告诉服务器我们需要的响应格式
         })
         .then((res: any) => {
@@ -55,7 +55,7 @@ export default () =>
       return request.get('/documents')
     }
     // 获取MD
-    getMD( params: any ): Promise<iResponse> {
+    getMD(params: any): Promise<iResponse> {
       return request.get('/agent/deploy', { params })
     }
   })()

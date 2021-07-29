@@ -1,5 +1,7 @@
 <template>
-  <div style="position: relative" ref="container" id="container"></div>
+  <div>
+    <div style="position: relative" ref="container" :id="'container'+poolId"></div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -11,7 +13,9 @@ import { EdgeConfig } from '@antv/g6-core/lib/types'
 @Component({ name: 'Dagre' })
 export default class Dagre extends Vue {
   private graph: Graph | undefined = undefined
-
+  @Prop() poolId:any
+  @Prop() boxHeight?:any
+  @Prop() width?:any
   @Prop() initData!: {
     nodes: any[]
     edges: any[]
@@ -91,9 +95,9 @@ export default class Dagre extends Vue {
       'single-node'
     )
     const graph = new G6.Graph({
-      container: 'container',
-      width: 1200,
-      height: 500,
+      container: 'container'+this.poolId,
+      width: this.width || 1150,
+      height: this.boxHeight || 290,
       layout: {
         type: 'dagre',
         nodesepFunc: (d: { id: string; }) => {

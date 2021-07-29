@@ -11,6 +11,7 @@ import markdownItTableContainer from "./markdown-it-table-container"
 import markdownItLinkfoot from "./markdown-it-linkfoot"
 import markdownItImageFlow from "./markdown-it-imageflow"
 import markdownItLiReplacer from "./markdown-it-li"
+import markdownItXss from "markdown-it-xss"
 import highLightJs from './langHighLight'
 
 // markdown解析器 代码高亮用highlight
@@ -42,6 +43,7 @@ markdownParser
   .use(markdownItTableContainer) // 在表格外部添加容器
   .use(markdownItMath) // 数学公式
   .use(markdownItLinkfoot) // 修改脚注
+  .use(markdownItXss) // 防止xss注入
   .use(markdownItTableOfContents, {
     transformLink: () => "",
     includeLevel: [2, 3],

@@ -67,4 +67,16 @@ export default () =>
     getReplay(params: any): Promise<iResponse> {
       return request.get(`/engine/request/replay`, { params })
     }
+    // 搜索功能
+    search(params: any): Promise<iResponse> {
+      return request.get(`/engine/method_pool/search`, { params })
+    }
+    // 污点池
+    graph(params: any): Promise<iResponse> {
+      return request.get(`engine/graph`, { params })
+    }
+    // 组件列表
+    sca(params: any): Promise<iResponse> {
+      return request.get(`engine/method_pool/sca`, { params })
+    }
   })()

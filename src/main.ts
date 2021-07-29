@@ -11,6 +11,10 @@ import { i18n } from '@/config/lang'
 import MyMarkdownIt from '@/components/markdownNice/Index'
 import { dot } from '@/directive/dot'
 import VueClipboard from 'vue-clipboard2'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+Vue.use(VueDOMPurifyHTML)
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
 

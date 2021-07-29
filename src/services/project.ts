@@ -62,8 +62,12 @@ export default () =>
     }
 
     //项目详情 - 图标概括
-    projectsSummary(id: string): Promise<iResponse> {
-      return request.get(`/projects/summary/${id}`)
+    projectsSummary(id: string, version?: string): Promise<iResponse> {
+      return request.get(`/projects/summary/${id}`, {
+        params: {
+          version_id: version,
+        },
+      })
     }
 
     //项目详情 - 漏洞验证

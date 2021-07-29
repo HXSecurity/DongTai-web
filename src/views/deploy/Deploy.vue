@@ -7,33 +7,27 @@
           <div
             class="language"
             :class="language === 'java' && 'active'"
-            @click="language = 'java'"
+            @click="changeLanguage('java')"
           >
             <img src="../../assets/img/deploy/java.png" />
           </div>
           <div
             class="language"
             :class="language === 'python' && 'active'"
-            @click="language = 'python'"
+            @click="changeLanguage('python')"
           >
             <img src="../../assets/img/deploy/python.png" />
           </div>
         </div>
-        <div class="title">安装 JAVA 探针</div>
+        <div class="title">安装 {{ obj[language].key }} 探针</div>
         <div class="description">
           <div class="description-body">
             <div class="title-2">
               开始安装之前，检查你的环境，确保以下条件：
             </div>
-            <p>
-              1. 检查 Collector 端所在系统、Agent 端所在系统时间是否为墙钟时间。
+            <p v-for="(item, index) in obj[language].term" :key="item">
+              {{ index + 1 }}. {{ item }}
             </p>
-            <p>
-              2. 检查 Collector 端所在系统、Agent 端所在系统、Ai
-              后端服务之间网络环境可以相互连接。
-            </p>
-            <p>3. 检查 Collector 端所在系统的 19876 是否被占用。</p>
-            <p>4. 确认 Agent 端所在环境在我们的支持列表中。</p>
           </div>
         </div>
         <div class="title-2 margin-t-24">
@@ -48,8 +42,8 @@
             <div class="label">下载：</div>
             <div class="info">
               <el-button class="download-btn" @click="downloadAgent"
-                ><span class="el-icon-download"></span> DongTai Java
-                Agent</el-button
+                ><span class="el-icon-download"></span> DongTai
+                {{ obj[language].name }} Agent</el-button
               >
             </div>
           </div>
@@ -72,88 +66,124 @@
           <span class="icon-no">2</span> 安装探针
         </div>
         <div class="install">
-          <div class="title-3 margin-t-16">1. 自动安装</div>
-          <div class="install-desc margin-t-8">
-            上传 DongTai Java Agent 探针到应用服务器，查看 Web 应用的进行
-            id，运行命令安装探针，如下：
-          </div>
-          <div class="markdown margin-t-16">
-            <span> {{ download }} </span>
-            <span
-              v-clipboard:error="onError"
-              v-clipboard:copy="download"
-              v-clipboard:success="onCopy"
-              class="el-icon-document-copy icon"
-            ></span>
-          </div>
-          <div class="title-3 margin-t-16">2. 手动安装</div>
-          <div class="install-tabs">
-            <el-tabs v-model="activeName" @tab-click="getMd">
-              <el-tab-pane label="SpringBoot" name="SpringBoot">
-                <div class="install-tab-info margin-t-8">
-                  <MyMarkdownIt
-                    :content="md[activeName]"
-                    style="color: #747c8c"
-                  ></MyMarkdownIt>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="Tomcat" name="Tomcat">
-                <div class="install-tab-info margin-t-8">
-                  <MyMarkdownIt
-                    :content="md[activeName]"
-                    style="color: #747c8c"
-                  ></MyMarkdownIt>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="JBoss" name="JBoss">
-                <div class="install-tab-info margin-t-8">
-                  <MyMarkdownIt
-                    :content="md[activeName]"
-                    style="color: #747c8c"
-                  ></MyMarkdownIt>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="Jetty" name="Jetty">
-                <div class="install-tab-info margin-t-8">
-                  <MyMarkdownIt
-                    :content="md[activeName]"
-                    style="color: #747c8c"
-                  ></MyMarkdownIt>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="Resin" name="Resin">
-                <div class="install-tab-info margin-t-8">
-                  <MyMarkdownIt
-                    :content="md[activeName]"
-                    style="color: #747c8c"
-                  ></MyMarkdownIt>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="WebLogic" name="WebLogic">
-                <div class="install-tab-info margin-t-8">
-                  <MyMarkdownIt
-                    :content="md[activeName]"
-                    style="color: #747c8c"
-                  ></MyMarkdownIt>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="WebSphere" name="WebSphere">
-                <div class="install-tab-info margin-t-8">
-                  <MyMarkdownIt
-                    :content="md[activeName]"
-                    style="color: #747c8c"
-                  ></MyMarkdownIt>
-                </div>
-              </el-tab-pane>
-            </el-tabs>
-          </div>
+          <template v-if="language === 'java'">
+            <div class="title-3 margin-t-16">1. 自动安装</div>
+            <div class="install-desc margin-t-8">
+              上传 DongTai {{ obj[language].name }} Agent 探针到应用服务器，查看
+              Web 应用的进行 Web 应用的进行 id，运行命令安装探针，如下：
+            </div>
+            <div class="markdown margin-t-16">
+              <span> {{ obj[language].download }} </span>
+              <span
+                v-clipboard:error="onError"
+                v-clipboard:copy="obj[language].download"
+                v-clipboard:success="onCopy"
+                class="el-icon-document-copy icon"
+              ></span>
+            </div>
+          </template>
+          <template v-if="language === 'python'">
+            <div class="title-3 margin-t-16">1. 手动安装</div>
+            <div class="install-desc margin-t-8">
+              找到第一步下载的压缩文件执行以下命令
+            </div>
+            <div class="markdown margin-t-16">
+              <span> {{ obj[language].download }} </span>
+              <span
+                v-clipboard:error="onError"
+                v-clipboard:copy="obj[language].download"
+                v-clipboard:success="onCopy"
+                class="el-icon-document-copy icon"
+              ></span>
+            </div>
+          </template>
+          <template v-if="language === 'java'">
+            <div class="title-3 margin-t-16">2. 手动安装</div>
+
+            <div class="install-tabs">
+              <el-tabs v-model="activeName" @tab-click="getMd">
+                <el-tab-pane label="SpringBoot" name="SpringBoot">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="Tomcat" name="Tomcat">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="JBoss" name="JBoss">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="Jetty" name="Jetty">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="Resin" name="Resin">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="WebLogic" name="WebLogic">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="WebSphere" name="WebSphere">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+          </template>
+          <template v-if="language === 'python'">
+            <div class="title-3 margin-t-16">2. 项目配置</div>
+            <div class="install-tabs">
+              <el-tabs v-model="activeName" @tab-click="getMd">
+                <el-tab-pane label="Django" name="Django">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+          </template>
         </div>
+
         <div class="title-2 margin-t-24">
           <span class="icon-no">3</span> 重启应用服务（自动安装跳过此步）
         </div>
         <div class="reload">
           <div class="reload-desc margin-t-8">请重启您的应用服务器。</div>
-          <div class="margin-t-16 reload-markdown">
+          <div v-if="language === 'java'" class="margin-t-16 reload-markdown">
             <p>
               若尚未启动 Web 应用服务器，请启动 Web
               应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击引擎管理，查看探针是否注册成功。如果没有注册成功，按照如下步骤进行排查：
@@ -174,11 +204,22 @@
               github 给工程师提交 issue，我们会及时给您回复
             </p>
           </div>
+          <div v-if="language === 'python'" class="margin-t-16 reload-markdown">
+            <p>
+              1、运行pip3 install ./
+              agent.tar.gz命令，查看是否反馈agent.tar.gz的使用帮助，如果没有，说明agent.tar.gz文件不正确，请重新下载然后检查agent.tar.gz文件
+            </p>
+            <p>2、检测Django项目的setting.py文件，MIDDLEWARE配置是否有增加</p>
+            <p>'dongtai_agent.middlewares.django_middleware.FireMiddleware'</p>
+            <p>3、检查网络情况</p>
+          </div>
         </div>
       </div>
       <div class="container-right">
         <div class="title">安装帮助</div>
-        <div class="right-desc margin-t-16">Java Agent 安装方法</div>
+        <div class="right-desc margin-t-16">
+          {{ obj[language].name }} Agent 安装方法
+        </div>
         <div class="right-video margin-t-8">
           <video controls>
             <source src="movie.mp4" type="video/mp4" />
@@ -226,9 +267,52 @@ export default class Deploy extends VueBase {
   private openapi = ''
   private documents = []
   private md = {}
-  private download = 'java -jar agent.jar -m install -p <pid>'
+
+  private obj = {
+    java: {
+      key: 'JAVA',
+      name: 'Java',
+      term: [
+        '检查Agent所在系统与DongTai OpenApi之间网络环境是否可以互相连接。',
+        '确认Agent端所在环境在我们的支持列表中。',
+      ],
+      download: 'pip3  install ./ dongtai-python-agent-lastversion.tar.gz',
+    },
+    python: {
+      key: 'PYTHON',
+      name: 'Python',
+      term: [
+        'Python 版本：3.3及以上',
+        '解释器：CPython',
+        '中间件：uWSGI',
+        'Web框架：Django',
+        'Web Service：Django REST Framework',
+        'python依赖包：psutil >= 5.8.0',
+      ],
+      download: 'java -jar agent.jar -m install -p <pid>',
+    },
+  }
+  changeLanguage(language: string) {
+    this.language = language
+    if (language === 'java') {
+      this.activeName = 'SpringBoot'
+      this.getMd()
+    }
+    if (language === 'python') {
+      this.activeName = 'Django'
+      this.getMd()
+    }
+  }
   get shell() {
-    return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
+    switch (this.language) {
+      case 'java':
+        return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
+      case 'python':
+        return `curl -X GET "${this.openapi}/api/v1/agent/download_py?url=${this.openapi}&jdk.version=Python%201.8&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-python-agent -k`
+    }
+  }
+  get pythonShell() {
+    return
   }
   private goDoc(url: string) {
     window.open(url)
@@ -272,7 +356,7 @@ export default class Deploy extends VueBase {
     }
   }
   private async downloadAgent() {
-    await this.services.deploy.agentDownload(this.openapi)
+    await this.services.deploy.agentDownload(this.openapi, this.language)
   }
   private async created() {
     const res = await this.services.deploy.getToken()

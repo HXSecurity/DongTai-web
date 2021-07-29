@@ -19,12 +19,24 @@
 
             <i class="iconfont iconicon_details_banben"></i>
             {{ $t('views.projectDetail.version') }}
-            <i style="margin-right: 6px">{{
-              projectObj.versionData && projectObj.versionData.version_name
-            }}</i>
+            <el-select
+              v-model="projectObj.versionData.version_id"
+              size="mini"
+              style="width: 80px"
+              @change="changeVersion"
+            >
+              <el-option
+                v-for="item in versionList"
+                :key="item.version_id"
+                :value="item.version_id"
+                :label="item.version_name"
+              >
+                {{ item.version_name }}
+              </el-option>
+            </el-select>
             <i
               class="iconfont iconicon_details_edit"
-              style="cursor: pointer; color: #4fb794"
+              style="margin-left: 12px; cursor: pointer; color: #4fb794"
               @click="showVersion"
             ></i>
           </div>
@@ -242,7 +254,7 @@ import merge from 'webpack-merge'
   },
 })
 export default class ProjectDetail extends VueBase {
-  private selectTab = "desc"
+  private selectTab = 'desc'
   private projectObj: ProjectObj = {
     id: 0,
     mode: '',
@@ -377,16 +389,20 @@ export default class ProjectDetail extends VueBase {
       isEdit: true,
     })
   }
-
-  mounted() {
+  private changeVersion(value: any) {
+    this.projectsSummary(value)
+  }
+  async mounted() {
     if (this.$route.query.activeName) {
       this.selectTab = this.$route.query.activeName as string
     }
-    this.projectsSummary()
+    await this.projectsSummary()
+    await this.getVersionList()
   }
-  private async projectsSummary() {
+  private async projectsSummary(id?: string) {
     const { status, msg, data } = await this.services.project.projectsSummary(
-      this.$route.params.pid
+      this.$route.params.pid,
+      id
     )
     if (status !== 201) {
       this.$message.error(msg)
@@ -529,10 +545,12 @@ export default class ProjectDetail extends VueBase {
     dayNumChart.setOption(dayNumOption)
   }
   showVersion() {
+    this.versionFlag = true
+  }
+  getVersionList() {
     this.services.project.versionList(this.projectObj.id).then((res: any) => {
       if (res.status === 201) {
         this.versionList = res.data
-        this.versionFlag = true
       } else {
         this.$message.error('msg')
       }

@@ -1,18 +1,39 @@
 <template>
   <div class="content-warp">
-    <div class="selectForm">
-      <div class="select-item">运行状态：</div>
-      <div
-        v-for="item in stateOptions"
-        :key="item.value"
-        class="select-item"
-        :class="item.value === state && 'active'"
-        @click="changeState(item)"
-      >
-        {{ item.label }}
+    <div class="tool-bar">
+      <div class="selectForm">
+        <div class="select-item">运行状态：</div>
+        <div
+          v-for="item in stateOptions"
+          :key="item.value"
+          class="select-item"
+          :class="item.value === state && 'active'"
+          @click="changeState(item)"
+        >
+          {{ item.label }}
+        </div>
+      </div>
+      <div class="tool-bar">
+        <el-input style="margin-left: 12px;" v-model="searchValue" size="small" placeholder="请输入搜索条件"></el-input>
       </div>
     </div>
-    <el-table :data="tableData" class="agentManageTable" header-align="center">
+    <div class="button-bar">
+      <el-button
+        size="small"
+        class="resetAllBtn"
+      >禁用/启用</el-button
+      >
+      <el-button
+        size="small"
+        class="resetAllBtn"
+      >删除</el-button
+      >
+    </div>
+    <el-table :data="tableData" class="agentManageTable" header-align="center"  @selection-change="handleSelectionChange">
+      <el-table-column
+        type="selection"
+        width="55">
+      </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.projectName')"
         prop="project_name"
@@ -190,11 +211,16 @@ export default class AgentManage extends VueBase {
     { value: 0, label: '未运行' },
   ]
   timer: any = null
+  private searchValue = ''
+  private multipleSelection = []
   created() {
     this.getTableData()
     this.timer = setInterval(() => {
       this.getTableData()
     }, 5000)
+  }
+  private handleSelectionChange(val:any){
+    this.multipleSelection = val
   }
   private beforeDestroy() {
     clearInterval(this.timer)
@@ -319,6 +345,18 @@ export default class AgentManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
+.tool-bar {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  align-items: center;
+}
+.button-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+  align-items: center;
+}
 .selectForm {
   display: flex;
   padding: 0 10px 16px;
@@ -377,5 +415,12 @@ export default class AgentManage extends VueBase {
   cursor: pointer;
   color: #a7afb9;
   margin-left: 18px;
+}
+.resetAllBtn {
+  height: 28px;
+  line-height: 0;
+  background: #4a72ae;
+  border-radius: 2px;
+  color: #fff;
 }
 </style>
