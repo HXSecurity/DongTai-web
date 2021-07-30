@@ -329,6 +329,7 @@ import { VulnListObj } from '@/views/vuln/types'
 
 @Component({ name: 'VulListComponent' })
 export default class VulListComponent extends VueBase {
+  @Prop() version: number | undefined
   @Prop(String) projectId!: string
   private page = 1
   private pageSize = 20
@@ -502,7 +503,7 @@ export default class VulListComponent extends VueBase {
     }
   }
 
-  private async getTableData() {
+  public async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -511,6 +512,7 @@ export default class VulListComponent extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
+      version_id: this.version,
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
@@ -541,13 +543,14 @@ export default class VulListComponent extends VueBase {
     this.tableData = [...this.tableData, ...tableData]
   }
 
-  private async vulnSummary() {
+  public async vulnSummary() {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
+      version_id: this.version,
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,

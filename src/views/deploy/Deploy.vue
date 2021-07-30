@@ -34,7 +34,7 @@
           <span class="icon-no">1</span> 下载探针
         </div>
         <div class="download">
-          <p class="download-desc margin-t-8">
+          <p class="download-desc margin-t-8" v-if="language === 'java'">
             洞态 IAST 目前支持 JDK 1.6 以上版本的探针，支持 Windows/Linux
             操作系统，支持 Docker，支持所有的 Java Web 中间件
           </p>
@@ -52,12 +52,19 @@
             <div class="info">
               <div class="markdown">
                 <span> {{ shell }}</span>
-                <span
-                  v-clipboard:error="onError"
-                  v-clipboard:copy="shell"
-                  v-clipboard:success="onCopy"
-                  class="el-icon-document-copy icon"
-                ></span>
+                <el-tooltip
+                  class="item"
+                  effect="dark"
+                  content="复制"
+                  placement="top"
+                >
+                  <span
+                    v-clipboard:error="onError"
+                    v-clipboard:copy="shell"
+                    v-clipboard:success="onCopy"
+                    class="el-icon-document-copy icon"
+                  ></span>
+                </el-tooltip>
               </div>
             </div>
           </div>
@@ -74,12 +81,19 @@
             </div>
             <div class="markdown margin-t-16">
               <span> {{ obj[language].download }} </span>
-              <span
-                v-clipboard:error="onError"
-                v-clipboard:copy="obj[language].download"
-                v-clipboard:success="onCopy"
-                class="el-icon-document-copy icon"
-              ></span>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="复制"
+                placement="top"
+              >
+                <span
+                  v-clipboard:error="onError"
+                  v-clipboard:copy="obj[language].download"
+                  v-clipboard:success="onCopy"
+                  class="el-icon-document-copy icon"
+                ></span>
+              </el-tooltip>
             </div>
           </template>
           <template v-if="language === 'python'">
@@ -89,12 +103,19 @@
             </div>
             <div class="markdown margin-t-16">
               <span> {{ obj[language].download }} </span>
-              <span
-                v-clipboard:error="onError"
-                v-clipboard:copy="obj[language].download"
-                v-clipboard:success="onCopy"
-                class="el-icon-document-copy icon"
-              ></span>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="复制"
+                placement="top"
+              >
+                <span
+                  v-clipboard:error="onError"
+                  v-clipboard:copy="obj[language].download"
+                  v-clipboard:success="onCopy"
+                  class="el-icon-document-copy icon"
+                ></span>
+              </el-tooltip>
             </div>
           </template>
           <template v-if="language === 'java'">
@@ -184,12 +205,12 @@
         <div class="reload">
           <div class="reload-desc margin-t-8">请重启您的应用服务器。</div>
           <div v-if="language === 'java'" class="margin-t-16 reload-markdown">
-            <p>
+            <p class="indent">
               若尚未启动 Web 应用服务器，请启动 Web
               应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击引擎管理，查看探针是否注册成功。如果没有注册成功，按照如下步骤进行排查：
             </p>
             <p>1. 检查 agent.jar 文件</p>
-            <p>
+            <p class="indent">
               运行 java -jar /tmp/agent.jar 命令，查看是否反馈 agent.jar
               的使用帮助，如果没有，说明 agent.jar
               文件不正确，请重新下载然后检查 agent.jar
@@ -197,7 +218,7 @@
               issue，我们会及时给您回复
             </p>
             <p>2. 检查网络情况</p>
-            <p>
+            <p class="indent">
               在 Web 应用服务器中，检查是否可访问
               {{ openapi }}
               服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往
@@ -205,13 +226,29 @@
             </p>
           </div>
           <div v-if="language === 'python'" class="margin-t-16 reload-markdown">
-            <p>
-              1、运行pip3 install ./
-              agent.tar.gz命令，查看是否反馈agent.tar.gz的使用帮助，如果没有，说明agent.tar.gz文件不正确，请重新下载然后检查agent.tar.gz文件
+            <p class="indent">
+              若尚未启动 Web 应用服务器，请启动 Web
+              应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击引擎管理，查看探针是否注册成功。如果没有注册成功，按照如下步骤进行排查：
             </p>
-            <p>2、检测Django项目的setting.py文件，MIDDLEWARE配置是否有增加</p>
-            <p>'dongtai_agent.middlewares.django_middleware.FireMiddleware'</p>
-            <p>3、检查网络情况</p>
+            <p>1. 检查 dongtai-agent-python.tar.gz 文件</p>
+            <p class="indent">
+              运行pip3 install ./dongtai-agent-python.tar.gz 命令，查看是否反馈
+              dongtai-agent-python.tar.gz 的使用帮助，如果没有，说明
+              dongtai-agent-python.tar.gz文件不正确，请重新下载然后检查
+              dongtai-agent-python.tar.gz文件，如果仍然不正确，请前往 github
+              给工程师提交 issue，我们会及时给您回复
+            </p>
+            <p>2. 检测Django项目的setting.py文件，MIDDLEWARE配置是否有增加</p>
+            <p class="indent">
+              'dongtai_agent_python.middlewares.django_middleware.FireMiddleware'
+            </p>
+            <p>3. 检查网络情况</p>
+            <p class="indent">
+              在 Web 应用服务器中，检查是否可访问
+              http://a28754cd66991441d8d682808caecead-626172336.cn-north-1.elb.amazonaws.com.cn:8000
+              服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往
+              github 给工程师提交 issue，我们会及时给您回复
+            </p>
           </div>
         </div>
       </div>
@@ -237,18 +274,15 @@
         >
           {{ item.title }}
         </div>
-        <!--        <div class="help-list margin-t-24 active">Java Agent 常见问题</div>-->
-        <!--        <div class="help-list margin-t-24">Java Agent 参数配置</div>-->
-        <!--        <div class="help-list margin-t-24">DongTai IAST 如何本地部署</div>-->
-        <!--        <div class="help-list margin-t-24">DongTai IAST 最佳实践</div>-->
-        <!--        <div class="help-list margin-t-24">-->
-        <!--          DongTai IAST 如何进行漏洞复现与分析-->
-        <!--        </div>-->
-        <!--        <div class="help-list margin-t-24">DongTai IAST 如何进行漏洞挖掘</div>-->
-
         <div class="title margin-t-32">获得更多支持</div>
-        <div class="help-list margin-t-24">提交 ISSUE</div>
-        <div class="help-list margin-t-24">Docker</div>
+        <div
+          class="help-list margin-t-24 color-blue"
+          @click="
+            goDoc('https://github.com/HXSecurity/DongTai/issues/new/choose')
+          "
+        >
+          提交 ISSUE
+        </div>
       </div>
     </div>
   </main>
@@ -276,7 +310,7 @@ export default class Deploy extends VueBase {
         '检查Agent所在系统与DongTai OpenApi之间网络环境是否可以互相连接。',
         '确认Agent端所在环境在我们的支持列表中。',
       ],
-      download: 'pip3  install ./ dongtai-python-agent-lastversion.tar.gz',
+      download: 'java -jar agent.jar -m install -p <pid>',
     },
     python: {
       key: 'PYTHON',
@@ -289,26 +323,26 @@ export default class Deploy extends VueBase {
         'Web Service：Django REST Framework',
         'python依赖包：psutil >= 5.8.0',
       ],
-      download: 'java -jar agent.jar -m install -p <pid>',
+      download: 'pip3  install ./ dongtai-agent-python.tar.gz',
     },
   }
   changeLanguage(language: string) {
     this.language = language
     if (language === 'java') {
       this.activeName = 'SpringBoot'
-      this.getMd()
     }
     if (language === 'python') {
       this.activeName = 'Django'
-      this.getMd()
     }
+    this.getDoc()
+    this.getMd()
   }
   get shell() {
     switch (this.language) {
       case 'java':
         return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
       case 'python':
-        return `curl -X GET "${this.openapi}/api/v1/agent/download_py?url=${this.openapi}&jdk.version=Python%201.8&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-python-agent -k`
+        return `curl -X GET "${this.openapi}/api/v1/agent/download_py?url=${this.openapi}&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-agent-python.tar.gz -k`
     }
   }
   get pythonShell() {
@@ -320,7 +354,7 @@ export default class Deploy extends VueBase {
 
   private onCopy() {
     this.$message({
-      message: '已成功复制进粘贴板！',
+      message: '已复制',
       type: 'success',
     })
   }
@@ -358,17 +392,22 @@ export default class Deploy extends VueBase {
   private async downloadAgent() {
     await this.services.deploy.agentDownload(this.openapi, this.language)
   }
+  private async getDoc() {
+    const docRes = await this.services.deploy.getDocuments({
+      language: this.language,
+    })
+    if (docRes.status === 201) {
+      this.documents = docRes.data.documents
+    }
+  }
   private async created() {
     const res = await this.services.deploy.getToken()
     if (res.status === 201) {
       this.token = res.data.token
     }
-    const docRes = await this.services.deploy.getDocuments()
-    if (docRes.status === 201) {
-      this.documents = docRes.data.documents
-    }
     await this.getOpenapi()
     await this.getMd()
+    await this.getDoc()
   }
 }
 </script>
@@ -534,7 +573,7 @@ main {
     padding: 24px 16px;
     p {
       font-size: 14px;
-      line-height: 20px;
+      line-height: 24px;
     }
   }
 }
@@ -576,11 +615,14 @@ main {
   .help-list {
     font-size: 14px;
     line-height: 20px;
-    color: #38435a;
+    color: #4a72ae;
     cursor: pointer;
-    &.active {
-      color: #4a72ae;
-    }
   }
+}
+.color-blue {
+  color: #4a72ae;
+}
+.indent {
+  text-indent: 2em;
 }
 </style>

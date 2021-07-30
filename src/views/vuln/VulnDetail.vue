@@ -325,39 +325,29 @@
         class="graphModule flex-row-space-between"
       >
         <div class="left-warp">
-          <div class="flex-row-space-between">
+          <div class="flex-row-space-between dot-list">
             <div class="tip">
-              <i
-                class="iconfont iconyuandianzhong"
-                style="font-size: 12px; color: #5491ef"
-              ></i>
-              污点来源
+              <i class="iconfont iconyuandianzhong" style="color: #5491ef"></i>
+              <span>污点来源</span>
             </div>
             <div class="tip">
-              <i
-                class="iconfont iconyuandianzhong"
-                style="font-size: 12px; color: #f3bc3f"
-              ></i>
-              传播方法
+              <i class="iconfont iconyuandianzhong" style="color: #f3bc3f"></i>
+              <span>传播方法</span>
             </div>
             <div class="tip">
-              <i
-                class="iconfont iconyuandianzhong"
-                style="font-size: 12px; color: #ec984f"
-              ></i>
-              危险方法
+              <i class="iconfont iconyuandianzhong" style="color: #ec984f"></i>
+              <span>危险方法</span>
             </div>
           </div>
           <div
             v-for="(item, index) in vulnObj.vul.graph"
             :key="index"
-            class="nodeLine flex-row-space-between"
-            @click="openTarget(index)"
+            class="vuln-pic"
           >
             <div class="flex-column-center" style="padding: 0 5px">
               <i
                 class="iconfont iconyuandianzhong"
-                style="font-size: 12px; color: #ec984f"
+                style="color: #ec984f"
                 :style="
                   index === 0
                     ? { color: '#5491ef' }
@@ -367,119 +357,26 @@
                 "
               ></i>
             </div>
-            <div class="node">
-              {{ item.node }}
+            <div class="info">
+              <div class="nodeLine">
+                <div class="node">
+                  {{ item.node }}
+                </div>
+              </div>
+              <div class="nodeLine">
+                <div class="code">
+                  <div v-dompurify-html="item.code"></div>
+                </div>
+                <div class="tag-list">
+                  <div v-if="item.tag" class="tag">
+                    {{ item.tag }}
+                  </div>
+                  <div class="file">file: {{ item.file }}</div>
+                  <div class="line">line:{{ item.line_number }}</div>
+                </div>
+              </div>
             </div>
-            <i
-              v-if="index < vulnObj.vul.graph.length - 1"
-              class="step el-icon-bottom"
-            ></i>
           </div>
-        </div>
-        <div class="right-warp">
-          <el-table
-            ref="graphTable"
-            class="graphTable"
-            :data="vulnObj.vul.graph"
-            style="background: #f8f9fb"
-            :row-class-name="tableRowClassName"
-          >
-            <el-table-column type="expand">
-              <template slot-scope="{ row }">
-                <div class="expand-form">
-                  <div class="expand-item">
-                    <div class="expand-label">
-                      {{ $t('views.vulnDetail.type') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.type }}
-                    </div>
-                  </div>
-                  <div class="expand-item">
-                    <div class="expand-label">
-                      {{ $t('views.vulnDetail.file') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.file }}
-                    </div>
-                  </div>
-                  <div class="expand-item">
-                    <div class="expand-label">
-                      {{ $t('views.vulnDetail.num') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.line_number }}
-                    </div>
-                  </div>
-                  <div class="expand-item">
-                    <div class="expand-label">
-                      {{ $t('views.vulnDetail.caller') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.caller }}
-                    </div>
-                  </div>
-                  <div
-                    v-if="row.source_value && row.source_value != 'NULL'"
-                    class="expand-item"
-                  >
-                    <div class="expand-label">
-                      {{ $t('views.vulnDetail.source_value') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.source_value }}
-                    </div>
-                  </div>
-                  <div
-                    v-if="row.target_value && row.target_value != 'NULL'"
-                    class="expand-item"
-                  >
-                    <div class="expand-label">
-                      {{ $t('views.vulnDetail.target_value') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.target_value }}
-                    </div>
-                  </div>
-
-                  <div class="expand-item">
-                    <div class="expand-label">
-                      {{ $t('views.vulnDetail.wuDianZhi') }}
-                    </div>
-                    <div class="expand-info">
-                      {{ row.target }}
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="left"
-              :label="$t('views.vulnDetail.type')"
-              prop="type"
-            ></el-table-column>
-            <el-table-column
-              align="center"
-              :label="$t('views.vulnDetail.fileAndNum')"
-              min-width="100px"
-            >
-              <template slot-scope="{ row }">
-                <div class="file_and_num">
-                  <div>{{ row.file }}</div>
-                  <div v-if="row.line_number">{{ row.line_number }}</div>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              align="right"
-              :label="$t('views.vulnDetail.wuDianZhi')"
-              prop="target"
-            >
-              <template slot-scope="{ row }">
-                <div class="stain">{{ row.target }}</div>
-              </template>
-            </el-table-column>
-          </el-table>
         </div>
       </div>
       <div v-if="vulnObj.strategy.repair_suggestion" class="module-title">
@@ -640,17 +537,6 @@ export default class VulnDetail extends VueBase {
     order: '',
   }
 
-  private openTarget(i: number) {
-    const graphTable: any = this.$refs.graphTable
-    this.vulnObj.vul.graph.forEach((item: any, index: number) => {
-      if (index === i) {
-        graphTable.toggleRowExpansion(item)
-      } else {
-        graphTable.toggleRowExpansion(item, false)
-      }
-    })
-  }
-
   private orderOptions = [
     {
       label: this.$t('views.vulnList.orderOptions.type'),
@@ -726,6 +612,7 @@ export default class VulnDetail extends VueBase {
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order,
+      status: this.$route.query.status,
     }
     this.loadingStart()
     const { status, data, page, msg } = await this.services.vuln.vulnList(
@@ -778,11 +665,11 @@ export default class VulnDetail extends VueBase {
       function toRed(str: any, red: any) {
         const pattern = new RegExp(red, 'gi')
         return str.replace(pattern, function (match: string) {
-          return "<span style='color:red'>" + match + '</span>'
+          return "<tt style='color:red'>" + match + '</tt>'
         })
       }
-
-      const strArr = data.vul.req_header.split(`\n`)
+      const str = data.vul.req_header.split('<').join('&lt;')
+      const strArr = str.split(`\n`)
       try {
         for (const key in data.vul.param_name) {
           switch (key) {
@@ -1105,6 +992,10 @@ export default class VulnDetail extends VueBase {
     height: 196px;
     overflow-y: auto;
     margin-top: 0;
+    /deep/tt {
+      color: red !important;
+      font-style: normal !important;
+    }
   }
 
   .baseInfo {
@@ -1139,47 +1030,102 @@ export default class VulnDetail extends VueBase {
     margin-top: 18px;
 
     .left-warp {
-      width: 49%;
-
+      width: 100%;
+      .dot-list {
+        width: 350px;
+      }
       .tip {
         flex: 1;
         color: #38435a;
         font-size: 14px;
-      }
-
-      .nodeLine {
-        border: 1px solid #e9edf5;
-        background: #fff;
-        width: 100%;
-        font-size: 14px;
-        color: #646e83;
-        margin-top: 34px;
-        position: relative;
-        cursor: pointer;
-        &:first-child {
-          margin-top: 0;
+        line-height: 0;
+        align-items: center;
+        display: flex;
+        .iconyuandianzhong {
+          font-size: 18px;
+          margin-right: 14px;
+          line-height: 18px;
         }
-
-        .node {
-          flex: 1;
-          text-align: center;
-          line-height: 20px;
-          padding: 10px 10px;
+      }
+      .vuln-pic {
+        display: flex;
+        align-items: center;
+        margin-top: 24px;
+        & + .vuln-pic {
+          margin-top: 32px;
+          position: relative;
+          &::after {
+            position: absolute;
+            left: 11px;
+            top: -85%;
+            width: 2px;
+            height: 100%;
+            content: '';
+            background: #e9eef8;
+          }
+        }
+        .info {
+          display: flex;
+          align-items: center;
+          background: #f8f9fb;
+          width: 100%;
+        }
+        .nodeLine {
+          word-wrap: break-word;
+          white-space: normal;
           word-break: break-all;
-        }
-
-        .step {
-          position: absolute;
-          bottom: -26px;
-          left: 49%;
-          font-size: 20px;
+          width: 50%;
+          padding: 16px;
+          border-radius: 2px;
+          &:first-child {
+            margin-top: 0;
+          }
+          .code {
+            font-size: 14px;
+            line-height: 14px;
+            color: #959fb4;
+            /deep/em {
+              color: red;
+              font-style: normal;
+            }
+          }
+          .tag-list {
+            display: flex;
+            margin-top: 12px;
+            div + div {
+              margin-left: 20px;
+            }
+            .tag {
+              background: rgba(88, 142, 225, 0.1);
+              border-radius: 2px;
+              color: #588ee1;
+              padding: 0 6px;
+              font-size: 12px;
+              line-height: 14px;
+            }
+            .file {
+              color: #45b4a0;
+              background: rgba(69, 180, 160, 0.1);
+              border-radius: 2px;
+              padding: 0 6px;
+              font-size: 12px;
+              line-height: 14px;
+              max-width: 160px;
+              white-space: nowrap; //不换行
+              overflow: hidden; //超出隐藏
+              text-overflow: ellipsis; //变成...
+            }
+            .line {
+              color: #e18c58;
+              background: rgba(225, 140, 88, 0.1);
+              border-radius: 2px;
+              padding: 0 6px;
+              font-size: 12px;
+              line-height: 14px;
+            }
+          }
         }
       }
-    }
-
-    .right-warp {
-      width: 49%;
-      background: #f8f9fb;
     }
   }
 }

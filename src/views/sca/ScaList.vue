@@ -34,7 +34,8 @@
           <div class="search-box">
             <el-autocomplete
               v-model="kw"
-              style="margin: 6px 0"
+              size="small"
+              style="margin: 12px 0 0 0"
               class="commonInput"
               clearable
               placeholder="请输入项目名称搜索"
@@ -290,6 +291,7 @@ import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
 
 @Component({ name: 'ScaList', components: { ScrollToTop } })
 export default class ScaList extends VueBase {
+  @Prop() version: number | undefined
   @Prop(String) projectId!: string
   private debounceMyScroll: any
   private page = 1
@@ -423,7 +425,7 @@ export default class ScaList extends VueBase {
     }
   }
 
-  private async getTableData() {
+  public async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -433,6 +435,7 @@ export default class ScaList extends VueBase {
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
       project_id: this.searchObj.project_id,
+      version_id: this.version,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.sca.scaList(params)
@@ -457,7 +460,7 @@ export default class ScaList extends VueBase {
     this.tableData.push(...tableData)
   }
 
-  private async scaSummary() {
+  public async scaSummary() {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
@@ -465,6 +468,7 @@ export default class ScaList extends VueBase {
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
       project_id: this.searchObj.project_id,
+      version_id: this.version,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.sca.scaSummary(params)

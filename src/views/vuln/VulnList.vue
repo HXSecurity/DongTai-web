@@ -35,7 +35,8 @@
         <div class="search-box">
           <el-autocomplete
             v-model="kw"
-            style="margin: 6px 0"
+            size="small"
+            style="margin: 12px 0 0 0"
             class="commonInput"
             clearable
             placeholder="请输入项目名称搜索"
@@ -170,8 +171,9 @@
         <div class="selectForm">
           <el-select
             v-model="searchObj.order"
-            style="width: 160px; font-size: 14px"
-            class="commonSelect"
+            size="small"
+            style="width: 150px; font-size: 14px"
+            class="commonSelect vulnSelect"
             placeholder="请选择排序条件"
             clearable
             @change="newSelectData"
@@ -201,7 +203,8 @@
           <el-select
             v-model="searchObj.language"
             placeholder="请选择开发语言"
-            style="margin-left: 10px; width: 160px; font-size: 14px"
+            size="small"
+            style="margin-left: 10px; width: 150px; font-size: 14px"
             class="commonSelect"
             clearable
             @change="newSelectData"
@@ -211,6 +214,7 @@
           </el-select>
           <el-select
             v-model="searchObj.status"
+            size="small"
             placeholder="请选择漏洞状态"
             style="margin-left: 10px; width: 160px; font-size: 14px"
             class="commonSelect"
@@ -226,9 +230,10 @@
           <div class="selectInput">
             <el-input
               v-model="searchObj.url"
+              size="small"
               placeholder="请输入搜索条件，如：http://127.0.0.1:8080"
               class="commonInput"
-              style="width: 400px"
+              style="width: 370px"
               @keyup.enter.native="newSelectData"
             >
               <i
@@ -245,9 +250,11 @@
               tableData.length > 0 && tableData.every((item) => item.checked)
             "
             @change="selectAll"
-            >已选中{{
+            >已选中
+            <span style="color: #1a80f2">{{
               tableData.filter((item) => item.checked).length
-            }}项</el-checkbox
+            }}</span>
+            项</el-checkbox
           >
           <div>
             <el-button class="checkedAllBtn" @click="recheck('project')">
@@ -486,6 +493,10 @@ export default class VulnList extends VueBase {
       if (type === 'all') {
         res = await this.services.vuln.vulRecheckAll({ type })
       } else {
+        if (this.tableData.length === 0) {
+          this.$message.warning('请选择需要验证的漏洞')
+          return
+        }
         const ids = this.tableData
           .map((item) => {
             if (item.checked) {
@@ -655,7 +666,9 @@ export default class VulnList extends VueBase {
   }
 
   private goDetail(id: number) {
-    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
+    this.$router.push(
+      `/vuln/vulnDetail/${this.page}/${id}?status=` + this.searchObj.status
+    )
   }
 
   switchServerType(serverType: string) {
@@ -714,16 +727,16 @@ export default class VulnList extends VueBase {
   }
 }
 .sort-btn {
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   border: 1px solid #dcdfe6;
   color: #606266;
   display: inline-block;
   background: #fff;
   border-radius: 4px;
   text-align: center;
-  line-height: 36px;
-  font-size: 14px;
+  line-height: 30px;
+  font-size: 12px;
   cursor: pointer;
 }
 .slider-warp {
@@ -805,23 +818,35 @@ export default class VulnList extends VueBase {
 }
 
 .main-warp {
-  padding-top: 14px;
   margin-left: 248px;
-  padding-bottom: 10px;
+  background: #fff;
+  padding: 16px 16px 10px 16px;
   .tool-box {
     position: fixed;
-    padding-top: 15px;
     width: 952px;
+    padding: 16px 16px 0 16px;
+    margin-left: -16px;
     top: 65px;
-    background: #f4f4f4;
     z-index: 900;
+    background: #fff;
+    border-bottom: 1px solid #eee;
   }
   .tool-box-placeholder {
     height: 80px;
   }
   .selectForm {
     width: 100%;
-
+    .vulnSelect {
+      /deep/.el-input__inner {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+    .sort-btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
     .selectInput {
       float: right;
     }
@@ -881,7 +906,7 @@ export default class VulnList extends VueBase {
       .top-stack {
         margin-top: 14px;
         position: relative;
-
+        color: #9199a2;
         &:before {
           content: '';
           width: 1px;
@@ -909,7 +934,7 @@ export default class VulnList extends VueBase {
 
       .bottom-stack {
         margin-top: 24px;
-
+        color: #9199a2;
         i {
           color: #6ec79f;
           font-size: 12px;

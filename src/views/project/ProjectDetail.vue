@@ -112,11 +112,17 @@
       </div>
       <div v-if="selectTab === 'vul'">
         <vul-list-component
+          ref="vulListComponent"
           :project-id="$route.params.pid"
+          :version="projectObj.versionData.version_id"
         ></vul-list-component>
       </div>
       <div v-if="selectTab === 'component'">
-        <ScaList :project-id="$route.params.pid"></ScaList>
+        <ScaList
+          ref="componentList"
+          :project-id="$route.params.pid"
+          :version="projectObj.versionData.version_id"
+        ></ScaList>
       </div>
     </div>
 
@@ -280,15 +286,18 @@ export default class ProjectDetail extends VueBase {
       this.$message.success(res.msg)
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
-      this.projectsSummary()
+      await this.projectsSummary()
     }
   }
 
-  private changeActive(e: any) {
+  private async changeActive(e: any) {
     this.selectTab = e
     this.$router.replace({
       query: merge(this.$route.query, { activeName: e }) as any,
     })
+    if (e === 'desc') {
+      await this.projectsSummary(this.projectObj.versionData.version_id)
+    }
   }
 
   private editVersion(item: any) {
@@ -390,7 +399,17 @@ export default class ProjectDetail extends VueBase {
     })
   }
   private changeVersion(value: any) {
-    this.projectsSummary(value)
+    if (this.selectTab === 'desc') {
+      this.projectsSummary(value)
+    } else if (this.selectTab === 'vul') {
+      const v: any = this.$refs.vulListComponent
+      v.getTableData()
+      v.vulnSummary()
+    } else if (this.selectTab === 'component') {
+      const c: any = this.$refs.componentList
+      c.getTableData()
+      c.scaSummary()
+    }
   }
   async mounted() {
     if (this.$route.query.activeName) {
@@ -424,6 +443,10 @@ export default class ProjectDetail extends VueBase {
       ...data,
       name: data.name,
       latest_time: formatTimestamp(data.latest_time),
+    }
+
+    if (this.selectTab !== 'desc') {
+      return
     }
 
     const levelCountChart = echarts.init(

@@ -9,6 +9,7 @@
         slot="prepend"
         v-model="searchType"
         placeholder="筛选"
+        clearable
         class="search-bar-select"
       >
         <el-option label="URL" value="url"></el-option>

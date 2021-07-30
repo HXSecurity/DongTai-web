@@ -51,8 +51,8 @@ export default () =>
       return request.get('/user/token')
     }
     // 获取Documents
-    getDocuments(): Promise<iResponse> {
-      return request.get('/documents')
+    getDocuments(params: any): Promise<iResponse> {
+      return request.get('/documents', { params })
     }
     // 获取MD
     getMD(params: any): Promise<iResponse> {

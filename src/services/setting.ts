@@ -29,12 +29,12 @@ export default () =>
     }
 
     // 引擎管理-开启工作
-    agentStart(params: { id: number }): Promise<iResponse> {
+    agentStart(params: any): Promise<iResponse> {
       return request.post('/agent/start', params)
     }
 
     // 引擎管理-暂停
-    agentStop(params: { id: number }): Promise<iResponse> {
+    agentStop(params: any): Promise<iResponse> {
       return request.post('/agent/stop', params)
     }
 
@@ -56,6 +56,11 @@ export default () =>
     // 策略管理-策略禁用
     strategyDisable(id: number): Promise<iResponse> {
       return request.get(`/strategy/${id}/disable`)
+    }
+
+    // 策略管理-策略禁用
+    deleteAgents(params: any): Promise<iResponse> {
+      return request.get(`/agents/delete`,{params})
     }
 
     // 在线升级
@@ -209,6 +214,6 @@ export default () =>
     }
 
     searchProject(params: any): Promise<iResponse> {
-      return request.get(`/project/search`,  { params })
+      return request.get(`/project/search`, { params })
     }
   })()

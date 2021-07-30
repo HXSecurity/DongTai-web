@@ -14,26 +14,33 @@
         </div>
       </div>
       <div class="tool-bar">
-        <el-input style="margin-left: 12px;" v-model="searchValue" size="small" placeholder="请输入搜索条件"></el-input>
+        <el-input
+          v-model="searchValue"
+          style="margin-left: 12px"
+          size="small"
+          placeholder="请输入搜索条件"
+          @input="searchTable"
+        ></el-input>
       </div>
     </div>
     <div class="button-bar">
-      <el-button
-        size="small"
-        class="resetAllBtn"
-      >禁用/启用</el-button
+      <el-button size="small" class="resetAllBtn" @click="agentStart(0)"
+        >启用</el-button
       >
-      <el-button
-        size="small"
-        class="resetAllBtn"
-      >删除</el-button
+      <el-button size="small" class="resetAllBtn" @click="agentStop(0)"
+        >禁用</el-button
+      >
+      <el-button size="small" class="resetAllBtn" @click="deleteAgents"
+        >删除</el-button
       >
     </div>
-    <el-table :data="tableData" class="agentManageTable" header-align="center"  @selection-change="handleSelectionChange">
-      <el-table-column
-        type="selection"
-        width="55">
-      </el-table-column>
+    <el-table
+      :data="tableData"
+      class="agentManageTable"
+      header-align="center"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.projectName')"
         prop="project_name"
@@ -210,16 +217,27 @@ export default class AgentManage extends VueBase {
     { value: 1, label: '运行中' },
     { value: 0, label: '未运行' },
   ]
-  timer: any = null
   private searchValue = ''
   private multipleSelection = []
   created() {
     this.getTableData()
     this.timer = setInterval(() => {
-      this.getTableData()
+      this.reflashTable()
     }, 5000)
   }
-  private handleSelectionChange(val:any){
+  private timer: any
+  private timeOuter: any
+  private searchTable() {
+    if (this.timeOuter) {
+      clearTimeout(this.timeOuter)
+      this.timeOuter = null
+    } else {
+      setTimeout(() => {
+        this.getTableData()
+      }, 400)
+    }
+  }
+  private handleSelectionChange(val: any) {
     this.multipleSelection = val
   }
   private beforeDestroy() {
@@ -227,6 +245,7 @@ export default class AgentManage extends VueBase {
   }
   private changeState(item: any) {
     this.state = item.value
+    this.page = 1
     this.getTableData()
     if (this.state == 1) {
       this.timer = setInterval(() => {
@@ -242,11 +261,38 @@ export default class AgentManage extends VueBase {
     this.getTableData()
   }
 
+  private async reflashTable() {
+    const params = {
+      page: this.page,
+      pageSize: this.pageSize,
+      state: this.state,
+    }
+    this.loadingStart()
+    const { status, msg, data } = await this.services.setting.agentList(params)
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message.error(msg)
+      return
+    }
+    const dataMap = {}
+    data &&
+      data.forEach((item: any) => {
+        return (dataMap[item.id] = item)
+      })
+    console.log(this.tableData, dataMap)
+    this.tableData.forEach((item: any) => {
+      for (const key in item) {
+        item[key] = dataMap[item.id][key]
+      }
+    })
+  }
+
   private async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
       state: this.state,
+      token: this.searchValue,
     }
     this.loadingStart()
     const { status, msg, data, page } = await this.services.setting.agentList(
@@ -277,11 +323,42 @@ export default class AgentManage extends VueBase {
     await this.getTableData()
   }
 
-  private async agentStart(id: string | number) {
-    this.loadingStart()
-    const { status, msg } = await this.services.setting.agentStart({
-      id: parseInt(`${id}`),
+  private async deleteAgents() {
+    this.$confirm('此操作将永久删除该引擎, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      this.loadingStart()
+      const params = {
+        ids: String(
+          this.multipleSelection.map((item: any) => parseInt(item.id))
+        ),
+      }
+      const { status, msg } = await this.services.setting.deleteAgents(params)
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message.error(msg)
+        return
+      }
+      this.$message.success(msg)
+      await this.getTableData()
     })
+  }
+
+  private async agentStart(id: any) {
+    this.loadingStart()
+    let params = {}
+    if (id) {
+      params = { id: parseInt(id) }
+    } else {
+      params = {
+        ids: String(
+          this.multipleSelection.map((item: any) => parseInt(item.id))
+        ),
+      }
+    }
+    const { status, msg } = await this.services.setting.agentStart(params)
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)
@@ -291,11 +368,19 @@ export default class AgentManage extends VueBase {
     await this.getTableData()
   }
 
-  private async agentStop(id: string | number) {
+  private async agentStop(id: any) {
     this.loadingStart()
-    const { status, msg } = await this.services.setting.agentStop({
-      id: parseInt(`${id}`),
-    })
+    let params: any
+    if (id) {
+      params = { id: parseInt(id) }
+    } else {
+      params = {
+        ids: String(
+          this.multipleSelection.map((item: any) => parseInt(item.id))
+        ),
+      }
+    }
+    const { status, msg } = await this.services.setting.agentStop(params)
     this.loadingDone()
     if (status !== 201) {
       this.$message.error(msg)

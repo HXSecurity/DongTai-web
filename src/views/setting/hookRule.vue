@@ -2,20 +2,23 @@
   <div class="hook-rule">
     <div class="top-info">
       <div class="column">
-        <span class="top-title">规则总数</span>
-        <span class="bottom-info">{{ base.ruleCount }}条</span>
+        <span class="top-title">规则总数:</span>
+        <span class="bottom-info">{{ base.ruleCount }}</span
+        >条
       </div>
       <div class="column">
-        <span class="top-title">规则类型</span>
-        <span class="bottom-info">{{ base.typeCount }}种</span>
+        <span class="top-title">规则类型:</span>
+        <span class="bottom-info">{{ base.typeCount }}</span
+        >种
       </div>
       <div class="column">
-        <span class="top-title">sink规则数量</span>
-        <span class="bottom-info">{{ base.sinkCount }}条</span>
+        <span class="top-title">sink规则数量:</span>
+        <span class="bottom-info">{{ base.sinkCount }}</span
+        >条
       </div>
     </div>
     <div class="info-body">
-      <el-tabs v-model="type" class="info-tabs" type="card">
+      <el-tabs v-model="type" class="info-tabs">
         <el-tab-pane label="污点源方法规则" name="2" class="info-tab">
           <HookTable v-if="type === '2'" :rule-type="type"
         /></el-tab-pane>
@@ -114,25 +117,21 @@ export default class ChangePassword extends VueBase {
   padding: 20px;
   .top-info {
     display: flex;
-    justify-content: space-around;
-    padding: 20px 20px;
+    padding: 20px 20px 4px 20px;
     .column {
       display: flex;
-      flex: 1;
-      flex-direction: column;
-      justify-content: center;
       align-items: center;
       + .column {
-        border-left: 1px solid #ccc;
+        margin-left: 60px;
       }
       .top-title {
-        font-size: 16px;
-        line-height: 24px;
-        color: #333;
+        font-size: 14px;
+        color: #959fb4;
       }
       .bottom-info {
         font-size: 14px;
-        line-height: 24px;
+        margin:0 6px;
+        color: #38435a;
       }
     }
   }

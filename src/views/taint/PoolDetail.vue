@@ -18,7 +18,6 @@
       </el-tab-pane>
       <el-tab-pane label="组件信息" name="dependency">
         <el-table
-          v-if="false"
           class="sca-list"
           :data="dependencies"
           style="width: 100%; margin-top: 18px; cursor: pointer"

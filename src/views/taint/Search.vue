@@ -86,13 +86,10 @@ export default class Index extends VueBase {
     this.page = 1
     this.tableList = []
     this.afterkeys = ''
-    if(!type){
-      this.$message.warning("请选择搜索类型")
+    if (!value) {
+      this.$message.warning('请输入搜索内容')
     }
-    if(!value){
-      this.$message.warning("请输入搜索内容")
-    }
-    if (type && value) {
+    if (value) {
       this.changeActive()
       this.getList()
     }
