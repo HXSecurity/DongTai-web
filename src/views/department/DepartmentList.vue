@@ -139,8 +139,7 @@
                 v-if="$store.getters.userInfo.role === 1"
                 class="iconfont iconzhongzhimima pIcon"
                 @click="resetPwd(row)"
-              ></i
-              >
+              ></i>
               <i class="iconfont iconshezhi-2 pIcon" @click="userEdit(row)"></i>
               <i
                 class="iconfont iconshanchu-6 pIcon"
@@ -446,11 +445,13 @@ export default class DepartmentList extends VueBase {
         this.$message({
           type: 'success',
           message: msg,
+          showClose: true,
         })
       } else {
         this.$message({
           type: 'error',
           message: msg,
+          showClose: true,
         })
       }
     })
@@ -484,7 +485,11 @@ export default class DepartmentList extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data
@@ -500,7 +505,11 @@ export default class DepartmentList extends VueBase {
     } = await this.services.department.departmentList()
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.data = data
@@ -527,14 +536,22 @@ export default class DepartmentList extends VueBase {
           const { status, msg } = await this.services.user.userAdd(params)
           this.loadingDone()
           if (status !== 201) {
-            this.$message.error(msg)
+            this.$message({
+              type: 'error',
+              message: msg,
+              showClose: true,
+            })
             return
           }
         } else {
           const { status, msg } = await this.services.user.userEdit(params)
           this.loadingDone()
           if (status !== 201) {
-            this.$message.error(msg)
+            this.$message({
+              type: 'error',
+              message: msg,
+              showClose: true,
+            })
             return
           }
         }
@@ -555,7 +572,11 @@ export default class DepartmentList extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()
@@ -595,9 +616,17 @@ export default class DepartmentList extends VueBase {
       const children = parent.data.children || parent.data
       const index = children.findIndex((d: any) => d.id === data.id)
       children.splice(index, 1)
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
     } else {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
     }
   }
 
@@ -647,14 +676,22 @@ export default class DepartmentList extends VueBase {
         } = await this.services.department.departmentAdd(params)
         if (status !== 201) {
           this.$set(data, 'isEdit', 0)
-          this.$message.error(msg)
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
           return
         } else {
           this.$set(nodeData, 'id', data)
           this.$set(nodeData, 'label', this.currentDepartmentName)
           this.currentDepartmentName = ''
           this.$set(nodeData, 'isEdit', 0)
-          this.$message.success(msg)
+          this.$message({
+            type: 'success',
+            message: msg,
+            showClose: true,
+          })
         }
         this.newDepartment = false
       } else {
@@ -664,13 +701,21 @@ export default class DepartmentList extends VueBase {
         )
         if (status !== 201) {
           this.$set(nodeData, 'isEdit', 0)
-          this.$message.error(msg)
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
           return
         } else {
           this.$set(nodeData, 'label', this.currentDepartmentName)
           this.currentDepartmentName = ''
           this.$set(nodeData, 'isEdit', 0)
-          this.$message.success(msg)
+          this.$message({
+            type: 'success',
+            message: msg,
+            showClose: true,
+          })
         }
       }
     }

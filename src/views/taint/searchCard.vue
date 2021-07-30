@@ -185,6 +185,7 @@ export default class SearchCard extends VueBase {
 
   private onCopy() {
     this.$message({
+      showClose: true,
       message: '已复制',
       type: 'success',
     })
@@ -192,6 +193,7 @@ export default class SearchCard extends VueBase {
 
   private onError() {
     this.$message({
+      showClose: true,
       message: '复制失败！',
       type: 'error',
     })
@@ -248,7 +250,11 @@ export default class SearchCard extends VueBase {
     })
     this.loadingDone()
     if (res.status !== 201) {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
       return
     }
     const timer = setInterval(async () => {

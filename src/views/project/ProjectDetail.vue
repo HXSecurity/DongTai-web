@@ -281,9 +281,17 @@ export default class ProjectDetail extends VueBase {
       project_id: this.projectObj.id,
     })
     if (res.status !== 201) {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
       await this.projectsSummary()
@@ -302,7 +310,11 @@ export default class ProjectDetail extends VueBase {
 
   private editVersion(item: any) {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
+      this.$message({
+        type: 'error',
+        message: this.$t('views.projectDetail.hasEdit') as string,
+        showClose: true,
+      })
       return
     }
     this.$set(item, 'isEdit', true)
@@ -314,7 +326,11 @@ export default class ProjectDetail extends VueBase {
         (i, k) => i.version_name === item.version_name && k !== index
       )
     ) {
-      this.$message.warning(this.$t('views.projectDetail.hasSame') as string)
+      this.$message({
+        type: 'warning',
+        message: this.$t('views.projectDetail.hasSame') as string,
+        showClose: true,
+      })
       return
     }
     if (!item.version_id) {
@@ -323,10 +339,18 @@ export default class ProjectDetail extends VueBase {
         project_id: this.projectObj.id,
       })
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       item.version_id = res.data.version_id
       this.versionTemp = {}
       this.$set(item, 'isEdit', false)
@@ -337,10 +361,18 @@ export default class ProjectDetail extends VueBase {
       })
       console.log(res)
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       this.versionTemp = {}
       this.$set(item, 'isEdit', false)
     }
@@ -376,11 +408,13 @@ export default class ProjectDetail extends VueBase {
         this.$message({
           type: 'error',
           message: res.msg,
+          showClose: true,
         })
       } else {
         this.$message({
-          type: 'success',
+          type: 'error',
           message: res.msg,
+          showClose: true,
         })
         this.versionList.splice(index, 1)
       }
@@ -389,7 +423,11 @@ export default class ProjectDetail extends VueBase {
 
   private addVersion() {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
+      this.$message({
+        showClose: true,
+        message: this.$t('views.projectDetail.hasEdit') as string,
+        type: 'error',
+      })
       return
     }
     this.versionList.push({
@@ -424,7 +462,11 @@ export default class ProjectDetail extends VueBase {
       id
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
 
@@ -575,7 +617,11 @@ export default class ProjectDetail extends VueBase {
       if (res.status === 201) {
         this.versionList = res.data
       } else {
-        this.$message.error('msg')
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
       }
     })
   }
@@ -608,9 +654,17 @@ export default class ProjectDetail extends VueBase {
       this.$route.params.pid
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
     }
   }
 }

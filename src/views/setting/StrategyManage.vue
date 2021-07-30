@@ -118,7 +118,11 @@ export default class StrategyManage extends VueBase {
   private backItem = {}
   private editStart(item: any) {
     if (this.tableData.some((i: any) => i.isEdit)) {
-      this.$message.warning('当前有策略正在编辑')
+      this.$message({
+        type: 'warning',
+        message: '当前有策略正在编辑',
+        showClose: true,
+      })
       return
     }
     this.backItem = JSON.parse(JSON.stringify(item))
@@ -127,7 +131,11 @@ export default class StrategyManage extends VueBase {
 
   private async deleteManage(item: any) {
     if (this.tableData.some((i: any) => i.isEdit)) {
-      this.$message.warning('当前有策略正在编辑')
+      this.$message({
+        type: 'warning',
+        message: '当前有策略正在编辑',
+        showClose: true,
+      })
       return
     }
     this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
@@ -137,9 +145,13 @@ export default class StrategyManage extends VueBase {
     }).then(async () => {
       const { status, msg } = await this.services.setting.deleteManage(item.id)
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
       } else {
-        this.$message.success('删除成功')
+        this.$message({ type: 'success', message: '删除成功', showClose: true })
         await this.getTableData()
       }
     })
@@ -152,9 +164,13 @@ export default class StrategyManage extends VueBase {
         { name: item.vul_name, vul_desc: item.vul_desc, vul_fix: item.vul_fix }
       )
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
       } else {
-        this.$message.success('修改成功')
+        this.$message({ type: 'success', message: '修改成功', showClose: true })
       }
     } else {
       for (const key in item) {
@@ -170,7 +186,11 @@ export default class StrategyManage extends VueBase {
     const { status, msg, data } = await this.services.setting.strategyList()
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data
@@ -183,7 +203,11 @@ export default class StrategyManage extends VueBase {
         const { status, msg } = await this.services.setting.strategyDisable(id)
         this.loadingDone()
         if (status !== 201) {
-          this.$message.error(msg)
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
           return
         }
         await this.getTableData()
@@ -193,13 +217,21 @@ export default class StrategyManage extends VueBase {
         const { status, msg } = await this.services.setting.strategyEnable(id)
         this.loadingDone()
         if (status !== 201) {
-          this.$message.error(msg)
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
           return
         }
         await this.getTableData()
       }
     } else {
-      this.$message.error('当前用户无修改权限')
+      this.$message({
+        showClose: true,
+        message: '当前用户无修改权限',
+        type: 'error',
+      })
       return
     }
   }

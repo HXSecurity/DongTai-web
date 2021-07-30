@@ -21,7 +21,11 @@ export default class StrategyManage extends VueBase {
   public async getOpenapi() {
     const res = await this.services.setting.openapi()
     if (res.status !== 201) {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
     } else {
       this.openapi = res.data.url
     }
@@ -29,12 +33,16 @@ export default class StrategyManage extends VueBase {
   public async setOpenapi() {
     const res = await this.services.setting.setOpenapi({ value: this.openapi })
     if (res.status !== 201) {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
     } else {
       if (this.$route.query.needBack) {
         this.$router.push('/deploy')
       } else {
-        this.$message.success('保存成功')
+        this.$message({ type: 'success', message: '保存成功', showClose: true })
       }
     }
   }

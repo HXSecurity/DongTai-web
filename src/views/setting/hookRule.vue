@@ -60,7 +60,11 @@ export default class ChangePassword extends VueBase {
     const { status, msg, data } = await this.services.setting.hookRuleSummary()
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.base = data
@@ -130,7 +134,7 @@ export default class ChangePassword extends VueBase {
       }
       .bottom-info {
         font-size: 14px;
-        margin:0 6px;
+        margin: 0 6px;
         color: #38435a;
       }
     }

@@ -441,7 +441,11 @@ export default class ScaList extends VueBase {
     const { status, data, msg } = await this.services.sca.scaList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     const tableData = data.reduce(
@@ -474,7 +478,11 @@ export default class ScaList extends VueBase {
     const { status, data, msg } = await this.services.sca.scaSummary(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.searchOptionsObj.language = data.language

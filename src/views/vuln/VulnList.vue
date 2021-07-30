@@ -494,7 +494,11 @@ export default class VulnList extends VueBase {
         res = await this.services.vuln.vulRecheckAll({ type })
       } else {
         if (this.tableData.length === 0) {
-          this.$message.warning('请选择需要验证的漏洞')
+          this.$message({
+            type: 'warning',
+            message: '请选择需要验证的漏洞',
+            showClose: true,
+          })
           return
         }
         const ids = this.tableData
@@ -510,9 +514,13 @@ export default class VulnList extends VueBase {
       }
 
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
       } else {
-        this.$message.success(res.msg)
+        this.$message({ type: 'success', message: res.msg, showClose: true })
         await this.newSelectData()
       }
     })
@@ -619,7 +627,11 @@ export default class VulnList extends VueBase {
     const { status, data, msg } = await this.services.vuln.vulnList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     const tableData = data.reduce(
@@ -656,7 +668,11 @@ export default class VulnList extends VueBase {
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.searchOptionsObj.language = data.language

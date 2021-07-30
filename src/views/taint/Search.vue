@@ -95,11 +95,12 @@ export default class Index extends VueBase {
     }
   }
   private async getList() {
+    this.dataEnd = true
     const res: any = await this.services.taint.search({
       [this.type]: this.value,
       page_index: this.page,
       page_size: 10,
-      after_key_create_time: this.afterkeys,
+      search_after_update_time: this.afterkeys || undefined,
     })
     const tableList = res.data.method_pools.map((item: any, index: number) => {
       const vulnerablities_count_map = {}
@@ -119,7 +120,7 @@ export default class Index extends VueBase {
     })
     this.afterkeys = res.data.afterkeys.update_time
     this.tableList = this.tableList.concat(tableList)
-    console.log(tableList)
+    this.dataEnd = false
     if (tableList.length < 10) {
       this.dataEnd = true
     }
@@ -160,6 +161,8 @@ export default class Index extends VueBase {
 main.container {
   background: #ffffff;
   min-height: calc(100vh - 64px);
+  padding-bottom: 20px;
+  box-sizing: border-box;
   position: relative;
   .search-box {
     z-index: 90;

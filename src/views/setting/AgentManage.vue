@@ -271,7 +271,11 @@ export default class AgentManage extends VueBase {
     const { status, msg, data } = await this.services.setting.agentList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     const dataMap = {}
@@ -300,7 +304,11 @@ export default class AgentManage extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data
@@ -317,7 +325,11 @@ export default class AgentManage extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()
@@ -338,10 +350,18 @@ export default class AgentManage extends VueBase {
       const { status, msg } = await this.services.setting.deleteAgents(params)
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
       await this.getTableData()
     })
   }
@@ -361,10 +381,18 @@ export default class AgentManage extends VueBase {
     const { status, msg } = await this.services.setting.agentStart(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
-    this.$message.success(msg)
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
     await this.getTableData()
   }
 
@@ -383,10 +411,18 @@ export default class AgentManage extends VueBase {
     const { status, msg } = await this.services.setting.agentStop(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
-    this.$message.success(msg)
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
     await this.getTableData()
   }
 
@@ -397,7 +433,11 @@ export default class AgentManage extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()
@@ -416,7 +456,11 @@ export default class AgentManage extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.currentPageDelete = this.currentPageDelete + 1

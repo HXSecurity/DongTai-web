@@ -97,8 +97,8 @@
           ></el-input>
         </el-form-item>
         <el-form-item
-          :label="$t('views.talent.add.email')"
           v-if="this.isEdit === false"
+          :label="$t('views.talent.add.email')"
         >
           <el-input
             v-model="talentForm.email"
@@ -217,7 +217,7 @@ export default class TalentList extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({ type: 'error', message: msg, showClose: true })
       return
     }
     this.tableData = data
@@ -235,7 +235,11 @@ export default class TalentList extends VueBase {
       const { status, msg } = await this.services.talent.talentEdit(params)
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
     } else {
@@ -247,7 +251,11 @@ export default class TalentList extends VueBase {
       const { status, msg } = await this.services.talent.talentAdd(params)
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
     }
@@ -261,7 +269,11 @@ export default class TalentList extends VueBase {
     const { status, msg } = await this.services.talent.talentDelete(id)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()

@@ -117,16 +117,28 @@ export default class Header extends VueBase {
   async buildIAST() {
     const res = await this.services.setting.openapi()
     if (res.status !== 201) {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
     } else {
       if (res.data.url) {
         this.$router.push('/deploy')
       } else {
         if (this.userInfo.role === 1) {
-          this.$message.warning('请先配置openapi')
+          this.$message({
+            type: 'warning',
+            message: '请先配置openapi',
+            showClose: true,
+          })
           this.$router.push('/setting/serverRegister?needBack=1')
         } else {
-          this.$message.warning('请联系管理员配置openapi')
+          this.$message({
+            type: 'warning',
+            message: '请联系管理员配置openapi',
+            showClose: true,
+          })
         }
       }
     }

@@ -341,7 +341,11 @@ export default class UserList extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data
@@ -353,7 +357,11 @@ export default class UserList extends VueBase {
     const { status, msg, data } = await this.services.user.departmentList()
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.departments = data
@@ -378,7 +386,11 @@ export default class UserList extends VueBase {
         const { status, msg } = await this.services.user.userAdd(params)
         this.loadingDone()
         if (status !== 201) {
-          this.$message.error(msg)
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
           return
         }
         this.addDialogOpen = false
@@ -397,7 +409,11 @@ export default class UserList extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()

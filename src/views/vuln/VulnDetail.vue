@@ -575,7 +575,11 @@ export default class VulnDetail extends VueBase {
       })
       window.open(href, '_blank')
     } else {
-      this.$message.error('历史数据不支持重放')
+      this.$message({
+        showClose: true,
+        message: '历史数据不支持重放',
+        type: 'error',
+      })
     }
   }
 
@@ -595,9 +599,17 @@ export default class VulnDetail extends VueBase {
       status: val,
     })
     if (res.status === 201) {
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
     } else {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
     }
   }
   private req_md = ''
@@ -620,7 +632,11 @@ export default class VulnDetail extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data.reduce(
@@ -658,7 +674,11 @@ export default class VulnDetail extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.$nextTick(() => {
@@ -757,9 +777,17 @@ export default class VulnDetail extends VueBase {
     const { status, msg } = await this.services.vuln.vulnDelete(this.selectedId)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
       this.$router.push('/vuln/vulnList')
     }
   }
@@ -811,9 +839,17 @@ export default class VulnDetail extends VueBase {
     }
     const { status, data, msg } = await this.services.vuln.vulRecheck(params)
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
     }
   }
 }

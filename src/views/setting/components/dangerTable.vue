@@ -380,7 +380,11 @@ export default class HookTable extends VueBase {
       type: 'warning',
     }).then(async () => {
       if (this.multipleSelection.length === 0) {
-        this.$message.warning('请先选择需要操作的数据')
+        this.$message({
+          type: 'warning',
+          message: '请先选择需要操作的数据',
+          showClose: true,
+        })
         return
       }
       const ids = this.multipleSelection.map((item: any) => item.id)
@@ -389,10 +393,18 @@ export default class HookTable extends VueBase {
         op,
       })
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
       await this.getTable()
     })
   }
@@ -479,7 +491,11 @@ export default class HookTable extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.types = data
@@ -506,7 +522,11 @@ export default class HookTable extends VueBase {
     this.loadingDone()
     row.visible = false
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTable()
@@ -520,7 +540,11 @@ export default class HookTable extends VueBase {
     })
     this.loadingDone()
     if (obj.status !== 201) {
-      this.$message.error(obj.msg)
+      this.$message({
+        showClose: true,
+        message: obj.msg,
+        type: 'error',
+      })
       return
     }
     await this.getTable()
@@ -542,7 +566,11 @@ export default class HookTable extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTypes()
@@ -604,7 +632,11 @@ export default class HookTable extends VueBase {
 
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
       await this.getTable()
@@ -623,7 +655,11 @@ export default class HookTable extends VueBase {
 
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
       await this.getTable()
@@ -649,7 +685,11 @@ export default class HookTable extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.total = page.alltotal
