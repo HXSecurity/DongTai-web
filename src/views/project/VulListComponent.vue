@@ -511,7 +511,7 @@ export default class VulListComponent extends VueBase {
     }
   }
 
-  public async getTableData() {
+  public async getTableData(flag?: undefined | boolean) {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -552,7 +552,11 @@ export default class VulListComponent extends VueBase {
     if (tableData.length < 20) {
       this.dataEnd = true
     }
-    this.tableData = [...this.tableData, ...tableData]
+    if (flag === true) {
+      this.tableData = tableData
+    } else {
+      this.tableData = [...this.tableData, ...tableData]
+    }
   }
 
   public async vulnSummary() {

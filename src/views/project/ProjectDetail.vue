@@ -437,17 +437,19 @@ export default class ProjectDetail extends VueBase {
     })
   }
   private changeVersion(value: any) {
-    if (this.selectTab === 'desc') {
-      this.projectsSummary(value)
-    } else if (this.selectTab === 'vul') {
-      const v: any = this.$refs.vulListComponent
-      v.getTableData()
-      v.vulnSummary()
-    } else if (this.selectTab === 'component') {
-      const c: any = this.$refs.componentList
-      c.getTableData()
-      c.scaSummary()
-    }
+    this.$nextTick(() => {
+      if (this.selectTab === 'desc') {
+        this.projectsSummary(value)
+      } else if (this.selectTab === 'vul') {
+        const v: any = this.$refs.vulListComponent
+        v.getTableData(true)
+        v.vulnSummary()
+      } else if (this.selectTab === 'component') {
+        const c: any = this.$refs.componentList
+        c.getTableData(true)
+        c.scaSummary()
+      }
+    })
   }
   async mounted() {
     if (this.$route.query.activeName) {

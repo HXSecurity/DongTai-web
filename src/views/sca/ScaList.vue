@@ -425,7 +425,7 @@ export default class ScaList extends VueBase {
     }
   }
 
-  public async getTableData() {
+  public async getTableData(flag?: undefined | boolean) {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -461,7 +461,11 @@ export default class ScaList extends VueBase {
     if (tableData.length < 20) {
       this.dataEnd = true
     }
-    this.tableData.push(...tableData)
+    if (flag === true) {
+      this.tableData = tableData
+    } else {
+      this.tableData.push(...tableData)
+    }
   }
 
   public async scaSummary() {

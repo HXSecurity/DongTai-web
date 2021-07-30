@@ -64,19 +64,23 @@
         <div
           class="info"
           :class="info.relations.vulnerablities[0] && 'pointer'"
-          @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
         >
           <div class="dot red"></div>
-          {{
-            info.relations.vulnerablities[0]
-              ? info.relations.vulnerablities[0].vulnerablity_type
-              : '无'
-          }}
-
+          <span
+            @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
+          >
+            {{
+              info.relations.vulnerablities[0]
+                ? info.relations.vulnerablities[0].vulnerablity_type
+                : '无'
+            }}
+          </span>
           <el-popover
             v-if="info.vulnerablities_count.count > 1"
             placement="bottom"
-            trigger="hover"
+            trigger="click"
+            :visible-arrow="false"
+            :offset="-40"
           >
             <div
               v-for="item in info.relations.vulnerablities.slice(
@@ -87,6 +91,7 @@
               class="vulnerablitie-item"
               @click="toVuln(item.vulnerablity_id)"
             >
+              <div class="dot red"></div>
               {{ item.vulnerablity_type }}
             </div>
             <span slot="reference" class="blue" style="margin-left: 6px"
@@ -375,6 +380,9 @@ export default class SearchCard extends VueBase {
   color: #1a80f2 !important;
 }
 .vulnerablitie-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:hover {
     color: #1a80f2;
   }
@@ -382,6 +390,18 @@ export default class SearchCard extends VueBase {
   width: 90px;
   text-align: center;
   padding: 6px 6px;
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  .red {
+    background: #f56262;
+  }
+  .green {
+    background: #37d7bb;
+  }
 }
 /deep/tt {
   color: red !important;
