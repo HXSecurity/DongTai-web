@@ -83,4 +83,9 @@ export default () =>
     userToken(): Promise<iResponse> {
       return request.get('/user/token')
     }
+
+    // 用户列表
+    reset(params: { userId: number }): Promise<iResponse> {
+      return request.post('/user/password/reset', params)
+    }
   })()

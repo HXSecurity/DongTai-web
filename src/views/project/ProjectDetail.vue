@@ -19,20 +19,28 @@
 
             <i class="iconfont iconicon_details_banben"></i>
             {{ $t('views.projectDetail.version') }}
-            <i style="margin-right: 6px">{{
-              projectObj.versionData && projectObj.versionData.version_name
-            }}</i>
+            <el-select
+              v-model="projectObj.versionData.version_id"
+              size="mini"
+              style="width: 80px"
+              @change="changeVersion"
+            >
+              <el-option
+                v-for="item in versionList"
+                :key="item.version_id"
+                :value="item.version_id"
+                :label="item.version_name"
+              >
+                {{ item.version_name }}
+              </el-option>
+            </el-select>
             <i
               class="iconfont iconicon_details_edit"
-              style="cursor: pointer; color: #4fb794"
+              style="margin-left: 12px; cursor: pointer; color: #4fb794"
               @click="showVersion"
             ></i>
           </div>
           <div class="operate">
-            <el-button type="text" class="operateBtn" @click="projectRecheck">
-              <i class="iconfont iconjiance-copy"></i>
-              {{ $t('views.projectDetail.recheck') }}
-            </el-button>
             <el-button type="text" class="operateBtn" @click="projectExport">
               <i class="iconfont icondaochu-5"></i>
               {{ $t('views.projectDetail.export') }}
@@ -53,7 +61,7 @@
           type="text"
           class="pTab"
           :class="selectTab === 'desc' ? 'selected' : ''"
-          @click="selectTab = 'desc'"
+          @click="changeActive('desc')"
         >
           <i class="iconfont iconshuju1"></i>
           {{ $t('views.projectDetail.projectDesc') }}
@@ -62,7 +70,7 @@
           type="text"
           class="pTab"
           :class="selectTab === 'vul' ? 'selected' : ''"
-          @click="selectTab = 'vul'"
+          @click="changeActive('vul')"
         >
           <i class="iconfont iconloudong"></i>
           {{ $t('views.projectDetail.projectVul') }}
@@ -71,9 +79,9 @@
           type="text"
           class="pTab"
           :class="selectTab === 'component' ? 'selected' : ''"
-          @click="selectTab = 'component'"
+          @click="changeActive('component')"
         >
-          <i class="el-icon-menu"></i>
+          <i class="el-icon-menu" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
       </div>
@@ -97,18 +105,24 @@
         </div>
         <div class="module">
           <div class="module-title">
-            {{ $t('views.projectDetail.vulNum') }}
+            {{ $t('views.projectDetail.trend') }}
           </div>
           <div id="day_num" class="module-card"></div>
         </div>
       </div>
       <div v-if="selectTab === 'vul'">
         <vul-list-component
+          ref="vulListComponent"
           :project-id="$route.params.pid"
+          :version="projectObj.versionData.version_id"
         ></vul-list-component>
       </div>
       <div v-if="selectTab === 'component'">
-        <ScaList :project-id="$route.params.pid"></ScaList>
+        <ScaList
+          ref="componentList"
+          :project-id="$route.params.pid"
+          :version="projectObj.versionData.version_id"
+        ></ScaList>
       </div>
     </div>
 
@@ -236,6 +250,7 @@ import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
 import ScaList from '../sca/ScaList.vue'
 import { Message } from 'element-ui'
+import merge from 'webpack-merge'
 
 @Component({
   name: 'ProjectDetail',
@@ -245,7 +260,7 @@ import { Message } from 'element-ui'
   },
 })
 export default class ProjectDetail extends VueBase {
-  private selectTab = SelectTabs.desc
+  private selectTab = 'desc'
   private projectObj: ProjectObj = {
     id: 0,
     mode: '',
@@ -266,18 +281,40 @@ export default class ProjectDetail extends VueBase {
       project_id: this.projectObj.id,
     })
     if (res.status !== 201) {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
-      this.projectsSummary()
+      await this.projectsSummary()
+    }
+  }
+
+  private async changeActive(e: any) {
+    this.selectTab = e
+    this.$router.replace({
+      query: merge(this.$route.query, { activeName: e }) as any,
+    })
+    if (e === 'desc') {
+      await this.projectsSummary(this.projectObj.versionData.version_id)
     }
   }
 
   private editVersion(item: any) {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
+      this.$message({
+        type: 'error',
+        message: this.$t('views.projectDetail.hasEdit') as string,
+        showClose: true,
+      })
       return
     }
     this.$set(item, 'isEdit', true)
@@ -289,7 +326,11 @@ export default class ProjectDetail extends VueBase {
         (i, k) => i.version_name === item.version_name && k !== index
       )
     ) {
-      this.$message.warning(this.$t('views.projectDetail.hasSame') as string)
+      this.$message({
+        type: 'warning',
+        message: this.$t('views.projectDetail.hasSame') as string,
+        showClose: true,
+      })
       return
     }
     if (!item.version_id) {
@@ -298,10 +339,18 @@ export default class ProjectDetail extends VueBase {
         project_id: this.projectObj.id,
       })
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       item.version_id = res.data.version_id
       this.versionTemp = {}
       this.$set(item, 'isEdit', false)
@@ -312,10 +361,18 @@ export default class ProjectDetail extends VueBase {
       })
       console.log(res)
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       this.versionTemp = {}
       this.$set(item, 'isEdit', false)
     }
@@ -351,11 +408,13 @@ export default class ProjectDetail extends VueBase {
         this.$message({
           type: 'error',
           message: res.msg,
+          showClose: true,
         })
       } else {
         this.$message({
-          type: 'success',
+          type: 'error',
           message: res.msg,
+          showClose: true,
         })
         this.versionList.splice(index, 1)
       }
@@ -364,7 +423,11 @@ export default class ProjectDetail extends VueBase {
 
   private addVersion() {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
+      this.$message({
+        showClose: true,
+        message: this.$t('views.projectDetail.hasEdit') as string,
+        type: 'error',
+      })
       return
     }
     this.versionList.push({
@@ -373,16 +436,39 @@ export default class ProjectDetail extends VueBase {
       isEdit: true,
     })
   }
-
-  mounted() {
-    this.projectsSummary()
+  private changeVersion(value: any) {
+    this.$nextTick(() => {
+      if (this.selectTab === 'desc') {
+        this.projectsSummary(value)
+      } else if (this.selectTab === 'vul') {
+        const v: any = this.$refs.vulListComponent
+        v.getTableData(true)
+        v.vulnSummary()
+      } else if (this.selectTab === 'component') {
+        const c: any = this.$refs.componentList
+        c.getTableData(true)
+        c.scaSummary()
+      }
+    })
   }
-  private async projectsSummary() {
+  async mounted() {
+    if (this.$route.query.activeName) {
+      this.selectTab = this.$route.query.activeName as string
+    }
+    await this.projectsSummary()
+    await this.getVersionList()
+  }
+  private async projectsSummary(id?: string) {
     const { status, msg, data } = await this.services.project.projectsSummary(
-      this.$route.params.pid
+      this.$route.params.pid,
+      id
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
 
@@ -401,6 +487,10 @@ export default class ProjectDetail extends VueBase {
       ...data,
       name: data.name,
       latest_time: formatTimestamp(data.latest_time),
+    }
+
+    if (this.selectTab !== 'desc') {
+      return
     }
 
     const levelCountChart = echarts.init(
@@ -522,12 +612,18 @@ export default class ProjectDetail extends VueBase {
     dayNumChart.setOption(dayNumOption)
   }
   showVersion() {
+    this.versionFlag = true
+  }
+  getVersionList() {
     this.services.project.versionList(this.projectObj.id).then((res: any) => {
       if (res.status === 201) {
         this.versionList = res.data
-        this.versionFlag = true
       } else {
-        this.$message.error('msg')
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
       }
     })
   }
@@ -560,9 +656,17 @@ export default class ProjectDetail extends VueBase {
       this.$route.params.pid
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
     }
   }
 }

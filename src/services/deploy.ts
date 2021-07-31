@@ -16,19 +16,11 @@ export default () =>
     }
 
     // 下载引擎
-    agentDownload(url: string, jdkVersion: string, projectName: string) {
+    agentDownload(url: string, language: string) {
       request
-        .get(
-          'agent/download?url=' +
-            url +
-            '&jdk.version=' +
-            jdkVersion +
-            '&projectName=' +
-            projectName,
-          {
-            responseType: 'blob', // 告诉服务器我们需要的响应格式
-          }
-        )
+        .get('agent/download?url=' + url + '&language=' + language, {
+          responseType: 'blob', // 告诉服务器我们需要的响应格式
+        })
         .then((res: any) => {
           const blob = new Blob([res], {
             type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
@@ -36,7 +28,11 @@ export default () =>
           // const objectUrl = URL.createObjectURL(blob); // 生成一个url
           const link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
-          link.download = 'agent.jar'
+          if (language === 'java') {
+            link.download = 'agent.jar'
+          } else {
+            link.download = 'dongtai-agent-python.tar.gz'
+          }
           link.click()
         })
     }
@@ -53,5 +49,17 @@ export default () =>
     // 获取OPENAPI的地址
     getOpenApiUrl(): Promise<iResponse> {
       return request.get('/openapi')
+    }
+    // 获取Token
+    getToken(): Promise<iResponse> {
+      return request.get('/user/token')
+    }
+    // 获取Documents
+    getDocuments(params: any): Promise<iResponse> {
+      return request.get('/documents', { params })
+    }
+    // 获取MD
+    getMD(params: any): Promise<iResponse> {
+      return request.get('/agent/deploy', { params })
     }
   })()

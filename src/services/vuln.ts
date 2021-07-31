@@ -42,4 +42,8 @@ export default () =>
     vulRecheck(data: any): Promise<iResponse> {
       return request.post(`/vul/recheck`, data)
     }
+
+    vulRecheckAll(data: any): Promise<iResponse> {
+      return request.get(`/vul/recheck`, { params: data })
+    }
   })()

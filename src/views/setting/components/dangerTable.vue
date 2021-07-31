@@ -1,22 +1,90 @@
 <template>
   <div class="table-body">
-    <div class="flex-right">
-      <el-button size="small" class="resetAllBtn" @click="hookTypeDialog = true"
-        >添加规则类型</el-button
-      >
-      <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
-        >添加规则</el-button
-      >
+    <div class="flex-between">
+      <div style="flex: 1">
+        <el-select
+          v-model="rule_type"
+          class="search-input"
+          size="small"
+          placeholder="请选择规则类型"
+          filterable
+          clearable
+          @change="getTable"
+        >
+          <el-option
+            v-for="item in types"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+      </div>
+      <div>
+        <el-button
+          size="small"
+          class="resetAllBtn"
+          @click="hookTypeDialog = true"
+          ><i class="el-icon-plus"></i> 添加规则类型</el-button
+        >
+        <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
+          ><i class="el-icon-plus"></i>添加规则</el-button
+        >
+      </div>
     </div>
-    <el-table :data="tableData" style="width: 100%">
+    <div class="btn-list-batch">
+      <span style="color: #38435a">
+        已选中
+        <span style="color: #4a72ae">{{ multipleSelection.length }} </span>条
+      </span>
+      <div>
+        <el-button
+          size="small"
+          class="resetAllBtn open"
+          @click="changeStatusBatch('enable')"
+          >启用</el-button
+        >
+        <el-button
+          size="small"
+          class="resetAllBtn stop"
+          @click="changeStatusBatch('disable')"
+          >禁用</el-button
+        >
+        <el-button
+          size="small"
+          class="resetAllBtn delete"
+          @click="changeStatusBatch('delete')"
+          >删除</el-button
+        >
+      </div>
+    </div>
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      :header-row-style="{
+        color: '#000',
+        fontWeight: 600,
+      }"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        type="selection"
+        width="55"
+        :fixed="tableData.length ? 'left' : false"
+      >
+      </el-table-column>
       <template slot="empty">
         <div class="empty-box">
           <span>暂无数据</span>
         </div>
       </template>
-      <el-table-column prop="rule_type" label="规则类型" width="180">
+      <el-table-column
+        prop="rule_type"
+        label="规则类型"
+        width="180"
+        :fixed="tableData.length ? 'left' : false"
+      >
       </el-table-column>
-      <el-table-column prop="value" label="规则详情" width="180">
+      <el-table-column prop="value" label="规则详情" width="340">
       </el-table-column>
       <el-table-column prop="source" label="污点输入" width="180">
       </el-table-column>
@@ -49,37 +117,48 @@
       >
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="操作"
-        width="360"
+        align="center"
+        header-align="center"
+        label="状态"
         :fixed="tableData.length ? 'right' : false"
       >
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="启用"
-            inactive-text="禁用"
+            active-color="#37D7BB"
+            inactive-color="#D9DDE1"
             :active-value="1"
             :inactive-value="0"
             @change="changeStatus(scope.row)"
           >
           </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="操作"
+        width="100"
+        align="center"
+        :fixed="tableData.length ? 'right' : false"
+      >
+        <template slot-scope="scope">
           <el-button
-            type="success"
+            type="text"
             size="small"
-            style="margin-left: 20px"
+            style="color: #4a72ae"
             @click="editRow(scope.row)"
           >
             编辑
           </el-button>
-          <el-popconfirm title="确定删除吗？" @confirm="deleteRule(scope.row)">
+          <el-popconfirm
+            title="确定删除吗？"
+            @confirm="changeStatus(scope.row, 'delete')"
+          >
             <el-button
               slot="reference"
               size="small"
-              style="margin-left: 10px"
-              type="danger"
+              style="margin-left: 6px; color: #f56262"
+              type="text"
               >删除</el-button
             >
           </el-popconfirm>
@@ -119,10 +198,8 @@
         <el-form-item label="是否启用">
           <el-switch
             v-model="hookType.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="启用"
-            inactive-text="禁用"
+            active-color="#37D7BB"
+            inactive-color="#D9DDE1"
             :active-value="1"
             :inactive-value="0"
           >
@@ -257,6 +334,7 @@ export default class HookTable extends VueBase {
   @Prop({ default: '0', type: String }) ruleType!: string
   hookTypeDialog = false
   hookDialog = false
+  rule_type = ''
   hookType = { type: '1', name: '', short_name: '', enable: 0 }
   types = []
   hook = {
@@ -281,6 +359,59 @@ export default class HookTable extends VueBase {
   pageSize = 20
   currentPage = 1
   total = 0
+
+  multipleSelection = []
+  handleSelectionChange(val: any) {
+    this.multipleSelection = val
+  }
+
+  async changeStatusBatch(op: string) {
+    let str = ''
+    switch (op) {
+      case 'delete':
+        str = '删除'
+        break
+      case 'enable':
+        str = '启用'
+        break
+      case 'disable':
+        str = '禁用'
+        break
+    }
+    this.$confirm(`此操作将批量${str}数据, 是否继续?`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      if (this.multipleSelection.length === 0) {
+        this.$message({
+          type: 'warning',
+          message: '请先选择需要操作的数据',
+          showClose: true,
+        })
+        return
+      }
+      const ids = this.multipleSelection.map((item: any) => item.id)
+      const { status, msg } = await this.services.setting.changeStatusBatch({
+        ids: String(ids),
+        op,
+      })
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
+      }
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
+      await this.getTable()
+    })
+  }
 
   splitAndIn(str: string, key: string) {
     const arr = str.split(key)
@@ -364,7 +495,11 @@ export default class HookTable extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.types = data
@@ -391,32 +526,29 @@ export default class HookTable extends VueBase {
     this.loadingDone()
     row.visible = false
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTable()
   }
 
-  async changeStatus(row: any) {
+  async changeStatus(row: any, status = '') {
     this.loadingStart()
-    let status, msg
-    if (row.enable === 0) {
-      const obj = await this.services.setting.ruleDisable({
-        rule_id: row.id,
-      })
-      status = obj.status
-      msg = obj.msg
-    } else {
-      const obj = await this.services.setting.ruleEnable({
-        rule_id: row.id,
-      })
-      status = obj.status
-      msg = obj.msg
-    }
+    const obj = await this.services.setting.changeStatus({
+      rule_id: row.id,
+      op: status || (row.enable === 0 ? 'disable' : 'enable'),
+    })
     this.loadingDone()
-
-    if (status !== 201) {
-      this.$message.error(msg)
+    if (obj.status !== 201) {
+      this.$message({
+        showClose: true,
+        message: obj.msg,
+        type: 'error',
+      })
       return
     }
     await this.getTable()
@@ -438,7 +570,11 @@ export default class HookTable extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTypes()
@@ -500,7 +636,11 @@ export default class HookTable extends VueBase {
 
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
       await this.getTable()
@@ -519,12 +659,20 @@ export default class HookTable extends VueBase {
 
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
       await this.getTable()
       this.clearHook()
     }
+  }
+  async changeRuleType() {
+    this.currentPage = 1
+    await this.getTable()
   }
   async getTable() {
     this.loadingStart()
@@ -537,10 +685,15 @@ export default class HookTable extends VueBase {
       page: this.currentPage,
       pageSize: this.pageSize,
       type: this.ruleType,
+      strategy_type: this.rule_type,
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.total = page.alltotal
@@ -567,17 +720,53 @@ export default class HookTable extends VueBase {
 <style scoped lang="scss">
 .table-body {
   padding: 20px;
-  .flex-right {
+  .flex-between {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    padding-bottom: 6px;
+    .search-input {
+      width: 140px;
+      margin-right: 10px;
+    }
+  }
+}
+.resetAllBtn {
+  border: 1px solid #4a72ae;
+  border-radius: 2px;
+  background: #fff;
+  color: #4a72ae;
+}
+.btn-list-batch {
+  padding: 16px 0;
+  display: flex;
+  justify-content: space-between;
+  .stop {
+    background: #e6e9ec;
+    border-radius: 2px;
+    color: #38435a;
+    border: 1px solid #e6e9ec;
+    padding-top: 6px;
     padding-bottom: 6px;
   }
-  .resetAllBtn {
-    height: 28px;
-    line-height: 0;
-    background: #4a72ae;
+  .open {
+    background: #37d7bb;
     border-radius: 2px;
-    color: #fff;
+    color: #ffffff;
+    border: 1px solid #37d7bb;
+    padding-top: 6px;
+    padding-bottom: 6px;
   }
+  .delete {
+    border: 1px solid #f56262;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background: #fff;
+    color: #f56262;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}
+/deep/.el-table th {
+  background: #f8f9fb;
 }
 </style>

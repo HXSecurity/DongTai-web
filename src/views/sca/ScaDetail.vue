@@ -125,10 +125,10 @@
         </div>
         <div class="info-line">
           <span>
-            <i class="iconfont iconweixian-2"></i>
-            {{ $t('views.scaDetail.level') }}：
+            <i class="iconfont iconwendangzhongxin"></i>
+            {{ $t('views.scaDetail.signature_value') }}：
           </span>
-          {{ scaObj.level }}
+          {{ scaObj.signature_value }}
         </div>
         <div class="info-line">
           <span>
@@ -139,6 +139,20 @@
         </div>
         <div class="info-line">
           <span>
+            <i class="iconfont iconicon_details_banben"></i>
+            {{ $t('views.scaDetail.version_now') }}：
+          </span>
+          {{ scaObj.project_version }}
+        </div>
+        <div class="info-line">
+          <span>
+            <i class="iconfont iconweixian-2"></i>
+            {{ $t('views.scaDetail.level') }}：
+          </span>
+          {{ scaObj.level }}
+        </div>
+        <div class="info-line">
+          <span>
             <i class="iconfont iconlishi"></i>
             {{ $t('views.scaDetail.vul_count') }}：
           </span>
@@ -146,10 +160,10 @@
         </div>
         <div class="info-line">
           <span>
-            <i class="iconfont iconwendangzhongxin"></i>
-            {{ $t('views.scaDetail.signature_value') }}：
+            <i class="iconfont iconapp"></i>
+            {{ $t('views.scaDetail.agent') }}：
           </span>
-          {{ scaObj.signature_value }}
+          {{ scaObj.agent_name }}
         </div>
       </div>
       <div class="module-title">
@@ -305,7 +319,11 @@ export default class ScaDetail extends VueBase {
     const { status, data, page, msg } = await this.services.sca.scaList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data
@@ -324,7 +342,11 @@ export default class ScaDetail extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.scaObj = data

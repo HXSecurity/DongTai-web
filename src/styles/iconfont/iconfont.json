@@ -6,6 +6,48 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "23181403",
+      "name": "yonghu",
+      "font_class": "yonghu",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "23181144",
+      "name": "xiangmu",
+      "font_class": "xiangmu",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "23181145",
+      "name": "tanzhen",
+      "font_class": "tanzhen",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "23177482",
+      "name": "loudong",
+      "font_class": "loudong1",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "5560689",
+      "name": "gears",
+      "font_class": "gears",
+      "unicode": "e751",
+      "unicode_decimal": 59217
+    },
+    {
+      "icon_id": "22730256",
+      "name": "重置密码",
+      "font_class": "zhongzhimima",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
       "icon_id": "22165944",
       "name": "icon_details_edit",
       "font_class": "icon_details_edit",

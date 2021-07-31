@@ -10,7 +10,7 @@ export default () =>
   new (class {
     // 引擎管理-引擎列表
     agentUpdate(): Promise<iResponse> {
-      return request.get('/agent/status/update',{timeout:1000})
+      return request.get('/agent/status/update', { timeout: 1000 })
     }
 
     // 引擎管理-引擎列表
@@ -28,15 +28,15 @@ export default () =>
       return request.post('/agent/uninstall', params)
     }
 
-        // 引擎管理-开启工作
-        agentStart(params: { id: number }): Promise<iResponse> {
-          return request.post('/agent/start', params)
-        }
-    
-        // 引擎管理-暂停
-        agentStop(params: { id: number }): Promise<iResponse> {
-          return request.post('/agent/stop', params)
-        }
+    // 引擎管理-开启工作
+    agentStart(params: any): Promise<iResponse> {
+      return request.post('/agent/start', params)
+    }
+
+    // 引擎管理-暂停
+    agentStop(params: any): Promise<iResponse> {
+      return request.post('/agent/stop', params)
+    }
 
     // 引擎管理-删除
     agentDelete(params: { id: number }): Promise<iResponse> {
@@ -56,6 +56,11 @@ export default () =>
     // 策略管理-策略禁用
     strategyDisable(id: number): Promise<iResponse> {
       return request.get(`/strategy/${id}/disable`)
+    }
+
+    // 策略管理-策略禁用
+    deleteAgents(params: any): Promise<iResponse> {
+      return request.get(`/agents/delete`,{params})
     }
 
     // 在线升级
@@ -124,6 +129,7 @@ export default () =>
       type: string
       page: number
       pageSize: number
+      strategy_type?: any
     }): Promise<iResponse> {
       return request.get('/engine/hook/rules', { params })
     }
@@ -176,8 +182,38 @@ export default () =>
       return request.get('/engine/hook/rule/enable', { params })
     }
 
+    // HOOK规则-禁用规则
+    changeStatusBatch(data: any): Promise<iResponse> {
+      return request.post('/engine/hook/rule/status', data)
+    }
+
+    // HOOK规则-禁用规则
+    changeStatus(params: any): Promise<iResponse> {
+      return request.get('/engine/hook/rule/status', { params })
+    }
     // HOOK规则-删除规则
     ruleDelete(params: { rule_id: string }): Promise<iResponse> {
       return request.get('/engine/hook/rule/delete', { params })
+    }
+
+    // 策略-删除策略
+    updateManage(id: string, data: any): Promise<iResponse> {
+      return request.put(`/strategy/${id}/update`, data)
+    }
+
+    // 策略-删除策略
+    deleteManage(id: string): Promise<iResponse> {
+      return request.delete(`/strategy/${id}/delete`)
+    }
+    // 获取openapi
+    openapi(): Promise<iResponse> {
+      return request.get(`/openapi`)
+    }
+    setOpenapi(data: any): Promise<iResponse> {
+      return request.post(`/openapi`, data)
+    }
+
+    searchProject(params: any): Promise<iResponse> {
+      return request.get(`/project/search`, { params })
     }
   })()

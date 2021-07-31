@@ -144,7 +144,7 @@ const routes: Array<RouteConfig> = [
           },
           {
             path: 'poolDetail/:id',
-            name: 'poolDetail/:id',
+            name: 'poolDetail',
             meta: {
               disabled: true,
               name: i18n.t('menu.poolDetail'),
@@ -222,6 +222,16 @@ const routes: Array<RouteConfig> = [
             },
             component: () => import('@/views/setting/LogManage.vue'),
           },
+          {
+            path: 'serverRegister',
+            name: 'serverRegister',
+            meta: {
+              disabled: true,
+              name: i18n.t('menu.serverRegister'),
+            },
+            component: () => import('@/views/setting/serverRegister.vue'),
+          },
+
           // {
           //   path: 'loadState',
           //   name: 'loadState',

@@ -1,0 +1,468 @@
+<template>
+  <div class="search-card">
+    <div class="title">
+      <span
+        class="title-url pointer"
+        @click="$router.push(`/taint/poolDetail/${info.method_pools.id}`)"
+      >
+        <div
+          v-if="info.method_pools.url_highlight"
+          v-dompurify-html="
+            info.method_pools.url_highlight
+              .replace(new RegExp('\<em\>', 'gi'), '\<tt\>')
+              .replace(new RegExp('\<\/em\>', 'gi'), '\</tt\>')
+          "
+        ></div>
+        <div v-else>{{ info.method_pools.url }}</div>
+      </span>
+      <span class="el-icon-link icon" @click="goPath(info.method_pools.url)">
+      </span>
+      <el-tooltip class="item" effect="dark" content="复制" placement="top">
+        <span
+          v-clipboard:error="onError"
+          v-clipboard:copy="info.method_pools.url"
+          v-clipboard:success="onCopy"
+          class="el-icon-document-copy icon"
+        >
+        </span>
+      </el-tooltip>
+      <div style="flex: 1"></div>
+      <el-button
+        v-if="showGraph === false"
+        class="card-btn"
+        :loading="buttonLoading"
+        @click="send"
+        >{{ buttonLoading ? '重放中' : '发送' }}</el-button
+      >
+    </div>
+    <div class="summary">
+      <div class="summary-item">
+        <div class="label"><i class="iconfont icontanzhen"></i> 探针：</div>
+        <div class="info">
+          <div
+            class="dot"
+            :class="info.relations.agent_is_running ? 'green' : 'red'"
+          ></div>
+          {{ info.relations.agent_name }}
+        </div>
+      </div>
+      <div class="summary-item">
+        <div class="label"><i class="iconfont iconyonghu"></i> 用户：</div>
+        <div class="info">{{ info.relations.user_name }}</div>
+      </div>
+      <div v-if="info.relations.project_name" class="summary-item">
+        <div class="label"><i class="iconfont iconxiangmu"></i> 项目：</div>
+        <div
+          class="info"
+          :class="info.relations.project_name && 'pointer blue'"
+          @click="goProject(info.relations.project_id)"
+        >
+          {{ info.relations.project_name || '未绑定' }}
+        </div>
+      </div>
+      <div v-if="info.relations.vulnerablities[0]" class="summary-item">
+        <div class="label">
+          <i class="iconfont iconloudong1"></i> 关联漏洞：
+        </div>
+        <div
+          class="info"
+          :class="info.relations.vulnerablities[0] && 'pointer'"
+        >
+          <div
+            class="dot"
+            :class="levelClass(info.relations.vulnerablities[0].level_id)"
+          ></div>
+          <span
+            @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
+          >
+            {{
+              info.relations.vulnerablities[0]
+                ? info.relations.vulnerablities[0].vulnerablity_type
+                : '无'
+            }}
+          </span>
+          <el-popover
+            v-if="info.vulnerablities_count.count > 1"
+            placement="bottom"
+            trigger="click"
+            :visible-arrow="false"
+            :offset="-40"
+          >
+            <div
+              v-for="item in info.relations.vulnerablities.slice(
+                1,
+                info.relations.vulnerablities.length
+              )"
+              :key="item.vulnerablity_id"
+              class="vulnerablitie-item"
+              @click="toVuln(item.vulnerablity_id)"
+            >
+              <div class="dot" :class="levelClass(item.level_id)"></div>
+              {{ item.vulnerablity_type }}
+            </div>
+            <span slot="reference" class="blue" style="margin-left: 6px"
+              >+{{ info.vulnerablities_count.count - 1 }}</span
+            >
+          </el-popover>
+        </div>
+      </div>
+    </div>
+    <div class="tabs">
+      <el-tabs v-model="activeKey" @tab-click="changeActiveKey">
+        <el-tab-pane label="HTTP数据包" name="first"></el-tab-pane>
+        <el-tab-pane
+          v-if="showGraph !== false"
+          label="方法调用链"
+          name="second"
+        ></el-tab-pane>
+      </el-tabs>
+    </div>
+    <div v-if="activeKey === 'first'" class="info">
+      <div class="info-box">
+        <MyMarkdownIt
+          v-if="!isEdit"
+          :content="req"
+          style="color: #747c8c"
+        ></MyMarkdownIt>
+        <div v-else>
+          <el-input v-model="reqStr" type="textarea" autosize> </el-input>
+        </div>
+        <el-tooltip class="item" effect="dark" content="复制" placement="top">
+          <span
+            v-if="showGraph !== false"
+            v-clipboard:error="onError"
+            v-clipboard:copy="reqStr"
+            v-clipboard:success="onCopy"
+            class="el-icon-document-copy copy-icon"
+          ></span>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+          <span
+            v-if="showGraph === false"
+            class="el-icon-edit copy-icon"
+            @click="isEdit = !isEdit"
+          ></span>
+        </el-tooltip>
+      </div>
+      <div class="info-box">
+        <MyMarkdownIt :content="res" style="color: #747c8c"></MyMarkdownIt>
+      </div>
+    </div>
+    <div v-if="activeKey === 'second'" class="func">
+      <Dagre
+        v-if="activeKey === 'second' && graphData.nodes[0]"
+        :pool-id="info.method_pools.id"
+        :init-data="graphData"
+      ></Dagre>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop } from 'vue-property-decorator'
+import VueBase from '@/VueBase'
+import { GraphData } from '@/views/taint/types/search'
+import Dagre from '@/components/G6/Dagre.vue'
+@Component({ name: 'SearchCard', components: { Dagre } })
+export default class SearchCard extends VueBase {
+  @Prop() info!: any
+  @Prop() showGraph: boolean | undefined
+  private isEdit = false
+  private reqStr = ''
+  private resStr = ''
+  private buttonLoading = false
+  created() {
+    this.reqStr =
+      (this.info.method_pools.req_header_fs_highlight ||
+        this.info.method_pools.req_header_fs) +
+      '\n' +
+      (this.info.method_pools.req_data_highlight ||
+        this.info.method_pools.req_data)
+
+    this.resStr =
+      (this.info.method_pools.res_header_highlight ||
+        this.info.method_pools.res_header) +
+      '\n' +
+      (this.info.method_pools.res_body_highlight ||
+        this.info.method_pools.res_body)
+  }
+  get req() {
+    return this.reqStr
+      .split(`\n`)
+      .join('<br/>')
+      .split(`*`)
+      .join('\\*')
+      .replace(new RegExp('\<em\>', 'gi'), '\<tt\>')
+      .replace(new RegExp('\<\/em\>', 'gi'), '\</tt\>')
+  }
+
+  private levelClass(i: number) {
+    const levelArr = ['low', 'middle', 'height', 'important']
+    return levelArr[i - 1]
+  }
+
+  private onCopy() {
+    this.$message({
+      showClose: true,
+      message: '已复制',
+      type: 'success',
+    })
+  }
+
+  private onError() {
+    this.$message({
+      showClose: true,
+      message: '复制失败！',
+      type: 'error',
+    })
+  }
+
+  get res() {
+    return this.resStr
+      .split(`\n`)
+      .join('<br/>')
+      .replace(new RegExp('\<em\>', 'gi'), '\<tt\>')
+      .replace(new RegExp('\<\/em\>', 'gi'), '\</tt\>')
+  }
+
+  get copyRes() {
+    return this.info.method_pools.res_header + this.info.method_pools.res_body
+  }
+
+  private goProject(id: any) {
+    if (id) {
+      this.$router.push('/project/projectDetail/' + id)
+    }
+  }
+  private toVuln(id: any) {
+    if (id) {
+      this.$router.push('/vuln/vulnDetail/1/' + id)
+    }
+  }
+  private async getMethodPool() {
+    const res = await this.services.taint.graph({
+      method_pool_id: this.info.method_pools.id,
+      method_pool_type: 'normal',
+    })
+    this.graphData = res.data
+  }
+  private activeKey = 'first'
+  private graphData: GraphData = {
+    nodes: [],
+    edges: [],
+  }
+  private changeActiveKey(e: any) {
+    if (e.name === 'second' && !this.graphData.nodes[0]) {
+      this.getMethodPool()
+    }
+  }
+  private goPath(url: any) {
+    window.open(url)
+  }
+
+  private async send() {
+    this.loadingStart()
+    const res = await this.services.taint.replay({
+      methodPoolId: this.$route.params.id,
+      replayRequest: this.reqStr,
+    })
+    this.loadingDone()
+    if (res.status !== 201) {
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
+      return
+    }
+    const timer = setInterval(async () => {
+      this.buttonLoading = true
+      const resT = await this.services.taint.getReplay(res.data)
+      if (resT.status === 201) {
+        this.resStr = resT.data
+        clearInterval(timer)
+        this.buttonLoading = false
+      }
+    }, 1000)
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.pointer {
+  cursor: pointer;
+}
+.search-card {
+  width: 100%;
+  height: 418px;
+  border: 1px solid #c8e0ff;
+  border-radius: 2px;
+  .title {
+    background: #f1f8ff;
+    border-bottom: 1px solid #c8e0ff;
+    padding: 0 16px;
+    box-sizing: border-box;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    .icon {
+      margin-left: 12px;
+      color: #1a80f2;
+      cursor: pointer;
+    }
+  }
+  .summary {
+    display: flex;
+    height: 34px;
+    border-bottom: 1px solid #c8e0ff;
+    padding: 0 16px;
+    .summary-item {
+      padding: 0 30px 0 4px;
+      display: flex;
+      align-items: center;
+      .label {
+        color: #959fb4;
+      }
+      .info {
+        color: #38435a;
+        display: flex;
+        align-items: center;
+        height: auto;
+        .dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          margin-right: 4px;
+        }
+        .red {
+          background: #f56262;
+        }
+        .green {
+          background: #37d7bb;
+        }
+        .low {
+          background: #37d7bb;
+        }
+        .middle {
+          background: #3892f8;
+        }
+        .height {
+          background: #ff9657;
+        }
+        .important {
+          background: #f56262;
+        }
+      }
+    }
+  }
+  .tabs {
+    padding: 0 20px;
+    border-bottom: 1px solid #c8e0ff;
+    /deep/.el-tabs__nav-wrap::after {
+      background-color: #fff;
+    }
+    /deep/.el-tabs__header {
+      margin: 0 0 1px;
+    }
+    /deep/.el-tabs__item.is-active {
+      color: #1a80f2;
+    }
+    /deep/.el-tabs__active-bar {
+      color: #1a80f2;
+    }
+    /deep/.el-tabs__item {
+      color: #38435a;
+    }
+  }
+  .info {
+    display: flex;
+    height: 292px;
+    .info-box {
+      overflow-y: auto;
+      word-wrap: break-word;
+      word-break: break-all;
+      height: 100%;
+      padding: 20px;
+      width: 50%;
+      font-size: 14px;
+      line-height: 20px;
+      color: #959fb4;
+      position: relative;
+      & + .info-box {
+        border-left: 1px solid #c8e0ff;
+      }
+      .copy-icon {
+        cursor: pointer;
+        position: absolute;
+        top: 32px;
+        right: 18px;
+        color: #1a80f2;
+      }
+    }
+  }
+}
+.blue {
+  color: #1a80f2 !important;
+}
+.vulnerablitie-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    color: #1a80f2;
+  }
+  cursor: pointer;
+  width: 90px;
+  text-align: center;
+  padding: 6px 6px;
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+  }
+  .red {
+    background: #f56262;
+  }
+  .green {
+    background: #37d7bb;
+  }
+  .low {
+    background: #37d7bb;
+  }
+  .middle {
+    background: #3892f8;
+  }
+  .height {
+    background: #ff9657;
+  }
+  .important {
+    background: #f56262;
+  }
+}
+/deep/tt {
+  color: red !important;
+}
+.card-btn {
+  background: #4a72ae;
+  border-radius: 2px;
+  width: 76px;
+  height: 32px;
+  font-size: 14px;
+  display: flex;
+  padding-top: 0;
+  padding-bottom: 0;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+}
+/deep/.el-textarea__inner {
+  border: none;
+  resize: none;
+}
+</style>
+<style>
+.el-popover {
+  min-width: 60px;
+}
+</style>

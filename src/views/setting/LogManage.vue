@@ -149,7 +149,11 @@ export default class LogManage extends VueBase {
       params
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.selectIdSet = []
@@ -159,7 +163,11 @@ export default class LogManage extends VueBase {
 
   private deleteDialogShow() {
     if (this.selectIdSet.length <= 0) {
-      this.$message.error('请选择日志')
+      this.$message({
+        showClose: true,
+        message: '请选择日志',
+        type: 'error',
+      })
       return
     }
     this.deleteDialogOpen = true
@@ -170,26 +178,46 @@ export default class LogManage extends VueBase {
     }
     const { status, msg } = await this.services.setting.logDelete(params)
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
-    this.$message.success(msg)
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
     this.deleteDialogOpen = false
     await this.getTableData()
   }
   private async logClear() {
     const { status, msg } = await this.services.setting.logClear()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
-    this.$message.success(msg)
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
     this.clearDialogOpen = false
     await this.getTableData()
   }
   private async logExport() {
     if (this.selectIdSet.length <= 0) {
-      this.$message.error('请选择日志')
+      this.$message({
+        showClose: true,
+        message: '请选择日志',
+        type: 'error',
+      })
       return
     }
     window.open(`/api/v1/log/export?ids=${this.selectIdSet.join(',')}`)

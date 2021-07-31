@@ -275,7 +275,11 @@ export default class ProjectEdit extends VueBase {
       this.$route.params.pid
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.submitForm.name = data.name
@@ -295,7 +299,11 @@ export default class ProjectEdit extends VueBase {
       idParams
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.engineList = data
@@ -356,7 +364,11 @@ export default class ProjectEdit extends VueBase {
     const { status, msg, data } = await this.services.setting.strategyUserList()
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.strategyList = data
@@ -367,7 +379,11 @@ export default class ProjectEdit extends VueBase {
     const { status, msg, data } = await this.services.setting.strategyTypes()
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     data
@@ -416,7 +432,11 @@ export default class ProjectEdit extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.scanAddDialogOpen = false
@@ -476,10 +496,18 @@ export default class ProjectEdit extends VueBase {
         }
         const { status, msg } = await this.services.project.projectAdd(params)
         if (status !== 201) {
-          this.$message.error(msg)
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
           return
         }
-        this.$message.success(msg)
+        this.$message({
+          type: 'success',
+          message: msg,
+          showClose: true,
+        })
         await this.$router.push('/project')
       } else {
         console.log('error submit!!')
