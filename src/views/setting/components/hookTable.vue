@@ -32,24 +32,30 @@
       </div>
     </div>
     <div class="btn-list-batch">
-      <el-button
-        size="small"
-        class="resetAllBtn open"
-        @click="changeStatusBatch('enable')"
-        >启用</el-button
-      >
-      <el-button
-        size="small"
-        class="resetAllBtn stop"
-        @click="changeStatusBatch('disable')"
-        >禁用</el-button
-      >
-      <el-button
-        size="small"
-        class="resetAllBtn delete"
-        @click="changeStatusBatch('delete')"
-        >删除</el-button
-      >
+      <span style="color: #38435a">
+        已选中
+        <span style="color: #4a72ae">{{ multipleSelection.length }} </span>条
+      </span>
+      <div>
+        <el-button
+          size="small"
+          class="resetAllBtn open"
+          @click="changeStatusBatch('enable')"
+          >启用</el-button
+        >
+        <el-button
+          size="small"
+          class="resetAllBtn stop"
+          @click="changeStatusBatch('disable')"
+          >禁用</el-button
+        >
+        <el-button
+          size="small"
+          class="resetAllBtn delete"
+          @click="changeStatusBatch('delete')"
+          >删除</el-button
+        >
+      </div>
     </div>
     <el-table
       :data="tableData"
@@ -126,8 +132,8 @@
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
+            active-color="#37D7BB"
+            inactive-color="#D9DDE1"
             :active-value="1"
             :inactive-value="0"
             @change="changeStatus(scope.row)"
@@ -199,10 +205,8 @@
         <el-form-item label="是否启用">
           <el-switch
             v-model="hookType.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="启用"
-            inactive-text="禁用"
+            active-color="#37D7BB"
+            inactive-color="#D9DDE1"
             :active-value="1"
             :inactive-value="0"
           >
@@ -800,7 +804,9 @@ export default class HookTable extends VueBase {
   color: #4a72ae;
 }
 .btn-list-batch {
-  padding: 6px;
+  padding: 16px 0;
+  display: flex;
+  justify-content: space-between;
   .stop {
     background: #e6e9ec;
     border-radius: 2px;

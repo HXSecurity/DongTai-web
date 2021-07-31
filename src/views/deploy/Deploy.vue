@@ -34,7 +34,7 @@
           <span class="icon-no">1</span> 下载探针
         </div>
         <div class="download">
-          <p class="download-desc margin-t-8" v-if="language === 'java'">
+          <p v-if="language === 'java'" class="download-desc margin-t-8">
             洞态 IAST 目前支持 JDK 1.6 以上版本的探针，支持 Windows/Linux
             操作系统，支持 Docker，支持所有的 Java Web 中间件
           </p>
@@ -270,18 +270,17 @@
           :key="item.id"
           class="help-list"
           :class="index ? 'margin-t-24' : 'margin-t-32'"
-          @click="goDoc(item.url)"
         >
-          {{ item.title }}
+          <span @click="goDoc(item.url)">{{ item.title }}</span>
         </div>
         <div class="title margin-t-32">获得更多支持</div>
-        <div
-          class="help-list margin-t-24 color-blue"
-          @click="
-            goDoc('https://github.com/HXSecurity/DongTai/issues/new/choose')
-          "
-        >
-          提交 ISSUE
+        <div class="help-list margin-t-24 color-blue">
+          <span
+            @click="
+              goDoc('https://github.com/HXSecurity/DongTai/issues/new/choose')
+            "
+            >提交 ISSUE</span
+          >
         </div>
       </div>
     </div>
@@ -340,7 +339,7 @@ export default class Deploy extends VueBase {
   get shell() {
     switch (this.language) {
       case 'java':
-        return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
+        return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}&language=java" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
       case 'python':
         return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-agent-python.tar.gz -k`
     }
@@ -616,7 +615,9 @@ main {
     font-size: 14px;
     line-height: 20px;
     color: #4a72ae;
-    cursor: pointer;
+    span{
+      cursor: pointer;
+    }
   }
 }
 .color-blue {

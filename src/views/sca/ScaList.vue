@@ -160,7 +160,7 @@
           @change="newSelectData"
         >
           <el-option label="JAVA" value="JAVA"></el-option>
-          <el-option label=".NET" value=".NET"></el-option>
+          <el-option label="PYTHON" value="PYTHON"></el-option>
         </el-select>
         <div class="selectInput">
           <el-input
