@@ -190,6 +190,8 @@ export default class SearchCard extends VueBase {
     return this.reqStr
       .split(`\n`)
       .join('<br/>')
+      .split(`*`)
+      .join('\\*')
       .replace(new RegExp('\<em\>', 'gi'), '\<tt\>')
       .replace(new RegExp('\<\/em\>', 'gi'), '\</tt\>')
   }

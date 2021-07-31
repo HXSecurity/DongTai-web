@@ -695,7 +695,11 @@ export default class VulnDetail extends VueBase {
           return "<tt style='color:red'>" + match + '</tt>'
         })
       }
-      const str = data.vul.req_header.split('<').join('&lt;')
+      const str = data.vul.req_header
+        .split('<')
+        .join('&lt;')
+        .split(`*`)
+        .join('\\*')
       const strArr = str.split(`\n`)
       try {
         for (const key in data.vul.param_name) {
