@@ -25,7 +25,7 @@ $ npm install
 ```
 
 2.修改本地配置文件
-将目录下的 .env 文件中的 VUE_TARGET_HOST = 'http://test.iast.huoxian.cn:8081' 修改为 VUE_TARGET_HOST = '你的后端服务所在地址'
+将目录下的 `.env` 文件中的 `VUE_TARGET_HOST = 'http://test.iast.huoxian.cn:8081'` 修改为 `VUE_TARGET_HOST = '你的后端服务所在地址'`
 
 3.执行运行命令
 ```bash
