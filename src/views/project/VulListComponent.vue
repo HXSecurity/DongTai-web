@@ -571,7 +571,7 @@ export default class VulListComponent extends VueBase {
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
       status: this.searchObj.status,
-      projectId: this.projectId,
+      project_id: this.projectId,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)

@@ -38,6 +38,7 @@ export interface VulnObj {
     first_time: number
     latest_time: number
     project_name: string
+    project_id: number
     language: string
     level: string
     counts: number

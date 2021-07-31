@@ -39,7 +39,10 @@
       <div class="summary-item">
         <div class="label"><i class="iconfont icontanzhen"></i> 探针：</div>
         <div class="info">
-          <div class="dot green"></div>
+          <div
+            class="dot"
+            :class="info.relations.agent_is_running ? 'green' : 'red'"
+          ></div>
           {{ info.relations.agent_name }}
         </div>
       </div>
@@ -65,7 +68,10 @@
           class="info"
           :class="info.relations.vulnerablities[0] && 'pointer'"
         >
-          <div class="dot red"></div>
+          <div
+            class="dot"
+            :class="levelClass(info.relations.vulnerablities[0].level_id)"
+          ></div>
           <span
             @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
           >
@@ -91,7 +97,7 @@
               class="vulnerablitie-item"
               @click="toVuln(item.vulnerablity_id)"
             >
-              <div class="dot red"></div>
+              <div class="dot" :class="levelClass(item.level_id)"></div>
               {{ item.vulnerablity_type }}
             </div>
             <span slot="reference" class="blue" style="margin-left: 6px"
@@ -186,6 +192,11 @@ export default class SearchCard extends VueBase {
       .join('<br/>')
       .replace(new RegExp('\<em\>', 'gi'), '\<tt\>')
       .replace(new RegExp('\<\/em\>', 'gi'), '\</tt\>')
+  }
+
+  private levelClass(i: number) {
+    const levelArr = ['low', 'middle', 'height', 'important']
+    return levelArr[i - 1]
   }
 
   private onCopy() {
@@ -327,6 +338,18 @@ export default class SearchCard extends VueBase {
         .green {
           background: #37d7bb;
         }
+        .low {
+          background: #37d7bb;
+        }
+        .middle {
+          background: #3892f8;
+        }
+        .height {
+          background: #ff9657;
+        }
+        .important {
+          background: #f56262;
+        }
       }
     }
   }
@@ -401,6 +424,18 @@ export default class SearchCard extends VueBase {
   }
   .green {
     background: #37d7bb;
+  }
+  .low {
+    background: #37d7bb;
+  }
+  .middle {
+    background: #3892f8;
+  }
+  .height {
+    background: #ff9657;
+  }
+  .important {
+    background: #f56262;
   }
 }
 /deep/tt {

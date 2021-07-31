@@ -186,7 +186,13 @@
               <i class="iconfont iconproject"></i>
               {{ $t('views.vulnDetail.projectName') }}:
             </span>
-            <span>{{ vulnObj.vul.project_name }}</span>
+            <span
+              :class="vulnObj.vul.project_id && 'project-name'"
+              @click="
+                $router.push('/project/projectDetail/' + vulnObj.vul.project_id)
+              "
+              >{{ vulnObj.vul.project_name }}</span
+            >
           </div>
           <div v-dot class="info">
             <span class="label">
@@ -497,6 +503,7 @@ export default class VulnDetail extends VueBase {
       first_time: 0,
       latest_time: 0,
       project_name: '',
+      project_id: 0,
       language: '',
       level: '',
       counts: 0,
@@ -990,7 +997,10 @@ export default class VulnDetail extends VueBase {
 
     .infoLine {
       margin-top: 28px;
-
+      .project-name {
+        color: #4a72ae;
+        cursor: pointer;
+      }
       &:first-child {
         margin-top: 0;
       }
@@ -1093,7 +1103,7 @@ export default class VulnDetail extends VueBase {
           &::after {
             position: absolute;
             left: 11px;
-            top: -85%;
+            top: -50px;
             width: 2px;
             height: 100%;
             content: '';

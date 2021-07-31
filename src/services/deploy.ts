@@ -28,7 +28,11 @@ export default () =>
           // const objectUrl = URL.createObjectURL(blob); // 生成一个url
           const link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
-          link.download = 'agent.jar'
+          if (language === 'java') {
+            link.download = 'agent.jar'
+          } else {
+            link.download = 'dongtai-agent-python.tar.gz'
+          }
           link.click()
         })
     }

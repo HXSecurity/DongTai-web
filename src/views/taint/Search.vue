@@ -96,8 +96,25 @@ export default class Index extends VueBase {
   }
   private async getList() {
     this.dataEnd = true
+    const keyArr = [
+      'url',
+      'signature',
+      'sinkvalues',
+      'req_header_fs',
+      'req_data',
+      'res_header',
+      'res_body',
+    ]
+    const searchKey = {}
+    if (this.type) {
+      searchKey[this.type] = this.value
+    } else {
+      for (let i = 0; i < keyArr.length; i++) {
+        searchKey[keyArr[i]] = this.value
+      }
+    }
     const res: any = await this.services.taint.search({
-      [this.type]: this.value,
+      ...searchKey,
       page_index: this.page,
       page_size: 10,
       search_after_update_time: this.afterkeys || undefined,
