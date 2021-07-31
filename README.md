@@ -56,5 +56,4 @@ $ npm run build
 ###Documentation
 
 - [official documents]（ https://huoxianclub.github.io/LingZhi/#/ )
-
 - [quick experience]（ http://aws.iast.huoxian.cn:8000/login )
