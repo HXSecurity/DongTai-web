@@ -3,7 +3,7 @@
 [![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/huoxianclub/DongTai)
 [![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.0.0-lightgrey)](https://github.com/huoxianclub/DongTai-web)
 
-[中文版本(Chinese version)](README.ZH-CN.md)
+[中文版本(Chinese version)](README.ZH_CN.md)
 
 ##Project introduction
 "huoxian DongTaiIast" is an auxiliary tool specially designed for Party A's security personnel, Party A's code audit engineers and 0 day.
