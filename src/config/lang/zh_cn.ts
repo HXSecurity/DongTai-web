@@ -24,7 +24,7 @@ export default {
     taintPool: '搜索',
     search: '污点搜索',
     poolDetail: '污点详情',
-    projectManage: '项目管理',
+    serverRegister: '服务注册',
   },
   views: {
     login: {
@@ -172,6 +172,7 @@ export default {
       detail: '策略详情',
       status: '启用状态',
       operate: '操作',
+      fix: '修复建议',
     },
     upgradeOnline: {
       online: '在线升级',

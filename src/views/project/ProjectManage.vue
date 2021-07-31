@@ -160,7 +160,11 @@ export default class ProjectManage extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data.reduce(
@@ -179,7 +183,11 @@ export default class ProjectManage extends VueBase {
   private async projectDelete(id: number) {
     const { status, msg } = await this.services.project.projectDelete({ id })
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()

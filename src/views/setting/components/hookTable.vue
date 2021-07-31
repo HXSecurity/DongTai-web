@@ -5,7 +5,7 @@
         <el-select
           v-model="rule_type"
           class="search-input"
-          size="mini"
+          size="small"
           filterable
           placeholder="请选择策略类型"
           clearable
@@ -20,46 +20,57 @@
         </el-select>
       </div>
       <div>
-        <el-popover placement="bottom" width="220" trigger="click">
-          <el-button
-            size="small"
-            class="resetAllBtn"
-            @click="changeStatusBatch('enable')"
-            >启用</el-button
-          >
-          <el-button
-            size="small"
-            class="resetAllBtn"
-            @click="changeStatusBatch('disable')"
-            >禁用</el-button
-          >
-          <el-button
-            size="small"
-            class="resetAllBtn"
-            @click="changeStatusBatch('delete')"
-            >删除</el-button
-          >
-          <el-button
-            slot="reference"
-            size="small"
-            class="resetAllBtn"
-            style="margin-right: 10px"
-            >批量操作</el-button
-          >
-        </el-popover>
         <el-button
           size="small"
           class="resetAllBtn"
           @click="hookTypeDialog = true"
-          >添加规则类型</el-button
+          ><i class="el-icon-plus"></i> 添加规则类型</el-button
         >
         <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
-          >添加规则</el-button
+          ><i class="el-icon-plus"></i> 添加规则</el-button
         >
       </div>
     </div>
-    <el-table :data="tableData" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55"> </el-table-column>
+    <div class="btn-list-batch">
+      <span style="color: #38435a">
+        已选中
+        <span style="color: #4a72ae">{{ multipleSelection.length }} </span>条
+      </span>
+      <div>
+        <el-button
+          size="small"
+          class="resetAllBtn open"
+          @click="changeStatusBatch('enable')"
+          >启用</el-button
+        >
+        <el-button
+          size="small"
+          class="resetAllBtn stop"
+          @click="changeStatusBatch('disable')"
+          >禁用</el-button
+        >
+        <el-button
+          size="small"
+          class="resetAllBtn delete"
+          @click="changeStatusBatch('delete')"
+          >删除</el-button
+        >
+      </div>
+    </div>
+    <el-table
+      :data="tableData"
+      :header-row-style="{
+        color: '#000',
+        fontWeight: 600,
+      }"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        type="selection"
+        width="55"
+        :fixed="tableData.length ? 'left' : false"
+      >
+      </el-table-column>
       <template slot="empty">
         <div class="empty-box">
           <span>暂无数据</span>
@@ -70,6 +81,7 @@
         prop="rule_type"
         label="规则类型"
         width="160"
+        :fixed="tableData.length ? 'left' : false"
       >
       </el-table-column>
       <el-table-column align="center" prop="value" label="规则详情" width="340">
@@ -112,28 +124,35 @@
       >
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="操作"
         align="center"
-        width="290"
+        header-align="center"
+        label="状态"
         :fixed="tableData.length ? 'right' : false"
       >
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="启用"
-            inactive-text="禁用"
+            active-color="#37D7BB"
+            inactive-color="#D9DDE1"
             :active-value="1"
             :inactive-value="0"
             @change="changeStatus(scope.row)"
           >
           </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="address"
+        label="操作"
+        align="center"
+        width="100"
+        :fixed="tableData.length ? 'right' : false"
+      >
+        <template slot-scope="scope">
           <el-button
-            type="success"
+            type="text"
             size="small"
-            style="margin-left: 10px"
+            style="color: #4a72ae"
             @click="editRow(scope.row)"
           >
             编辑
@@ -144,9 +163,9 @@
           >
             <el-button
               slot="reference"
-              style="margin-left: 10px"
+              style="margin-left: 6px; color: #f56262"
               size="small"
-              type="danger"
+              type="text"
               >删除</el-button
             >
           </el-popconfirm>
@@ -186,10 +205,8 @@
         <el-form-item label="是否启用">
           <el-switch
             v-model="hookType.enable"
-            active-color="#13ce66"
-            inactive-color="#ff4949"
-            active-text="启用"
-            inactive-text="禁用"
+            active-color="#37D7BB"
+            inactive-color="#D9DDE1"
             :active-value="1"
             :inactive-value="0"
           >
@@ -498,7 +515,11 @@ export default class HookTable extends VueBase {
     this.loadingDone()
 
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.types = data
@@ -512,7 +533,11 @@ export default class HookTable extends VueBase {
     this.loadingDone()
     row.visible = false
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTable()
@@ -551,7 +576,11 @@ export default class HookTable extends VueBase {
       type: 'warning',
     }).then(async () => {
       if (this.multipleSelection.length === 0) {
-        this.$message.warning('请先选择需要操作的数据')
+        this.$message({
+          type: 'warning',
+          message: '请先选择需要操作的数据',
+          showClose: true,
+        })
         return
       }
       const ids = this.multipleSelection.map((item: any) => item.id)
@@ -560,10 +589,18 @@ export default class HookTable extends VueBase {
         op,
       })
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
       await this.getTable()
     })
   }
@@ -576,7 +613,11 @@ export default class HookTable extends VueBase {
     })
     this.loadingDone()
     if (obj.status !== 201) {
-      this.$message.error(obj.msg)
+      this.$message({
+        showClose: true,
+        message: obj.msg,
+        type: 'error',
+      })
       return
     }
     await this.getTable()
@@ -598,7 +639,11 @@ export default class HookTable extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTypes()
@@ -661,7 +706,11 @@ export default class HookTable extends VueBase {
 
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
       await this.getTable()
@@ -681,7 +730,11 @@ export default class HookTable extends VueBase {
 
       this.loadingDone()
       if (status !== 201) {
-        this.$message.error(msg)
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
         return
       }
       await this.getTable()
@@ -703,7 +756,11 @@ export default class HookTable extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.total = page.alltotal
@@ -741,10 +798,42 @@ export default class HookTable extends VueBase {
   }
 }
 .resetAllBtn {
-  height: 28px;
-  line-height: 0;
-  background: #4a72ae;
+  border: 1px solid #4a72ae;
   border-radius: 2px;
-  color: #fff;
+  background: #fff;
+  color: #4a72ae;
+}
+.btn-list-batch {
+  padding: 16px 0;
+  display: flex;
+  justify-content: space-between;
+  .stop {
+    background: #e6e9ec;
+    border-radius: 2px;
+    color: #38435a;
+    border: 1px solid #e6e9ec;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .open {
+    background: #37d7bb;
+    border-radius: 2px;
+    color: #ffffff;
+    border: 1px solid #37d7bb;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+  .delete {
+    border: 1px solid #f56262;
+    box-sizing: border-box;
+    border-radius: 2px;
+    background: #fff;
+    color: #f56262;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+}
+/deep/.el-table th {
+  background: #f8f9fb;
 }
 </style>

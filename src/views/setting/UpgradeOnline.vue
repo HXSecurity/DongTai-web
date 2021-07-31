@@ -91,7 +91,11 @@ export default class UpgradeOnline extends VueBase {
       upgrade_url,
     } = await this.services.user.userToken()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.token = token
@@ -108,10 +112,18 @@ export default class UpgradeOnline extends VueBase {
       params
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
-    this.$message.success(msg)
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
   }
 
   private async uploadOneFile() {
@@ -120,7 +132,11 @@ export default class UpgradeOnline extends VueBase {
     formData.append('file', (this.$refs.upload as myUpLoad).uploadFiles[0].raw)
     const { status, msg } = await this.services.setting.upgradeOffline(formData)
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
   }

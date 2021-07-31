@@ -319,7 +319,11 @@ export default class ScaDetail extends VueBase {
     const { status, data, page, msg } = await this.services.sca.scaList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data
@@ -338,7 +342,11 @@ export default class ScaDetail extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.scaObj = data

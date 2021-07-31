@@ -19,12 +19,24 @@
 
             <i class="iconfont iconicon_details_banben"></i>
             {{ $t('views.projectDetail.version') }}
-            <i style="margin-right: 6px">{{
-              projectObj.versionData && projectObj.versionData.version_name
-            }}</i>
+            <el-select
+              v-model="projectObj.versionData.version_id"
+              size="mini"
+              style="width: 80px"
+              @change="changeVersion"
+            >
+              <el-option
+                v-for="item in versionList"
+                :key="item.version_id"
+                :value="item.version_id"
+                :label="item.version_name"
+              >
+                {{ item.version_name }}
+              </el-option>
+            </el-select>
             <i
               class="iconfont iconicon_details_edit"
-              style="cursor: pointer; color: #4fb794"
+              style="margin-left: 12px; cursor: pointer; color: #4fb794"
               @click="showVersion"
             ></i>
           </div>
@@ -100,11 +112,17 @@
       </div>
       <div v-if="selectTab === 'vul'">
         <vul-list-component
+          ref="vulListComponent"
           :project-id="$route.params.pid"
+          :version="projectObj.versionData.version_id"
         ></vul-list-component>
       </div>
       <div v-if="selectTab === 'component'">
-        <ScaList :project-id="$route.params.pid"></ScaList>
+        <ScaList
+          ref="componentList"
+          :project-id="$route.params.pid"
+          :version="projectObj.versionData.version_id"
+        ></ScaList>
       </div>
     </div>
 
@@ -242,7 +260,7 @@ import merge from 'webpack-merge'
   },
 })
 export default class ProjectDetail extends VueBase {
-  private selectTab = "desc"
+  private selectTab = 'desc'
   private projectObj: ProjectObj = {
     id: 0,
     mode: '',
@@ -263,25 +281,40 @@ export default class ProjectDetail extends VueBase {
       project_id: this.projectObj.id,
     })
     if (res.status !== 201) {
-      this.$message.error(res.msg)
+      this.$message({
+        type: 'error',
+        message: res.msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
-      this.projectsSummary()
+      await this.projectsSummary()
     }
   }
 
-  private changeActive(e: any) {
+  private async changeActive(e: any) {
     this.selectTab = e
     this.$router.replace({
       query: merge(this.$route.query, { activeName: e }) as any,
     })
+    if (e === 'desc') {
+      await this.projectsSummary(this.projectObj.versionData.version_id)
+    }
   }
 
   private editVersion(item: any) {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
+      this.$message({
+        type: 'error',
+        message: this.$t('views.projectDetail.hasEdit') as string,
+        showClose: true,
+      })
       return
     }
     this.$set(item, 'isEdit', true)
@@ -293,7 +326,11 @@ export default class ProjectDetail extends VueBase {
         (i, k) => i.version_name === item.version_name && k !== index
       )
     ) {
-      this.$message.warning(this.$t('views.projectDetail.hasSame') as string)
+      this.$message({
+        type: 'warning',
+        message: this.$t('views.projectDetail.hasSame') as string,
+        showClose: true,
+      })
       return
     }
     if (!item.version_id) {
@@ -302,10 +339,18 @@ export default class ProjectDetail extends VueBase {
         project_id: this.projectObj.id,
       })
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       item.version_id = res.data.version_id
       this.versionTemp = {}
       this.$set(item, 'isEdit', false)
@@ -316,10 +361,18 @@ export default class ProjectDetail extends VueBase {
       })
       console.log(res)
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
         return
       }
-      this.$message.success(res.msg)
+      this.$message({
+        type: 'success',
+        message: res.msg,
+        showClose: true,
+      })
       this.versionTemp = {}
       this.$set(item, 'isEdit', false)
     }
@@ -355,11 +408,13 @@ export default class ProjectDetail extends VueBase {
         this.$message({
           type: 'error',
           message: res.msg,
+          showClose: true,
         })
       } else {
         this.$message({
-          type: 'success',
+          type: 'error',
           message: res.msg,
+          showClose: true,
         })
         this.versionList.splice(index, 1)
       }
@@ -368,7 +423,11 @@ export default class ProjectDetail extends VueBase {
 
   private addVersion() {
     if (this.versionList.some((item) => item.isEdit)) {
-      this.$message.error(this.$t('views.projectDetail.hasEdit') as string)
+      this.$message({
+        showClose: true,
+        message: this.$t('views.projectDetail.hasEdit') as string,
+        type: 'error',
+      })
       return
     }
     this.versionList.push({
@@ -377,19 +436,39 @@ export default class ProjectDetail extends VueBase {
       isEdit: true,
     })
   }
-
-  mounted() {
+  private changeVersion(value: any) {
+    this.$nextTick(() => {
+      if (this.selectTab === 'desc') {
+        this.projectsSummary(value)
+      } else if (this.selectTab === 'vul') {
+        const v: any = this.$refs.vulListComponent
+        v.getTableData(true)
+        v.vulnSummary()
+      } else if (this.selectTab === 'component') {
+        const c: any = this.$refs.componentList
+        c.getTableData(true)
+        c.scaSummary()
+      }
+    })
+  }
+  async mounted() {
     if (this.$route.query.activeName) {
       this.selectTab = this.$route.query.activeName as string
     }
-    this.projectsSummary()
+    await this.projectsSummary()
+    await this.getVersionList()
   }
-  private async projectsSummary() {
+  private async projectsSummary(id?: string) {
     const { status, msg, data } = await this.services.project.projectsSummary(
-      this.$route.params.pid
+      this.$route.params.pid,
+      id
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
 
@@ -408,6 +487,10 @@ export default class ProjectDetail extends VueBase {
       ...data,
       name: data.name,
       latest_time: formatTimestamp(data.latest_time),
+    }
+
+    if (this.selectTab !== 'desc') {
+      return
     }
 
     const levelCountChart = echarts.init(
@@ -529,12 +612,18 @@ export default class ProjectDetail extends VueBase {
     dayNumChart.setOption(dayNumOption)
   }
   showVersion() {
+    this.versionFlag = true
+  }
+  getVersionList() {
     this.services.project.versionList(this.projectObj.id).then((res: any) => {
       if (res.status === 201) {
         this.versionList = res.data
-        this.versionFlag = true
       } else {
-        this.$message.error('msg')
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
       }
     })
   }
@@ -567,9 +656,17 @@ export default class ProjectDetail extends VueBase {
       this.$route.params.pid
     )
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
     } else {
-      this.$message.success(msg)
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
     }
   }
 }

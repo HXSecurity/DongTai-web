@@ -78,7 +78,6 @@
   </main>
 </template>
 
-
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
@@ -139,7 +138,11 @@ export default class TaintPool extends VueBase {
     const { status, data, msg } = await this.services.taint.methodList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     const tableData = data.reduce((list: any, item: any) => {

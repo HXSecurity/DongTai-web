@@ -1,18 +1,46 @@
 <template>
   <div class="content-warp">
-    <div class="selectForm">
-      <div class="select-item">运行状态：</div>
-      <div
-        v-for="item in stateOptions"
-        :key="item.value"
-        class="select-item"
-        :class="item.value === state && 'active'"
-        @click="changeState(item)"
-      >
-        {{ item.label }}
+    <div class="tool-bar">
+      <div class="selectForm">
+        <div class="select-item">运行状态：</div>
+        <div
+          v-for="item in stateOptions"
+          :key="item.value"
+          class="select-item"
+          :class="item.value === state && 'active'"
+          @click="changeState(item)"
+        >
+          {{ item.label }}
+        </div>
+      </div>
+      <div class="tool-bar">
+        <el-input
+          v-model="searchValue"
+          style="margin-left: 12px"
+          size="small"
+          placeholder="请输入搜索条件"
+          @input="searchTable"
+        ></el-input>
       </div>
     </div>
-    <el-table :data="tableData" class="agentManageTable" header-align="center">
+    <div class="button-bar">
+      <el-button size="small" class="resetAllBtn" @click="agentStart(0)"
+        >启用</el-button
+      >
+      <el-button size="small" class="resetAllBtn" @click="agentStop(0)"
+        >禁用</el-button
+      >
+      <el-button size="small" class="resetAllBtn" @click="deleteAgents"
+        >删除</el-button
+      >
+    </div>
+    <el-table
+      :data="tableData"
+      class="agentManageTable"
+      header-align="center"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="55"> </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.projectName')"
         prop="project_name"
@@ -189,18 +217,35 @@ export default class AgentManage extends VueBase {
     { value: 1, label: '运行中' },
     { value: 0, label: '未运行' },
   ]
-  timer: any = null
+  private searchValue = ''
+  private multipleSelection = []
   created() {
     this.getTableData()
     this.timer = setInterval(() => {
-      this.getTableData()
+      this.reflashTable()
     }, 5000)
+  }
+  private timer: any
+  private timeOuter: any
+  private searchTable() {
+    if (this.timeOuter) {
+      clearTimeout(this.timeOuter)
+      this.timeOuter = null
+    } else {
+      setTimeout(() => {
+        this.getTableData()
+      }, 400)
+    }
+  }
+  private handleSelectionChange(val: any) {
+    this.multipleSelection = val
   }
   private beforeDestroy() {
     clearInterval(this.timer)
   }
   private changeState(item: any) {
     this.state = item.value
+    this.page = 1
     this.getTableData()
     if (this.state == 1) {
       this.timer = setInterval(() => {
@@ -216,11 +261,42 @@ export default class AgentManage extends VueBase {
     this.getTableData()
   }
 
+  private async reflashTable() {
+    const params = {
+      page: this.page,
+      pageSize: this.pageSize,
+      state: this.state,
+    }
+    this.loadingStart()
+    const { status, msg, data } = await this.services.setting.agentList(params)
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
+      return
+    }
+    const dataMap = {}
+    data &&
+      data.forEach((item: any) => {
+        return (dataMap[item.id] = item)
+      })
+    console.log(this.tableData, dataMap)
+    this.tableData.forEach((item: any) => {
+      for (const key in item) {
+        item[key] = dataMap[item.id][key]
+      }
+    })
+  }
+
   private async getTableData() {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
       state: this.state,
+      token: this.searchValue,
     }
     this.loadingStart()
     const { status, msg, data, page } = await this.services.setting.agentList(
@@ -228,7 +304,11 @@ export default class AgentManage extends VueBase {
     )
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.tableData = data
@@ -245,37 +325,104 @@ export default class AgentManage extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()
   }
 
-  private async agentStart(id: string | number) {
-    this.loadingStart()
-    const { status, msg } = await this.services.setting.agentStart({
-      id: parseInt(`${id}`),
+  private async deleteAgents() {
+    this.$confirm('此操作将永久删除该引擎, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      this.loadingStart()
+      const params = {
+        ids: String(
+          this.multipleSelection.map((item: any) => parseInt(item.id))
+        ),
+      }
+      const { status, msg } = await this.services.setting.deleteAgents(params)
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
+      }
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
+      await this.getTableData()
     })
+  }
+
+  private async agentStart(id: any) {
+    this.loadingStart()
+    let params = {}
+    if (id) {
+      params = { id: parseInt(id) }
+    } else {
+      params = {
+        ids: String(
+          this.multipleSelection.map((item: any) => parseInt(item.id))
+        ),
+      }
+    }
+    const { status, msg } = await this.services.setting.agentStart(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
-    this.$message.success(msg)
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
     await this.getTableData()
   }
 
-  private async agentStop(id: string | number) {
+  private async agentStop(id: any) {
     this.loadingStart()
-    const { status, msg } = await this.services.setting.agentStop({
-      id: parseInt(`${id}`),
-    })
+    let params: any
+    if (id) {
+      params = { id: parseInt(id) }
+    } else {
+      params = {
+        ids: String(
+          this.multipleSelection.map((item: any) => parseInt(item.id))
+        ),
+      }
+    }
+    const { status, msg } = await this.services.setting.agentStop(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
-    this.$message.success(msg)
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
     await this.getTableData()
   }
 
@@ -286,7 +433,11 @@ export default class AgentManage extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     await this.getTableData()
@@ -305,7 +456,11 @@ export default class AgentManage extends VueBase {
     })
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.currentPageDelete = this.currentPageDelete + 1
@@ -319,6 +474,18 @@ export default class AgentManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
+.tool-bar {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  align-items: center;
+}
+.button-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding-bottom: 12px;
+  align-items: center;
+}
 .selectForm {
   display: flex;
   padding: 0 10px 16px;
@@ -377,5 +544,12 @@ export default class AgentManage extends VueBase {
   cursor: pointer;
   color: #a7afb9;
   margin-left: 18px;
+}
+.resetAllBtn {
+  height: 28px;
+  line-height: 0;
+  background: #4a72ae;
+  border-radius: 2px;
+  color: #fff;
 }
 </style>

@@ -35,8 +35,8 @@
           <el-form-item :label="$t('views.login.captcha')">
             <br />
             <el-input
-              style="width: 80%"
               v-model="captcha"
+              style="width: 80%"
               clearable
               :placeholder="$t('views.login.captchaPlaceholder')"
             ></el-input
@@ -87,7 +87,11 @@ export default class Login extends VueBase {
   private async initCaptcha() {
     const { status, data, msg } = await this.services.user.initCaptcha()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.captcha_url = data['image_url']
@@ -107,9 +111,17 @@ export default class Login extends VueBase {
     if (status === 201) {
       await this.$router.push('/')
     } else if (status === 204) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
     } else if (status === 203 || status === 202) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       this.initCaptcha()
     }
   }

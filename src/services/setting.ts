@@ -29,12 +29,12 @@ export default () =>
     }
 
     // 引擎管理-开启工作
-    agentStart(params: { id: number }): Promise<iResponse> {
+    agentStart(params: any): Promise<iResponse> {
       return request.post('/agent/start', params)
     }
 
     // 引擎管理-暂停
-    agentStop(params: { id: number }): Promise<iResponse> {
+    agentStop(params: any): Promise<iResponse> {
       return request.post('/agent/stop', params)
     }
 
@@ -56,6 +56,11 @@ export default () =>
     // 策略管理-策略禁用
     strategyDisable(id: number): Promise<iResponse> {
       return request.get(`/strategy/${id}/disable`)
+    }
+
+    // 策略管理-策略禁用
+    deleteAgents(params: any): Promise<iResponse> {
+      return request.get(`/agents/delete`,{params})
     }
 
     // 在线升级
@@ -189,5 +194,26 @@ export default () =>
     // HOOK规则-删除规则
     ruleDelete(params: { rule_id: string }): Promise<iResponse> {
       return request.get('/engine/hook/rule/delete', { params })
+    }
+
+    // 策略-删除策略
+    updateManage(id: string, data: any): Promise<iResponse> {
+      return request.put(`/strategy/${id}/update`, data)
+    }
+
+    // 策略-删除策略
+    deleteManage(id: string): Promise<iResponse> {
+      return request.delete(`/strategy/${id}/delete`)
+    }
+    // 获取openapi
+    openapi(): Promise<iResponse> {
+      return request.get(`/openapi`)
+    }
+    setOpenapi(data: any): Promise<iResponse> {
+      return request.post(`/openapi`, data)
+    }
+
+    searchProject(params: any): Promise<iResponse> {
+      return request.get(`/project/search`, { params })
     }
   })()

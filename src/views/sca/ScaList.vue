@@ -31,19 +31,29 @@
               }}</span>
             </div>
           </div>
+          <div class="search-box">
+            <el-autocomplete
+              v-model="kw"
+              size="small"
+              style="margin: 12px 0 0 0"
+              class="commonInput"
+              clearable
+              placeholder="请输入项目名称搜索"
+              :fetch-suggestions="querySearchAsync"
+              @select="handleSelect"
+            ></el-autocomplete>
+          </div>
           <div
             v-for="item in searchOptionsObj.projects"
-            :key="item.project_name"
+            :key="item.project_id"
             class="flex-row-space-between module-line"
-            :class="
-              searchObj.project_name === item.project_name ? 'selectedLine' : ''
-            "
+            :class="searchObj.project_id === item.id ? 'selectedLine' : ''"
             :style="
               item.count === 0
                 ? { cursor: 'not-allowed', height: '30px' }
                 : { height: '30px' }
             "
-            @click="projectNameChange(item.project_name, item.count === 0)"
+            @click="projectNameChange(item.project_id, item.count === 0)"
           >
             <div class="selectOption">
               {{ projectNameSplit(item.project_name, 12) }}
@@ -150,7 +160,7 @@
           @change="newSelectData"
         >
           <el-option label="JAVA" value="JAVA"></el-option>
-          <el-option label=".NET" value=".NET"></el-option>
+          <el-option label="PYTHON" value="PYTHON"></el-option>
         </el-select>
         <div class="selectInput">
           <el-input
@@ -281,6 +291,7 @@ import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
 
 @Component({ name: 'ScaList', components: { ScrollToTop } })
 export default class ScaList extends VueBase {
+  @Prop() version: number | undefined
   @Prop(String) projectId!: string
   private debounceMyScroll: any
   private page = 1
@@ -333,7 +344,28 @@ export default class ScaList extends VueBase {
     this.searchObj.language = ''
     this.searchObj.level = ''
     this.searchObj.project_name = ''
+    this.searchObj.project_id = ''
+    this.kw = ''
     this.newSelectData()
+  }
+
+  private kw = ''
+  private async querySearchAsync(queryString: string, cb: any) {
+    console.log(queryString)
+    const res = await this.services.setting.searchProject({ name: queryString })
+    if (res.status === 201) {
+      const data = res.data.map((item: any) => {
+        return {
+          value: item.name,
+          id: item.id,
+        }
+      })
+      cb(data)
+    }
+  }
+
+  private handleSelect(item: any) {
+    this.projectNameChange(item.id, false)
   }
 
   private languageChange(val: string, stop: boolean) {
@@ -356,7 +388,7 @@ export default class ScaList extends VueBase {
     if (stop) {
       return
     }
-    this.searchObj.project_name = val
+    this.searchObj.project_id = val
     this.newSelectData()
   }
 
@@ -393,7 +425,7 @@ export default class ScaList extends VueBase {
     }
   }
 
-  private async getTableData() {
+  public async getTableData(flag?: undefined | boolean) {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -403,12 +435,17 @@ export default class ScaList extends VueBase {
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
       project_id: this.searchObj.project_id,
+      version_id: this.version,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.sca.scaList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     const tableData = data.reduce(
@@ -424,10 +461,14 @@ export default class ScaList extends VueBase {
     if (tableData.length < 20) {
       this.dataEnd = true
     }
-    this.tableData.push(...tableData)
+    if (flag === true) {
+      this.tableData = tableData
+    } else {
+      this.tableData.push(...tableData)
+    }
   }
 
-  private async scaSummary() {
+  public async scaSummary() {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
@@ -435,12 +476,17 @@ export default class ScaList extends VueBase {
       keyword: this.searchObj.keyword,
       order: this.searchObj.order,
       project_id: this.searchObj.project_id,
+      version_id: this.version,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.sca.scaSummary(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.searchOptionsObj.language = data.language
@@ -550,5 +596,8 @@ export default class ScaList extends VueBase {
       float: right;
     }
   }
+}
+.search-box {
+  text-align: center;
 }
 </style>

@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
 })
 
 const whiteList = ['/taint/search', '/taint/poolDetail']
@@ -21,7 +21,7 @@ const isWhiteList = (path: string) => {
   })
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to: any, from: any, next: any) => {
   Nprogress.start()
 
   if (!getToken() && isWhiteList(to.fullPath)) {
@@ -60,7 +60,7 @@ router.beforeEach((to, from, next) => {
   }
 })
 
-router.afterEach((to) => {
+router.afterEach((to: any) => {
   Nprogress.done()
   if (to.meta.name) {
     document.title = to.meta.name
@@ -69,7 +69,9 @@ router.afterEach((to) => {
 
 // 重复路由报错
 const originalPush = VueRouter.prototype.push
-VueRouter.prototype.push = function push(location: import('vue-router').RawLocation) {
+VueRouter.prototype.push = function push(
+  location: import('vue-router').RawLocation
+) {
   // @ts-ignore
   return originalPush.call(this, location).catch((err: any) => err)
 }

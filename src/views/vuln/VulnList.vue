@@ -32,19 +32,29 @@
             }}</span>
           </div>
         </div>
+        <div class="search-box">
+          <el-autocomplete
+            v-model="kw"
+            size="small"
+            style="margin: 12px 0 0 0"
+            class="commonInput"
+            clearable
+            placeholder="请输入项目名称搜索"
+            :fetch-suggestions="querySearchAsync"
+            @select="handleSelect"
+          ></el-autocomplete>
+        </div>
         <div
           v-for="item in searchOptionsObj.projects"
-          :key="item.project_name"
+          :key="item.id"
           class="flex-row-space-between module-line"
-          :class="
-            searchObj.project_name === item.project_name ? 'selectedLine' : ''
-          "
+          :class="searchObj.project_id === item.id ? 'selectedLine' : ''"
           :style="
             item.count === 0
               ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
               : { height: '30px' }
           "
-          @click="projectNameChange(item.project_name, item.count === 0)"
+          @click="projectNameChange(item.id, item.count === 0)"
         >
           <div class="selectOption">
             <span>
@@ -161,8 +171,9 @@
         <div class="selectForm">
           <el-select
             v-model="searchObj.order"
-            style="width: 160px; font-size: 14px"
-            class="commonSelect"
+            size="small"
+            style="width: 150px; font-size: 14px"
+            class="commonSelect vulnSelect"
             placeholder="请选择排序条件"
             clearable
             @change="newSelectData"
@@ -192,16 +203,18 @@
           <el-select
             v-model="searchObj.language"
             placeholder="请选择开发语言"
-            style="margin-left: 10px; width: 160px; font-size: 14px"
+            size="small"
+            style="margin-left: 10px; width: 150px; font-size: 14px"
             class="commonSelect"
             clearable
             @change="newSelectData"
           >
             <el-option label="JAVA" value="JAVA"></el-option>
-            <el-option label=".NET" value=".NET"></el-option>
+            <el-option label="PYTHON" value="PYTHON"></el-option>
           </el-select>
           <el-select
             v-model="searchObj.status"
+            size="small"
             placeholder="请选择漏洞状态"
             style="margin-left: 10px; width: 160px; font-size: 14px"
             class="commonSelect"
@@ -217,9 +230,10 @@
           <div class="selectInput">
             <el-input
               v-model="searchObj.url"
+              size="small"
               placeholder="请输入搜索条件，如：http://127.0.0.1:8080"
               class="commonInput"
-              style="width: 400px"
+              style="width: 370px"
               @keyup.enter.native="newSelectData"
             >
               <i
@@ -236,9 +250,11 @@
               tableData.length > 0 && tableData.every((item) => item.checked)
             "
             @change="selectAll"
-            >已选中{{
+            >已选中
+            <span style="color: #1a80f2">{{
               tableData.filter((item) => item.checked).length
-            }}项</el-checkbox
+            }}</span>
+            项</el-checkbox
           >
           <div>
             <el-button class="checkedAllBtn" @click="recheck('project')">
@@ -432,12 +448,33 @@ export default class VulnList extends VueBase {
     url: '',
     order: '',
     status: '已确认',
+    project_id: '',
   }
 
   created() {
     this.getTableData()
     this.vulnSummary()
   }
+
+  private kw = ''
+  private async querySearchAsync(queryString: string, cb: any) {
+    console.log(queryString)
+    const res = await this.services.setting.searchProject({ name: queryString })
+    if (res.status === 201) {
+      const data = res.data.map((item: any) => {
+        return {
+          value: item.name,
+          id: item.id,
+        }
+      })
+      cb(data)
+    }
+  }
+
+  private handleSelect(item: any) {
+    this.projectNameChange(item.id, false)
+  }
+
   private sortSelect(flag: any) {
     this.searchObj.sort = flag
     this.newSelectData()
@@ -456,6 +493,14 @@ export default class VulnList extends VueBase {
       if (type === 'all') {
         res = await this.services.vuln.vulRecheckAll({ type })
       } else {
+        if (this.tableData.length === 0) {
+          this.$message({
+            type: 'warning',
+            message: '请选择需要验证的漏洞',
+            showClose: true,
+          })
+          return
+        }
         const ids = this.tableData
           .map((item) => {
             if (item.checked) {
@@ -469,9 +514,13 @@ export default class VulnList extends VueBase {
       }
 
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
       } else {
-        this.$message.success(res.msg)
+        this.$message({ type: 'success', message: res.msg, showClose: true })
         await this.newSelectData()
       }
     })
@@ -495,6 +544,7 @@ export default class VulnList extends VueBase {
     this.searchObj.type = ''
     this.searchObj.project_name = ''
     this.searchObj.status = '已确认'
+    this.kw = ''
     this.newSelectData()
   }
 
@@ -526,7 +576,7 @@ export default class VulnList extends VueBase {
     if (stop) {
       return
     }
-    this.searchObj.project_name = val
+    this.searchObj.project_id = val
     this.newSelectData()
   }
 
@@ -571,12 +621,17 @@ export default class VulnList extends VueBase {
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
       status: this.searchObj.status,
+      project_id: this.searchObj.project_id,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     const tableData = data.reduce(
@@ -603,16 +658,21 @@ export default class VulnList extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
-      order: `${this.searchObj.sort === false && this.searchObj.order ? '-' : ''}${
-        this.searchObj.order
-      }`,
+      order: `${
+        this.searchObj.sort === false && this.searchObj.order ? '-' : ''
+      }${this.searchObj.order}`,
       status: this.searchObj.status,
+      project_id: this.searchObj.project_id,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.searchOptionsObj.language = data.language
@@ -622,7 +682,9 @@ export default class VulnList extends VueBase {
   }
 
   private goDetail(id: number) {
-    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
+    this.$router.push(
+      `/vuln/vulnDetail/${this.page}/${id}?status=` + this.searchObj.status
+    )
   }
 
   switchServerType(serverType: string) {
@@ -681,16 +743,16 @@ export default class VulnList extends VueBase {
   }
 }
 .sort-btn {
-  width: 38px;
-  height: 38px;
+  width: 32px;
+  height: 32px;
   border: 1px solid #dcdfe6;
   color: #606266;
   display: inline-block;
   background: #fff;
   border-radius: 4px;
   text-align: center;
-  line-height: 36px;
-  font-size: 14px;
+  line-height: 30px;
+  font-size: 12px;
   cursor: pointer;
 }
 .slider-warp {
@@ -772,23 +834,35 @@ export default class VulnList extends VueBase {
 }
 
 .main-warp {
-  padding-top: 14px;
   margin-left: 248px;
-  padding-bottom: 10px;
+  background: #fff;
+  padding: 16px 16px 10px 16px;
   .tool-box {
     position: fixed;
-    padding-top: 15px;
     width: 952px;
+    padding: 16px 16px 0 16px;
+    margin-left: -16px;
     top: 65px;
-    background: #f4f4f4;
     z-index: 900;
+    background: #fff;
+    border-bottom: 1px solid #eee;
   }
   .tool-box-placeholder {
     height: 80px;
   }
   .selectForm {
     width: 100%;
-
+    .vulnSelect {
+      /deep/.el-input__inner {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+    .sort-btn {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
     .selectInput {
       float: right;
     }
@@ -848,7 +922,7 @@ export default class VulnList extends VueBase {
       .top-stack {
         margin-top: 14px;
         position: relative;
-
+        color: #9199a2;
         &:before {
           content: '';
           width: 1px;
@@ -876,7 +950,7 @@ export default class VulnList extends VueBase {
 
       .bottom-stack {
         margin-top: 24px;
-
+        color: #9199a2;
         i {
           color: #6ec79f;
           font-size: 12px;
@@ -971,5 +1045,8 @@ export default class VulnList extends VueBase {
       color: #ddcc9e;
     }
   }
+}
+.search-box {
+  text-align: center;
 }
 </style>

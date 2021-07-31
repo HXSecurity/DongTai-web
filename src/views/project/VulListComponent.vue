@@ -140,7 +140,7 @@
           @change="newSelectData"
         >
           <el-option label="JAVA" value="JAVA"></el-option>
-          <el-option label=".NET" value=".NET"></el-option>
+          <el-option label="PYTHON" value="PYTHON"></el-option>
         </el-select>
         <el-select
           v-model="searchObj.status"
@@ -329,6 +329,7 @@ import { VulnListObj } from '@/views/vuln/types'
 
 @Component({ name: 'VulListComponent' })
 export default class VulListComponent extends VueBase {
+  @Prop() version: number | undefined
   @Prop(String) projectId!: string
   private page = 1
   private pageSize = 20
@@ -429,9 +430,17 @@ export default class VulListComponent extends VueBase {
       }
 
       if (res.status !== 201) {
-        this.$message.error(res.msg)
+        this.$message({
+          type: 'error',
+          message: res.msg,
+          showClose: true,
+        })
       } else {
-        this.$message.success(res.msg)
+        this.$message({
+          type: 'success',
+          message: res.msg,
+          showClose: true,
+        })
         await this.newSelectData()
       }
     })
@@ -502,7 +511,7 @@ export default class VulListComponent extends VueBase {
     }
   }
 
-  private async getTableData() {
+  public async getTableData(flag?: undefined | boolean) {
     const params = {
       page: this.page,
       pageSize: this.pageSize,
@@ -511,6 +520,7 @@ export default class VulListComponent extends VueBase {
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
+      version_id: this.version,
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
@@ -521,7 +531,11 @@ export default class VulListComponent extends VueBase {
     const { status, data, msg } = await this.services.vuln.vulnList(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     const tableData = data.reduce(
@@ -538,27 +552,36 @@ export default class VulListComponent extends VueBase {
     if (tableData.length < 20) {
       this.dataEnd = true
     }
-    this.tableData = [...this.tableData, ...tableData]
+    if (flag === true) {
+      this.tableData = tableData
+    } else {
+      this.tableData = [...this.tableData, ...tableData]
+    }
   }
 
-  private async vulnSummary() {
+  public async vulnSummary() {
     const params = {
       language: this.searchObj.language,
       level: this.searchObj.level,
       type: this.searchObj.type,
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
+      version_id: this.version,
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
       status: this.searchObj.status,
-      projectId: this.projectId,
+      project_id: this.projectId,
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.vuln.vulnSummary(params)
     this.loadingDone()
     if (status !== 201) {
-      this.$message.error(msg)
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
       return
     }
     this.searchOptionsObj.language = data.language

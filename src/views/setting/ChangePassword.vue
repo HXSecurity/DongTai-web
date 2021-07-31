@@ -126,7 +126,11 @@ export default class ChangePassword extends VueBase {
         const { status, msg } = await this.services.user.changePassword(params)
         this.loadingDone()
         if (status !== 201) {
-          this.$message.error(msg)
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
           return
         }
         await this.$router.push('/login')
