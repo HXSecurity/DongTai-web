@@ -282,6 +282,9 @@ export default class SearchCard extends VueBase {
         this.resStr = resT.data
         clearInterval(timer)
         this.buttonLoading = false
+      } else {
+        clearInterval(timer)
+        this.buttonLoading = false
       }
     }, 1000)
   }
