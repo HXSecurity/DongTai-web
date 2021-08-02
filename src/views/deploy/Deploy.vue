@@ -245,7 +245,7 @@
             <p>3. 检查网络情况</p>
             <p class="indent">
               在 Web 应用服务器中，检查是否可访问
-              http://a28754cd66991441d8d682808caecead-626172336.cn-north-1.elb.amazonaws.com.cn:8000
+              {{ openapi }}
               服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往
               github 给工程师提交 issue，我们会及时给您回复
             </p>
