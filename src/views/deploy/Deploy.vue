@@ -322,7 +322,7 @@ export default class Deploy extends VueBase {
         'Web Service：Django REST Framework',
         'python依赖包：psutil >= 5.8.0',
       ],
-      download: 'pip3  install ./ dongtai-agent-python.tar.gz',
+      download: 'pip3  install ./dongtai-agent-python.tar.gz',
     },
   }
   changeLanguage(language: string) {

@@ -14,7 +14,6 @@ export default () =>
     agentDeployInfo(): Promise<iResponse> {
       return request.get('/agent/deploy/info')
     }
-
     // 下载引擎
     agentDownload(url: string, language: string) {
       request
