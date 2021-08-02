@@ -259,8 +259,7 @@
         </div>
         <div class="right-video margin-t-8">
           <video controls>
-            <source src="movie.mp4" type="video/mp4" />
-            <source src="movie.ogg" type="video/ogg" />
+            <source :src="obj[language].video" type="video/mp4" />
             您的浏览器不支持 HTML5 video 标签。
           </video>
         </div>
@@ -310,6 +309,7 @@ export default class Deploy extends VueBase {
         '确认Agent端所在环境在我们的支持列表中。',
       ],
       download: 'java -jar agent.jar -m install -p <pid>',
+      video:'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/install_java_agent.mp4'
     },
     python: {
       key: 'PYTHON',
@@ -323,6 +323,7 @@ export default class Deploy extends VueBase {
         'python依赖包：psutil >= 5.8.0',
       ],
       download: 'pip3  install ./dongtai-agent-python.tar.gz',
+      video:'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/install_java_agent.mp4'
     },
   }
   changeLanguage(language: string) {

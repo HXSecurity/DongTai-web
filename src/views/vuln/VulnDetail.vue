@@ -377,7 +377,15 @@
                   <div v-if="item.tag" class="tag">
                     {{ item.tag }}
                   </div>
-                  <div class="file">file: {{ item.file }}</div>
+                  <el-tooltip
+                    class="item"
+                    effect="light"
+                    :disabled="item.file.length < 30"
+                    :content="item.file"
+                    placement="top"
+                  >
+                    <div class="file">file: {{ item.file }}</div>
+                  </el-tooltip>
                   <div class="line">line:{{ item.line_number }}</div>
                 </div>
               </div>
