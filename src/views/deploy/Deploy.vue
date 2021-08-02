@@ -309,7 +309,8 @@ export default class Deploy extends VueBase {
         '确认Agent端所在环境在我们的支持列表中。',
       ],
       download: 'java -jar agent.jar -m install -p <pid>',
-      video:'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/install_java_agent.mp4'
+      video:
+        'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/install_java_agent.mp4',
     },
     python: {
       key: 'PYTHON',
@@ -323,7 +324,8 @@ export default class Deploy extends VueBase {
         'python依赖包：psutil >= 5.8.0',
       ],
       download: 'pip3  install ./dongtai-agent-python.tar.gz',
-      video:'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/install_java_agent.mp4'
+      video:
+        'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
     },
   }
   changeLanguage(language: string) {
@@ -616,7 +618,7 @@ main {
     font-size: 14px;
     line-height: 20px;
     color: #4a72ae;
-    span{
+    span {
       cursor: pointer;
     }
   }

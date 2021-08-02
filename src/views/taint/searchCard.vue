@@ -68,10 +68,21 @@
           class="info"
           :class="info.relations.vulnerablities[0] && 'pointer'"
         >
-          <div
-            class="dot"
-            :class="levelClass(info.relations.vulnerablities[0].level_id)"
-          ></div>
+          <el-tooltip
+            class="item"
+            effect="light"
+            :content="
+              levelClass(info.relations.vulnerablities[0].level_id).title
+            "
+            placement="top"
+          >
+            <div
+              class="dot"
+              :class="
+                levelClass(info.relations.vulnerablities[0].level_id).level
+              "
+            ></div>
+          </el-tooltip>
           <span
             @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
           >
@@ -97,7 +108,14 @@
               class="vulnerablitie-item"
               @click="toVuln(item.vulnerablity_id)"
             >
-              <div class="dot" :class="levelClass(item.level_id)"></div>
+              <el-tooltip
+                class="item"
+                effect="light"
+                :content="levelClass(item.level_id).title"
+                placement="top"
+              >
+                <div class="dot" :class="levelClass(item.level_id).level"></div>
+              </el-tooltip>
               {{ item.vulnerablity_type }}
             </div>
             <span slot="reference" class="blue" style="margin-left: 6px"
@@ -198,7 +216,8 @@ export default class SearchCard extends VueBase {
 
   private levelClass(i: number) {
     const levelArr = ['low', 'middle', 'height', 'important']
-    return levelArr[i - 1]
+    const titleArr = ['低危', '中危', '高危', '严重']
+    return { level: levelArr[i - 1], title: titleArr[i - 1] }
   }
 
   private onCopy() {

@@ -318,7 +318,15 @@
                   placement="top-start"
                   :disabled="item.project_name.length <= 11"
                 >
-                  <span class="dot"> {{ item.project_name }}</span>
+                  <span
+                    class="dot"
+                    style="cursor: pointer"
+                    @click="
+                      $router.push('/project/projectDetail/' + item.project_id)
+                    "
+                  >
+                    {{ item.project_name }}</span
+                  >
                 </el-tooltip>
               </span>
               <span class="info" style="flex: 1.5">

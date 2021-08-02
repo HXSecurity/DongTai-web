@@ -135,7 +135,12 @@
             <i class="iconfont iconapp"></i>
             {{ $t('views.scaDetail.project_name') }}：
           </span>
-          {{ scaObj.project_name }}
+          <span
+            style="cursor: pointer"
+            @click="$router.push('/project/projectDetail/' + scaObj.project_id)"
+          >
+            {{ scaObj.project_name }}
+          </span>
         </div>
         <div class="info-line">
           <span>
