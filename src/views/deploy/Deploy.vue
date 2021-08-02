@@ -258,8 +258,12 @@
           {{ obj[language].name }} Agent 安装方法
         </div>
         <div class="right-video margin-t-8">
-          <video controls>
-            <source :src="obj[language].video" type="video/mp4" />
+          <video v-if="language === 'java'" controls>
+            <source :src="obj.java.video" type="video/mp4" />
+            您的浏览器不支持 HTML5 video 标签。
+          </video>
+          <video v-if="language === 'python'" controls>
+            <source :src="obj.python.video" type="video/mp4" />
             您的浏览器不支持 HTML5 video 标签。
           </video>
         </div>
