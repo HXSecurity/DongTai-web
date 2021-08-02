@@ -1,7 +1,13 @@
 <template>
   <div>
     <Header class="layoutHeader" />
-    <router-view class="layoutMain"></router-view>
+    <keep-alive>
+      <router-view
+        v-if="$route.meta.keepAlive"
+        class="layoutMain"
+      ></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" class="layoutMain"></router-view>
   </div>
 </template>
 

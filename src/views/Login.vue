@@ -16,7 +16,7 @@
           {{ $t('views.login.subTitle') }}
           <span class="line"></span>
         </div>
-        <el-form style="margin-top: 10px">
+        <el-form style="margin-top: 10px" @keyup.enter.native="login">
           <el-form-item :label="$t('views.login.user')">
             <el-input
               v-model="userName"
@@ -56,7 +56,6 @@
               type="primary"
               style="width: 100%; background: #4a72ae"
               @click="login"
-              @keyup.enter.native="login"
               >登录
             </el-button>
           </el-form-item>

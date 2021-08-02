@@ -319,7 +319,7 @@
       <div v-show="state === 0" class="markdownContent httpRequest">
         <MyMarkdownIt :content="res_md" style="color: #747c8c"></MyMarkdownIt>
       </div>
-      <!-- 污点流图-->
+      <!-- Stain flow vul-->
       <div
         v-if="vulnObj.vul.graph && vulnObj.vul.graph.length > 0"
         class="module-title"
@@ -393,7 +393,7 @@
           :content="vulnObj.strategy.repair_suggestion"
         ></MyMarkdownIt>
       </div>
-      <!--运行时环境-->
+      <!--Runtime environment-->
       <div v-if="vulnObj.server.runtime" class="module-title">
         {{ $t('views.vulnDetail.devEnv') }}
       </div>
@@ -402,7 +402,7 @@
           <span>{{ vulnObj.server.runtime }}</span>
         </div>
       </div>
-      <!--      环境变量-->
+      <!-- environment variable -->
       <div class="module-title">
         {{ $t('views.vulnDetail.path') }}
       </div>
