@@ -33,7 +33,6 @@
       </el-table-column>
 
       <el-table-column
-        v-if="userInfo.role === 1"
         :label="$t('views.strategyManage.fix')"
         prop="vul_fix"
         min-width="200px"
@@ -53,6 +52,7 @@
       </el-table-column>
 
       <el-table-column
+        v-if="userInfo.role === 1"
         :label="$t('views.strategyManage.status')"
         prop="state"
         width="100px"

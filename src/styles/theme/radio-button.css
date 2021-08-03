@@ -453,6 +453,6 @@
     .el-radio-button--mini .el-radio-button__inner.is-round {
       padding: 7px 15px; }
   .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
-    /*获得焦点时 样式提醒*/
+    /*Style reminder when getting focus*/
     -webkit-box-shadow: 0 0 2px 2px #2D82FF;
     box-shadow: 0 0 2px 2px #2D82FF; }

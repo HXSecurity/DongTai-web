@@ -56,9 +56,10 @@
           "
           @click="projectNameChange(item.id, item.count === 0)"
         >
-          <div class="selectOption">
+          <div class="selectOption" :title="item.project_name">
             <span>
-              {{ projectNameSplit(item.project_name, 12) }}
+              {{ projectNameSplit(item.project_name, 12)
+              }}{{ item.project_name.length > 12 ? '...' : '' }}
             </span>
           </div>
           <div class="num">
@@ -318,7 +319,15 @@
                   placement="top-start"
                   :disabled="item.project_name.length <= 11"
                 >
-                  <span class="dot"> {{ item.project_name }}</span>
+                  <span
+                    class="dot"
+                    style="cursor: pointer"
+                    @click="
+                      $router.push('/project/projectDetail/' + item.project_id)
+                    "
+                  >
+                    {{ item.project_name }}</span
+                  >
                 </el-tooltip>
               </span>
               <span class="info" style="flex: 1.5">

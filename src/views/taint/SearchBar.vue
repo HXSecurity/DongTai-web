@@ -4,6 +4,7 @@
       v-model="searchValue"
       placeholder="请输入查询内容"
       class="input-with-select"
+      @keyup.enter.native="enterSearch"
     >
       <el-select
         slot="prepend"

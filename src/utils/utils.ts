@@ -1,4 +1,4 @@
-// 格式化时间戳 2020.1.1 10:23:23
+// Format timestamp 2020.1.1 10:23:23
 export const formatTimestamp = (timestamp: number | any): string => {
   const addZero = (m: number) => {
     return m < 10 ? '0' + m : m
@@ -62,7 +62,7 @@ export const getPassedTime = (timestamp: number | any): string => {
   }
 }
 
-// 防抖
+// Anti shake
 export const debounce = (fn: any, wait: number) => {
   let timeout: any = null
   return () => {

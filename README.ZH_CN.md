@@ -47,5 +47,5 @@ $ npm run build
 4.修改nginx配置，设置前端接口对应的后端服务，nginx的配置可参考`nginx.conf`
 
 ### 文档
-- [官方文档](https://huoxianclub.github.io/LingZhi/#/)
+- [官方文档](https://hxsecurity.github.io/DongTai-Doc/#/)
 - [快速体验](http://aws.iast.huoxian.cn:8000/login)

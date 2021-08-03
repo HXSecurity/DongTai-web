@@ -51,7 +51,7 @@ ol, p, pre, small, span, strong, u, ul, var {
 }
 
 
-/*控制整个滚动条*/
+/*Controls the entire scroll bar*/
 ::-webkit-scrollbar {
   background-color: #ECF0F7;
   width: 10px;
@@ -59,12 +59,12 @@ ol, p, pre, small, span, strong, u, ul, var {
   background-clip: padding-box;
 }
 
-/*滚动条中间滑动部分*/
+/*Middle sliding part of scroll bar*/
 ::-webkit-scrollbar-thumb {
   background-color: #D3DBE6;
   border-radius: 5px;
 }
-/*滚动条右下角区域*/
+/*Scroll bar lower right area*/
 ::-webkit-scrollbar-corner {
   background-color: #ECF0F7;
 }

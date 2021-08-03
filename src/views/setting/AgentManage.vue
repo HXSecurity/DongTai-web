@@ -24,15 +24,24 @@
       </div>
     </div>
     <div class="button-bar">
-      <el-button size="small" class="resetAllBtn" @click="agentStart(0)"
-        >启用</el-button
-      >
-      <el-button size="small" class="resetAllBtn" @click="agentStop(0)"
-        >禁用</el-button
-      >
-      <el-button size="small" class="resetAllBtn" @click="deleteAgents"
-        >删除</el-button
-      >
+      <div style="color: rgb(56, 67, 90)">
+        已选中
+        <span style="color: rgb(74, 114, 174)">{{
+          multipleSelection.length
+        }}</span>
+        条
+      </div>
+      <div>
+        <el-button size="small" class="resetAllBtn" @click="agentStart(0)"
+          >启用</el-button
+        >
+        <el-button size="small" class="resetAllBtn" @click="agentStop(0)"
+          >禁用</el-button
+        >
+        <el-button size="small" class="resetAllBtn" @click="deleteAgents"
+          >删除</el-button
+        >
+      </div>
     </div>
     <el-table
       :data="tableData"
@@ -482,7 +491,7 @@ export default class AgentManage extends VueBase {
 }
 .button-bar {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding-bottom: 12px;
   align-items: center;
 }
