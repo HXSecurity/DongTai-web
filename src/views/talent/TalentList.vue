@@ -119,18 +119,6 @@
             <el-option label="禁用" :value="false"></el-option>
           </el-select>
         </el-form-item>
-        <!-- fixme 预留form表单，后续可能需要添加租户相关的联系信息 -->
-        <!-- <el-form-item :label="$t('views.userList.role')">
-          <el-select
-            v-model="talentForm.role"
-            class="addTalentInput"
-            clearable
-            style="width: 400px"
-          >
-            <el-option label="超级管理员" :value="1"></el-option>
-            <el-option label="普通用户" :value="0"></el-option>
-          </el-select>
-        </el-form-item> -->
         <el-form-item>
           <el-button type="text" class="submitBtn" @click="talentAdd">{{
             $t('views.talent.add.submit')

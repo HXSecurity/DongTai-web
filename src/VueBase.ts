@@ -4,7 +4,8 @@ import services from '@/services'
 export default class VueBase extends Vue {
   public services = services
 
-  private lockStack: Array<number> = [] // 锁栈
+  private lockStack: Array<number> = [] // Lock stack
+
   private loading: any
   loadingStart() {
     if (!this.lockStack.length) {

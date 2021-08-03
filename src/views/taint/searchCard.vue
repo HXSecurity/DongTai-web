@@ -39,16 +39,29 @@
       <div class="summary-item">
         <div class="label"><i class="iconfont icontanzhen"></i> 探针：</div>
         <div class="info">
-          <div
-            class="dot"
-            :class="info.relations.agent_is_running ? 'green' : 'red'"
-          ></div>
-          {{ info.relations.agent_name }}
+          <el-tooltip
+            class="item"
+            effect="light"
+            :content="info.relations.agent_is_running ? '运行中' : '已停止'"
+            placement="top"
+          >
+            <div
+              class="dot"
+              :class="info.relations.agent_is_running ? 'green' : 'red'"
+            ></div>
+          </el-tooltip>
+          <span style="width: 320px" :title="info.relations.agent_name">
+            {{ info.relations.agent_name }}
+          </span>
         </div>
       </div>
       <div class="summary-item">
         <div class="label"><i class="iconfont iconyonghu"></i> 用户：</div>
-        <div class="info">{{ info.relations.user_name }}</div>
+        <div class="info">
+          <span style="width: 60px" :title="info.relations.agent_name">{{
+            info.relations.user_name
+          }}</span>
+        </div>
       </div>
       <div v-if="info.relations.project_name" class="summary-item">
         <div class="label"><i class="iconfont iconxiangmu"></i> 项目：</div>
@@ -57,7 +70,9 @@
           :class="info.relations.project_name && 'pointer blue'"
           @click="goProject(info.relations.project_id)"
         >
-          {{ info.relations.project_name || '未绑定' }}
+          <span style="width: 100px" :title="info.relations.project_name">
+            {{ info.relations.project_name || '未绑定' }}
+          </span>
         </div>
       </div>
       <div v-if="info.relations.vulnerablities[0]" class="summary-item">
@@ -68,11 +83,24 @@
           class="info"
           :class="info.relations.vulnerablities[0] && 'pointer'"
         >
-          <div
-            class="dot"
-            :class="levelClass(info.relations.vulnerablities[0].level_id)"
-          ></div>
+          <el-tooltip
+            class="item"
+            effect="light"
+            :content="
+              levelClass(info.relations.vulnerablities[0].level_id).title
+            "
+            placement="top"
+          >
+            <div
+              class="dot"
+              :class="
+                levelClass(info.relations.vulnerablities[0].level_id).level
+              "
+            ></div>
+          </el-tooltip>
           <span
+            :title="info.relations.vulnerablities[0].vulnerablity_type"
+            style="max-width: 100px"
             @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
           >
             {{
@@ -97,10 +125,17 @@
               class="vulnerablitie-item"
               @click="toVuln(item.vulnerablity_id)"
             >
-              <div class="dot" :class="levelClass(item.level_id)"></div>
+              <el-tooltip
+                class="item"
+                effect="light"
+                :content="levelClass(item.level_id).title"
+                placement="top"
+              >
+                <div class="dot" :class="levelClass(item.level_id).level"></div>
+              </el-tooltip>
               {{ item.vulnerablity_type }}
             </div>
-            <span slot="reference" class="blue" style="margin-left: 6px"
+            <span slot="reference" class="blue" style="margin-left: 6px;font-size: 12px;margin-top:6px;"
               >+{{ info.vulnerablities_count.count - 1 }}</span
             >
           </el-popover>
@@ -175,14 +210,14 @@ export default class SearchCard extends VueBase {
     this.reqStr =
       (this.info.method_pools.req_header_fs_highlight ||
         this.info.method_pools.req_header_fs) +
-      '\n' +
+      '\n\n' +
       (this.info.method_pools.req_data_highlight ||
         this.info.method_pools.req_data)
 
     this.resStr =
       (this.info.method_pools.res_header_highlight ||
         this.info.method_pools.res_header) +
-      '\n' +
+      '\n\n' +
       (this.info.method_pools.res_body_highlight ||
         this.info.method_pools.res_body)
   }
@@ -197,8 +232,9 @@ export default class SearchCard extends VueBase {
   }
 
   private levelClass(i: number) {
-    const levelArr = ['low', 'middle', 'height', 'important']
-    return levelArr[i - 1]
+    const levelArr = ['important', 'height', 'middle', 'low']
+    const titleArr = ['高危', '中危', '低危', '无风险']
+    return { level: levelArr[i - 1], title: titleArr[i - 1] }
   }
 
   private onCopy() {
@@ -282,6 +318,9 @@ export default class SearchCard extends VueBase {
         this.resStr = resT.data
         clearInterval(timer)
         this.buttonLoading = false
+      } else {
+        clearInterval(timer)
+        this.buttonLoading = false
       }
     }, 1000)
   }
@@ -328,6 +367,13 @@ export default class SearchCard extends VueBase {
         display: flex;
         align-items: center;
         height: auto;
+        span {
+          display: inline-block;
+          overflow: hidden; //超出的文本隐藏
+          text-overflow: ellipsis; //溢出用省略号显示
+          white-space: nowrap; //溢出不换行
+        }
+
         .dot {
           width: 8px;
           height: 8px;

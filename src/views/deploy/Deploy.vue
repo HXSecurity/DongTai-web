@@ -245,7 +245,7 @@
             <p>3. 检查网络情况</p>
             <p class="indent">
               在 Web 应用服务器中，检查是否可访问
-              http://a28754cd66991441d8d682808caecead-626172336.cn-north-1.elb.amazonaws.com.cn:8000
+              {{ openapi }}
               服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往
               github 给工程师提交 issue，我们会及时给您回复
             </p>
@@ -258,11 +258,14 @@
           {{ obj[language].name }} Agent 安装方法
         </div>
         <div class="right-video margin-t-8">
-          <video controls>
-            <source src="movie.mp4" type="video/mp4" />
-            <source src="movie.ogg" type="video/ogg" />
-            您的浏览器不支持 HTML5 video 标签。
-          </video>
+            <video v-show="language === 'java'" controls>
+              <source :src="obj.java.video" type="video/mp4" />
+              您的浏览器不支持 HTML5 video 标签。
+            </video>
+            <video v-show="language === 'python'" controls>
+              <source :src="obj.python.video" type="video/mp4" />
+              您的浏览器不支持 HTML5 video 标签。
+            </video>
         </div>
         <div class="title margin-t-32">查阅更多文档</div>
         <div
@@ -310,6 +313,8 @@ export default class Deploy extends VueBase {
         '确认Agent端所在环境在我们的支持列表中。',
       ],
       download: 'java -jar agent.jar -m install -p <pid>',
+      video:
+        'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/install_java_agent.mp4',
     },
     python: {
       key: 'PYTHON',
@@ -322,7 +327,9 @@ export default class Deploy extends VueBase {
         'Web Service：Django REST Framework',
         'python依赖包：psutil >= 5.8.0',
       ],
-      download: 'pip3  install ./ dongtai-agent-python.tar.gz',
+      download: 'pip3  install ./dongtai-agent-python.tar.gz',
+      video:
+        'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
     },
   }
   changeLanguage(language: string) {
@@ -605,7 +612,7 @@ main {
   .right-video {
     background: #c4c4c4;
     border-radius: 2px;
-    height: 243px;
+    height: 196px;
     video {
       width: 100%;
       height: 100%;
@@ -615,7 +622,7 @@ main {
     font-size: 14px;
     line-height: 20px;
     color: #4a72ae;
-    span{
+    span {
       cursor: pointer;
     }
   }

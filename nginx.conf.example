@@ -23,8 +23,8 @@
          server_name iast.huoxian.cn;
          client_max_body_size 100M;
          location / {
-             root /usr/share/nginx/html;   #站点目录
-             index index.html index.htm;   #添加属性。
+             root /usr/share/nginx/html;   #Site directory
+             index index.html index.htm;   #Add attribute
              try_files $uri $uri/ /index.html;
          }
 

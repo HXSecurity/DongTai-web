@@ -36,7 +36,7 @@ const responseError = (error: any) => {
     router.push('/login')
   }
   if (error.response.status === 500) {
-    // 没有权限
+    // No permission
     Message.error('接口异常')
     return error
   }

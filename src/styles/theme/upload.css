@@ -604,7 +604,7 @@
   text-align: center;
   cursor: pointer;
   outline: none;
-  /* 照片墙模式 */ }
+  /* Photo wall mode */ }
   .el-upload__input {
     display: none; }
   .el-upload__tip {
@@ -739,11 +739,11 @@
       color: #2D82FF;
       cursor: pointer; }
     .el-upload-list__item.is-success:focus:not(:hover) {
-      /* 键盘focus */ }
+      /* Keyboard focus */ }
       .el-upload-list__item.is-success:focus:not(:hover) .el-icon-close-tip {
         display: inline-block; }
     .el-upload-list__item.is-success:not(.focusing):focus, .el-upload-list__item.is-success:active {
-      /* click时 */
+      /* click */
       outline-width: 0; }
       .el-upload-list__item.is-success:not(.focusing):focus .el-icon-close-tip, .el-upload-list__item.is-success:active .el-icon-close-tip {
         display: none; }

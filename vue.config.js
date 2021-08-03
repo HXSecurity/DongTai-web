@@ -9,11 +9,11 @@ module.exports = {
     config.resolve.alias.set('@', resolve('src'))
   },
   devServer: {
-    // 本地测试时，配置host，增加127.0.0.1 dev.iast.huoxian.cn
+    // During local test, configure host and add 127.0.0.1 dev.iast.huoxian.cn
     host: 'dev.iast.huoxian.cn',
-    // 启用 webpack 的模块热替换
+    // Module hot swap with webpack enabled
     hot: true,
-    // 只允许热替换
+    // Only hot replacements are allowed
     hotOnly: true,
     port: 80,
     open: true,

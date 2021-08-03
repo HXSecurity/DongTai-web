@@ -95,6 +95,9 @@ export default class Index extends VueBase {
     }
   }
   private async getList() {
+    if (!this.active) {
+      return
+    }
     this.dataEnd = true
     const keyArr = [
       'url',

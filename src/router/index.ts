@@ -29,7 +29,7 @@ router.beforeEach((to: any, from: any, next: any) => {
     return
   }
 
-  // 当前没有用户信息
+  // No permission
   if (!store.getters.userInfo && to.fullPath !== '/login') {
     store
       .dispatch('user/getUserInfo')
@@ -67,7 +67,7 @@ router.afterEach((to: any) => {
   }
 })
 
-// 重复路由报错
+// Duplicate route error
 const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(
   location: import('vue-router').RawLocation

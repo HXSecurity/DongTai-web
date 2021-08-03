@@ -3,6 +3,7 @@ export default {
     home: '首页',
     login: '登录',
     project: '项目配置',
+    projectManage: '项目配置',
     projectDetail: '项目详情',
     vuln: '应用漏洞',
     vulnList: '应用漏洞列表',

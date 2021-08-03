@@ -121,6 +121,7 @@ const routes: Array<RouteConfig> = [
         name: 'taint',
         redirect: '/taint/search',
         meta: {
+          keepAlive: true,
           disabled: true,
           name: i18n.t('menu.taintPool'),
         },
@@ -137,6 +138,7 @@ const routes: Array<RouteConfig> = [
             path: 'search',
             name: 'search',
             meta: {
+              keepAlive: true,
               disabled: true,
               name: i18n.t('menu.taintPool'),
             },
@@ -146,6 +148,7 @@ const routes: Array<RouteConfig> = [
             path: 'poolDetail/:id',
             name: 'poolDetail',
             meta: {
+              keepAlive: true,
               disabled: true,
               name: i18n.t('menu.poolDetail'),
             },
@@ -329,30 +332,8 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/deploy/Deploy.vue'),
       },
-      // {
-      //   path: '/role',
-      //   name: '/role',
-      //   meta: {
-      //     name: '角色管理',
-      //   },
-      //   component: () => import('@/views/role/role.vue'),
-      // },
     ],
   },
-  // {
-  //   path: '/login',
-  //   meta: {
-  //     name: i18n.t('menu.login'),
-  //   },
-  //   component: () => import('@/views/Login.vue'),
-  // },
-  // {
-  //   path: '/search',
-  //   meta: {
-  //     name: i18n.t('menu.search'),
-  //   },
-  //   component: () => import('@/views/search/Search.vue'),
-  // },
 ]
 
 export default routes
