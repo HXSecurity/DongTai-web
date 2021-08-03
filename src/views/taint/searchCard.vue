@@ -39,16 +39,29 @@
       <div class="summary-item">
         <div class="label"><i class="iconfont icontanzhen"></i> 探针：</div>
         <div class="info">
-          <div
-            class="dot"
-            :class="info.relations.agent_is_running ? 'green' : 'red'"
-          ></div>
-          {{ info.relations.agent_name }}
+          <el-tooltip
+            class="item"
+            effect="light"
+            :content="info.relations.agent_is_running ? '运行中' : '已停止'"
+            placement="top"
+          >
+            <div
+              class="dot"
+              :class="info.relations.agent_is_running ? 'green' : 'red'"
+            ></div>
+          </el-tooltip>
+          <span style="width: 320px" :title="info.relations.agent_name">
+            {{ info.relations.agent_name }}
+          </span>
         </div>
       </div>
       <div class="summary-item">
         <div class="label"><i class="iconfont iconyonghu"></i> 用户：</div>
-        <div class="info">{{ info.relations.user_name }}</div>
+        <div class="info">
+          <span style="width: 60px" :title="info.relations.agent_name">{{
+            info.relations.user_name
+          }}</span>
+        </div>
       </div>
       <div v-if="info.relations.project_name" class="summary-item">
         <div class="label"><i class="iconfont iconxiangmu"></i> 项目：</div>
@@ -57,7 +70,9 @@
           :class="info.relations.project_name && 'pointer blue'"
           @click="goProject(info.relations.project_id)"
         >
-          {{ info.relations.project_name || '未绑定' }}
+          <span style="width: 100px" :title="info.relations.project_name">
+            {{ info.relations.project_name || '未绑定' }}
+          </span>
         </div>
       </div>
       <div v-if="info.relations.vulnerablities[0]" class="summary-item">
@@ -84,6 +99,7 @@
             ></div>
           </el-tooltip>
           <span
+            style="width: 100px"
             @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
           >
             {{
@@ -215,8 +231,8 @@ export default class SearchCard extends VueBase {
   }
 
   private levelClass(i: number) {
-    const levelArr = ['low', 'middle', 'height', 'important']
-    const titleArr = ['低危', '中危', '高危', '严重']
+    const levelArr = ['important', 'height', 'middle', 'low']
+    const titleArr = ['高危', '中危', '低危', '无风险']
     return { level: levelArr[i - 1], title: titleArr[i - 1] }
   }
 
@@ -350,6 +366,13 @@ export default class SearchCard extends VueBase {
         display: flex;
         align-items: center;
         height: auto;
+        span {
+          display: inline-block;
+          overflow: hidden; //超出的文本隐藏
+          text-overflow: ellipsis; //溢出用省略号显示
+          white-space: nowrap; //溢出不换行
+        }
+
         .dot {
           width: 8px;
           height: 8px;

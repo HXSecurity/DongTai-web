@@ -55,8 +55,9 @@
             "
             @click="projectNameChange(item.project_id, item.count === 0)"
           >
-            <div class="selectOption">
-              {{ projectNameSplit(item.project_name, 12) }}
+            <div class="selectOption" :title="item.project_name">
+              {{ projectNameSplit(item.project_name, 12)
+              }}{{ item.project_name.length > 12 ? '...' : '' }}
             </div>
             <div class="num">
               {{ item.count }}

@@ -82,12 +82,14 @@
               <i class="iconfont iconweixian"></i>
               {{ item.level }}
             </span>
-            <span>
+            <span style="display: flex; align-items: center">
               <i
                 class="iconfont iconbanben-2"
                 style="color: #a2a5ab; font-size: 14px"
               ></i>
-              {{ item.version }}
+              <span class="long-dot" :title="item.version">
+                {{ item.version }}
+              </span>
             </span>
           </div>
         </div>
@@ -503,5 +505,13 @@ export default class ScaDetail extends VueBase {
 .detail-module-content {
   font-size: 14px;
   color: #38435a;
+}
+.long-dot {
+  display: inline-block;
+  overflow: hidden; //超出的文本隐藏
+  text-overflow: ellipsis; //溢出用省略号显示
+  white-space: nowrap; //溢出不换行
+  max-width: 70px;
+  margin-left: 6px;
 }
 </style>

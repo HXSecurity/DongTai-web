@@ -55,5 +55,5 @@ $ npm run build
 
 ###Documentation
 
-- [official documents]（ https://huoxianclub.github.io/LingZhi/#/ )
-- [quick experience]（ http://aws.iast.huoxian.cn:8000/login )
+- [official documents](https://hxsecurity.github.io/DongTai-Doc/#/)
+- [quick experience](http://aws.iast.huoxian.cn:8000/login)
