@@ -57,7 +57,7 @@
           {{ $t('menu.logManage') }}
         </div>
         <div
-          v-if="userInfo.role === 1"
+          v-if="userInfo.role === 1 || userInfo.role === 2"
           class="menu-item"
           :class="curModule('/setting/serverRegister') ? 'currentModule' : ''"
           @click="$router.push('/setting/serverRegister')"

@@ -52,7 +52,7 @@
       </el-table-column>
 
       <el-table-column
-        v-if="userInfo.role === 1"
+        v-if="userInfo.role === 1 || userInfo.role === 2"
         :label="$t('views.strategyManage.status')"
         prop="state"
         width="100px"
@@ -68,7 +68,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="userInfo.role === 1" label="操作" width="160px">
+      <el-table-column v-if="userInfo.role === 1 || userInfo.role === 2" label="操作" width="160px">
         <template slot-scope="{ row }">
           <el-button
             v-if="!row.isEdit"
