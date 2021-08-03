@@ -278,7 +278,7 @@ export default class SearchCard extends VueBase {
       this.$router.push('/vuln/vulnDetail/1/' + id)
     }
   }
-  private async getMethodPool(isReplay? = false) {
+  private async getMethodPool(isReplay?: boolean) {
     const res = await this.services.taint.graph({
       method_pool_id: this.info.method_pools.id,
       method_pool_type: isReplay ? 'replay' : 'normal',
@@ -319,7 +319,13 @@ export default class SearchCard extends VueBase {
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
         this.resStr = resT.data
-        await this.getMethodPool(true)
+        this.graphData = {
+          nodes: [],
+          edges: [],
+        }
+        this.$nextTick(async () => {
+          await this.getMethodPool(true)
+        })
         clearInterval(timer)
         this.buttonLoading = false
       } else if (resT.status === 203) {
