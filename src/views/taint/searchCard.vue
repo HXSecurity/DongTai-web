@@ -99,7 +99,8 @@
             ></div>
           </el-tooltip>
           <span
-            style="width: 100px"
+            :title="info.relations.vulnerablities[0].vulnerablity_type"
+            style="max-width: 100px"
             @click="toVuln(info.relations.vulnerablities[0].vulnerablity_id)"
           >
             {{
@@ -134,7 +135,7 @@
               </el-tooltip>
               {{ item.vulnerablity_type }}
             </div>
-            <span slot="reference" class="blue" style="margin-left: 6px"
+            <span slot="reference" class="blue" style="margin-left: 6px;font-size: 12px;margin-top:6px;"
               >+{{ info.vulnerablities_count.count - 1 }}</span
             >
           </el-popover>
