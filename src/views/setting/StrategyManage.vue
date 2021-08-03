@@ -68,7 +68,11 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column v-if="userInfo.role === 1 || userInfo.role === 2" label="操作" width="160px">
+      <el-table-column
+        v-if="userInfo.role === 1 || userInfo.role === 2"
+        label="操作"
+        width="160px"
+      >
         <template slot-scope="{ row }">
           <el-button
             v-if="!row.isEdit"
@@ -197,42 +201,33 @@ export default class StrategyManage extends VueBase {
   }
 
   private async stateChange(id: number, state: string) {
-    if (this.$store.getters.userInfo.role === 1) {
-      if (state === 'enable') {
-        this.loadingStart()
-        const { status, msg } = await this.services.setting.strategyDisable(id)
-        this.loadingDone()
-        if (status !== 201) {
-          this.$message({
-            type: 'error',
-            message: msg,
-            showClose: true,
-          })
-          return
-        }
-        await this.getTableData()
+    if (state === 'enable') {
+      this.loadingStart()
+      const { status, msg } = await this.services.setting.strategyDisable(id)
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
       }
-      if (state === 'disable') {
-        this.loadingStart()
-        const { status, msg } = await this.services.setting.strategyEnable(id)
-        this.loadingDone()
-        if (status !== 201) {
-          this.$message({
-            type: 'error',
-            message: msg,
-            showClose: true,
-          })
-          return
-        }
-        await this.getTableData()
+      await this.getTableData()
+    }
+    if (state === 'disable') {
+      this.loadingStart()
+      const { status, msg } = await this.services.setting.strategyEnable(id)
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
       }
-    } else {
-      this.$message({
-        showClose: true,
-        message: '当前用户无修改权限',
-        type: 'error',
-      })
-      return
+      await this.getTableData()
     }
   }
 }
