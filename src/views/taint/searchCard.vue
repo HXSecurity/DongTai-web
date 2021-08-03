@@ -210,14 +210,14 @@ export default class SearchCard extends VueBase {
     this.reqStr =
       (this.info.method_pools.req_header_fs_highlight ||
         this.info.method_pools.req_header_fs) +
-      '\n' +
+      '\n\n' +
       (this.info.method_pools.req_data_highlight ||
         this.info.method_pools.req_data)
 
     this.resStr =
       (this.info.method_pools.res_header_highlight ||
         this.info.method_pools.res_header) +
-      '\n' +
+      '\n\n' +
       (this.info.method_pools.res_body_highlight ||
         this.info.method_pools.res_body)
   }
