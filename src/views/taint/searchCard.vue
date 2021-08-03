@@ -318,7 +318,7 @@ export default class SearchCard extends VueBase {
       this.buttonLoading = true
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
-        this.resStr = resT.data
+        this.resStr = resT.data.response
         this.graphData = {
           nodes: [],
           edges: [],
