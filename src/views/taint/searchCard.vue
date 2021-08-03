@@ -135,7 +135,10 @@
               </el-tooltip>
               {{ item.vulnerablity_type }}
             </div>
-            <span slot="reference" class="blue" style="margin-left: 6px;font-size: 12px;margin-top:6px;"
+            <span
+              slot="reference"
+              class="blue"
+              style="margin-left: 6px; font-size: 12px; margin-top: 6px"
               >+{{ info.vulnerablities_count.count - 1 }}</span
             >
           </el-popover>
@@ -275,10 +278,10 @@ export default class SearchCard extends VueBase {
       this.$router.push('/vuln/vulnDetail/1/' + id)
     }
   }
-  private async getMethodPool() {
+  private async getMethodPool(isReplay? = false) {
     const res = await this.services.taint.graph({
       method_pool_id: this.info.method_pools.id,
-      method_pool_type: 'normal',
+      method_pool_type: isReplay ? 'replay' : 'normal',
     })
     this.graphData = res.data
   }
@@ -316,9 +319,10 @@ export default class SearchCard extends VueBase {
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
         this.resStr = resT.data
+        await this.getMethodPool(true)
         clearInterval(timer)
         this.buttonLoading = false
-      } else {
+      } else if (resT.status === 203) {
         clearInterval(timer)
         this.buttonLoading = false
       }
