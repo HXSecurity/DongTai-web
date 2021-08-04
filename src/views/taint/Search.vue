@@ -5,34 +5,34 @@
     </div>
     <transition name="fade">
       <div v-if="!active" class="desc">
-        <div class="title">常用查询语法：</div>
+        <div class="title">{{ $t('views.search.commonly') }}：</div>
         <div class="example-box">
           <div class="example">
-            <div class="label">URL</div>
+            <div class="label">{{ $t('views.search.url') }}</div>
             <div class="info">(.*?)/druid/.*?</div>
           </div>
           <div class="example">
-            <div class="label">请求体</div>
+            <div class="label">{{ $t('views.search.req_data') }}</div>
             <div class="info">(.*?)whoami(.*?)</div>
           </div>
           <div class="example">
-            <div class="label">方法签名</div>
+            <div class="label">{{ $t('views.search.signature') }}</div>
             <div class="info">whoami</div>
           </div>
           <div class="example">
-            <div class="label">响应头</div>
+            <div class="label">{{ $t('views.search.res_header') }}</div>
             <div class="info">set-cookie</div>
           </div>
           <div class="example">
-            <div class="label">请求头</div>
+            <div class="label">{{ $t('views.search.req_header_fs') }}</div>
             <div class="info">(.*?)exec</div>
           </div>
           <div class="example">
-            <div class="label">响应体</div>
+            <div class="label">{{ $t('views.search.req_data') }}</div>
             <div class="info">&lt;script&gt; alert(1) &lt;/script&gt;</div>
           </div>
           <div class="example">
-            <div class="label">污点数据</div>
+            <div class="label">{{ $t('views.search.sinkvalues') }}</div>
             <div class="info">(.*?)rememberMe(.*?)</div>
           </div>
         </div>
@@ -50,7 +50,7 @@
           </div>
         </template>
         <template v-else>
-          <div class="no-data">无匹配数据</div>
+          <div class="no-data">{{ $t('views.search.empty') }}</div>
         </template>
       </div>
     </transition>
@@ -87,7 +87,7 @@ export default class Index extends VueBase {
     this.tableList = []
     this.afterkeys = ''
     if (!value) {
-      this.$message.warning('请输入搜索内容')
+      this.$message.warning(this.$t('views.search.warning') as string)
     }
     if (value) {
       this.changeActive()

@@ -50,7 +50,7 @@
                 style="color: #5782db"
                 @click="getTableData"
               >
-                刷新
+                {{ $t('views.scaDetail.reload') }}
               </el-button>
             </div>
           </div>
@@ -508,9 +508,9 @@ export default class ScaDetail extends VueBase {
 }
 .long-dot {
   display: inline-block;
-  overflow: hidden; //超出的文本隐藏
-  text-overflow: ellipsis; //溢出用省略号显示
-  white-space: nowrap; //溢出不换行
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   max-width: 70px;
   margin-left: 6px;
 }

@@ -20,7 +20,7 @@
           width="80px"
         ></el-table-column>
         <el-table-column
-          :label="'请求方法' /*$t('views.scaList.tableHeaders.application')*/"
+          :label="$t('views.scaList.tableHeaders.http_method')"
           prop="http_method"
         ></el-table-column>
         <el-table-column
@@ -30,12 +30,12 @@
         ></el-table-column>
         <el-table-column
           show-overflow-tooltip
-          :label="'请求体' /*$t('views.scaList.tableHeaders.level')*/"
+          :label="$t('views.scaList.tableHeaders.req_header')"
           prop="req_header"
           width="100px"
         ></el-table-column>
         <el-table-column
-          :label="'方法池' /*$t('views.scaList.tableHeaders.level')*/"
+          :label="$t('views.scaList.tableHeaders.method_pool')"
           prop="method_pool"
           :show-overflow-tooltip="true"
           width="500px"
@@ -43,18 +43,18 @@
         >
         </el-table-column>
         <el-table-column
-          :label="'上下文' /*$t('views.scaList.tableHeaders.count')*/"
+          :label="$t('views.scaList.tableHeaders.context_path')"
           show-overflow-tooltip
           prop="context_path"
           width="80px"
         ></el-table-column>
         <el-table-column
-          :label="'创建时间' /*$t('views.scaList.tableHeaders.time')*/"
+          :label="$t('views.scaList.tableHeaders.create_time')"
           prop="create_time"
           width="160px"
         ></el-table-column>
         <el-table-column
-          :label="'更新时间' /**$t('views.scaList.tableHeaders.time') */"
+          :label="$t('views.scaList.tableHeaders.update_time')"
           prop="update_time"
           width="160px"
         ></el-table-column>
@@ -69,10 +69,12 @@
       <span slot="footer" class="dialog-footer">
         <p v-if="temp_header === null" v-html="temp_json"></p>
         <p v-if="temp_json === null" v-html="temp_header"></p>
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button @click="dialogVisible = false">{{
+          $t('views.scaList.tableHeaders.clear')
+        }}</el-button>
+        <el-button type="primary" @click="dialogVisible = false">{{
+          $t('views.scaList.tableHeaders.enter')
+        }}</el-button>
       </span>
     </el-dialog>
   </main>
@@ -170,10 +172,12 @@ export default class TaintPool extends VueBase {
   showMethodPool(row: any, column: any, cell: any, event: any) {
     this.temp_header = null
     this.temp_json = null
-    if (column.label === '方法池') {
+    if (column.label === this.$t('views.scaList.tableHeaders.method_pool')) {
       this.temp_title = column.label
       this.temp_json = row.method_pool
-    } else if (column.label === '请求体') {
+    } else if (
+      column.label === this.$t('views.scaList.tableHeaders.req_header')
+    ) {
       this.temp_title = column.label
       this.temp_header = row.req_header.replace(/\n/gm, '<br/>')
     }
@@ -181,11 +185,11 @@ export default class TaintPool extends VueBase {
   }
 
   handleClose(done: any) {
-    this.$confirm('确认关闭？')
-      .then((_) => {
+    this.$confirm(this.$t('views.scaList.tableHeaders.close') as string).then(
+      (_) => {
         done()
-      })
-      .catch((_) => {})
+      }
+    )
   }
 }
 </script>

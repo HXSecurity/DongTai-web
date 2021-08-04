@@ -6,7 +6,9 @@
       </el-form-item>
     </el-form>
     <div class="btn-box">
-      <el-button size="small" class="btn" @click="setOpenapi">保 存</el-button>
+      <el-button size="small" class="btn" @click="setOpenapi">{{
+        $t('views.serverRegister.save')
+      }}</el-button>
     </div>
   </div>
 </template>
@@ -42,7 +44,11 @@ export default class StrategyManage extends VueBase {
       if (this.$route.query.needBack) {
         this.$router.push('/deploy')
       } else {
-        this.$message({ type: 'success', message: '保存成功', showClose: true })
+        this.$message({
+          type: 'success',
+          message: this.$t('views.serverRegister.saveSuccess') as string,
+          showClose: true,
+        })
       }
     }
   }

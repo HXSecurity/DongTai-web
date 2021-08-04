@@ -79,7 +79,7 @@
       </div>
       <div v-else>
         <el-button type="text" class="anent" @click="buildIAST">
-          部署IAST
+          {{ $t('base.deploy') }}IAST
         </el-button>
         <el-dropdown>
           <div style="height: 64px" class="flex-column-center">
@@ -96,7 +96,7 @@
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <p @click="logOut">退出</p>
+              <p @click="logOut">{{ $t('base.logout') }}</p>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -129,14 +129,14 @@ export default class Header extends VueBase {
         if (this.userInfo.role === 1) {
           this.$message({
             type: 'warning',
-            message: '请先配置openapi',
+            message: this.$t('base.setOpenapi') as string,
             showClose: true,
           })
           this.$router.push('/setting/serverRegister?needBack=1')
         } else {
           this.$message({
             type: 'warning',
-            message: '请联系管理员配置openapi',
+            message: this.$t('base.helpOpenapi') as string,
             showClose: true,
           })
         }

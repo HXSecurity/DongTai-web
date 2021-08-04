@@ -1,19 +1,19 @@
 <template>
   <main>
     <div class="titleLine flex-row-space-between">
-      日志管理
+      {{ $t('log.title') }}
       <div class="btn-warp">
         <el-button type="text" class="btn" @click="logExport">
           <i class="iconfont icondaochu-5"></i>
-          导出
+          {{ $t('log.exportBtn') }}
         </el-button>
         <el-button type="text" class="btn" @click="deleteDialogShow">
           <i class="iconfont iconshanchu-6"></i>
-          删除
+          {{ $t('log.deleteBtn') }}
         </el-button>
         <el-button type="text" class="btn" @click="clearDialogOpen = true">
           <i class="iconfont icon7-7xiaochugeshi"></i>
-          清空
+          {{ $t('log.clearBtn') }}
         </el-button>
       </div>
     </div>
@@ -28,13 +28,16 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="用户名"
+        :label="$t('log.username')"
         prop="username"
         width="200px"
       ></el-table-column>
-      <el-table-column label="操作" prop="change_message"></el-table-column>
       <el-table-column
-        label="操作时间"
+        :label="$t('log.handle')"
+        prop="change_message"
+      ></el-table-column>
+      <el-table-column
+        :label="$t('log.handleTime')"
         prop="action_time"
         width="170px"
       ></el-table-column>
@@ -44,7 +47,7 @@
         v-model="selectAllPage"
         style="margin-top: 10px; margin-left: 10px"
         @change="selectAllChange"
-        >本页全选</el-checkbox
+        >{{ $t('log.selectAllPage') }}</el-checkbox
       >
       <el-pagination
         style="text-align: right; margin-top: 10px"
@@ -55,39 +58,51 @@
         @current-change="currentChange"
       ></el-pagination>
     </div>
-    <el-dialog :visible.sync="deleteDialogOpen" title="删除日志" width="25%">
+    <el-dialog
+      :visible.sync="deleteDialogOpen"
+      :title="$t('log.deleteTitle')"
+      width="25%"
+    >
       <div style="text-align: center">
-        <p style="color: #959fb4">日志删除后，将不可恢复</p>
-        <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
+        <p style="color: #959fb4">{{ $t('log.deleteInfo') }}</p>
+        <p style="color: #959fb4; margin-top: 14px">
+          {{ $t('log.deleteDesc') }}
+        </p>
       </div>
       <div slot="footer" style="text-align: center">
         <el-button type="text" class="confirmDel" @click="logDelete">
-          确认删除
+          {{ $t('log.deleteEnter') }}
         </el-button>
         <el-button
           type="text"
           class="cancelDel"
           @click="deleteDialogOpen = false"
         >
-          取消
+          {{ $t('log.deleteClear') }}
         </el-button>
       </div>
     </el-dialog>
-    <el-dialog :visible.sync="clearDialogOpen" title="清空日志" width="25%">
+    <el-dialog
+      :visible.sync="clearDialogOpen"
+      :title="$t('log.clearTitle')"
+      width="25%"
+    >
       <div style="text-align: center">
-        <p style="color: #959fb4">日志清空后，将不可恢复</p>
-        <p style="color: #959fb4; margin-top: 14px">请确认是否清空？</p>
+        <p style="color: #959fb4">{{ $t('log.deleteInfo') }}</p>
+        <p style="color: #959fb4; margin-top: 14px">
+          {{ $t('log.clearDesc') }}
+        </p>
       </div>
       <div slot="footer" style="text-align: center">
         <el-button type="text" class="confirmDel" @click="logClear">
-          确认清空
+          {{ $t('log.clearEnter') }}
         </el-button>
         <el-button
           type="text"
           class="cancelDel"
           @click="clearDialogOpen = false"
         >
-          取消
+          {{ $t('log.clearClear') }}
         </el-button>
       </div>
     </el-dialog>
@@ -165,7 +180,7 @@ export default class LogManage extends VueBase {
     if (this.selectIdSet.length <= 0) {
       this.$message({
         showClose: true,
-        message: '请选择日志',
+        message: this.$t('log.choseLog') as string,
         type: 'error',
       })
       return
@@ -215,7 +230,7 @@ export default class LogManage extends VueBase {
     if (this.selectIdSet.length <= 0) {
       this.$message({
         showClose: true,
-        message: '请选择日志',
+        message: this.$t('log.choseLog') as string,
         type: 'error',
       })
       return

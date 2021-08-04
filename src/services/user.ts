@@ -6,7 +6,7 @@ interface loginParams {
   password: string
 }
 
-// 修改密码
+// Change Password
 interface changePasswordParams {
   username: string
   old_password: string
@@ -26,32 +26,32 @@ interface UserAddParams {
 
 export default () =>
   new (class {
-    // 获取验证码
+    // Get verification code
     initCaptcha(): Promise<iResponse> {
       return request.get('/captcha/refresh')
     }
 
-    // 登陆
+    // Login
     login(params: loginParams): Promise<iResponse> {
       return request.post('/user/login', params)
     }
 
-    // 获取用户信息
+    // Get user information
     getUserInfo(): Promise<iResponse> {
       return request.get('/user/info')
     }
 
-    // 退出登陆
+    // logout
     logout(): Promise<iResponse> {
       return request.get('/user/logout')
     }
 
-    // 修改密码
+    // changePassword
     changePassword(params: changePasswordParams): Promise<iResponse> {
       return request.post('/user/changePassword', params)
     }
 
-    // 用户列表
+    // userList
     userList(params: {
       page: number
       pageSize: number
@@ -60,12 +60,12 @@ export default () =>
       return request.get('/users', { params })
     }
 
-    // 新增用户
+    // userAdd
     userAdd(params: UserAddParams): Promise<iResponse> {
       return request.put('/user/add', params)
     }
 
-    // 修改用户信息
+    // userEdit
     userEdit(params: UserAddParams): Promise<iResponse> {
       return request.post('/user/' + params.uid, params)
     }
@@ -74,17 +74,17 @@ export default () =>
       return request.delete('/user/' + params.uid + '/delete')
     }
 
-    // 部门列表
+    // departmentList
     departmentList(): Promise<iResponse> {
       return request.get('/departments')
     }
 
-    // 获取用户token、系统更新url
+    // Get user token and system update URL
     userToken(): Promise<iResponse> {
       return request.get('/user/token')
     }
 
-    // 用户列表
+    // User list
     reset(params: { userId: number }): Promise<iResponse> {
       return request.post('/user/password/reset', params)
     }

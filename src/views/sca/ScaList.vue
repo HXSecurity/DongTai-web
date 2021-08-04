@@ -38,7 +38,7 @@
               style="margin: 12px 0 0 0"
               class="commonInput"
               clearable
-              placeholder="请输入项目名称搜索"
+              :placeholder="$t('views.scaList.searchName')"
               :fetch-suggestions="querySearchAsync"
               @select="handleSelect"
             ></el-autocomplete>
@@ -141,7 +141,7 @@
           v-model="searchObj.order"
           style="width: 160px; font-size: 14px"
           class="commonSelect"
-          placeholder="请选择排序条件"
+          :placeholder="$t('views.scaList.sort')"
           clearable
           @change="newSelectData"
         >
@@ -154,7 +154,7 @@
         </el-select>
         <el-select
           v-model="searchObj.language"
-          placeholder="请选择开发语言"
+          :placeholder="$t('views.scaList.developLanguage')"
           style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
@@ -167,7 +167,7 @@
           <el-input
             v-model="searchObj.keyword"
             style="width: 412px"
-            placeholder="请输入搜索条件，如：spring"
+            :placeholder="$t('views.scaList.searchExample')"
             class="commonInput"
             @keyup.enter.native="newSelectData"
           >

@@ -4,11 +4,13 @@ import VueI18n from 'vue-i18n'
 Vue.use(VueI18n)
 
 import zh_cn from './zh_cn'
+import en from './en'
 
-const DEFAULT_LANG = 'zh_cn'
+const DEFAULT_LANG = 'en'
 
 const locals = {
   zh_cn: zh_cn,
+  en: en,
 }
 
 export const i18n = new VueI18n({
