@@ -166,7 +166,7 @@
               v-else
               v-model="scope.row.version_name"
               size="small"
-              placeholder="版本名称，如：v1"
+              :placeholder="$t('views.projectDetail.search_version_name')"
             />
           </template>
         </el-table-column>
@@ -181,7 +181,7 @@
               v-else
               v-model="scope.row.description"
               size="small"
-              placeholder="版本描述，如：xxx业务第x次迭代"
+              :placeholder="$t('views.projectDetail.search_description')"
             />
           </template>
         </el-table-column>
@@ -557,7 +557,9 @@ export default class ProjectDetail extends VueBase {
                 name: item.type_name,
                 value: item.type_count,
                 tooltip: {
-                  formatter: '类型<br />{b0}: {c0} ({d}%)<br />',
+                  formatter:
+                    this.$t('views.projectDetail.pieType') +
+                    '<br />{b0}: {c0} ({d}%)<br />',
                 },
               })
               return list
@@ -630,24 +632,34 @@ export default class ProjectDetail extends VueBase {
   projectExport() {
     request
       .get(`/project/export?pid=${this.$route.params.pid}`, {
-        responseType: 'blob', // 告诉服务器我们需要的响应格式
+        responseType: 'blob',
       })
       .then((res: any) => {
         if (res.hasOwnProperty('response')) {
-          this.$message.error({ message: '报告导出失败', showClose: true })
+          this.$message.error({
+            message: this.$t('views.projectDetail.exportFail') as string,
+            showClose: true,
+          })
         } else {
           const blob = new Blob([res], {
-            type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
+            type: 'application/octet-stream',
           })
           const link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
           link.download = this.projectObj.name + '.doc'
           link.click()
-          this.$message.success({ message: '报告导出成功', showClose: true })
+
+          this.$message.success({
+            message: this.$t('views.projectDetail.exportSuccess') as string,
+            showClose: true,
+          })
         }
       })
       .catch((error) => {
-        this.$message.error({ message: '报告导出失败', showClose: true })
+        this.$message.error({
+          message: this.$t('views.projectDetail.exportFail') as string,
+          showClose: true,
+        })
       })
   }
 

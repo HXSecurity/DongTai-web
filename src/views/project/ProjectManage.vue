@@ -8,13 +8,13 @@
           @click="$router.push('/project/projectEdit')"
         >
           <i class="iconfont iconxinzengxiangmu-3"></i>
-          新建项目
+          {{ $t('views.projectManage.add') }}
         </el-button>
       </div>
       <div class="flex-column-center">
         <el-input
           v-model="searchObj.name"
-          placeholder="请输入项目名称"
+          :placeholder="$t('views.projectManage.searchName')"
           style="width: 462px"
           size="mini"
           @keyup.enter.native="newSelectData"

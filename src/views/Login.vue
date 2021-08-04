@@ -56,7 +56,7 @@
               type="primary"
               style="width: 100%; background: #4a72ae"
               @click="login"
-              >登录
+              >{{ $t('base.login') }}
             </el-button>
           </el-form-item>
         </el-form>

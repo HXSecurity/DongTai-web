@@ -1,6 +1,6 @@
-/*默认样式，最佳实践*/
+/*Default styles, best practices*/
 
-/*全局属性*/
+/*Global properties*/
 #nice {
     font-size: 16px;
     color: black;
@@ -15,7 +15,7 @@
     /* margin-top: -10px; 解决开头空隙过大问题*/
 }
 
-/*段落*/
+/*paragraph*/
 #nice p {
     font-size: 16px;
     padding-top: 8px;
@@ -26,7 +26,7 @@
     color: #747C8C;
 }
 
-/*标题*/
+/*title*/
 #nice h1,
 #nice h2,
 #nice h3,
@@ -82,7 +82,7 @@
     display: none;
 }
 
-/*列表*/
+/*list*/
 #nice ul,
 #nice ol {
     margin-top: 8px;
@@ -108,11 +108,11 @@
     margin-bottom: 5px;
     line-height: 26px;
     text-align: left;
-    color: rgb(1, 1, 1); /* 只要是纯黑色微信编辑器就会把color这个属性吞掉。。。*/
+    color: rgb(1, 1, 1); /* As long as it is pure black, the wechat editor will swallow the attribute color。。。*/
     font-weight: 500;
 }
 
-/*引用*/
+/*quote*/
 #nice blockquote {
     display: block;
     font-size: 0.9em;
@@ -141,7 +141,7 @@
     font-weight: normal;
 }
 
-/*链接*/
+/*link*/
 #nice a {
     text-decoration: none;
     color: #1e6bb8;
@@ -150,31 +150,31 @@
     border-bottom: 1px solid #1e6bb8;
 }
 
-/*加粗*/
+/*Bold*/
 #nice strong {
     font-weight: bold;
     color: black;
 }
 
-/*斜体*/
+/*Italics*/
 #nice em {
     font-style: italic;
     color: black;
 }
 
-/*加粗斜体*/
+/*Bold Italic*/
 #nice em strong {
     font-weight: bold;
     color: black;
 }
 
-/*删除线*/
+/*Delete line*/
 #nice del {
     font-style: italic;
     color: black;
 }
 
-/*分隔线*/
+/*Separation line*/
 #nice hr {
     height: 1px;
     margin: 0;
@@ -184,7 +184,7 @@
     border-top: 1px solid black;
 }
 
-/*代码块*/
+/*Code block*/
 #nice pre {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -202,7 +202,7 @@
     line-height: 26px;
 }
 
-/*行内代码*/
+/*Inline code*/
 #nice p code,
 #nice li code {
     font-size: 14px;
@@ -216,21 +216,21 @@
     word-break: break-all;
 }
 
-/*图片*/
+/*picture*/
 #nice img {
     display: block;
     margin: 0 auto;
     max-width: 100%;
 }
 
-/*图片*/
+/*picture*/
 #nice figure {
     margin: 0;
     margin-top: 10px;
     margin-bottom: 10px;
 }
 
-/*图片描述文字*/
+/*Picture description text*/
 #nice figcaption {
     margin-top: 5px;
     text-align: center;
@@ -239,12 +239,12 @@
 }
 
 
-/*表格容器 */
+/*Table container */
 #nice .table-container {
     overflow-x: auto;
 }
 
-/*表格*/
+/*form*/
 #nice table {
     display: table;
     text-align: left;
@@ -278,13 +278,13 @@
     background-color: #f0f0f0;
 }
 
-/* 表格最小列宽4个汉字 */
+/* The minimum column width of the table is 4 Chinese characters */
 #nice table tr th:nth-of-type(n),
 #nice table tr td:nth-of-type(n) {
     min-width: 85px;
 }
 
-/* 微信代码块 */
+/* Wechat code block */
 #nice .code-snippet__fix {
     word-wrap: break-word !important;
     font-size: 14px;
@@ -368,7 +368,7 @@
 
 #nice .footnote-num {
     display: inline;
-    width: 10%; /*神奇，50px就不可以*/
+    width: 10%;
     background: none;
     font-size: 80%;
     opacity: 0.6;
@@ -397,7 +397,7 @@
     display: block;
 }
 
-/* 解决公式问题 */
+/* Solving formula problems */
 #nice .block-equation {
     display: block;
     text-align: center;
@@ -470,14 +470,14 @@
     align-items: center;
 }
 
-/* 图片链接嵌套 */
+/* Picture link nesting */
 #nice figure a {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* 图片链接嵌套，图片解释 */
+/* Picture link nesting, picture explanation */
 #nice figure a + figcaption {
     display: flex;
     justify-content: center;
