@@ -298,7 +298,7 @@
             <span @click="goDetail(item.id)">
               {{
                 `${item.uri}${$t('views.vulnList.is')}${item.http_method}${$t(
-                  'view.vulnList.reqHas'
+                  'views.vulnList.reqHas'
                 )}${item.type}${$t('views.vulnList.vule')}${
                   item.taint_position
                     ? `，${$t('views.vulnList.position')}：${

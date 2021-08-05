@@ -115,6 +115,7 @@ export default class Header extends VueBase {
     return this.$store.getters.userInfo
   }
   async buildIAST() {
+
     const res = await this.services.setting.openapi()
     if (res.status !== 201) {
       this.$message({
