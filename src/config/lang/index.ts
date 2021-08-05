@@ -6,7 +6,7 @@ Vue.use(VueI18n)
 import zh_cn from './zh_cn'
 import en from './en'
 
-const DEFAULT_LANG = 'en'
+const DEFAULT_LANG = 'zh_cn'
 
 const locals = {
   zh_cn: zh_cn,
