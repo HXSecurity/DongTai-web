@@ -157,7 +157,7 @@ export default {
       submit: '确认',
     },
     agentManage: {
-      flow:'请求次数',
+      flow: '请求次数',
       address: '服务器地址',
       payload: '服务器负载',
       status: '运行状态',
@@ -166,7 +166,7 @@ export default {
       timestapm: '时间',
       projectName: '项目名称',
       healthy: '健康',
-      language: '语言'
+      language: '语言',
     },
     strategyManage: {
       name: '策略名称',
@@ -248,7 +248,7 @@ export default {
       warningInfo: '此操作将永久删除该版本, 是否继续?',
       setting: '设置',
       export: '报告导出',
-      recheck: '漏洞验证'
+      recheck: '漏洞验证',
     },
     userList: {
       keywordPlaceholder: '请输入名称关键字',

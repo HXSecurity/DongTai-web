@@ -85,7 +85,7 @@
           {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
       </div>
-      <div v-show="selectTab === 'desc'">
+      <div v-if="selectTab === 'desc'">
         <div
           id="type_summary_level_count"
           class="module flex-row-space-between"
@@ -249,7 +249,6 @@ import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
 import ScaList from '../sca/ScaList.vue'
-import { Message } from 'element-ui'
 import merge from 'webpack-merge'
 
 @Component({
