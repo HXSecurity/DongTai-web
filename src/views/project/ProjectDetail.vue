@@ -471,22 +471,26 @@ export default class ProjectDetail extends VueBase {
       return
     }
 
-    const type_summary = document.getElementById('type_summary') as HTMLElement
-    const level_count = document.getElementById('level_count') as HTMLElement
-    const type_summary_level_count = document.getElementById(
-      'type_summary_level_count'
-    ) as HTMLElement
-
-    const height = Math.ceil(data.type_summary.length / 5) * 30
-    const domHeight = type_summary.offsetHeight
-    type_summary.style.height = domHeight + height + 'px'
-    level_count.style.height = domHeight + height + 'px'
-    type_summary_level_count.style.height = domHeight + 40 + height + 'px'
     this.projectObj = {
       ...data,
       name: data.name,
       latest_time: formatTimestamp(data.latest_time),
     }
+
+    const type_summary = document.getElementById('type_summary') as HTMLElement
+    const level_count = document.getElementById('level_count') as HTMLElement
+    const type_summary_level_count = document.getElementById(
+      'type_summary_level_count'
+    ) as HTMLElement
+    if (!type_summary || !level_count || !type_summary_level_count) {
+      return false
+    }
+    const height = Math.ceil(data.type_summary.length / 5) * 30
+    const domHeight = type_summary.offsetHeight
+    type_summary.style.height = domHeight + height + 'px'
+    level_count.style.height = domHeight + height + 'px'
+    type_summary_level_count.style.height = domHeight + 40 + height + 'px'
+
 
     if (this.selectTab !== 'desc') {
       return
