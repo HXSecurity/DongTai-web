@@ -459,7 +459,7 @@ export default class ScaList extends VueBase {
       },
       []
     )
-    if (tableData.length < 20) {
+    if (tableData.length < this.pageSize) {
       this.dataEnd = true
     }
     if (flag === true) {
