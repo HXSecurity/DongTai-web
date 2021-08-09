@@ -1,8 +1,8 @@
 import { Commit } from 'vuex'
 import createUserServices from '@/services/user'
 import createRoleServices from '@/services/role'
-
 import { Message } from 'element-ui'
+import { clearCookie } from '@/utils/utils'
 
 const userServices = createUserServices()
 const roleServices = createRoleServices()
@@ -36,9 +36,13 @@ const actions: any = {
     if (status !== 201) {
       Message.error(msg)
     }
+    clearCookie('sessionid')
+    clearCookie('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)
   },
   clearInfo(context: { commit: Commit }) {
+    clearCookie('sessionid')
+    clearCookie('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)
   },
 }
