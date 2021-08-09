@@ -342,15 +342,15 @@
           <div class="flex-row-space-between dot-list">
             <div class="tip">
               <i class="iconfont iconyuandianzhong" style="color: #5491ef"></i>
-              <span>$t('views.vulnDetail.stainSource')</span>
+              <span>{{ $t('views.vulnDetail.stainSource') }}</span>
             </div>
             <div class="tip">
               <i class="iconfont iconyuandianzhong" style="color: #f3bc3f"></i>
-              <span>$t('views.vulnDetail.communicationMethod')</span>
+              <span>{{ $t('views.vulnDetail.communicationMethod') }}</span>
             </div>
             <div class="tip">
               <i class="iconfont iconyuandianzhong" style="color: #ec984f"></i>
-              <span>$t('views.vulnDetail.dangerMethod')</span>
+              <span>{{ $t('views.vulnDetail.dangerMethod') }}</span>
             </div>
           </div>
           <div
@@ -512,8 +512,8 @@ export default class VulnDetail extends VueBase {
   ]
   private state = 1
   private httpOptions = [
-    { value: 1, label: this.$t('views.vulnList.orderOptions.req') },
-    { value: 0, label: this.$t('views.vulnList.orderOptions.res') },
+    { value: 1, label: this.$t('views.vulnDetail.req') },
+    { value: 0, label: this.$t('views.vulnDetail.res') },
   ]
 
   private vulnObj: VulnObj = {

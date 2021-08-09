@@ -72,6 +72,7 @@ const originalPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(
   location: import('vue-router').RawLocation
 ) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   return originalPush.call(this, location).catch((err: any) => err)
 }
