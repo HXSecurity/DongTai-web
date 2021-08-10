@@ -33,8 +33,9 @@ router.beforeEach(async (to: any, from: any, next: any) => {
   }
   // No permission
   if (
-    (!store.getters.userInfo && !isWhiteList(to.fullPath)) ||
-    (getToken() && isWhiteList(to.fullPath)) && initFlag
+    ((!store.getters.userInfo && !isWhiteList(to.fullPath)) ||
+      (getToken() && isWhiteList(to.fullPath))) &&
+    initFlag
   ) {
     initFlag = false
     await store
