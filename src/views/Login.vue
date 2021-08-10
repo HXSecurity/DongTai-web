@@ -212,3 +212,10 @@ main {
   // margin-top: calc(100vh - 928px);
 }
 </style>
+
+<style>
+/*Edge compatible password input box*/
+input[type='password']::-ms-reveal {
+  display: none;
+}
+</style>
