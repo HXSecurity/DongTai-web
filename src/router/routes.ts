@@ -230,15 +230,15 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/LogManage.vue'),
       },
-      // {
-      //   path: 'serverRegister',
-      //   name: 'serverRegister',
-      //   meta: {
-      //     disabled: true,
-      //     name: i18n.t('menu.serverRegister'),
-      //   },
-      //   component: () => import('@/views/setting/serverRegister.vue'),
-      // },
+      {
+        path: 'serverRegister',
+        name: 'serverRegister',
+        meta: {
+          disabled: true,
+          name: i18n.t('menu.serverRegister'),
+        },
+        component: () => import('@/views/setting/serverRegister.vue'),
+      },
     ],
   },
   {
