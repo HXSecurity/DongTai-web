@@ -849,7 +849,7 @@ export default class VulnDetail extends VueBase {
         responseType: 'blob',
       })
       .then((res: any) => {
-        if (res.hasOwnProperty('response')) {
+        if (res.type === 'application/json') {
           this.$message.error({
             message: this.$t('views.vulnDetail.exportFail') as string,
             showClose: true,

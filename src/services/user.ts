@@ -19,7 +19,7 @@ interface UserAddParams {
   re_password: string
   email: string
   role: number
-  department: object
+  department: any
   phone: string
   uid?: number
 }

@@ -491,7 +491,6 @@ export default class ProjectDetail extends VueBase {
     level_count.style.height = domHeight + height + 'px'
     type_summary_level_count.style.height = domHeight + 40 + height + 'px'
 
-
     if (this.selectTab !== 'desc') {
       return
     }
@@ -638,7 +637,7 @@ export default class ProjectDetail extends VueBase {
         responseType: 'blob',
       })
       .then((res: any) => {
-        if (res.hasOwnProperty('response')) {
+        if (res.type === 'application/json') {
           this.$message.error({
             message: this.$t('views.projectDetail.exportFail') as string,
             showClose: true,

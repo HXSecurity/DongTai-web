@@ -115,7 +115,6 @@ export default class Header extends VueBase {
     return this.$store.getters.userInfo
   }
   async buildIAST() {
-
     const res = await this.services.setting.openapi()
     if (res.status !== 201) {
       this.$message({
@@ -152,8 +151,8 @@ export default class Header extends VueBase {
     return this.$route.matched.some((item) => item.path === path)
   }
 
-  private logOut() {
-    this.$store.dispatch('user/logOut')
+  private async logOut() {
+    await this.$store.dispatch('user/logOut')
     this.$router.push('/login')
   }
 }
