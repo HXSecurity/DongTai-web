@@ -20,48 +20,6 @@ const baseRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/Login.vue'),
       },
-      {
-        path: '/taint',
-        name: 'taint',
-        redirect: '/taint/search',
-        meta: {
-          keepAlive: true,
-          isMenu: true,
-          disabled: true,
-          name: i18n.t('menu.taintPool'),
-        },
-        component: () => import('@/views/taint/Index.vue'),
-        children: [
-          // {
-          //   path: 'Pool',
-          //   meta: {
-          //     name: i18n.t('menu.taintPool'),
-          //   },
-          //   component: () => import('@/views/taint/Pool.vue'),
-          // },
-          {
-            path: 'search',
-            name: 'search',
-            meta: {
-              keepAlive: true,
-              disabled: true,
-              isMenu: true,
-              name: i18n.t('menu.taintPool'),
-            },
-            component: () => import('@/views/taint/Search.vue'),
-          },
-          {
-            path: 'poolDetail/:id',
-            name: 'poolDetail',
-            meta: {
-              keepAlive: true,
-              disabled: true,
-              name: i18n.t('menu.poolDetail'),
-            },
-            component: () => import('@/views/taint/PoolDetail.vue'),
-          },
-        ],
-      },
     ],
   },
 ]
@@ -72,7 +30,6 @@ const routes: Array<RouteConfig> = [
     name: 'project',
     redirect: '/project/projectManage',
     meta: {
-      isMenu: true,
       name: i18n.t('menu.projectManage'),
       disabled: true,
     },
@@ -112,7 +69,6 @@ const routes: Array<RouteConfig> = [
     name: 'vuln',
     redirect: '/vuln/vulnList',
     meta: {
-      isMenu: true,
       name: i18n.t('menu.vuln'),
     },
     component: () => import('@/views/vuln/Index.vue'),
@@ -141,7 +97,6 @@ const routes: Array<RouteConfig> = [
     redirect: '/sca/scaList',
     meta: {
       disabled: true,
-      isMenu: true,
       name: i18n.t('menu.sca'),
     },
     component: () => import('@/views/sca/Index.vue'),
@@ -167,11 +122,50 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
+    path: '/taint',
+    name: 'taint',
+    redirect: '/taint/search',
+    meta: {
+      keepAlive: true,
+      disabled: true,
+      name: i18n.t('menu.taintPool'),
+    },
+    component: () => import('@/views/taint/Index.vue'),
+    children: [
+      // {
+      //   path: 'Pool',
+      //   meta: {
+      //     name: i18n.t('menu.taintPool'),
+      //   },
+      //   component: () => import('@/views/taint/Pool.vue'),
+      // },
+      {
+        path: 'search',
+        name: 'search',
+        meta: {
+          keepAlive: true,
+          disabled: true,
+          name: i18n.t('menu.taintPool'),
+        },
+        component: () => import('@/views/taint/Search.vue'),
+      },
+      {
+        path: 'poolDetail/:id',
+        name: 'poolDetail',
+        meta: {
+          keepAlive: true,
+          disabled: true,
+          name: i18n.t('menu.poolDetail'),
+        },
+        component: () => import('@/views/taint/PoolDetail.vue'),
+      },
+    ],
+  },
+  {
     path: '/setting',
     name: 'setting',
     redirect: '/setting/agentManage',
     meta: {
-      isMenu: true,
       name: i18n.t('menu.setting'),
     },
     component: () => import('@/views/setting/Index.vue'),
@@ -252,7 +246,6 @@ const routes: Array<RouteConfig> = [
     name: 'department',
     redirect: '/department/departmentList',
     meta: {
-      isMenu: true,
       name: i18n.t('menu.department'),
     },
     component: () => import('@/views/department/Index.vue'),
@@ -272,7 +265,6 @@ const routes: Array<RouteConfig> = [
     name: 'talent',
     redirect: '/talent/talentList',
     meta: {
-      isMenu: true,
       name: i18n.t('menu.talent'),
     },
     component: () => import('@/views/talent/Index.vue'),
