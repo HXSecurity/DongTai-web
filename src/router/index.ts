@@ -4,15 +4,21 @@ import routes from './routes'
 import store from '@/store'
 import Nprogress from 'nprogress'
 import { getToken } from '@/utils/utils'
+
 Vue.use(VueRouter)
-let initFlag = true
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: routes.baseRoutes,
 })
 
-const whiteList = ['/login', '/taint', '/taint/search', '/taint/poolDetail']
+const routerArr = routes.baseRoutes
+const baseR = routerArr && routerArr[0]
+baseR?.children?.push(...routes.routes)
+router.addRoutes(routerArr)
+
+const whiteList = ['/taint/search', '/taint/poolDetail']
 
 const isWhiteList = (path: string) => {
   return whiteList.some((item: string) => {
@@ -20,28 +26,19 @@ const isWhiteList = (path: string) => {
   })
 }
 
-router.beforeEach(async (to: any, from: any, next: any) => {
+router.beforeEach((to: any, from: any, next: any) => {
   Nprogress.start()
 
   if (!getToken() && isWhiteList(to.fullPath)) {
     next()
     return
   }
-  if (getToken() && to.fullPath === '/login') {
-    next('/')
-    return
-  }
+
   // No permission
-  if (
-    ((!store.getters.userInfo && !isWhiteList(to.fullPath)) ||
-      (getToken() && isWhiteList(to.fullPath))) &&
-    initFlag
-  ) {
-    initFlag = false
-    await store
+  if (!store.getters.userInfo && to.fullPath !== '/login') {
+    store
       .dispatch('user/getUserInfo')
       .then(() => {
-        store.commit('user/SET_ROUTER', routes.routes)
         Nprogress.done()
         if (
           store.getters.userInfo.role != 1 &&
@@ -51,7 +48,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
         ) {
           next('/')
         } else {
-          next({ ...to, replace: true })
+          next()
         }
       })
       .catch(() => {
