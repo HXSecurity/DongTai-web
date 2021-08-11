@@ -13,6 +13,7 @@ const state: any = {
 
 const mutations: any = {
   SET_ROUTER(state: any, routers: []) {
+    state.routers[0].children.splice(1, 1)
     state.routers[0].children.push(...routers, {
       path: '*',
       redirect: '/',

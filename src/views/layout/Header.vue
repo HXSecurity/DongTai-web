@@ -9,7 +9,7 @@
         />
       </div>
       <div v-if="userInfo" class="url-warp">
-        <div
+        <!-- <div
           class="url flex-column-center"
           :class="currentRoute('/project') ? 'currentRoute' : ''"
           @click="$router.push('/project')"
@@ -59,6 +59,17 @@
           @click="$router.push('/talent')"
         >
           {{ $t('menu.talent') }}
+        </div> -->
+        <div
+          v-for="item in $store.getters.routers[0].children.filter(
+            (i) => i.meta && i.meta.isMenu
+          )"
+          :key="item.name"
+          class="url flex-column-center"
+          :class="currentRoute(item.path) ? 'currentRoute' : ''"
+          @click="$router.push(item.path)"
+        >
+          {{ item.meta.name }}
         </div>
       </div>
       <div
@@ -156,6 +167,9 @@ export default class Header extends VueBase {
 
   private async logOut() {
     await this.$store.dispatch('user/logOut')
+  }
+  created() {
+    console.log(this.$store.getters.routers[0].children)
   }
 }
 </script>

@@ -7,7 +7,7 @@ import { getToken } from '@/utils/utils'
 
 Vue.use(VueRouter)
 
-const router = new VueRouter({
+const router: any = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: routes.baseRoutes,
@@ -45,11 +45,23 @@ router.beforeEach((to: any, from: any, next: any) => {
     return
   }
 
+  if (getToken() && isWhiteList(to.fullPath)) {
+    if (reloadNum > 0) {
+      next()
+      return
+    }
+    reloadNum++
+    store.dispatch('user/getUserInfo')
+    next()
+    return
+  }
+
   // No permission
   if (getToken() && !store.getters.userInfo && !isWhiteList(to.fullPath)) {
     if (reloadNum > 0) {
       return
     }
+    reloadNum++
     store
       .dispatch('user/getUserInfo')
       .then(() => {
@@ -83,6 +95,15 @@ router.afterEach((to: any) => {
   Nprogress.done()
   if (to.meta.name) {
     document.title = to.meta.name
+  }
+})
+
+router.onError((error: any) => {
+  const pattern = /Loading chunk (\d)+ failed/g
+  const isChunkLoadFailed = error.message.match(pattern)
+  const targetPath = router.history.pending.fullPath
+  if (isChunkLoadFailed) {
+    router.replace(targetPath)
   }
 })
 
