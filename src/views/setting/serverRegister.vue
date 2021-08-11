@@ -22,6 +22,9 @@ export default class StrategyManage extends VueBase {
   public openapi = ''
   public async getOpenapi() {
     const res = await this.services.setting.openapi()
+    if (res.status === 202) {
+      return
+    }
     if (res.status !== 201) {
       this.$message({
         type: 'error',
