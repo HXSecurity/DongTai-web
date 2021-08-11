@@ -24,7 +24,7 @@ export default {
   base: {
     login: '登 入',
     loading: '正在加载...',
-    deploy: '部署',
+    deploy: '部署 IAST',
     logout: '退出',
     setOpenapi: '请先配置openapi',
     helpOpenapi: '请先联系管理员配置openapi',

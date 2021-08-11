@@ -82,7 +82,7 @@
       </div>
       <div v-else>
         <el-button type="text" class="anent" @click="buildIAST">
-          {{ $t('base.deploy') }}IAST
+          {{ $t('base.deploy') }}
         </el-button>
         <el-dropdown>
           <div style="height: 64px" class="flex-column-center">

@@ -18,7 +18,7 @@ Vue.use(VueDOMPurifyHTML)
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
-Vue.use(ElementUI)
+Vue.use(ElementUI, { i18n: (key: any, value: any) => i18n.t(key, value) })
 Vue.component('MyMarkdownIt', MyMarkdownIt)
 dot(Vue)
 new Vue({
