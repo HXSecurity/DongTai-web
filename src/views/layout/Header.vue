@@ -116,32 +116,32 @@ export default class Header extends VueBase {
   }
   async buildIAST() {
     const res = await this.services.setting.openapi()
+    if (res.status === 202) {
+      if (this.userInfo.role === 1) {
+        this.$message({
+          type: 'warning',
+          message: this.$t('base.setOpenapi') as string,
+          showClose: true,
+        })
+        this.$router.push('/setting/serverRegister?needBack=1')
+      } else {
+        this.$message({
+          type: 'warning',
+          message: this.$t('base.helpOpenapi') as string,
+          showClose: true,
+        })
+      }
+      return
+    }
     if (res.status !== 201) {
       this.$message({
         type: 'error',
         message: res.msg,
         showClose: true,
       })
-    } else {
-      if (res.data.url) {
-        this.$router.push('/deploy')
-      } else {
-        if (this.userInfo.role === 1) {
-          this.$message({
-            type: 'warning',
-            message: this.$t('base.setOpenapi') as string,
-            showClose: true,
-          })
-          this.$router.push('/setting/serverRegister?needBack=1')
-        } else {
-          this.$message({
-            type: 'warning',
-            message: this.$t('base.helpOpenapi') as string,
-            showClose: true,
-          })
-        }
-      }
+      return
     }
+    this.$router.push('/deploy')
   }
 
   canShow(name: string) {
