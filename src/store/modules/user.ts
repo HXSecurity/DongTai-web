@@ -36,16 +36,14 @@ const actions: any = {
     if (status !== 201) {
       Message.error(msg)
     }
-    Cookie.expire('sessionid')
-    Cookie.expire('DTCsrfToken')
-    context.commit('UPDATE_USER_INFO', null)
+    context.commit('clearInfo')
+    router.push({ path: '/login' })
     window.location.reload()
   },
   clearInfo(context: { commit: Commit }) {
     Cookie.expire('sessionid')
     Cookie.expire('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)
-    window.location.reload()
   },
 }
 

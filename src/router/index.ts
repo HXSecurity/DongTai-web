@@ -43,7 +43,11 @@ router.beforeEach((to: any, from: any, next: any) => {
   }
 
   // No permission
-  if (!store.getters.userInfo && !whiteList.includes(to.fullPath)) {
+  if (
+    getToken() &&
+    !store.getters.userInfo &&
+    !whiteList.includes(to.fullPath)
+  ) {
     if (reloadNum > 0) {
       return
     }
@@ -71,6 +75,7 @@ router.beforeEach((to: any, from: any, next: any) => {
         }
       })
   } else {
+    debugger
     Nprogress.done()
     next()
   }

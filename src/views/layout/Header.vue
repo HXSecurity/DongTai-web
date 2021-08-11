@@ -153,7 +153,6 @@ export default class Header extends VueBase {
 
   private async logOut() {
     await this.$store.dispatch('user/logOut')
-    this.$router.push('/login')
   }
 }
 </script>
