@@ -3,6 +3,8 @@ name: Deploy DongTai-Web to Release
 on:
   push:
     branches: [ "release-*" ]
+  pull_request:
+    branches: [ "release-*" ]
 
 jobs:
   build:
@@ -46,8 +48,8 @@ jobs:
 
       - id: release
         run: |
-        VERSION=`echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'`
-        echo "::set-output name=version::$VERSION"
+          VERSION=`echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'`
+          echo "::set-output name=version::$VERSION"
 
       - name: Build and push
         uses: docker/build-push-action@v2
