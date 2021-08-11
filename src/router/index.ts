@@ -35,7 +35,8 @@ router.beforeEach((to: any, from: any, next: any) => {
   }
 
   if (getToken() && to.fullPath === '/login') {
-    if (reloadNum > 5) {
+    reloadNum++
+    if (reloadNum > 3) {
       return
     }
     next('/project')
@@ -75,7 +76,6 @@ router.beforeEach((to: any, from: any, next: any) => {
         }
       })
   } else {
-    debugger
     Nprogress.done()
     next()
   }
