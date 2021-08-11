@@ -242,22 +242,22 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/hookRule.vue'),
       },
-      {
-        path: 'upgradeOnline',
-        name: 'upgradeOnline',
-        meta: {
-          name: i18n.t('menu.upgradeOnline'),
-        },
-        component: () => import('@/views/setting/UpgradeOnline.vue'),
-      },
-      {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
+      // {
+      //   path: 'upgradeOnline',
+      //   name: 'upgradeOnline',
+      //   meta: {
+      //     name: i18n.t('menu.upgradeOnline'),
+      //   },
+      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
+      // },
+      // {
+      //   path: 'sysInfo',
+      //   name: 'sysInfo',
+      //   meta: {
+      //     name: i18n.t('menu.sysInfo'),
+      //   },
+      //   component: () => import('@/views/setting/SysInfo.vue'),
+      // },
       {
         path: 'changePassword',
         name: 'changePassword',
@@ -515,22 +515,22 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/hookRule.vue'),
       },
-      {
-        path: 'upgradeOnline',
-        name: 'upgradeOnline',
-        meta: {
-          name: i18n.t('menu.upgradeOnline'),
-        },
-        component: () => import('@/views/setting/UpgradeOnline.vue'),
-      },
-      {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
+      // {
+      //   path: 'upgradeOnline',
+      //   name: 'upgradeOnline',
+      //   meta: {
+      //     name: i18n.t('menu.upgradeOnline'),
+      //   },
+      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
+      // },
+      // {
+      //   path: 'sysInfo',
+      //   name: 'sysInfo',
+      //   meta: {
+      //     name: i18n.t('menu.sysInfo'),
+      //   },
+      //   component: () => import('@/views/setting/SysInfo.vue'),
+      // },
       {
         path: 'changePassword',
         name: 'changePassword',
@@ -761,22 +761,22 @@ const userRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/hookRule.vue'),
       },
-      {
-        path: 'upgradeOnline',
-        name: 'upgradeOnline',
-        meta: {
-          name: i18n.t('menu.upgradeOnline'),
-        },
-        component: () => import('@/views/setting/UpgradeOnline.vue'),
-      },
-      {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
+      // {
+      //   path: 'upgradeOnline',
+      //   name: 'upgradeOnline',
+      //   meta: {
+      //     name: i18n.t('menu.upgradeOnline'),
+      //   },
+      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
+      // },
+      // {
+      //   path: 'sysInfo',
+      //   name: 'sysInfo',
+      //   meta: {
+      //     name: i18n.t('menu.sysInfo'),
+      //   },
+      //   component: () => import('@/views/setting/SysInfo.vue'),
+      // },
       {
         path: 'changePassword',
         name: 'changePassword',
@@ -794,15 +794,6 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.logManage'),
         },
         component: () => import('@/views/setting/LogManage.vue'),
-      },
-      {
-        path: 'serverRegister',
-        name: 'serverRegister',
-        meta: {
-          disabled: true,
-          name: i18n.t('menu.serverRegister'),
-        },
-        component: () => import('@/views/setting/serverRegister.vue'),
       },
     ],
   },

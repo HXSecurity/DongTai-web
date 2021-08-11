@@ -23,7 +23,7 @@ const isWhiteList = (path: string) => {
 
 router.beforeEach(async (to: any, from: any, next: any) => {
   Nprogress.start()
-  // 如果登录了 且 无用户信息
+
   if (getToken() && !store.getters.userInfo) {
     try {
       await store.dispatch('user/getUserInfo')
@@ -31,13 +31,12 @@ router.beforeEach(async (to: any, from: any, next: any) => {
       await store.dispatch('user/logOut')
     }
   }
-  // 如果登录了 且 到了登录页
+
   if (getToken() && to.fullPath === '/login') {
     next({ path: '/project' })
     return
   }
 
-  // 如果登陆了
   if (getToken()) {
     if (reloadNum) {
       next()
@@ -48,12 +47,12 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     return
   }
 
-  // 如果未登录且不在白名单 拉回登录
   if (!getToken() && !isWhiteList(to.fullPath)) {
+    store.dispatch('user/clearInfo')
     next('/login')
     return
   }
-  // 如果未登录且不在白名单 不做处理
+
   if (!getToken() && isWhiteList(to.fullPath)) {
     next()
     return
