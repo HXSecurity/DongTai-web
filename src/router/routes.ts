@@ -5,7 +5,7 @@ const baseRoutes: Array<RouteConfig> = [
   {
     path: '/',
     name: '/',
-    redirect: '/project',
+    redirect: '/login',
     meta: {
       name: i18n.t('menu.home'),
     },
@@ -19,6 +19,46 @@ const baseRoutes: Array<RouteConfig> = [
           disabled: true,
         },
         component: () => import('@/views/Login.vue'),
+      },
+      {
+        path: '/taint',
+        name: 'taint',
+        redirect: '/taint/search',
+        meta: {
+          keepAlive: true,
+          disabled: true,
+          name: i18n.t('menu.taintPool'),
+        },
+        component: () => import('@/views/taint/Index.vue'),
+        children: [
+          // {
+          //   path: 'Pool',
+          //   meta: {
+          //     name: i18n.t('menu.taintPool'),
+          //   },
+          //   component: () => import('@/views/taint/Pool.vue'),
+          // },
+          {
+            path: 'search',
+            name: 'search',
+            meta: {
+              keepAlive: true,
+              disabled: true,
+              name: i18n.t('menu.taintPool'),
+            },
+            component: () => import('@/views/taint/Search.vue'),
+          },
+          {
+            path: 'poolDetail/:id',
+            name: 'poolDetail',
+            meta: {
+              keepAlive: true,
+              disabled: true,
+              name: i18n.t('menu.poolDetail'),
+            },
+            component: () => import('@/views/taint/PoolDetail.vue'),
+          },
+        ],
       },
     ],
   },
@@ -118,46 +158,6 @@ const routes: Array<RouteConfig> = [
           name: i18n.t('menu.scaDetail'),
         },
         component: () => import('@/views/sca/ScaDetail.vue'),
-      },
-    ],
-  },
-  {
-    path: '/taint',
-    name: 'taint',
-    redirect: '/taint/search',
-    meta: {
-      keepAlive: true,
-      disabled: true,
-      name: i18n.t('menu.taintPool'),
-    },
-    component: () => import('@/views/taint/Index.vue'),
-    children: [
-      // {
-      //   path: 'Pool',
-      //   meta: {
-      //     name: i18n.t('menu.taintPool'),
-      //   },
-      //   component: () => import('@/views/taint/Pool.vue'),
-      // },
-      {
-        path: 'search',
-        name: 'search',
-        meta: {
-          keepAlive: true,
-          disabled: true,
-          name: i18n.t('menu.taintPool'),
-        },
-        component: () => import('@/views/taint/Search.vue'),
-      },
-      {
-        path: 'poolDetail/:id',
-        name: 'poolDetail',
-        meta: {
-          keepAlive: true,
-          disabled: true,
-          name: i18n.t('menu.poolDetail'),
-        },
-        component: () => import('@/views/taint/PoolDetail.vue'),
       },
     ],
   },

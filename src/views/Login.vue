@@ -108,7 +108,8 @@ export default class Login extends VueBase {
     const { status, msg } = await this.services.user.login(params)
     this.loadingDone()
     if (status === 201) {
-      await this.$router.push('/')
+      await this.$store.dispatch('user/getUserInfo')
+      await this.$router.push('/project')
     } else if (status === 204) {
       this.$message({
         type: 'error',

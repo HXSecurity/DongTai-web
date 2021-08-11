@@ -1,7 +1,7 @@
 import { Commit } from 'vuex'
 import createUserServices from '@/services/user'
 import { Message } from 'element-ui'
-import { clearCookie } from '@/utils/utils'
+import Cookie from 'cookies-js'
 import route from '@/router/routes'
 import router from '@/router'
 const userServices = createUserServices()
@@ -24,25 +24,28 @@ const mutations: any = {
 const actions: any = {
   async getUserInfo(context: { commit: Commit }) {
     const { status, msg, data } = await userServices.getUserInfo()
-    // const res = await roleServices.getRoute()
+
     if (status !== 201) {
       Message.error(msg)
     }
     context.commit('UPDATE_USER_INFO', data)
+    context.commit('SET_ROUTER', route.routes)
   },
   async logOut(context: { commit: Commit }) {
     const { status, msg } = await userServices.logout()
     if (status !== 201) {
       Message.error(msg)
     }
-    clearCookie('sessionid')
-    clearCookie('DTCsrfToken')
+    Cookie.expire('sessionid')
+    Cookie.expire('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)
+    window.location.reload()
   },
   clearInfo(context: { commit: Commit }) {
-    clearCookie('sessionid')
-    clearCookie('DTCsrfToken')
+    Cookie.expire('sessionid')
+    Cookie.expire('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)
+    window.location.reload()
   },
 }
 

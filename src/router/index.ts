@@ -13,12 +13,9 @@ const router = new VueRouter({
   routes: routes.baseRoutes,
 })
 
-const routerArr = routes.baseRoutes
-const baseR = routerArr && routerArr[0]
-baseR?.children?.push(...routes.routes)
-router.addRoutes(routerArr)
+let reloadNum = 0
 
-const whiteList = ['/taint/search', '/taint/poolDetail']
+const whiteList = ['/taint', '/taint/search', '/taint/poolDetail', '/login']
 
 const isWhiteList = (path: string) => {
   return whiteList.some((item: string) => {
@@ -30,12 +27,26 @@ router.beforeEach((to: any, from: any, next: any) => {
   Nprogress.start()
 
   if (!getToken() && isWhiteList(to.fullPath)) {
+    if (reloadNum === 0) {
+      reloadNum++
+    }
     next()
     return
   }
 
+  if (getToken() && to.fullPath === '/login') {
+    if (reloadNum > 5) {
+      return
+    }
+    next('/project')
+    return
+  }
+
   // No permission
-  if (!store.getters.userInfo && to.fullPath !== '/login') {
+  if (!store.getters.userInfo && !whiteList.includes(to.fullPath)) {
+    if (reloadNum > 0) {
+      return
+    }
     store
       .dispatch('user/getUserInfo')
       .then(() => {
@@ -48,7 +59,7 @@ router.beforeEach((to: any, from: any, next: any) => {
         ) {
           next('/')
         } else {
-          next()
+          next({ ...to, replace: true })
         }
       })
       .catch(() => {
