@@ -73,7 +73,10 @@
         >
           {{ $t('menu.taintPool') }}
         </div>
-        <el-button v-if="!userInfo" type="text" @click="$router.push('/login')"
+        <el-button
+          v-if="!userInfo && $route.name !== 'login'"
+          type="text"
+          @click="$router.push('/login')"
           >{{ $t('menu.login') }}
         </el-button>
       </div>

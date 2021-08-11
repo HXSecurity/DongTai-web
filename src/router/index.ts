@@ -18,19 +18,21 @@ let reloadNum = 0
 const whiteList = ['/taint', '/taint/search', '/taint/poolDetail', '/login']
 
 const isWhiteList = (path: string) => {
-  return whiteList.some((item: string) => {
-    return path.indexOf(item) > -1
-  })
+  return whiteList.includes(path)
 }
 
 router.beforeEach((to: any, from: any, next: any) => {
   Nprogress.start()
-
   if (!getToken() && isWhiteList(to.fullPath)) {
     if (reloadNum === 0) {
       reloadNum++
     }
     next()
+    return
+  }
+
+  if (!getToken() && !isWhiteList(to.fullPath)) {
+    next('/login')
     return
   }
 
@@ -44,11 +46,7 @@ router.beforeEach((to: any, from: any, next: any) => {
   }
 
   // No permission
-  if (
-    getToken() &&
-    !store.getters.userInfo &&
-    !whiteList.includes(to.fullPath)
-  ) {
+  if (getToken() && !store.getters.userInfo && !isWhiteList(to.fullPath)) {
     if (reloadNum > 0) {
       return
     }
