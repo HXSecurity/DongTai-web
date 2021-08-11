@@ -21,73 +21,42 @@ const isWhiteList = (path: string) => {
   return whiteList.includes(path)
 }
 
-router.beforeEach((to: any, from: any, next: any) => {
+router.beforeEach(async (to: any, from: any, next: any) => {
   Nprogress.start()
-  if (!getToken() && isWhiteList(to.fullPath)) {
-    if (reloadNum === 0) {
-      reloadNum++
+  // 如果登录了 且 无用户信息
+  if (getToken() && !store.getters.userInfo) {
+    try {
+      await store.dispatch('user/getUserInfo')
+    } catch (e) {
+      await store.dispatch('user/logOut')
     }
-    next()
+  }
+  // 如果登录了 且 到了登录页
+  if (getToken() && to.fullPath === '/login') {
+    next({ path: '/project' })
     return
   }
 
+  // 如果登陆了
+  if (getToken()) {
+    if (reloadNum) {
+      next()
+    } else {
+      reloadNum++
+      next({ ...to, replace: true })
+    }
+    return
+  }
+
+  // 如果未登录且不在白名单 拉回登录
   if (!getToken() && !isWhiteList(to.fullPath)) {
     next('/login')
     return
   }
-
-  if (getToken() && to.fullPath === '/login') {
-    reloadNum++
-    if (reloadNum > 3) {
-      return
-    }
-    next('/project')
-    return
-  }
-
-  if (getToken() && isWhiteList(to.fullPath)) {
-    if (reloadNum > 0) {
-      next()
-      return
-    }
-    reloadNum++
-    store.dispatch('user/getUserInfo')
+  // 如果未登录且不在白名单 不做处理
+  if (!getToken() && isWhiteList(to.fullPath)) {
     next()
     return
-  }
-
-  // No permission
-  if (getToken() && !store.getters.userInfo && !isWhiteList(to.fullPath)) {
-    if (reloadNum > 0) {
-      return
-    }
-    reloadNum++
-    store
-      .dispatch('user/getUserInfo')
-      .then(() => {
-        Nprogress.done()
-        if (
-          store.getters.userInfo.role != 1 &&
-          (to.fullPath == '/user/userList' ||
-            to.fullPath == '/setting/sysInfo' ||
-            to.fullPath == '/setting/upgradeOnline')
-        ) {
-          next('/')
-        } else {
-          next({ ...to, replace: true })
-        }
-      })
-      .catch(() => {
-        Nprogress.done()
-        if (isWhiteList(to.fullPath)) {
-          next()
-        } else {
-          next('/login')
-        }
-      })
-  } else {
-    Nprogress.done()
-    next()
   }
 })
 

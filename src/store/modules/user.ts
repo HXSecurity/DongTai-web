@@ -32,8 +32,18 @@ const actions: any = {
     if (status !== 201) {
       Message.error(msg)
     }
+    switch (data.role) {
+      case 1:
+        context.commit('SET_ROUTER', route.routes)
+        break
+      case 2:
+        context.commit('SET_ROUTER', route.adminRoutes)
+        break
+      default:
+        context.commit('SET_ROUTER', route.userRoutes)
+        break
+    }
     context.commit('UPDATE_USER_INFO', data)
-    context.commit('SET_ROUTER', route.routes)
   },
   async logOut(context: { commit: Commit }) {
     const { status, msg } = await userServices.logout()
