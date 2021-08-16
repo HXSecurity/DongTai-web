@@ -12,9 +12,7 @@
         {{ $t('views.hookPage.race') }}
       </div>
       <div class="column">
-        <span class="top-title"
-          >{{ $t('views.hookPage.sinkHooksNum') }}:</span
-        >
+        <span class="top-title">{{ $t('views.hookPage.sinkHooksNum') }}:</span>
         <span class="bottom-info">{{ base.sinkCount }}</span>
         {{ $t('views.hookPage.strip') }}
       </div>

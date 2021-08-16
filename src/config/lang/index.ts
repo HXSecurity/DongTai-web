@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
+import el_en from '@/el-en'
+import el_cn from '@/el-cn'
 
 Vue.use(VueI18n)
 
@@ -19,8 +21,8 @@ if (lang == 'zh') {
 }
 
 const locals = {
-  zh_cn: zh_cn,
-  en: en,
+  zh_cn: { ...el_cn, ...zh_cn },
+  en: { ...en, ...el_en },
 }
 
 export const i18n = new VueI18n({

@@ -39,7 +39,7 @@
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="status" class="search-list">
+      <div v-if="status" v-loading.body.lock="loadingFlag" class="search-list">
         <template v-if="tableList.length">
           <div
             v-for="item in tableList"
@@ -79,7 +79,7 @@ export default class Index extends VueBase {
   private value = ''
   private tableList: Array<any> = []
   private afterkeys = ''
-
+  private loadingFlag = false
   private search([type, value]: any[]) {
     this.type = type
     this.value = value
@@ -89,7 +89,9 @@ export default class Index extends VueBase {
     if (!value) {
       this.$message.warning(this.$t('views.search.warning') as string)
     }
+
     if (value) {
+      this.loadingFlag = true
       this.changeActive()
       this.getList()
     }
@@ -116,12 +118,17 @@ export default class Index extends VueBase {
         searchKey[keyArr[i]] = this.value
       }
     }
+    const exclude_ids = this.tableList.map((item) => {
+      return item.method_pools.id
+    })
     const res: any = await this.services.taint.search({
       ...searchKey,
       page_index: this.page,
       page_size: 10,
       search_after_update_time: this.afterkeys || undefined,
+      exclude_ids: String(exclude_ids),
     })
+    this.loadingFlag = false
     const tableList = res.data.method_pools.map((item: any, index: number) => {
       const vulnerablities_count_map = {}
       const relations_map = {}

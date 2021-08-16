@@ -72,7 +72,7 @@
       </el-table-column>
       <el-table-column
         v-if="userInfo.role === 1 || userInfo.role === 2"
-        label="操作"
+        :label="$t('views.strategyManage.setting')"
         width="160px"
       >
         <template slot-scope="{ row }">

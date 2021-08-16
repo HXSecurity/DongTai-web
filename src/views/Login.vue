@@ -63,7 +63,6 @@
       </div>
     </div>
     <div class="loginFooter"></div>
-    <!-- </div> -->
   </main>
 </template>
 
@@ -78,7 +77,7 @@ export default class Login extends VueBase {
   private captcha = ''
   private captcha_hash_key = ''
   private captcha_url = ''
-
+  private login_lock = false
   created() {
     this.initCaptcha()
   }
@@ -98,6 +97,10 @@ export default class Login extends VueBase {
   }
 
   private async login() {
+    if (this.login_lock) {
+      return
+    }
+    this.login_lock = true
     const params = {
       username: this.userName,
       password: this.password,
@@ -108,7 +111,8 @@ export default class Login extends VueBase {
     const { status, msg } = await this.services.user.login(params)
     this.loadingDone()
     if (status === 201) {
-      await this.$router.push('/')
+      await this.$store.dispatch('user/getUserInfo')
+      await this.$router.push('/project')
     } else if (status === 204) {
       this.$message({
         type: 'error',
@@ -123,6 +127,7 @@ export default class Login extends VueBase {
       })
       this.initCaptcha()
     }
+    this.login_lock = false
   }
 }
 </script>

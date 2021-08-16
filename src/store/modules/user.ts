@@ -1,7 +1,7 @@
 import { Commit } from 'vuex'
 import createUserServices from '@/services/user'
 import { Message } from 'element-ui'
-import { clearCookie } from '@/utils/utils'
+import Cookie from 'cookies-js'
 import route from '@/router/routes'
 import router from '@/router'
 const userServices = createUserServices()
@@ -13,7 +13,11 @@ const state: any = {
 
 const mutations: any = {
   SET_ROUTER(state: any, routers: []) {
-    state.routers[0].children.push(...routers)
+    state.routers[0].children.splice(1, 1)
+    state.routers[0].children.push(...routers, {
+      path: '*',
+      redirect: '/',
+    })
     router.addRoutes(state.routers)
   },
   UPDATE_USER_INFO(state: any, userInfo: any) {
@@ -24,9 +28,20 @@ const mutations: any = {
 const actions: any = {
   async getUserInfo(context: { commit: Commit }) {
     const { status, msg, data } = await userServices.getUserInfo()
-    // const res = await roleServices.getRoute()
+
     if (status !== 201) {
       Message.error(msg)
+    }
+    switch (data.role) {
+      case 1:
+        context.commit('SET_ROUTER', route.routes)
+        break
+      case 2:
+        context.commit('SET_ROUTER', route.adminRoutes)
+        break
+      default:
+        context.commit('SET_ROUTER', route.userRoutes)
+        break
     }
     context.commit('UPDATE_USER_INFO', data)
   },
@@ -35,13 +50,13 @@ const actions: any = {
     if (status !== 201) {
       Message.error(msg)
     }
-    clearCookie('sessionid')
-    clearCookie('DTCsrfToken')
-    context.commit('UPDATE_USER_INFO', null)
+    context.commit('clearInfo')
+    router.push({ path: '/login' })
+    window.location.reload()
   },
   clearInfo(context: { commit: Commit }) {
-    clearCookie('sessionid')
-    clearCookie('DTCsrfToken')
+    Cookie.expire('sessionid')
+    Cookie.expire('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)
   },
 }

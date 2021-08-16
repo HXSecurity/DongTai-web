@@ -29,37 +29,6 @@ export function getToken() {
   return ''
 }
 
-export function setCookie(name: string, value: string, seconds: number) {
-  seconds = seconds || 0 //seconds有值就直接赋值，没有为0
-  let expires = ''
-  if (seconds != 0) {
-    const date = new Date()
-    date.setTime(date.getTime() + seconds * 1000)
-    expires = '; expires=' + date.toUTCString()
-  }
-  document.cookie = name + '=' + escape(value) + expires + '; path=/' //转码并赋值
-}
-
-export function getCookie(c_name: string | any[]) {
-  if (document.cookie.length > 0) {
-    let c_start = document.cookie.indexOf(c_name + '=')
-    if (c_start != -1) {
-      c_start = c_start + c_name.length + 1
-      let c_end = document.cookie.indexOf(';', c_start)
-      if (c_end == -1) c_end = document.cookie.length
-      return unescape(document.cookie.substring(c_start, c_end)).replace(
-        /\"/g,
-        ''
-      )
-    }
-  }
-  return null
-}
-
-export function clearCookie(name: string) {
-  setCookie(name, '', -1)
-}
-
 export const getPassedTime = (timestamp: number | any): string => {
   const time = new Date(parseInt(timestamp) * 1000)
   const curDate = new Date()
