@@ -5,7 +5,7 @@
         {{ $t('menu.setting') }}
       </div>
       <div class="menu-warp">
-        <div
+        <!-- <div
           class="menu-item"
           :class="curModule('/setting/agentManage') ? 'currentModule' : ''"
           @click="$router.push('/setting/agentManage')"
@@ -26,22 +26,6 @@
         >
           {{ $t('menu.hookRule') }}
         </div>
-        <!-- <div
-          v-if="userInfo.role === 1"
-          class="menu-item"
-          :class="curModule('/setting/upgradeOnline') ? 'currentModule' : ''"
-          @click="$router.push('/setting/upgradeOnline')"
-        >
-          {{ $t('menu.upgradeOnline') }}
-        </div> -->
-        <!-- <div
-          v-if="userInfo.role === 1"
-          class="menu-item"
-          :class="curModule('/setting/sysInfo') ? 'currentModule' : ''"
-          @click="$router.push('/setting/sysInfo')"
-        >
-          {{ $t('menu.sysInfo') }}
-        </div> -->
         <div
           class="menu-item"
           :class="curModule('/setting/changePassword') ? 'currentModule' : ''"
@@ -57,12 +41,21 @@
           {{ $t('menu.logManage') }}
         </div>
         <div
-          v-if="userInfo.role === 1"
+          v-if="userInfo.role === 1 || userInfo.role === 2"
           class="menu-item"
           :class="curModule('/setting/serverRegister') ? 'currentModule' : ''"
           @click="$router.push('/setting/serverRegister')"
         >
           {{ $t('menu.serverRegister') }}
+        </div> -->
+        <div
+          v-for="i in Routers"
+          :key="i.path"
+          class="menu-item"
+          :class="curModule(i.path) ? 'currentModule' : ''"
+          @click="$router.push(i.path)"
+        >
+          {{ i.meta.name }}
         </div>
       </div>
     </div>
@@ -80,6 +73,19 @@ import VueBase from '@/VueBase'
 export default class SettingIndex extends VueBase {
   private curModule(path: string) {
     return this.$route.fullPath === path
+  }
+  get Routers() {
+    const R = this.$store.getters.routers[0].children.filter((i: any) => {
+      return i.name === 'setting'
+    })[0]
+    if (R) {
+      return R.children
+    } else {
+      return []
+    }
+  }
+  created() {
+    console.log()
   }
   get userInfo(): { username: string } {
     return this.$store.getters.userInfo

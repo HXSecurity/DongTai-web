@@ -20,7 +20,7 @@ spec:
       containers:
         - name: dongtai-web-container
           image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:VERSION
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
 
           resources:
             limits:

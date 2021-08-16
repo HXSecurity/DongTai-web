@@ -9,7 +9,7 @@
         />
       </div>
       <div v-if="userInfo" class="url-warp">
-        <div
+        <!-- <div
           class="url flex-column-center"
           :class="currentRoute('/project') ? 'currentRoute' : ''"
           @click="$router.push('/project')"
@@ -59,6 +59,17 @@
           @click="$router.push('/talent')"
         >
           {{ $t('menu.talent') }}
+        </div> -->
+        <div
+          v-for="item in $store.getters.routers[0].children.filter(
+            (i) => i.meta && i.meta.isMenu
+          )"
+          :key="item.name"
+          class="url flex-column-center"
+          :class="currentRoute(item.path) ? 'currentRoute' : ''"
+          @click="$router.push(item.path)"
+        >
+          {{ item.meta.name }}
         </div>
       </div>
       <div
@@ -73,13 +84,16 @@
         >
           {{ $t('menu.taintPool') }}
         </div>
-        <el-button v-if="!userInfo" type="text" @click="$router.push('/login')"
+        <el-button
+          v-if="!userInfo && $route.name !== 'login'"
+          type="text"
+          @click="$router.push('/login')"
           >{{ $t('menu.login') }}
         </el-button>
       </div>
       <div v-else>
         <el-button type="text" class="anent" @click="buildIAST">
-          部署IAST
+          {{ $t('base.deploy') }}
         </el-button>
         <el-dropdown>
           <div style="height: 64px" class="flex-column-center">
@@ -96,7 +110,7 @@
           </div>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>
-              <p @click="logOut">退出</p>
+              <p @click="logOut">{{ $t('base.logout') }}</p>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -116,32 +130,32 @@ export default class Header extends VueBase {
   }
   async buildIAST() {
     const res = await this.services.setting.openapi()
+    if (res.status === 202) {
+      if (this.userInfo.role === 1) {
+        this.$message({
+          type: 'warning',
+          message: this.$t('base.setOpenapi') as string,
+          showClose: true,
+        })
+        this.$router.push('/setting/serverRegister?needBack=1')
+      } else {
+        this.$message({
+          type: 'warning',
+          message: this.$t('base.helpOpenapi') as string,
+          showClose: true,
+        })
+      }
+      return
+    }
     if (res.status !== 201) {
       this.$message({
         type: 'error',
         message: res.msg,
         showClose: true,
       })
-    } else {
-      if (res.data.url) {
-        this.$router.push('/deploy')
-      } else {
-        if (this.userInfo.role === 1) {
-          this.$message({
-            type: 'warning',
-            message: '请先配置openapi',
-            showClose: true,
-          })
-          this.$router.push('/setting/serverRegister?needBack=1')
-        } else {
-          this.$message({
-            type: 'warning',
-            message: '请联系管理员配置openapi',
-            showClose: true,
-          })
-        }
-      }
+      return
     }
+    this.$router.push('/deploy')
   }
 
   canShow(name: string) {
@@ -151,9 +165,11 @@ export default class Header extends VueBase {
     return this.$route.matched.some((item) => item.path === path)
   }
 
-  private logOut() {
-    this.$store.dispatch('user/logOut')
-    this.$router.push('/login')
+  private async logOut() {
+    await this.$store.dispatch('user/logOut')
+  }
+  created() {
+    console.log(this.$store.getters.routers[0].children)
   }
 }
 </script>

@@ -31,6 +31,7 @@ const responseError = (error: any) => {
     return
   }
   if (error.response.status === 403) {
+    Message.error('身份认证信息未提供')
     store.dispatch('user/logOut')
     store.dispatch('user/clearInfo')
     router.push('/login')

@@ -11,7 +11,7 @@ export default class VueBase extends Vue {
     if (!this.lockStack.length) {
       this.loading = this.$loading({
         background: 'rgba(0,0,0,0)',
-        text: '正在加载...',
+        text: this.$t('base.loading') as string,
       })
     }
     this.lockStack.push(1)

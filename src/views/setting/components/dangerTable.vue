@@ -6,7 +6,7 @@
           v-model="rule_type"
           class="search-input"
           size="small"
-          placeholder="请选择规则类型"
+          :placeholder="$t('views.hookPage.selectType')"
           filterable
           clearable
           @change="getTable"
@@ -24,36 +24,39 @@
           size="small"
           class="resetAllBtn"
           @click="hookTypeDialog = true"
-          ><i class="el-icon-plus"></i> 添加规则类型</el-button
+          ><i class="el-icon-plus"></i>
+          {{ $t('views.hookPage.addHookType') }}</el-button
         >
         <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
-          ><i class="el-icon-plus"></i>添加规则</el-button
+          ><i class="el-icon-plus"></i>
+          {{ $t('views.hookPage.addHook') }}</el-button
         >
       </div>
     </div>
     <div class="btn-list-batch">
       <span style="color: #38435a">
-        已选中
-        <span style="color: #4a72ae">{{ multipleSelection.length }} </span>条
+        {{ $t('views.hookPage.selected') }}
+        <span style="color: #4a72ae">{{ multipleSelection.length }} </span
+        >{{ $t('views.hookPage.strip') }}
       </span>
       <div>
         <el-button
           size="small"
           class="resetAllBtn open"
           @click="changeStatusBatch('enable')"
-          >启用</el-button
+          >{{ $t('views.hookPage.on') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn stop"
           @click="changeStatusBatch('disable')"
-          >禁用</el-button
+          >{{ $t('views.hookPage.off') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn delete"
           @click="changeStatusBatch('delete')"
-          >删除</el-button
+          >{{ $t('views.hookPage.del') }}</el-button
         >
       </div>
     </div>
@@ -74,37 +77,61 @@
       </el-table-column>
       <template slot="empty">
         <div class="empty-box">
-          <span>暂无数据</span>
+          <span>{{ $t('views.hookPage.empty') }}</span>
         </div>
       </template>
       <el-table-column
         prop="rule_type"
-        label="规则类型"
+        :label="$t('views.hookPage.hooksType')"
         width="180"
         :fixed="tableData.length ? 'left' : false"
       >
       </el-table-column>
-      <el-table-column prop="value" label="规则详情" width="340">
+      <el-table-column
+        prop="value"
+        :label="$t('views.hookPage.ruleInfo')"
+        width="340"
+      >
       </el-table-column>
-      <el-table-column prop="source" label="污点输入" width="180">
+      <el-table-column
+        prop="source"
+        :label="$t('views.hookPage.point')"
+        width="180"
+      >
       </el-table-column>
-      <el-table-column prop="inherit" label="HOOK深度" width="180">
+      <el-table-column
+        prop="inherit"
+        :label="$t('views.hookPage.hoopDeep')"
+        width="180"
+      >
         <template slot-scope="scope">
           {{
             scope.row.inherit === 'true'
-              ? '子类'
+              ? $t('views.hookPage.children')
               : scope.row.inherit === 'all'
-              ? '当前类及子类'
-              : '当前类'
+              ? $t('views.hookPage.nowChildren')
+              : $t('views.hookPage.now')
           }}
         </template>
       </el-table-column>
-      <el-table-column prop="track" label="开启污点跟踪" width="180">
+      <el-table-column
+        prop="track"
+        :label="$t('views.hookPage.openTrace')"
+        width="180"
+      >
         <template slot-scope="scope">
-          {{ scope.row.track === 'true' ? '是' : '否' }}
+          {{
+            scope.row.track === 'true'
+              ? $t('views.hookPage.yes')
+              : $t('views.hookPage.no')
+          }}
         </template>
       </el-table-column>
-      <el-table-column prop="update_time" label="修改时间" width="180">
+      <el-table-column
+        prop="update_time"
+        :label="$t('views.hookPage.updateTime')"
+        width="180"
+      >
         <template slot-scope="scope">
           {{ scope.row.update_time | formatTimestamp }}
         </template>
@@ -112,14 +139,14 @@
       <el-table-column
         v-if="rolesCheck(['system_admin', 'talent_admin'], true)"
         prop="user"
-        label="创建者"
+        :label="$t('views.hookPage.user')"
         width="180"
       >
       </el-table-column>
       <el-table-column
         align="center"
         header-align="center"
-        label="状态"
+        :label="$t('views.hookPage.status')"
         :fixed="tableData.length ? 'right' : false"
       >
         <template slot-scope="scope">
@@ -135,8 +162,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="操作"
+        prop=""
+        :label="$t('views.hookPage.address')"
         width="100"
         align="center"
         :fixed="tableData.length ? 'right' : false"
@@ -148,10 +175,10 @@
             style="color: #4a72ae"
             @click="editRow(scope.row)"
           >
-            编辑
+            {{ $t('views.hookPage.edit') }}
           </el-button>
           <el-popconfirm
-            title="确定删除吗？"
+            :title="$t('views.hookPage.delpop')"
             @confirm="changeStatus(scope.row, 'delete')"
           >
             <el-button
@@ -159,7 +186,7 @@
               size="small"
               style="margin-left: 6px; color: #f56262"
               type="text"
-              >删除</el-button
+              >{{ $t('views.hookPage.del') }}</el-button
             >
           </el-popconfirm>
         </template>
@@ -180,22 +207,22 @@
 
     <el-dialog :visible.sync="hookTypeDialog">
       <el-form :model="hookType" label-width="80px" size="small">
-        <el-form-item label="规则集">
+        <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
-        <el-form-item label="类型名称">
+        <el-form-item :label="$t('views.hookPage.typeName')">
           <el-input
             v-model="hookType.name"
-            placeholder="请输入类型名称，如：String、StringBuilder等，建议使用类名"
+            :placeholder="$t('views.hookPage.namePlaceholder')"
           ></el-input>
         </el-form-item>
-        <el-form-item label="类型简称">
+        <el-form-item :label="$t('views.hookPage.typeShotName')">
           <el-input
             v-model="hookType.short_name"
-            placeholder="请输入类型简称，如：字符串-01、字符串-02，方便自己查看"
+            :placeholder="$t('views.hookPage.shotNamePlaceholder')"
           ></el-input>
         </el-form-item>
-        <el-form-item label="是否启用">
+        <el-form-item :label="$t('views.hookPage.openOrNot')">
           <el-switch
             v-model="hookType.enable"
             active-color="#37D7BB"
@@ -207,20 +234,25 @@
         </el-form-item>
       </el-form>
       <template slot="footer">
-        <el-button size="small" @click="clearHookType">取消</el-button>
-        <el-button size="small" type="primary" @click="enterHookType"
-          >确定</el-button
-        >
+        <el-button size="small" @click="clearHookType">{{
+          $t('views.hookPage.clear')
+        }}</el-button>
+        <el-button size="small" type="primary" @click="enterHookType">{{
+          $t('views.hookPage.enter')
+        }}</el-button>
       </template>
     </el-dialog>
 
     <el-dialog :visible.sync="hookDialog">
       <el-form :model="hook" size="small" label-width="80px">
-        <el-form-item label="规则集">
+        <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hook.type) }}</span>
         </el-form-item>
-        <el-form-item label="规则类型">
-          <el-select v-model="hook.rule_type_id" placeholder="请选择规则类型">
+        <el-form-item :label="$t('views.hookPage.hooksType')">
+          <el-select
+            v-model="hook.rule_type_id"
+            :placeholder="$t('views.hookPage.namePlaceholder')"
+          >
             <el-option
               v-for="t in types"
               :key="t.id"
@@ -231,21 +263,21 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="规则详情">
+        <el-form-item :label="$t('views.hookPage.ruleInfo')">
           <el-input
             v-model="hook.rule_value"
-            placeholder="请输入HOOK规则，格式如：java.lang.String.<init>(java.lang.String)"
+            :placeholder="$t('views.hookPage.ruleInfoPlaceholder')"
           ></el-input>
         </el-form-item>
         <template v-for="(item, key) in hook.source">
           <el-form-item
             :key="'source' + key"
-            :label="key === 0 ? '污点来源' : ''"
+            :label="key === 0 ? $t('views.hookPage.source') : ''"
           >
             <el-select
               v-if="key > 0"
               v-model="item.relation"
-              placeholder="请选择逻辑关系"
+              :placeholder="$t('views.hookPage.relation')"
               style="width: 18%"
             >
               <el-option
@@ -258,7 +290,7 @@
             </el-select>
             <el-select
               v-model="item.origin"
-              placeholder="请选择数据源"
+              :placeholder="$t('views.hookPage.origin')"
               style="width: 18%"
               @change="changeOrigin(item)"
             >
@@ -278,7 +310,7 @@
             <el-input
               v-if="item.origin === 'P'"
               v-model="item.param"
-              placeholder="参数编号，从1开始"
+              :placeholder="$t('views.hookPage.paramPlaceholder')"
               style="width: 10%; margin-left: 10px"
             ></el-input>
             <div style="float: right">
@@ -286,33 +318,45 @@
                 type="text"
                 size="small"
                 @click="addSource(hook.source)"
-                >增加</el-button
+                >{{ $t('views.hookPage.add') }}</el-button
               >
               <el-button
                 v-if="hook.source.length > 1"
                 size="small"
                 type="text"
                 @click="deleteSource(hook.source, key)"
-                >删除</el-button
+                >{{ $t('views.hookPage.del') }}</el-button
               >
             </div>
           </el-form-item>
         </template>
-        <el-form-item label="污点跟踪">
-          <el-radio v-model="hook.track" label="true">启用</el-radio>
-          <el-radio v-model="hook.track" label="false">禁用</el-radio>
+        <el-form-item :label="$t('views.hookPage.hookTrack')">
+          <el-radio v-model="hook.track" label="true">{{
+            $t('views.hookPage.on')
+          }}</el-radio>
+          <el-radio v-model="hook.track" label="false">{{
+            $t('views.hookPage.off')
+          }}</el-radio>
         </el-form-item>
-        <el-form-item label="继承深度">
-          <el-radio v-model="hook.inherit" label="false">仅当前类</el-radio>
-          <el-radio v-model="hook.inherit" label="true">仅子类</el-radio>
-          <el-radio v-model="hook.inherit" label="all">当前类及其子类</el-radio>
+        <el-form-item :label="$t('views.hookPage.depth')">
+          <el-radio v-model="hook.inherit" label="false">{{
+            $t('views.hookPage.onlyNow')
+          }}</el-radio>
+          <el-radio v-model="hook.inherit" label="true">{{
+            $t('views.hookPage.onlyChildren')
+          }}</el-radio>
+          <el-radio v-model="hook.inherit" label="all">{{
+            $t('views.hookPage.nowChildren')
+          }}</el-radio>
         </el-form-item>
       </el-form>
       <template slot="footer">
-        <el-button size="small" @click="clearHook">取消</el-button>
-        <el-button size="small" type="primary" @click="enterHook"
-          >确定</el-button
-        >
+        <el-button size="small" @click="clearHook">{{
+          $t('views.hookPage.clear')
+        }}</el-button>
+        <el-button size="small" type="primary" @click="enterHook">{{
+          $t('views.hookPage.enter')
+        }}</el-button>
       </template>
     </el-dialog>
   </div>
@@ -347,13 +391,13 @@ export default class HookTable extends VueBase {
     track: '',
   }
   relations = [
-    { label: '或', value: '|' },
-    { label: '和', value: '&' },
+    { label: this.$t('views.hookPage.or'), value: '|' },
+    { label: this.$t('views.hookPage.and'), value: '&' },
   ]
   origins = [
-    { label: '对象', value: 'O' },
-    { label: '返回值', value: 'R' },
-    { label: '参数', value: 'P' },
+    { label: this.$t('views.hookPage.O'), value: 'O' },
+    { label: this.$t('views.hookPage.R'), value: 'R' },
+    { label: this.$t('views.hookPage.P'), value: 'P' },
   ]
   tableData = []
   pageSize = 20
@@ -369,24 +413,30 @@ export default class HookTable extends VueBase {
     let str = ''
     switch (op) {
       case 'delete':
-        str = '删除'
+        str = this.$t('views.hookPage.del') as string
         break
       case 'enable':
-        str = '启用'
+        str = this.$t('views.hookPage.on') as string
         break
       case 'disable':
-        str = '禁用'
+        str = this.$t('views.hookPage.off') as string
         break
     }
-    this.$confirm(`此操作将批量${str}数据, 是否继续?`, '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }).then(async () => {
+    this.$confirm(
+      `${this.$t('views.hookPage.changeOne')}${str}${this.$t(
+        'views.hookPage.changeTwo'
+      )}`,
+      this.$t('views.hookPage.pop') as string,
+      {
+        confirmButtonText: this.$t('views.hookPage.enter') as string,
+        cancelButtonText: this.$t('views.hookPage.clear') as string,
+        type: 'warning',
+      }
+    ).then(async () => {
       if (this.multipleSelection.length === 0) {
         this.$message({
           type: 'warning',
-          message: '请先选择需要操作的数据',
+          message: this.$t('views.hookPage.changeWarning') as string,
           showClose: true,
         })
         return
@@ -583,15 +633,15 @@ export default class HookTable extends VueBase {
   fmtType(type: string) {
     switch (type) {
       case '1':
-        return '传播方法规则'
+        return this.$t('views.hookPage.spreadType') as string
       case '2':
-        return '污染源方法规则'
+        return this.$t('views.hookPage.contaminatedType') as string
       case '3':
-        return '过滤方法规则'
+        return this.$t('views.hookPage.filterType') as string
       case '4':
-        return '危险方法规则'
+        return this.$t('views.hookPage.dangerType') as string
       case '5':
-        return '入口方法规则'
+        return this.$t('views.hookPage.enterType') as string
     }
   }
   clearHook() {

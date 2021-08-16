@@ -1,20 +1,24 @@
 import { Commit } from 'vuex'
 import createUserServices from '@/services/user'
-import createRoleServices from '@/services/role'
-
 import { Message } from 'element-ui'
-
+import Cookie from 'cookies-js'
+import route from '@/router/routes'
+import router from '@/router'
 const userServices = createUserServices()
-const roleServices = createRoleServices()
 
 const state: any = {
   userInfo: null,
-  routers: [],
+  routers: route.baseRoutes,
 }
 
 const mutations: any = {
   SET_ROUTER(state: any, routers: []) {
-    state.routers = routers
+    state.routers[0].children.splice(1, 1)
+    state.routers[0].children.push(...routers, {
+      path: '*',
+      redirect: '/',
+    })
+    router.addRoutes(state.routers)
   },
   UPDATE_USER_INFO(state: any, userInfo: any) {
     state.userInfo = userInfo
@@ -24,10 +28,20 @@ const mutations: any = {
 const actions: any = {
   async getUserInfo(context: { commit: Commit }) {
     const { status, msg, data } = await userServices.getUserInfo()
-    // const res = await roleServices.getRoute()
-    // context.commit('SET_ROUTER', res.data)
+
     if (status !== 201) {
       Message.error(msg)
+    }
+    switch (data.role) {
+      case 1:
+        context.commit('SET_ROUTER', route.routes)
+        break
+      case 2:
+        context.commit('SET_ROUTER', route.adminRoutes)
+        break
+      default:
+        context.commit('SET_ROUTER', route.userRoutes)
+        break
     }
     context.commit('UPDATE_USER_INFO', data)
   },
@@ -36,9 +50,13 @@ const actions: any = {
     if (status !== 201) {
       Message.error(msg)
     }
-    context.commit('UPDATE_USER_INFO', null)
+    context.commit('clearInfo')
+    router.push({ path: '/login' })
+    window.location.reload()
   },
   clearInfo(context: { commit: Commit }) {
+    Cookie.expire('sessionid')
+    Cookie.expire('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)
   },
 }

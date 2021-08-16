@@ -66,7 +66,9 @@ export const getPassedTime = (timestamp: number | any): string => {
 export const debounce = (fn: any, wait: number) => {
   let timeout: any = null
   return () => {
-    if (timeout !== null) { clearTimeout(timeout) }
+    if (timeout !== null) {
+      clearTimeout(timeout)
+    }
     timeout = setTimeout(fn, wait)
   }
 }
