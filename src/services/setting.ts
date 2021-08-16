@@ -49,7 +49,7 @@ export default () =>
     }
 
     deleteAgents(params: any): Promise<iResponse> {
-      return request.get(`/agents/delete`,{params})
+      return request.get(`/agents/delete`, { params })
     }
 
     upgradeOnline(
@@ -86,6 +86,10 @@ export default () =>
     // logExport(params: { ids: string }): Promise<iResponse> {
     //   return request.get('/log/export', { params })
     // }
+
+    setLang(language: string): Promise<iResponse> {
+      return request.get('/i18n/setlang?language=' + language)
+    }
 
     strategyUserList(): Promise<iResponse> {
       return request.get('/strategy/user/list')

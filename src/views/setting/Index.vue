@@ -55,7 +55,7 @@
           :class="curModule(i.path) ? 'currentModule' : ''"
           @click="$router.push(i.path)"
         >
-          {{ i.meta.name }}
+          {{ $t(i.meta.i18n) }}
         </div>
       </div>
     </div>

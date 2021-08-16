@@ -61,6 +61,9 @@ export default {
     search: '污点搜索',
     poolDetail: '污点详情',
     serverRegister: '服务注册',
+    language: '语言选择',
+    chinese: '简体中文',
+    englist: '英文',
   },
   views: {
     serverRegister: {
