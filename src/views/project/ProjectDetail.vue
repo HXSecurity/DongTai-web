@@ -78,6 +78,15 @@
         <el-button
           type="text"
           class="pTab"
+          :class="selectTab === 'apiList' ? 'selected' : ''"
+          @click="changeActive('apiList')"
+        >
+          <i class="iconfont iconzhongjianjian" style="line-height: 8px"></i>
+          {{ $t('views.projectDetail.apiList') }}
+        </el-button>
+        <el-button
+          type="text"
+          class="pTab"
           :class="selectTab === 'component' ? 'selected' : ''"
           @click="changeActive('component')"
         >
@@ -123,6 +132,9 @@
           :project-id="$route.params.pid"
           :version="projectObj.versionData.version_id"
         ></ScaList>
+      </div>
+      <div v-if="selectTab === 'apiList'">
+        <ApiList> </ApiList>
       </div>
     </div>
 
@@ -248,6 +260,7 @@ import request from '@/utils/request'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
+import ApiList from './apiList.vue'
 import ScaList from '../sca/ScaList.vue'
 import merge from 'webpack-merge'
 
@@ -256,6 +269,7 @@ import merge from 'webpack-merge'
   components: {
     VulListComponent,
     ScaList,
+    ApiList,
   },
 })
 export default class ProjectDetail extends VueBase {

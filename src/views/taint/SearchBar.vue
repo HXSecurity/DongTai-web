@@ -13,14 +13,31 @@
         clearable
         class="search-bar-select"
       >
-
         <el-option :label="$t('views.search.url')" value="url"></el-option>
-        <el-option :label="$t('views.search.signature')" value="signature"></el-option>
-        <el-option :label="$t('views.search.sinkvalues')" value="sinkvalues"></el-option>
-        <el-option :label="$t('views.search.req_header_fs')" value="req_header_fs"></el-option>
-        <el-option :label="$t('views.search.req_data')" value="req_data"></el-option>
-        <el-option :label="$t('views.search.res_header')" value="res_header"></el-option>
-        <el-option :label="$t('views.search.res_body')" value="res_body"></el-option>
+        <el-option
+          :label="$t('views.search.signature')"
+          value="signature"
+        ></el-option>
+        <el-option
+          :label="$t('views.search.sinkvalues')"
+          value="sinkvalues"
+        ></el-option>
+        <el-option
+          :label="$t('views.search.req_header_fs')"
+          value="req_header_fs"
+        ></el-option>
+        <el-option
+          :label="$t('views.search.req_data')"
+          value="req_data"
+        ></el-option>
+        <el-option
+          :label="$t('views.search.res_header')"
+          value="res_header"
+        ></el-option>
+        <el-option
+          :label="$t('views.search.res_body')"
+          value="res_body"
+        ></el-option>
       </el-select>
       <el-button
         slot="append"
@@ -53,7 +70,7 @@ export default class SearchBar extends VueBase {
   border: none;
 }
 
-/deep/.el-input-group__append{
+/deep/.el-input-group__append {
   border: none;
 }
 

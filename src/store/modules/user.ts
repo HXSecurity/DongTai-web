@@ -71,6 +71,7 @@ const actions: any = {
       Message.error(msg)
     }
     context.commit('clearInfo')
+    window.localStorage.clear()
     router.push({ path: '/login' })
     window.location.reload()
   },
