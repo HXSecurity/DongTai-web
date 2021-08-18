@@ -2,7 +2,16 @@
   <main class="container">
     <div v-if="projectObj" class="project-warp">
       <div class="title-warp">
-        <div class="name">{{ projectObj.name }}</div>
+        <div class="name">
+          {{ projectObj.name }}
+          <el-tag
+            v-for="item in projectObj.agent_language"
+            :key="item"
+            size="small"
+            style="margin-left: 12px"
+            >{{ item }}</el-tag
+          >
+        </div>
         <div class="info-line flex-row-space-between">
           <div class="info">
             <i class="iconfont iconjiance-copy"></i>
@@ -281,6 +290,7 @@ export default class ProjectDetail extends VueBase {
     owner: '',
     latest_time: '',
     versionData: {},
+    agent_languag: [],
   }
   private versionTemp: any = {}
   private versionList: any[] = []

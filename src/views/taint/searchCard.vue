@@ -15,7 +15,11 @@
         ></div>
         <div v-else>{{ info.method_pools.url }}</div>
       </span>
-      <span class="el-icon-link icon" @click="goPath(info.method_pools.url)">
+      <span
+        v-if="!isApi"
+        class="el-icon-link icon"
+        @click="goPath(info.method_pools.url)"
+      >
       </span>
       <el-tooltip
         class="item"
@@ -33,7 +37,7 @@
       </el-tooltip>
       <div style="flex: 1"></div>
       <el-button
-        v-if="showGraph === false"
+        v-if="showGraph === false || isApi"
         class="card-btn"
         :loading="buttonLoading"
         @click="send"
@@ -42,7 +46,7 @@
         }}</el-button
       >
     </div>
-    <div class="summary">
+    <div v-if="!isApi" class="summary">
       <div class="summary-item">
         <div class="label">
           <i class="iconfont icontanzhen"></i> {{ $t('views.search.agent') }}：
@@ -173,13 +177,19 @@
           name="first"
         ></el-tab-pane>
         <el-tab-pane
-          v-if="showGraph !== false"
+          v-if="showGraph !== false && !isApi"
           :label="$t('views.search.graph')"
           name="second"
         ></el-tab-pane>
       </el-tabs>
     </div>
-    <div v-if="activeKey === 'first'" class="info">
+    <div
+      v-if="activeKey === 'first'"
+      class="info"
+      :style="{
+        height: isApi && '323px',
+      }"
+    >
       <div class="info-box">
         <MyMarkdownIt
           v-if="!isEdit"
@@ -196,7 +206,7 @@
           placement="top"
         >
           <span
-            v-if="showGraph !== false"
+            v-if="showGraph !== false && !isApi"
             v-clipboard:error="onError"
             v-clipboard:copy="reqStr"
             v-clipboard:success="onCopy"
@@ -210,7 +220,7 @@
           placement="top"
         >
           <span
-            v-if="showGraph === false"
+            v-if="showGraph === false || isApi"
             class="el-icon-edit copy-icon"
             @click="isEdit = !isEdit"
           ></span>
@@ -239,6 +249,8 @@ import Dagre from '@/components/G6/Dagre.vue'
 export default class SearchCard extends VueBase {
   @Prop() info!: any
   @Prop() showGraph: boolean | undefined
+  @Prop() isApi: boolean | undefined
+
   private isEdit = false
   private reqStr = ''
   private resStr = ''
@@ -246,17 +258,21 @@ export default class SearchCard extends VueBase {
   created() {
     this.reqStr =
       (this.info.method_pools.req_header_fs_highlight ||
-        this.info.method_pools.req_header_fs) +
+        this.info.method_pools.req_header_fs ||
+        '') +
       '\n\n' +
       (this.info.method_pools.req_data_highlight ||
-        this.info.method_pools.req_data)
+        this.info.method_pools.req_data ||
+        '')
 
     this.resStr =
       (this.info.method_pools.res_header_highlight ||
-        this.info.method_pools.res_header) +
+        this.info.method_pools.res_header ||
+        '') +
       '\n\n' +
       (this.info.method_pools.res_body_highlight ||
-        this.info.method_pools.res_body)
+        this.info.method_pools.res_body ||
+        '')
   }
   get req() {
     return this.reqStr

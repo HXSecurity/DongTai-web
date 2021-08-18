@@ -99,153 +99,12 @@
               <span class="res"> {{ $t('views.apiList.response') }} </span>
               <span class="type">java.lang.String</span>
             </div>
-          </div>
-        </el-collapse-item>
-        <el-collapse-item title="反馈 Feedback">
-          <template slot="title">
-            <div class="collapse-title">
-              <el-tag effect="dark"> GET </el-tag>
-              <span class="title-api-path"> /api/v1/login </span>
-              <span>
-                <span class="title-api-info"> 用户登录接口 </span>
-                <i class="el-icon-success" style="color: #65d6a6"></i>
-              </span>
-            </div>
-          </template>
-          <div>
-            <div class="table-toolbar">
-              <span> {{ $t('views.apiList.parameters') }} </span>
-              <div>
-                <el-button size="small">
-                  {{ $t('views.apiList.view') }}</el-button
-                >
-                <el-button size="small">
-                  {{ $t('views.apiList.send') }}</el-button
-                >
-              </div>
-            </div>
-            <el-table :data="tableData" style="width: 100%">
-              <el-table-column
-                prop="name"
-                :label="$t('views.apiList.name')"
-                width="180"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="type"
-                :label="$t('views.apiList.type')"
-                width="180"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="extra"
-                :label="$t('views.apiList.extra')"
-                min-width="180"
-              >
-              </el-table-column>
-            </el-table>
-            <div class="table-foot">
-              <span class="res"> {{ $t('views.apiList.response') }} </span>
-              <span class="type">java.lang.String</span>
-            </div>
-          </div>
-        </el-collapse-item>
-        <el-collapse-item title="效率 Efficiency">
-          <template slot="title">
-            <div class="collapse-title">
-              <el-tag type="warning" effect="dark"> PUT </el-tag>
-              <span class="title-api-path"> /api/v1/login </span>
-              <span>
-                <span class="title-api-info"> 用户登录接口 </span>
-                <i class="el-icon-success" style="color: #65d6a6"></i>
-              </span>
-            </div>
-          </template>
-          <div>
-            <div class="table-toolbar">
-              <span> {{ $t('views.apiList.parameters') }} </span>
-              <div>
-                <el-button size="small">
-                  {{ $t('views.apiList.view') }}</el-button
-                >
-                <el-button size="small">
-                  {{ $t('views.apiList.send') }}</el-button
-                >
-              </div>
-            </div>
-            <el-table :data="tableData" style="width: 100%">
-              <el-table-column
-                prop="name"
-                :label="$t('views.apiList.name')"
-                width="180"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="type"
-                :label="$t('views.apiList.type')"
-                width="180"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="extra"
-                :label="$t('views.apiList.extra')"
-                min-width="180"
-              >
-              </el-table-column>
-            </el-table>
-            <div class="table-foot">
-              <span class="res"> {{ $t('views.apiList.response') }} </span>
-              <span class="type">java.lang.String</span>
-            </div>
-          </div>
-        </el-collapse-item>
-        <el-collapse-item title="可控 Controllability">
-          <template slot="title">
-            <div class="collapse-title">
-              <el-tag type="danger" effect="dark"> DELETE </el-tag>
-              <span class="title-api-path"> /api/v1/login </span>
-              <span>
-                <span class="title-api-info"> 用户登录接口 </span>
-                <i class="el-icon-success" style="color: #65d6a6"></i>
-              </span>
-            </div>
-          </template>
-          <div>
-            <div class="table-toolbar">
-              <span> {{ $t('views.apiList.parameters') }} </span>
-              <div>
-                <el-button size="small">
-                  {{ $t('views.apiList.view') }}</el-button
-                >
-                <el-button size="small">
-                  {{ $t('views.apiList.send') }}</el-button
-                >
-              </div>
-            </div>
-            <el-table :data="tableData" style="width: 100%">
-              <el-table-column
-                prop="name"
-                :label="$t('views.apiList.name')"
-                width="180"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="type"
-                :label="$t('views.apiList.type')"
-                width="180"
-              >
-              </el-table-column>
-              <el-table-column
-                prop="extra"
-                :label="$t('views.apiList.extra')"
-                min-width="180"
-              >
-              </el-table-column>
-            </el-table>
-            <div class="table-foot">
-              <span class="res"> {{ $t('views.apiList.response') }} </span>
-              <span class="type">java.lang.String</span>
-            </div>
+
+            <SearchCard
+              style="margin-top: 20px"
+              :is-api="true"
+              :info="{ method_pools: {}, relations: { vulnerablities: [] } }"
+            ></SearchCard>
           </div>
         </el-collapse-item>
       </el-collapse>
@@ -255,8 +114,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-
-@Component({ name: 'ApiList' })
+import SearchCard from '@/views/taint/searchCard.vue'
+@Component({
+  name: 'ApiList',
+  components: {
+    SearchCard,
+  },
+})
 export default class Index extends Vue {
   private searchObj = {
     method: '',
