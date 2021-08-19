@@ -66,6 +66,70 @@ export default {
     englist: 'Englist',
   },
   views: {
+    deploy: {
+      begin: 'Select a language and start the installation',
+      installing: 'Installing',
+      agent: 'Agent',
+      term:
+        'Before the installation, please make sure to confirm the following precautions: ',
+      download: 'Downloading Java Agent',
+      install: 'Installing Java Agent',
+      copy: 'copy',
+      downloadWorld: 'Download',
+      reloadTile: 'Restarting Services (For Manual Installation)',
+      reloadDesc: 'Please restart your application service.',
+      help: 'Instructions',
+      agentInstructions: 'Agent installation instructions',
+      moreDocument: 'More Document',
+      moreSupport: 'More Support',
+      issue: 'Submit ISSUE',
+      java: {
+        autoInstall: 'Automatic Installation',
+        ManualInstallation: 'Manual Installation',
+        autoInstallDesc:
+          'Attach the DongTai Java Agent into the application by service process id with the following command:',
+        term1: 'Ensure interworking between networks is available.',
+        term2: `Ensure your system meet the requirement as below: 
+        a. Operating system: Windows/Linux
+        b. JDK version: 1.6 and above;
+        c. Framework: Spring Boot
+        d. Middleware: Tomcat, JBoss, Jetty, Resin, WebLogic, WebSphere
+        e. DongTai IAST also supported Docker`,
+        p1:
+          'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
+        p2: '1. Check the agent.jar',
+        p3:
+          'Execute the following command “java -jar /temp/agent.jar” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p4: '2. Check the network connection',
+        p51: 'If the Web Service is unable to access to ',
+        p52:
+          'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+      },
+      python: {
+        ManualInstallation: 'Manual Installation',
+        term1: 'Python Version: 3.3 and above',
+        term2: 'Interpreter: CPython',
+        term3: 'Middleware: uWSGI',
+        term4: 'Web Framework: Django',
+        term5: 'Web Service: Django REST Framework',
+        term6: 'Module: psutil verion should be include and above 5.8.0',
+        manualInstallationDesc:
+          'Extract download file with the following command.',
+        settings: 'Settings',
+        p1:
+          'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
+        p2: '1. Check the dongtai-agent-python.tar.gz',
+        p3:
+          'Execute the following command “pip3 install ./dongtai-agent-python.tar.gz” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p4:
+          '2. Modify the `settings.py` file in the Django application which is going to install the agent. Find `configure middleware` in the file and add the following line:',
+        p5: `'dongtai_agent_python.middlewares.django_middleware.FireMiddleware'`,
+        p6: '3. Check the network connection',
+        p71: 'If the Web Service is unable to access to ',
+        p72:
+          'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+      },
+    },
     serverRegister: {
       save: 'Save',
       saveSuccess: 'Save successfully',
