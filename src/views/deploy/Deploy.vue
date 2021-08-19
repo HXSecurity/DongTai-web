@@ -129,7 +129,6 @@
             <div class="title-3 margin-t-16">
               2. {{ $t('views.deploy.java.ManualInstallation') }}
             </div>
-
             <div class="install-tabs">
               <el-tabs v-model="activeName" @tab-click="getMd">
                 <el-tab-pane label="SpringBoot" name="SpringBoot">
