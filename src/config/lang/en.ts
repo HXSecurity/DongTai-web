@@ -57,7 +57,7 @@ export default {
     user: 'Role Management',
     talent: 'Tenant',
     department: 'Organization',
-    taintPool: 'search',
+    taintPool: 'Search',
     search: 'Stain search',
     poolDetail: 'Stain details',
     serverRegister: 'Service Registration',
