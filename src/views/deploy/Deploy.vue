@@ -76,8 +76,10 @@
           <template v-if="language === 'java'">
             <div class="title-3 margin-t-16">1. 自动安装</div>
             <div class="install-desc margin-t-8">
-              上传 DongTai {{ obj[language].name }} Agent 探针到应用服务器，查看
-              Web 应用的进行 Web 应用的进行 id，运行命令安装探针，如下：
+              上传 DongTai
+              {{ obj[language].name }} 探针到应用服务器，查看需要部署探针的
+              {{ obj[language].name }} Web 应用的进程
+              id，然后运行命令安装探针，命令如下
             </div>
             <div class="markdown margin-t-16">
               <span> {{ obj[language].download }} </span>
@@ -258,14 +260,14 @@
           {{ obj[language].name }} Agent 安装方法
         </div>
         <div class="right-video margin-t-8">
-            <video v-show="language === 'java'" controls>
-              <source :src="obj.java.video" type="video/mp4" />
-              您的浏览器不支持 HTML5 video 标签。
-            </video>
-            <video v-show="language === 'python'" controls>
-              <source :src="obj.python.video" type="video/mp4" />
-              您的浏览器不支持 HTML5 video 标签。
-            </video>
+          <video v-show="language === 'java'" controls>
+            <source :src="obj.java.video" type="video/mp4" />
+            您的浏览器不支持 HTML5 video 标签。
+          </video>
+          <video v-show="language === 'python'" controls>
+            <source :src="obj.python.video" type="video/mp4" />
+            您的浏览器不支持 HTML5 video 标签。
+          </video>
         </div>
         <div class="title margin-t-32">查阅更多文档</div>
         <div
