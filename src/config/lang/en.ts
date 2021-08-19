@@ -34,7 +34,7 @@ export default {
     diffPassword: 'The two input passwords are inconsistent',
   },
   menu: {
-    projectEdit: 'projectEdit',
+    projectEdit: 'ProjectEdit',
     home: 'Home',
     login: 'Login',
     project: 'APPLICATIONS',
@@ -55,7 +55,7 @@ export default {
     changePassword: 'Account',
     logManage: 'Log',
     user: 'Role Management',
-    talent: 'tenant',
+    talent: 'Tenant',
     department: 'Organization',
     taintPool: 'search',
     search: 'Stain search',
@@ -63,7 +63,7 @@ export default {
     serverRegister: 'Service Registration',
     language: 'Language',
     chinese: 'Chinese',
-    englist: 'Englist',
+    englist: 'English',
   },
   views: {
     deploy: {
@@ -363,6 +363,7 @@ export default {
       confirmed: 'Confirmed',
       fixed: 'Fixed',
       ignored: 'Ignored',
+      vuln: 'vulnerability',
     },
     scaList: {
       filter: 'Filter',
