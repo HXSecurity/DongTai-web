@@ -122,7 +122,7 @@ export default {
         p3:
           'Execute the following command “pip3 install ./dongtai-agent-python.tar.gz” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
         p4:
-          '2. Modify the `settings.py` file in the Django application which is going to install the agent. Find `configure middleware` in the file and add the following line:',
+          '2. Check the setting.py in Django application Ensure the following line is added to the MIDDLEWARE configuration.',
         p5: `'dongtai_agent_python.middlewares.django_middleware.FireMiddleware'`,
         p6: '3. Check the network connection',
         p71: 'If the Web Service is unable to access to ',
