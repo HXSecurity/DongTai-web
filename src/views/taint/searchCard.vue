@@ -80,7 +80,8 @@
       </div>
       <div v-if="info.relations.project_name" class="summary-item">
         <div class="label">
-          <i class="iconfont iconxiangmu"></i> {{ $t('views.search.project') }}：
+          <i class="iconfont iconxiangmu"></i>
+          {{ $t('views.search.project') }}：
         </div>
         <div
           class="info"
@@ -167,7 +168,10 @@
     </div>
     <div class="tabs">
       <el-tabs v-model="activeKey" @tab-click="changeActiveKey">
-        <el-tab-pane :label="$t('views.search.http')" name="first"></el-tab-pane>
+        <el-tab-pane
+          :label="$t('views.search.http')"
+          name="first"
+        ></el-tab-pane>
         <el-tab-pane
           v-if="showGraph !== false"
           :label="$t('views.search.graph')"
@@ -235,6 +239,8 @@ import Dagre from '@/components/G6/Dagre.vue'
 export default class SearchCard extends VueBase {
   @Prop() info!: any
   @Prop() showGraph: boolean | undefined
+  @Prop() isApi: boolean | undefined
+
   private isEdit = false
   private reqStr = ''
   private resStr = ''
