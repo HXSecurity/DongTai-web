@@ -38,7 +38,7 @@ export default {
     home: 'Home',
     login: 'Login',
     project: 'APPLICATIONS',
-    projectManage: 'Project',
+    projectManage: 'Applications',
     projectDetail: 'Project Details',
     vuln: 'Vulnerabilities',
     vulnList: 'Application Vulnerability List',
