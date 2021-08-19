@@ -175,7 +175,7 @@
       </el-table-column>
       <el-table-column label="Agent" width="320" prop="token">
         <template slot-scope="{ row }">
-          <div class="dot">
+          <div class="dot" style="width: 320px">
             {{ row.token }}
           </div>
         </template>

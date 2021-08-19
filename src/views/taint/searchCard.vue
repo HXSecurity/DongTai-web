@@ -241,7 +241,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import { GraphData } from '@/views/taint/types/search'
 import Dagre from '@/components/G6/Dagre.vue'
@@ -354,10 +354,18 @@ export default class SearchCard extends VueBase {
     window.open(url)
   }
 
+  private timer: any
+
+  @Watch('$route', { deep: true })
+  onRouteChange() {
+    clearInterval(this.timer)
+  }
+
   private async send() {
     this.loadingStart()
     const res = await this.services.taint.replay({
-      methodPoolId: this.$route.params.id,
+      methodPoolId: this.isApi ? -1 : this.$route.params.id,
+      agent_id: this.info.relations.agent_id,
       replayRequest: this.reqStr,
     })
     this.loadingDone()
@@ -369,7 +377,7 @@ export default class SearchCard extends VueBase {
       })
       return
     }
-    const timer = setInterval(async () => {
+    this.timer = setInterval(async () => {
       this.buttonLoading = true
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
@@ -381,10 +389,10 @@ export default class SearchCard extends VueBase {
         this.$nextTick(async () => {
           await this.getMethodPool(true)
         })
-        clearInterval(timer)
+        clearInterval(this.timer)
         this.buttonLoading = false
       } else if (resT.status === 203) {
-        clearInterval(timer)
+        clearInterval(this.timer)
         this.buttonLoading = false
       }
     }, 1000)
