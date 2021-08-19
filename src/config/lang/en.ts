@@ -46,7 +46,7 @@ export default {
     sca: 'Libraries',
     scaList: 'Component management list',
     scaDetail: 'Component management details',
-    setting: 'Setting',
+    setting: 'Settings',
     agentManage: 'Engine',
     strategyManage: 'Strategy',
     hookRule: 'Custom Rule',
