@@ -8,13 +8,13 @@
           @click="$router.push('/project/projectEdit')"
         >
           <i class="iconfont iconxinzengxiangmu-3"></i>
-          新建项目
+          {{ $t('views.projectManage.add') }}
         </el-button>
       </div>
       <div class="flex-column-center">
         <el-input
           v-model="searchObj.name"
-          placeholder="请输入项目名称"
+          :placeholder="$t('views.projectManage.searchName')"
           style="width: 462px"
           size="mini"
           @keyup.enter.native="newSelectData"
@@ -35,16 +35,23 @@
         <el-table-column
           width="200px"
           prop="name"
-          :show-overflow-tooltip="true"
           :label="$t('views.projectManage.name')"
         >
           <template slot-scope="{ row }">
-            <div
-              class="projectName"
-              @click="$router.push(`/project/projectDetail/${row.id}`)"
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.name"
+              placement="top"
+              :disabled="row.name.length < 24"
             >
-              {{ row.name }}
-            </div>
+              <div
+                class="projectName"
+                @click="$router.push(`/project/projectDetail/${row.id}`)"
+              >
+                {{ row.name }}
+              </div>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column
@@ -238,6 +245,10 @@ export default class ProjectManage extends VueBase {
 }
 
 .projectName {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: pointer;
   &:hover {
     color: #4b99f1;

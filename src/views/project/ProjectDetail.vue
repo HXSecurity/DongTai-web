@@ -85,7 +85,7 @@
           {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
       </div>
-      <div v-show="selectTab === 'desc'">
+      <div v-if="selectTab === 'desc'">
         <div
           id="type_summary_level_count"
           class="module flex-row-space-between"
@@ -166,7 +166,7 @@
               v-else
               v-model="scope.row.version_name"
               size="small"
-              placeholder="版本名称，如：v1"
+              :placeholder="$t('views.projectDetail.search_version_name')"
             />
           </template>
         </el-table-column>
@@ -181,7 +181,7 @@
               v-else
               v-model="scope.row.description"
               size="small"
-              placeholder="版本描述，如：xxx业务第x次迭代"
+              :placeholder="$t('views.projectDetail.search_description')"
             />
           </template>
         </el-table-column>
@@ -249,7 +249,6 @@ import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
 import ScaList from '../sca/ScaList.vue'
-import { Message } from 'element-ui'
 import merge from 'webpack-merge'
 
 @Component({
@@ -472,22 +471,25 @@ export default class ProjectDetail extends VueBase {
       return
     }
 
-    const type_summary = document.getElementById('type_summary') as HTMLElement
-    const level_count = document.getElementById('level_count') as HTMLElement
-    const type_summary_level_count = document.getElementById(
-      'type_summary_level_count'
-    ) as HTMLElement
-
-    const height = Math.ceil(data.type_summary.length / 5) * 30
-    const domHeight = type_summary.offsetHeight
-    type_summary.style.height = domHeight + height + 'px'
-    level_count.style.height = domHeight + height + 'px'
-    type_summary_level_count.style.height = domHeight + 40 + height + 'px'
     this.projectObj = {
       ...data,
       name: data.name,
       latest_time: formatTimestamp(data.latest_time),
     }
+
+    const type_summary = document.getElementById('type_summary') as HTMLElement
+    const level_count = document.getElementById('level_count') as HTMLElement
+    const type_summary_level_count = document.getElementById(
+      'type_summary_level_count'
+    ) as HTMLElement
+    if (!type_summary || !level_count || !type_summary_level_count) {
+      return false
+    }
+    const height = Math.ceil(data.type_summary.length / 5) * 30
+    const domHeight = type_summary.offsetHeight
+    type_summary.style.height = domHeight + height + 'px'
+    level_count.style.height = domHeight + height + 'px'
+    type_summary_level_count.style.height = domHeight + 40 + height + 'px'
 
     if (this.selectTab !== 'desc') {
       return
@@ -557,7 +559,9 @@ export default class ProjectDetail extends VueBase {
                 name: item.type_name,
                 value: item.type_count,
                 tooltip: {
-                  formatter: '类型<br />{b0}: {c0} ({d}%)<br />',
+                  formatter:
+                    this.$t('views.projectDetail.pieType') +
+                    '<br />{b0}: {c0} ({d}%)<br />',
                 },
               })
               return list
@@ -630,24 +634,34 @@ export default class ProjectDetail extends VueBase {
   projectExport() {
     request
       .get(`/project/export?pid=${this.$route.params.pid}`, {
-        responseType: 'blob', // 告诉服务器我们需要的响应格式
+        responseType: 'blob',
       })
       .then((res: any) => {
-        if (res.hasOwnProperty('response')) {
-          this.$message.error({ message: '报告导出失败', showClose: true })
+        if (res.type === 'application/json') {
+          this.$message.error({
+            message: this.$t('views.projectDetail.exportFail') as string,
+            showClose: true,
+          })
         } else {
           const blob = new Blob([res], {
-            type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
+            type: 'application/octet-stream',
           })
           const link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
           link.download = this.projectObj.name + '.doc'
           link.click()
-          this.$message.success({ message: '报告导出成功', showClose: true })
+
+          this.$message.success({
+            message: this.$t('views.projectDetail.exportSuccess') as string,
+            showClose: true,
+          })
         }
       })
       .catch((error) => {
-        this.$message.error({ message: '报告导出失败', showClose: true })
+        this.$message.error({
+          message: this.$t('views.projectDetail.exportFail') as string,
+          showClose: true,
+        })
       })
   }
 

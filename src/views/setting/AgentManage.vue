@@ -2,7 +2,7 @@
   <div class="content-warp">
     <div class="tool-bar">
       <div class="selectForm">
-        <div class="select-item">运行状态：</div>
+        <div class="select-item">{{ $t('views.agentManage.state') }}：</div>
         <div
           v-for="item in stateOptions"
           :key="item.value"
@@ -18,28 +18,28 @@
           v-model="searchValue"
           style="margin-left: 12px"
           size="small"
-          placeholder="请输入搜索条件"
+          :placeholder="$t('views.agentManage.searchValue')"
           @input="searchTable"
         ></el-input>
       </div>
     </div>
     <div class="button-bar">
       <div style="color: rgb(56, 67, 90)">
-        已选中
+        {{ $t('views.agentManage.choose') }}
         <span style="color: rgb(74, 114, 174)">{{
           multipleSelection.length
         }}</span>
-        条
+        {{ $t('views.agentManage.strip') }}
       </div>
       <div>
-        <el-button size="small" class="resetAllBtn" @click="agentStart(0)"
-          >启用</el-button
+        <el-button size="small" class="resetAllBtn" @click="agentStart(0)">
+          {{ $t('views.agentManage.on') }}</el-button
         >
-        <el-button size="small" class="resetAllBtn" @click="agentStop(0)"
-          >禁用</el-button
+        <el-button size="small" class="resetAllBtn" @click="agentStop(0)">
+          {{ $t('views.agentManage.off') }}</el-button
         >
-        <el-button size="small" class="resetAllBtn" @click="deleteAgents"
-          >删除</el-button
+        <el-button size="small" class="resetAllBtn" @click="deleteAgents">
+          {{ $t('views.agentManage.del') }}</el-button
         >
       </div>
     </div>
@@ -91,7 +91,7 @@
       >
         <template slot-scope="{ row }">
           <div>
-            {{ (row.flow || 0) + ' 次' }}
+            {{ (row.flow || 0) + $t('views.agentManage.step') }}
           </div>
         </template>
       </el-table-column>
@@ -102,7 +102,11 @@
       >
         <template slot-scope="{ row }">
           <div>
-            {{ row.is_core_running == 1 ? '核心组件运行中' : '核心组件未运行' }}
+            {{
+              row.is_core_running == 1
+                ? $t('views.agentManage.is_core_running')
+                : $t('views.agentManage.is_core_not_running')
+            }}
           </div>
         </template>
       </el-table-column>
@@ -113,7 +117,11 @@
       >
         <template slot-scope="{ row }">
           <div>
-            {{ row.running_status == '未运行' ? '下线' : '正常' }}
+            {{
+              row.running_status == '未运行'
+                ? $t('views.agentManage.offline')
+                : $t('views.agentManage.normal')
+            }}
           </div>
         </template>
       </el-table-column>
@@ -167,7 +175,7 @@
       </el-table-column>
       <el-table-column label="Agent" width="320" prop="token">
         <template slot-scope="{ row }">
-          <div class="dot">
+          <div class="dot" style="width: 320px">
             {{ row.token }}
           </div>
         </template>
@@ -181,17 +189,23 @@
       layout="total, prev, pager, next, jumper"
       @current-change="currentChange"
     ></el-pagination>
-    <el-dialog :visible.sync="deleteDialogOpen" title="删除引擎" width="25%">
+    <el-dialog
+      :visible.sync="deleteDialogOpen"
+      :title="$t('views.agentManage.delAgent')"
+      width="25%"
+    >
       <div style="text-align: center">
-        <p style="color: #959fb4">引擎删除后，相关的数据将一并删除，不可恢复</p>
-        <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
+        <p style="color: #959fb4">{{ $t('views.agentManage.agentDelInfo') }}</p>
+        <p style="color: #959fb4; margin-top: 14px">
+          {{ $t('views.agentManage.agentDelPop') }}
+        </p>
       </div>
       <div slot="footer" style="text-align: center">
         <el-button class="confirmDel" @click="agentDelete">
-          确认删除
+          {{ $t('views.agentManage.enterDel') }}
         </el-button>
         <el-button class="cancelDel" @click="deleteDialogOpen = false">
-          取消
+          {{ $t('views.agentManage.clear') }}
         </el-button>
       </div>
     </el-dialog>
@@ -223,8 +237,8 @@ export default class AgentManage extends VueBase {
   private deleteDialogOpen = false
   private deleteSelectId = 0
   private stateOptions = [
-    { value: 1, label: '运行中' },
-    { value: 0, label: '未运行' },
+    { value: 1, label: this.$t('views.agentManage.running') },
+    { value: 0, label: this.$t('views.agentManage.not_running') },
   ]
   private searchValue = ''
   private multipleSelection = []
@@ -345,11 +359,19 @@ export default class AgentManage extends VueBase {
   }
 
   private async deleteAgents() {
-    this.$confirm('此操作将永久删除该引擎, 是否继续?', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }).then(async () => {
+    this.$confirm(
+      this.$t('views.agentManage.delAgentInfo') as string,
+      this.$t('views.agentManage.delAgentPop') as string,
+      {
+        confirmButtonText: this.$t(
+          'views.agentManage.confirmButtonText'
+        ) as string,
+        cancelButtonText: this.$t(
+          'views.agentManage.cancelButtonText'
+        ) as string,
+        type: 'warning',
+      }
+    ).then(async () => {
       this.loadingStart()
       const params = {
         ids: String(

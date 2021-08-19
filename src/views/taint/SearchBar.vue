@@ -2,24 +2,25 @@
   <div class="search-bar">
     <el-input
       v-model="searchValue"
-      placeholder="请输入查询内容"
+      :placeholder="$t('views.search.searchValuePlace')"
       class="input-with-select"
       @keyup.enter.native="enterSearch"
     >
       <el-select
         slot="prepend"
         v-model="searchType"
-        placeholder="筛选"
+        :placeholder="$t('views.search.prependPlace')"
         clearable
         class="search-bar-select"
       >
-        <el-option label="URL" value="url"></el-option>
-        <el-option label="方法签名" value="signature"></el-option>
-        <el-option label="污点数据" value="sinkvalues"></el-option>
-        <el-option label="请求头" value="req_header_fs"></el-option>
-        <el-option label="请求体" value="req_data"></el-option>
-        <el-option label="响应头" value="res_header"></el-option>
-        <el-option label="响应体" value="res_body"></el-option>
+
+        <el-option :label="$t('views.search.url')" value="url"></el-option>
+        <el-option :label="$t('views.search.signature')" value="signature"></el-option>
+        <el-option :label="$t('views.search.sinkvalues')" value="sinkvalues"></el-option>
+        <el-option :label="$t('views.search.req_header_fs')" value="req_header_fs"></el-option>
+        <el-option :label="$t('views.search.req_data')" value="req_data"></el-option>
+        <el-option :label="$t('views.search.res_header')" value="res_header"></el-option>
+        <el-option :label="$t('views.search.res_body')" value="res_body"></el-option>
       </el-select>
       <el-button
         slot="append"
@@ -33,9 +34,9 @@
 
 <script lang="ts">
 import VueBase from '@/VueBase'
-import { Component, Emit } from 'vue-property-decorator' // 引入相关构造器
+import { Component, Emit } from 'vue-property-decorator'
 @Component({
-  name: 'SearchBar', // 当前组件名称
+  name: 'SearchBar',
 })
 export default class SearchBar extends VueBase {
   private searchType = ''
