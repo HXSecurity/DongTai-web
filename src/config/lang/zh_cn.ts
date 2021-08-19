@@ -84,6 +84,7 @@ export default {
       issue: '提交 ISSUE',
       java: {
         autoInstall: '自动安装',
+        ManualInstallation: '手动安装',
         autoInstallDesc:
           '上传 DongTai JAVA 探针到应用服务器，查看需要部署探针的 JAVA Web应用的进程 id，然后运行命令安装探针，命令如下',
         term1:
