@@ -477,7 +477,7 @@ export default class VulnList extends VueBase {
     project_name: '',
     url: '',
     order: '',
-    status: '已确认',
+    status: '',
     project_id: '',
   }
 
@@ -579,7 +579,7 @@ export default class VulnList extends VueBase {
     this.searchObj.level = ''
     this.searchObj.type = ''
     this.searchObj.project_name = ''
-    this.searchObj.status = '已确认'
+    this.searchObj.status = ''
     this.kw = ''
     this.newSelectData()
   }
