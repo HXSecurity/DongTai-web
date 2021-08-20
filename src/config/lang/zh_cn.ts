@@ -354,6 +354,7 @@ export default {
       confirmed: '已确认',
       fixed: '已修复',
       ignored: '已忽略',
+      vuln: '漏洞',
     },
     scaList: {
       filter: '过滤器',
