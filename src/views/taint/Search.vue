@@ -192,7 +192,7 @@ main.container {
   box-sizing: border-box;
   position: relative;
   .search-box {
-    z-index: 90;
+    z-index: 5;
     background: #fff;
     position: fixed;
     height: 72px;

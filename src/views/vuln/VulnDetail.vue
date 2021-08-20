@@ -197,7 +197,10 @@
             <span
               :class="vulnObj.vul.project_id && 'project-name'"
               @click="
-                $router.push('/project/projectDetail/' + vulnObj.vul.project_id)
+                vulnObj.vul.project_id &&
+                  $router.push(
+                    '/project/projectDetail/' + vulnObj.vul.project_id
+                  )
               "
               >{{ vulnObj.vul.project_name }}</span
             >

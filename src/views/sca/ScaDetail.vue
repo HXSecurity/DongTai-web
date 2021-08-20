@@ -139,7 +139,10 @@
           </span>
           <span
             style="cursor: pointer"
-            @click="$router.push('/project/projectDetail/' + scaObj.project_id)"
+            @click="
+              scaObj.project_id &&
+                $router.push('/project/projectDetail/' + scaObj.project_id)
+            "
           >
             {{ scaObj.project_name }}
           </span>
