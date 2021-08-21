@@ -462,7 +462,9 @@
       width="25%"
     >
       <div style="text-align: center">
-        <p style="color: #959fb4">$t('views.vulnDetail.deleteVulnInfo')</p>
+        <p style="color: #959fb4">
+          {{ $t('views.vulnDetail.deleteVulnInfo') }}
+        </p>
         <p style="color: #959fb4; margin-top: 14px">
           {{ $t('views.vulnDetail.deleteVulnDesc') }}
         </p>

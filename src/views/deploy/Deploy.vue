@@ -298,7 +298,6 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
-import App from '@/App.vue'
 
 @Component({ name: 'Deploy' })
 export default class Deploy extends VueBase {

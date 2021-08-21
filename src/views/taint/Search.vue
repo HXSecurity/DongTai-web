@@ -50,7 +50,9 @@
           </div>
         </template>
         <template v-else>
-          <div class="no-data">{{ $t('views.search.empty') }}</div>
+          <div v-if="!loadingFlag" class="no-data">
+            {{ $t('views.search.empty') }}
+          </div>
         </template>
       </div>
     </transition>

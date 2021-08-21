@@ -85,6 +85,7 @@
           {{ $t('views.projectDetail.projectVul') }}
         </el-button>
         <el-button
+          v-if="showApiListFlag"
           type="text"
           class="pTab"
           :class="selectTab === 'apiList' ? 'selected' : ''"
@@ -142,8 +143,12 @@
           :version="projectObj.versionData.version_id"
         ></ScaList>
       </div>
-      <div v-if="selectTab === 'apiList'">
-        <ApiList> </ApiList>
+      <div v-if="selectTab === 'apiList' && showApiListFlag">
+        <ApiList
+          :project-id="$route.params.pid"
+          :version-id="projectObj.versionData.version_id"
+        >
+        </ApiList>
       </div>
     </div>
 
@@ -292,6 +297,7 @@ export default class ProjectDetail extends VueBase {
     versionData: {},
     agent_languag: [],
   }
+  private showApiListFlag = false
   private versionTemp: any = {}
   private versionList: any[] = []
   private versionFlag = false
@@ -474,10 +480,26 @@ export default class ProjectDetail extends VueBase {
       }
     })
   }
+  async showApiList() {
+    const res = await this.services.project.searchApi({
+      page_size: 1,
+      project_id: this.$route.params.pid,
+      version_id: this.projectObj.versionData.version_id,
+    })
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+    }
+    if (res.data.length > 0) {
+      this.showApiListFlag = true
+    } else {
+      this.showApiListFlag = false
+    }
+  }
   async mounted() {
     if (this.$route.query.activeName) {
       this.selectTab = this.$route.query.activeName as string
     }
+    await this.showApiList()
     await this.projectsSummary()
     await this.getVersionList()
   }

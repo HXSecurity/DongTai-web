@@ -8,6 +8,7 @@
           style="width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
+          @change="searchChange"
         >
           <el-option label="GET" value="GET"></el-option>
           <el-option label="POST" value="POST"></el-option>
@@ -20,18 +21,19 @@
           style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
+          @change="searchChange"
         >
           <el-option
             :label="$t('views.apiList.unlimited')"
-            value="unlimited"
+            :value="undefined"
           ></el-option>
           <el-option
             :label="$t('views.apiList.covered')"
-            value="covered"
+            :value="1"
           ></el-option>
           <el-option
             :label="$t('views.apiList.uncovered')"
-            value="uncovered"
+            :value="0"
           ></el-option>
         </el-select>
         <el-input
@@ -39,27 +41,36 @@
           :placeholder="$t('views.apiList.searchPlaceHolder')"
           class="commonInput"
           style="margin-left: 10px; width: 312px"
+          @keyup.enter.native="searchChange"
         >
-          <i slot="suffix" class="el-input__icon el-icon-search" />
+          <i
+            slot="suffix"
+            class="el-input__icon el-icon-search"
+            @click="searchChange"
+          />
         </el-input>
       </div>
       <div style="margin-right: 20px">
         <span>
           {{ $t('views.apiList.rate') }}
         </span>
-        <span>30%</span>
+        <span> {{ coverRate }} </span>
       </div>
     </div>
     <div class="infoList">
       <el-collapse>
-        <el-collapse-item>
+        <el-collapse-item v-for="item in apiList" :key="item.id">
           <template slot="title">
             <div class="collapse-title">
-              <el-tag type="success" effect="dark"> POST </el-tag>
-              <span class="title-api-path"> /api/v1/login </span>
+              <el-tag type="success" effect="dark"> {{ item.method }} </el-tag>
+              <span class="title-api-path"> {{ item.path }} </span>
               <span>
-                <span class="title-api-info"> 用户登录接口 </span>
-                <i class="el-icon-success" style="color: #65d6a6"></i>
+                <span class="title-api-info"> {{ item.description }} </span>
+                <i
+                  v-if="item.is_cover"
+                  class="el-icon-success"
+                  style="color: #65d6a6"
+                ></i>
               </span>
             </div>
           </template>
@@ -67,15 +78,19 @@
             <div class="table-toolbar">
               <span> {{ $t('views.apiList.parameters') }} </span>
               <div>
-                <el-button size="small">
+                <el-button
+                  v-if="item.is_cover"
+                  size="small"
+                  @click="startView(item)"
+                >
                   {{ $t('views.apiList.view') }}</el-button
                 >
-                <el-button size="small">
+                <el-button size="small" @click="startSend(item)">
                   {{ $t('views.apiList.send') }}</el-button
                 >
               </div>
             </div>
-            <el-table :data="tableData" style="width: 100%">
+            <el-table :data="item.parameters" style="width: 100%">
               <el-table-column
                 prop="name"
                 :label="$t('views.apiList.name')"
@@ -83,13 +98,13 @@
               >
               </el-table-column>
               <el-table-column
-                prop="type"
+                prop="parameter_type"
                 :label="$t('views.apiList.type')"
                 width="180"
               >
               </el-table-column>
               <el-table-column
-                prop="extra"
+                prop="annotation"
                 :label="$t('views.apiList.extra')"
                 min-width="180"
               >
@@ -97,13 +112,23 @@
             </el-table>
             <div class="table-foot">
               <span class="res"> {{ $t('views.apiList.response') }} </span>
-              <span class="type">java.lang.String</span>
+              <span class="type">{{ item.return_type }}</span>
             </div>
 
             <SearchCard
+              v-if="item.showSend"
               style="margin-top: 20px"
               :is-api="true"
-              :info="{ method_pools: {}, relations: { vulnerablities: [] } }"
+              :info="{
+                method_pools: {
+                  url: item.path,
+                  req_header_fs: item.req_header_fs,
+                  req_data: item.req_data,
+                  res_header: item.res_header,
+                  res_body: item.res_body,
+                },
+                relations: { vulnerablities: [] },
+              }"
             ></SearchCard>
           </div>
         </el-collapse-item>
@@ -113,7 +138,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
+import VueBase from '../../VueBase'
 import SearchCard from '@/views/taint/searchCard.vue'
 @Component({
   name: 'ApiList',
@@ -121,16 +147,144 @@ import SearchCard from '@/views/taint/searchCard.vue'
     SearchCard,
   },
 })
-export default class Index extends Vue {
+export default class Index extends VueBase {
+  @Prop() versionId: number | undefined
+  @Prop(String) projectId!: string
   private searchObj = {
     method: '',
     status: '',
     url: '',
   }
+  private dataEnd = false
+  private page_index = 1
+  private pageSize = 20
+  private coverRate = ''
   private tableData = [
-    { name: 'name', type: 'java.lang.String', extra: '' },
-    { name: 'name', type: 'java.lang.String', extra: '' },
+    { name: 'name', parameter_type: 'java.lang.String', extra: '' },
+    { name: 'name', parameter_type: 'java.lang.String', extra: '' },
   ]
+
+  private apiList = []
+  private async startView(item: any) {
+    if (item.showSend) {
+      item.showSend = false
+    }
+    const res = await this.services.project.relationrequest({
+      project_id: this.projectId,
+      version_id: this.versionId,
+      api_route_id: item.id,
+    })
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+    }
+    item.req_header_fs = res.data.req_header_fs
+    item.req_data = res.data.req_data
+    item.res_body = res.data.res_body
+    item.res_header = res.data.res_header
+
+    if (res.status)
+      this.$nextTick(() => {
+        item.showSend = true
+      })
+  }
+  private startSend(item: any) {
+    if (item.showSend) {
+      item.showSend = false
+    }
+    this.$nextTick(() => {
+      item.showSend = true
+    })
+  }
+  private async getApiList() {
+    this.loadingStart()
+    const ids = this.apiList.map((item: any) => {
+      return item.id
+    })
+    const res = await this.services.project.searchApi({
+      exclude_ids: String(ids),
+      page_size: this.pageSize,
+      page_index: this.page_index,
+      uri: this.searchObj.url,
+      http_method: this.searchObj.method,
+      is_cover: this.searchObj.status,
+      project_id: this.projectId,
+      version_id: this.versionId,
+    })
+    this.loadingDone()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+    }
+    const apiList = res.data.map((item: any) => {
+      return {
+        id: item.id,
+        parameters: item.parameters,
+        path: item.path,
+        method: item.method.apimethod,
+        httpMethod: item.method.httpmethods[0],
+        description: item.description,
+        is_cover: item.is_cover,
+        return_type: item.responses[0].return_type,
+        req_header_fs: `${item.httpMethod} ${item.path} HTTP/1.1`,
+        req_data: '',
+        res_header: '',
+        res_body: '',
+        showSend: false,
+      }
+    })
+    this.apiList = this.apiList.concat(apiList)
+    if (apiList.length < this.pageSize) {
+      this.dataEnd = true
+    }
+  }
+
+  private searchChange() {
+    // First filter the front-end to meet the conditions, and then request the back-end to prevent excessive pressure on the database
+    this.apiList = this.apiList.filter(
+      (item: any) =>
+        item.method.indexOf(this.searchObj.method) > -1 &&
+        item.path.indexOf(this.searchObj.url) > -1 &&
+        (this.searchObj.status == '' || this.searchObj.status == undefined
+          ? true
+          : item.is_cover === this.searchObj.status)
+    )
+    this.page_index = 1
+    this.dataEnd = false
+    this.getApiList()
+  }
+
+  private async cover() {
+    const res = await this.services.project.coverRate({
+      project_id: this.projectId,
+      version_id: this.versionId,
+    })
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+    }
+    this.coverRate = res.data.cover_rate
+  }
+
+  mounted() {
+    this.cover()
+    this.pageSize = Math.ceil((document.body.clientHeight - 280) / 48)
+    this.getApiList()
+    window.addEventListener('scroll', this.myScroll)
+  }
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.myScroll)
+  }
+
+  private myScroll() {
+    const bottomWindow =
+      document.documentElement.scrollTop + window.innerHeight >
+      document.documentElement.offsetHeight - 1
+    if (bottomWindow) {
+      if (!this.dataEnd) {
+        this.page_index += 1
+        this.getApiList()
+      }
+    }
+  }
 }
 </script>
 
@@ -163,7 +317,7 @@ export default class Index extends Vue {
     display: flex;
     align-items: center;
     /deep/.el-tag--dark {
-      width: 70px;
+      min-width: 70px;
       text-align: center;
     }
     .title-api-path {
