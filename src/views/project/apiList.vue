@@ -62,7 +62,9 @@
         <el-collapse-item v-for="item in apiList" :key="item.id">
           <template slot="title">
             <div class="collapse-title">
-              <el-tag type="success" effect="dark"> {{ item.method }} </el-tag>
+              <el-tag :type="getType(item.method)" effect="dark">
+                {{ item.method }}
+              </el-tag>
               <span class="title-api-path"> {{ item.path }} </span>
               <span>
                 <span class="title-api-info"> {{ item.description }} </span>
@@ -165,6 +167,20 @@ export default class Index extends VueBase {
   ]
 
   private apiList = []
+  private getType(type: string) {
+    switch (type) {
+      case 'GET':
+        return 'success'
+      case 'POST':
+        return ''
+      case 'PUT':
+        return 'warning'
+      case 'DELETE':
+        return 'danger'
+      default:
+        return 'success'
+    }
+  }
   private async startView(item: any) {
     if (item.showSend) {
       item.showSend = false
@@ -224,7 +240,7 @@ export default class Index extends VueBase {
         description: item.description,
         is_cover: item.is_cover,
         return_type: item.responses[0].return_type,
-        req_header_fs: `${item.httpMethod} ${item.path} HTTP/1.1`,
+        req_header_fs: `${item.method.httpmethods[0]} ${item.path} HTTP/1.1`,
         req_data: '',
         res_header: '',
         res_body: '',
