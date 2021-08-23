@@ -339,7 +339,10 @@ export default class Index extends VueBase {
     .title-api-path {
       font-size: 16px;
       display: inline-block;
-      width: 350px;
+      max-width: 700px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       margin-left: 20px;
     }
     .title-api-info {
