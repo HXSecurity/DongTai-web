@@ -125,7 +125,7 @@ export default class Header extends VueBase {
   async buildIAST() {
     const res = await this.services.setting.openapi()
     if (res.status === 202) {
-      if (this.userInfo.role === 1) {
+      if (this.userInfo.role === 1 || this.userInfo.role === 2) {
         this.$message({
           type: 'warning',
           message: this.$t('base.setOpenapi') as string,
