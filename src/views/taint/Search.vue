@@ -131,6 +131,10 @@ export default class Index extends VueBase {
       exclude_ids: String(exclude_ids),
     })
     this.loadingFlag = false
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
     const tableList = res.data.method_pools.map((item: any, index: number) => {
       const vulnerablities_count_map = {}
       const relations_map = {}
