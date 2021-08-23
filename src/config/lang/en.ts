@@ -455,7 +455,7 @@ export default {
       time: 'Created Date',
       manage: 'Settings',
       add: 'New Application',
-      searchName: 'Please enter the application name for search',
+      searchName: 'Enter the application name in the search field',
     },
     projectEdit: {
       save: 'Save',
