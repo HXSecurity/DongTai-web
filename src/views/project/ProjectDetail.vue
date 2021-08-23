@@ -145,6 +145,7 @@
       </div>
       <div v-if="selectTab === 'apiList' && showApiListFlag">
         <ApiList
+          ref="apiList"
           :project-id="$route.params.pid"
           :version-id="projectObj.versionData.version_id"
         >
@@ -465,7 +466,9 @@ export default class ProjectDetail extends VueBase {
       isEdit: true,
     })
   }
-  private changeVersion(value: any) {
+  private async changeVersion(value: any) {
+    await this.showApiList()
+    await this.projectsSummary()
     this.$nextTick(() => {
       if (this.selectTab === 'desc') {
         this.projectsSummary(value)
@@ -477,6 +480,9 @@ export default class ProjectDetail extends VueBase {
         const c: any = this.$refs.componentList
         c.getTableData(true)
         c.scaSummary()
+      } else if (this.selectTab === 'apiList') {
+        const a: any = this.$refs.apiList
+        a.searchChange()
       }
     })
   }
@@ -493,6 +499,7 @@ export default class ProjectDetail extends VueBase {
       this.showApiListFlag = true
     } else {
       this.showApiListFlag = false
+      this.selectTab = 'desc'
     }
   }
   async mounted() {
