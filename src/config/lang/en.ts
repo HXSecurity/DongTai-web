@@ -440,6 +440,9 @@ export default {
       submit: 'Save',
     },
     agentManage: {
+      method_queue: 'Method Queue',
+      replay_queue: 'Replay Queue',
+      report_queue: 'Report Queue',
       step: 'time',
       delAgentInfo:
         'This operation will permanently delete the engine, do you want to continue?',
@@ -563,7 +566,7 @@ export default {
       type: 'Type',
       extra: 'Extra',
       response: 'Response',
-      unlimited: 'Uncovered',
+      unlimited: 'Unlimited',
       covered: 'Covered',
       uncovered: 'Uncovered',
     },

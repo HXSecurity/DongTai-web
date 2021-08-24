@@ -177,7 +177,7 @@
           name="first"
         ></el-tab-pane>
         <el-tab-pane
-          v-if="showGraph !== false && !isApi"
+          v-if="this.showGraph !== false"
           :label="$t('views.search.graph')"
           name="second"
         ></el-tab-pane>
@@ -337,8 +337,15 @@ export default class SearchCard extends VueBase {
       this.$router.push('/vuln/vulnDetail/1/' + id)
     }
   }
-  private async getMethodPool(isReplay?: boolean) {
+  private async getMethodPool(
+    isReplay?: boolean,
+    replay_id?: number,
+    method_pool_replay_id?: number
+  ) {
     const res = await this.services.taint.graph({
+      replay_id: this.isApi ? replay_id : undefined,
+      replay_type: this.isApi ? 3 : undefined,
+      method_pool_replay_id: this.isApi ? method_pool_replay_id : undefined,
       method_pool_id: this.info.method_pools.id,
       method_pool_type: isReplay ? 'replay' : 'normal',
     })
@@ -365,12 +372,20 @@ export default class SearchCard extends VueBase {
     clearInterval(this.timer)
   }
 
+  beforeDestroy() {
+    clearInterval(this.timer)
+  }
+
   private async send() {
     this.loadingStart()
     const res = await this.services.taint.replay({
-      methodPoolId: this.isApi ? -1 : this.$route.params.id,
-      agent_id: this.info.relations.agent_id,
+      methodPoolId: this.isApi
+        ? this.info.method_pools.id
+        : this.$route.params.id,
+      agent_id:
+        this.info.method_pools.id > -1 ? undefined : this.info.relations.agent,
       replayRequest: this.reqStr,
+      replay_type: this.isApi ? 3 : undefined,
     })
     this.loadingDone()
     if (res.status !== 201) {
@@ -381,8 +396,11 @@ export default class SearchCard extends VueBase {
       })
       return
     }
+    this.buttonLoading = true
     this.timer = setInterval(async () => {
-      this.buttonLoading = true
+      if (this.isApi) {
+        res.data.replay_type = 3
+      }
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
         this.resStr = resT.data.response
@@ -391,7 +409,13 @@ export default class SearchCard extends VueBase {
           edges: [],
         }
         this.$nextTick(async () => {
-          await this.getMethodPool(true)
+          await this.getMethodPool(
+            true,
+            res.data.replayId,
+            resT.data.method_pool_replay_id
+          )
+          this.info.method_pools.id = resT.data.method_pool_replay_id
+          this.$forceUpdate()
         })
         clearInterval(this.timer)
         this.buttonLoading = false
@@ -399,7 +423,7 @@ export default class SearchCard extends VueBase {
         clearInterval(this.timer)
         this.buttonLoading = false
       }
-    }, 1000)
+    }, 5000)
   }
 }
 </script>

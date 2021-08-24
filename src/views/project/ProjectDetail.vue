@@ -8,6 +8,7 @@
             v-for="item in projectObj.agent_language"
             :key="item"
             size="small"
+            :type="getTagColoe(item)"
             style="margin-left: 12px"
             >{{ item }}</el-tag
           >
@@ -85,6 +86,15 @@
           {{ $t('views.projectDetail.projectVul') }}
         </el-button>
         <el-button
+          type="text"
+          class="pTab"
+          :class="selectTab === 'component' ? 'selected' : ''"
+          @click="changeActive('component')"
+        >
+          <i class="el-icon-menu" style="line-height: 8px"></i>
+          {{ $t('views.projectDetail.projectComponent') }}
+        </el-button>
+        <el-button
           v-if="showApiListFlag"
           type="text"
           class="pTab"
@@ -93,15 +103,6 @@
         >
           <i class="iconfont iconzhongjianjian" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.apiList') }}
-        </el-button>
-        <el-button
-          type="text"
-          class="pTab"
-          :class="selectTab === 'component' ? 'selected' : ''"
-          @click="changeActive('component')"
-        >
-          <i class="el-icon-menu" style="line-height: 8px"></i>
-          {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
       </div>
       <div v-if="selectTab === 'desc'">
@@ -269,7 +270,7 @@
 <script lang="ts">
 import VueBase from '../../VueBase'
 import { Component } from 'vue-property-decorator'
-import { ProjectObj, SelectTabs } from './types'
+import { ProjectObj } from './types'
 import { formatTimestamp } from '@/utils/utils'
 import request from '@/utils/request'
 import * as echarts from 'echarts'
@@ -709,16 +710,25 @@ export default class ProjectDetail extends VueBase {
           })
         }
       })
-      .catch((error) => {
+      .catch(() => {
         this.$message.error({
           message: this.$t('views.projectDetail.exportFail') as string,
           showClose: true,
         })
       })
   }
-
+  private getTagColoe(language: string) {
+    switch (language) {
+      case 'JAVA':
+        return 'danger'
+      case 'PYTHON':
+        return ''
+      default:
+        return ''
+    }
+  }
   private async projectRecheck() {
-    const { status, msg, data } = await this.services.project.projectsRecheck(
+    const { status, msg } = await this.services.project.projectsRecheck(
       this.$route.params.pid
     )
     if (status !== 201) {

@@ -59,10 +59,17 @@
     </div>
     <div class="infoList">
       <el-collapse>
-        <el-collapse-item v-for="item in apiList" :key="item.id">
+        <el-collapse-item
+          v-for="item in apiList"
+          :key="item.id"
+          :style="{ borderColor: getColor(item.method).borderColor }"
+        >
           <template slot="title">
-            <div class="collapse-title">
-              <el-tag :type="getType(item.method)" effect="dark">
+            <div
+              class="collapse-title"
+              :style="{ backgroundColor: getColor(item.method).bgColor }"
+            >
+              <el-tag :class="getType(item.method)" effect="dark">
                 {{ item.method }}
               </el-tag>
               <span class="title-api-path"> {{ item.path }} </span>
@@ -87,7 +94,7 @@
                 >
                   {{ $t('views.apiList.view') }}</el-button
                 >
-                <el-button size="small" @click="startSend(item)">
+                <el-button v-else size="small" @click="startSend(item)">
                   {{ $t('views.apiList.send') }}</el-button
                 >
               </div>
@@ -123,13 +130,14 @@
               :is-api="true"
               :info="{
                 method_pools: {
+                  id: item.poolId,
                   url: item.path,
                   req_header_fs: item.req_header_fs,
                   req_data: item.req_data,
                   res_header: item.res_header,
                   res_body: item.res_body,
                 },
-                relations: { vulnerablities: [] },
+                relations: { agent: item.agent, vulnerablities: [] },
               }"
             ></SearchCard>
           </div>
@@ -167,18 +175,32 @@ export default class Index extends VueBase {
   ]
 
   private apiList = []
+  private getColor(type: string) {
+    switch (type) {
+      case 'GET':
+        return { borderColor: '#61affe', bgColor: 'rgba(97,175,254,.1)' }
+      case 'POST':
+        return { borderColor: '#49cc90', bgColor: 'rgba(73,204,144,.1)' }
+      case 'PUT':
+        return { borderColor: '#fca130', bgColor: 'rgba(252,161,48,.1)' }
+      case 'DELETE':
+        return { borderColor: '#f93e3e', bgColor: 'rgba(249,62,62,.1)' }
+      default:
+        return { borderColor: '#909399', bgColor: '#EBEEF5' }
+    }
+  }
   private getType(type: string) {
     switch (type) {
       case 'GET':
-        return 'success'
+        return 'iast-tag-get'
       case 'POST':
-        return ''
+        return 'iast-tag-post'
       case 'PUT':
-        return 'warning'
+        return 'iast-tag-put'
       case 'DELETE':
-        return 'danger'
+        return 'iast-tag-delete'
       default:
-        return 'success'
+        return 'iast-tag-other'
     }
   }
   private async startView(item: any) {
@@ -193,6 +215,7 @@ export default class Index extends VueBase {
     if (res.status !== 201) {
       this.$message.error(res.msg)
     }
+    item.poolId = res.data.id
     item.req_header_fs = res.data.req_header_fs
     item.req_data = res.data.req_data
     item.res_body = res.data.res_body
@@ -233,6 +256,8 @@ export default class Index extends VueBase {
     const apiList = res.data.map((item: any) => {
       return {
         id: item.id,
+        agent: item.agent,
+        poolId: -1,
         parameters: item.parameters,
         path: item.path,
         method: item.method.apimethod,
@@ -259,7 +284,7 @@ export default class Index extends VueBase {
       (item: any) =>
         item.method.indexOf(this.searchObj.method) > -1 &&
         item.path.indexOf(this.searchObj.url) > -1 &&
-        (this.searchObj.status == '' || this.searchObj.status == undefined
+        (this.searchObj.status === '' || this.searchObj.status === undefined
           ? true
           : item.is_cover === this.searchObj.status)
     )
@@ -304,7 +329,7 @@ export default class Index extends VueBase {
 }
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 .apiList {
   .selectForm {
     display: flex;
@@ -332,6 +357,8 @@ export default class Index extends VueBase {
   .collapse-title {
     display: flex;
     align-items: center;
+    flex: 1;
+    padding: 0 12px;
     /deep/.el-tag--dark {
       min-width: 70px;
       text-align: center;
@@ -354,6 +381,9 @@ export default class Index extends VueBase {
       font-size: 18px;
     }
   }
+  .el-collapse-item__arrow {
+    display: none;
+  }
   .table-toolbar {
     padding: 6px 12px;
     > span {
@@ -374,6 +404,40 @@ export default class Index extends VueBase {
       display: inline-block;
       width: 175px;
     }
+  }
+  .iast-tag-get {
+    border: none;
+    background: #61affe;
+  }
+  .iast-tag-post {
+    border: none;
+    background: #49cc90;
+  }
+  .iast-tag-put {
+    border: none;
+    background: #fca130;
+  }
+  .iast-tag-delete {
+    border: none;
+    background: #f93e3e;
+  }
+  .iast-tag-other {
+    border: none;
+    background: #909399;
+  }
+  .el-collapse-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .el-collapse-item__header {
+    border-bottom: none;
+  }
+  .el-collapse-item__content {
+    padding-left: 6px;
+    padding-top: 6px;
+    padding-right: 6px;
   }
 }
 </style>

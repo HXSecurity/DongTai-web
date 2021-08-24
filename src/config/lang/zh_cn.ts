@@ -431,6 +431,9 @@ export default {
       submit: '确认',
     },
     agentManage: {
+      method_queue: '方法池队列',
+      replay_queue: '重放队列',
+      report_queue: '报告队列',
       step: ' 次',
       delAgentInfo: '此操作将永久删除该引擎, 是否继续?',
       delAgentPop: '提示',
