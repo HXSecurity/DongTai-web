@@ -1,39 +1,51 @@
 <template>
   <div class="status-monitoring">
     <el-row>
-      <el-col :span="12">
+      <el-col :span="8">
         <el-card class="box-card" shadow="hover">
-          <div slot="header" class="clearfix">
-            <span>{{ $t('views.statusMonitoring.dongtai_openapi') }}</span>
-            <!-- <el-button style="float: right; padding: 3px 0" type="text"
-              >操作按钮</el-button
-            > -->
-          </div>
-          <div class="text item">
+          <div
+            class="item"
+            :class="healthData.dongtai_openapi.status ? 'green' : 'red'"
+          >
             {{
               healthData.dongtai_openapi.status
                 ? $t('views.statusMonitoring.on')
                 : $t('views.statusMonitoring.off')
             }}
           </div>
+          <div class="footer">
+            <span>{{ $t('views.statusMonitoring.dongtai_openapi') }}</span>
+          </div>
         </el-card>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="8">
         <el-card class="box-card" shadow="hover">
-          <div slot="header" class="clearfix">
-            <span>
-              {{ $t('views.statusMonitoring.dongtai_engine') }}
-            </span>
-            <!-- <el-button style="float: right; padding: 3px 0" type="text"
-              >操作按钮</el-button
-            > -->
-          </div>
-          <div class="text item">
+          <div
+            class="item"
+            :class="healthData.dongtai_engine.status ? 'green' : 'red'"
+          >
             {{
               healthData.dongtai_engine.status
                 ? $t('views.statusMonitoring.on')
                 : $t('views.statusMonitoring.off')
             }}
+          </div>
+          <div class="footer">
+            {{ $t('views.statusMonitoring.dongtai_engine') }}
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="box-card" shadow="hover">
+          <div class="item" :class="healthData.oss.status ? 'green' : 'red'">
+            {{
+              healthData.oss.status
+                ? $t('views.statusMonitoring.on')
+                : $t('views.statusMonitoring.off')
+            }}
+          </div>
+          <div class="footer">
+            {{ $t('views.statusMonitoring.oss') }}
           </div>
         </el-card>
       </el-col>
@@ -52,7 +64,7 @@
           <div
             v-for="(i, k) in healthData.engine_monitoring_indicators"
             :key="k"
-            class="text item"
+            class="text"
           >
             {{ i.name }}:{{ i.value }}
           </div>
@@ -144,9 +156,19 @@ export default class StatusMonitoring extends VueBase {
   }
 
   .item {
-    margin-bottom: 18px;
+    font-size: 24px;
+    text-align: center;
   }
-
+  .green {
+    color: #0a0;
+  }
+  .red {
+    color: #e00;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 12px;
+  }
   .clearfix:before,
   .clearfix:after {
     display: table;

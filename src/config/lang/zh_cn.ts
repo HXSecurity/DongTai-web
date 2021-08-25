@@ -70,6 +70,7 @@ export default {
     statusMonitoring: {
       on: '开启',
       off: '关闭',
+      oss: 'oss',
       dongtai_openapi: 'dongtai openapi 状态',
       dongtai_engine: 'dongtai engine 状态',
       engine_monitoring_indicators: 'dongtai 监测指示器',
