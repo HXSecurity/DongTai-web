@@ -305,6 +305,16 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/serverRegister.vue'),
       },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
+      },
     ],
   },
   {
@@ -602,6 +612,16 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/serverRegister.vue'),
       },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
+      },
     ],
   },
   {
@@ -859,6 +879,16 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.logManage'),
         },
         component: () => import('@/views/setting/LogManage.vue'),
+      },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
     ],
   },

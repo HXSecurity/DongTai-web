@@ -64,8 +64,16 @@ export default {
     language: 'Language',
     chinese: 'Chinese',
     englist: 'English',
+    statusMonitoring: 'Status Monitoring',
   },
   views: {
+    statusMonitoring: {
+      on: 'running',
+      off: 'close',
+      dongtai_openapi: 'Dongtai Openapi Status',
+      dongtai_engine: 'Dongtai Engine Status',
+      engine_monitoring_indicators: 'Engine Monitoring Indicators',
+    },
     deploy: {
       begin: 'Select a language and start the installation',
       installing: 'Installing',

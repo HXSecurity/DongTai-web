@@ -64,8 +64,16 @@ export default {
     language: '语言选择',
     chinese: '简体中文',
     englist: '英文',
+    statusMonitoring: '状态监控',
   },
   views: {
+    statusMonitoring: {
+      on: '开启',
+      off: '关闭',
+      dongtai_openapi: 'dongtai openapi 状态',
+      dongtai_engine: 'dongtai engine 状态',
+      engine_monitoring_indicators: 'dongtai 监测指示器',
+    },
     deploy: {
       begin: '选择一种语言，开始安装',
       installing: '安装',

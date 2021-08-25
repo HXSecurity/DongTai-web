@@ -3,9 +3,16 @@
     <div class="container flex-row-space-between header-warp">
       <div class="logo flex-column-center" @click="$router.push('/')">
         <img
+          v-if="this.$i18n.locale == 'zh_cn'"
           src="../../assets/img/logo.png"
           alt="logo"
-          style="width: 98px; height: 22px"
+          style="width: 98px"
+        />
+        <img
+          v-if="this.$i18n.locale == 'en'"
+          src="../../assets/img/logo_en.png"
+          alt="logo"
+          style="width: 98px"
         />
       </div>
       <div v-if="userInfo" class="url-warp">
