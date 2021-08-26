@@ -191,4 +191,8 @@ export default () =>
     health(): Promise<iResponse> {
       return request.get(`/health`)
     }
+
+    ossHealth(): Promise<iResponse> {
+      return request.get(`/oss/health`)
+    }
   })()

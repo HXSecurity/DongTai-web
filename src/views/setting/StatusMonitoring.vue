@@ -43,6 +43,11 @@
                 ? $t('views.statusMonitoring.on')
                 : $t('views.statusMonitoring.off')
             }}
+            <i
+              class="el-icon-refresh"
+              :class="reflashFlag && 'loading'"
+              @click="reflash"
+            ></i>
           </div>
           <div class="footer">
             {{ $t('views.statusMonitoring.oss') }}
@@ -116,11 +121,15 @@ import { formatTimestamp } from '@/utils/utils'
   },
 })
 export default class StatusMonitoring extends VueBase {
+  private reflashFlag = false
   private healthData = {
     dongtai_openapi: {
       status: 0,
     },
     dongtai_engine: {
+      status: 0,
+    },
+    oss: {
       status: 0,
     },
     engine_monitoring_indicators: [
@@ -141,6 +150,16 @@ export default class StatusMonitoring extends VueBase {
       return
     }
     this.healthData = res.data
+  }
+  private async reflash() {
+    this.reflashFlag = true
+    const res = await this.services.setting.ossHealth()
+    this.reflashFlag = false
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.healthData.oss = res.data.oss
   }
   created() {
     this.getHealth()
@@ -179,7 +198,19 @@ export default class StatusMonitoring extends VueBase {
   }
 
   .box-card {
+    position: relative;
     margin: 10px;
+    i {
+      cursor: pointer;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 16px;
+      color: #409eff;
+      &.loading {
+        animation: rotating 1s linear infinite;
+      }
+    }
   }
 }
 </style>
