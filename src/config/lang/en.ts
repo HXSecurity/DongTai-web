@@ -24,7 +24,7 @@ export default {
   base: {
     login: 'Login',
     loading: 'Loading...',
-    deploy: 'DEPLOYMENT GUIDES',
+    deploy: 'ADD Agent',
     logout: 'Exit',
     setOpenapi: 'Please configure openapi first',
     helpOpenapi: 'Please contact the administrator to configure openapi',
@@ -98,7 +98,7 @@ export default {
         autoInstallDesc:
           'Attach the DongTai Java Agent into the application by service process id with the following command:',
         term1: 'Ensure interworking between networks is available.',
-        term2: `Ensure your system meet the requirement as below: 
+        term2: `Ensure your system meet the requirement as below:
         a. Operating system: Windows/Linux
         b. JDK version: 1.6 and above;
         c. Framework: Spring Boot

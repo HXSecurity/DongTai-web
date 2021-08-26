@@ -49,7 +49,7 @@
       </div>
       <div v-else style="display: flex; align-items: center">
         <el-button type="text" class="anent" @click="buildIAST">
-          {{ $t('base.deploy') }}
+          <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
         </el-button>
         <Dropdown>
           <img class="titleImg" src="../../assets/img/touxiang@2x.png" alt="" />

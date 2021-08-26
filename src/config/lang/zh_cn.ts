@@ -24,7 +24,7 @@ export default {
   base: {
     login: '登 入',
     loading: '正在加载...',
-    deploy: '部署 IAST',
+    deploy: 'ADD Agent',
     logout: '退出',
     setOpenapi: '请先配置openapi',
     helpOpenapi: 'openapi地址尚未配置，请联系管理员前往服务注册进行配置',
