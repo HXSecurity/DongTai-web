@@ -8,31 +8,45 @@
         <div class="title">{{ $t('views.search.commonly') }}：</div>
         <div class="example-box">
           <div class="example">
-            <div class="label">{{ $t('views.search.url') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.url') }}
+            </div>
             <div class="info">(.*?)/druid/.*?</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.req_data') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.req_data') }}
+            </div>
             <div class="info">(.*?)whoami(.*?)</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.signature') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.signature') }}
+            </div>
             <div class="info">whoami</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.res_header') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.res_header') }}
+            </div>
             <div class="info">set-cookie</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.req_header_fs') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.req_header_fs') }}
+            </div>
             <div class="info">(.*?)exec</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.req_data') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.req_data') }}
+            </div>
             <div class="info">&lt;script&gt; alert(1) &lt;/script&gt;</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.sinkvalues') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.sinkvalues') }}
+            </div>
             <div class="info">(.*?)rememberMe(.*?)</div>
           </div>
         </div>
@@ -240,6 +254,9 @@ main.container {
           text-align: right;
           color: #959fb4;
           margin-right: 16px;
+          &.en {
+            width: 120px;
+          }
         }
         .info {
           font-size: 14px;

@@ -9,7 +9,7 @@
       <el-form
         ref="submitForm"
         :model="submitForm"
-        label-width="100px"
+        :label-width="$i18n.locale === 'en' ? '160px' : '100px'"
         style="margin-top: 32px"
         status-icon
         :rules="rules"
@@ -119,7 +119,7 @@
       width="650px"
     >
       <div>
-        <el-form label-width="80px">
+        <el-form :label-width="$i18n.locale === 'en' ? '120px' : '80px'">
           <el-form-item :label="$t('views.projectEdit.scanName')">
             <el-input
               v-model="scanForm.name"

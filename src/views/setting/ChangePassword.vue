@@ -3,7 +3,7 @@
     <el-form
       ref="ruleForm"
       :model="submitForm"
-      label-width="100px"
+      :label-width="$i18n.locale == 'en' ? '170px' : '100px'"
       style="margin-top: 54px"
       status-icon
       :rules="rules"

@@ -1,9 +1,13 @@
 <template>
   <div class="content-warp">
     <el-table :data="tableData" class="strategyManageTable">
-      <el-table-column :label="$t('views.strategyManage.name')" prop="vul_name">
+      <el-table-column
+        :label="$t('views.strategyManage.name')"
+        prop="vul_name"
+        width="160px"
+      >
         <template slot-scope="{ row }">
-          <div v-if="!row.isEdit">{{ row.vul_name }}</div>
+          <div v-if="!row.isEdit" class="two-line">{{ row.vul_name }}</div>
           <el-input
             v-else
             v-model="row.vul_name"
@@ -260,5 +264,15 @@ export default class StrategyManage extends VueBase {
   background: #4a72ae;
   border-radius: 2px;
   color: #fff;
+}
+.two-line {
+  letter-spacing: 0;
+  width: 140px;
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2; /*要显示的行数*/
+  -webkit-box-orient: vertical;
+  font-size: 12px;
 }
 </style>

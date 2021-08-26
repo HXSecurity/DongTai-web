@@ -30,7 +30,7 @@ export default {
     secondAgo: '秒前',
     login: '登 入',
     loading: '正在加载...',
-    deploy: 'ADD Agent',
+    deploy: 'Add Agent',
     logout: '退出',
     setOpenapi: '请先配置openapi',
     helpOpenapi: 'openapi地址尚未配置，请联系管理员前往服务注册进行配置',
@@ -487,6 +487,7 @@ export default {
       projectName: '项目名称',
       healthy: '健康',
       language: '语言',
+      selectWarning: '请先选择需要操作的Agent',
     },
     strategyManage: {
       no: '无',

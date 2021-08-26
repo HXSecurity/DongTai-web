@@ -309,8 +309,9 @@
               }}
             </span>
             <span v-if="$i18n.locale === 'en'" @click="goDetail(item.id)">
+              {{ `${item.type} on \"${item.uri}\" with ${item.http_method}` }}
               {{
-                `${item.type} on \"${item.uri}\" with ${item.http_method}, Positon:${item.taint_position}`
+                item.taint_position ? `, Positon:${item.taint_position}` : ''
               }}
             </span>
           </span>

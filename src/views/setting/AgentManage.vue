@@ -387,6 +387,9 @@ export default class AgentManage extends VueBase {
       return
     }
     this.tableData = data
+    this.tableData.forEach((item) => {
+      item.system_load = JSON.parse(item.system_load)
+    })
     this.currentPageSize = data.length
     this.total = page.alltotal
     this.currentPageDelete = 0
@@ -411,6 +414,12 @@ export default class AgentManage extends VueBase {
   }
 
   private async deleteAgents() {
+    if (this.multipleSelection.length === 0) {
+      this.$message.warning(
+        this.$t('views.agentManage.selectWarning') as string
+      )
+      return
+    }
     this.$confirm(
       this.$t('views.agentManage.delAgentInfo') as string,
       this.$t('views.agentManage.delAgentPop') as string,
@@ -450,6 +459,14 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentStart(id: any) {
+    if (id === 0) {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning(
+          this.$t('views.agentManage.selectWarning') as string
+        )
+        return
+      }
+    }
     this.loadingStart()
     let params = {}
     if (id) {
@@ -480,6 +497,14 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentStop(id: any) {
+    if (id === 0) {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning(
+          this.$t('views.agentManage.selectWarning') as string
+        )
+        return
+      }
+    }
     this.loadingStart()
     let params: any
     if (id) {
