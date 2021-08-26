@@ -194,7 +194,7 @@ export default class Header extends VueBase {
 
     .url-warp {
       flex: 1;
-      margin-left: 68px;
+      margin-left: 26px;
       height: 100%;
       display: flex;
       flex-direction: row;
@@ -238,9 +238,14 @@ export default class Header extends VueBase {
     }
 
     .anent {
+      i {
+        line-height: 0px;
+        font-weight: 600;
+      }
       color: #fff;
-      width: 82px;
       height: 28px;
+      padding-left: 6px;
+      padding-right: 6px;
       line-height: 0;
       background: #4a72ae;
       border-radius: 4px;

@@ -313,8 +313,6 @@ export default class SearchCard extends VueBase {
 
   get res() {
     return this.resStr
-      .split(`<`)
-      .join('&lt;')
       .split(`\n`)
       .join('<br/>')
       .split(`*`)

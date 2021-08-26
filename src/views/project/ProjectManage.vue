@@ -176,6 +176,7 @@ export default class ProjectManage extends VueBase {
     }
     this.tableData = data.reduce(
       (list: Array<ProjectListParams>, item: ProjectListParams) => {
+        item.vul_count.sort((a, b) => a.level - b.level)
         list.push({
           ...item,
           latest_time: formatTimestamp(item.latest_time),
@@ -208,8 +209,9 @@ export default class ProjectManage extends VueBase {
   width: 100%;
 
   .projectAdd {
-    width: 104px;
     height: 32px;
+    padding-left: 6px;
+    padding-right: 6px;
     line-height: 0;
     background: #ffffff;
     border-radius: 2px;

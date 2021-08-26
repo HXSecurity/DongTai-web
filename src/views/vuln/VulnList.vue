@@ -295,7 +295,7 @@
               v-model="item.checked"
               style="margin-right: 12px; margin-top: 2px"
             ></el-checkbox>
-            <span @click="goDetail(item.id)">
+            <span v-if="$i18n.locale === 'zh_cn'" @click="goDetail(item.id)">
               {{
                 `${item.uri}${$t('views.vulnList.is')}${item.http_method}${$t(
                   'views.vulnList.reqHas'
@@ -306,6 +306,11 @@
                       }`
                     : ''
                 }`
+              }}
+            </span>
+            <span v-if="$i18n.locale === 'en'" @click="goDetail(item.id)">
+              {{
+                `${item.type} on \"${item.uri}\" with ${item.http_method}, Positon:${item.taint_position}`
               }}
             </span>
           </span>
@@ -580,6 +585,8 @@ export default class VulnList extends VueBase {
     this.searchObj.type = ''
     this.searchObj.project_name = ''
     this.searchObj.status = ''
+    this.searchObj.project_id = ''
+    this.searchObj.url = ''
     this.kw = ''
     this.newSelectData()
   }

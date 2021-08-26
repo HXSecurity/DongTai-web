@@ -72,7 +72,7 @@ import VueBase from '@/VueBase'
 @Component({ name: 'SettingIndex' })
 export default class SettingIndex extends VueBase {
   private curModule(path: string) {
-    return this.$route.fullPath === path
+    return this.$route.name === path
   }
   get Routers() {
     const R = this.$store.getters.routers[0].children.filter((i: any) => {
