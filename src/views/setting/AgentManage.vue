@@ -96,6 +96,38 @@
         </template>
       </el-table-column>
       <el-table-column
+        :label="$t('views.agentManage.method_queue')"
+        prop="server"
+        width="120px"
+      >
+        <template slot-scope="{ row }">
+          <div class="dot">
+            {{ row.method_queue }}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('views.agentManage.replay_queue')"
+        prop="server"
+      >
+        <template slot-scope="{ row }">
+          <div class="dot">
+            {{ row.replay_queue }}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('views.agentManage.report_queue')"
+        prop="server"
+      >
+        <template slot-scope="{ row }">
+          <div class="dot">
+            {{ row.report_queue }}
+          </div>
+        </template>
+      </el-table-column>
+
+      <el-table-column
         :label="$t('views.agentManage.status')"
         prop="is_core_running"
         width="120px"
@@ -175,7 +207,7 @@
       </el-table-column>
       <el-table-column label="Agent" width="320" prop="token">
         <template slot-scope="{ row }">
-          <div class="dot">
+          <div class="dot" style="width: 320px">
             {{ row.token }}
           </div>
         </template>

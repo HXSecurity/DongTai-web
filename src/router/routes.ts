@@ -72,6 +72,7 @@ const routes: Array<RouteConfig> = [
     redirect: '/project/projectManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.projectManage',
       name: i18n.t('menu.projectManage'),
       disabled: true,
     },
@@ -82,6 +83,7 @@ const routes: Array<RouteConfig> = [
         name: 'projectManage',
         meta: {
           disabled: true,
+          i18n: 'menu.projectManage',
           name: i18n.t('menu.projectManage'),
         },
         component: () => import('@/views/project/ProjectManage.vue'),
@@ -91,6 +93,7 @@ const routes: Array<RouteConfig> = [
         name: 'projectEdit/:pid?',
         meta: {
           disabled: true,
+          i18n: 'menu.projectEdit',
           name: i18n.t('menu.projectEdit'),
         },
         component: () => import('@/views/project/ProjectEdit.vue'),
@@ -100,6 +103,7 @@ const routes: Array<RouteConfig> = [
         name: 'projectDetail/:pid',
         meta: {
           disabled: true,
+          i18n: 'menu.projectDetail',
           name: i18n.t('menu.projectDetail'),
         },
         component: () => import('@/views/project/ProjectDetail.vue'),
@@ -112,6 +116,7 @@ const routes: Array<RouteConfig> = [
     redirect: '/vuln/vulnList',
     meta: {
       isMenu: true,
+      i18n: 'menu.vuln',
       name: i18n.t('menu.vuln'),
     },
     component: () => import('@/views/vuln/Index.vue'),
@@ -120,6 +125,7 @@ const routes: Array<RouteConfig> = [
         path: 'vulnList',
         name: 'vulnList',
         meta: {
+          i18n: 'menu.vulnList',
           name: i18n.t('menu.vulnList'),
         },
         component: () => import('@/views/vuln/VulnList.vue'),
@@ -128,6 +134,7 @@ const routes: Array<RouteConfig> = [
         path: 'vulnDetail/:page/:id',
         name: 'vulnDetail/:page/:id',
         meta: {
+          i18n: 'menu.vulnDetail',
           name: i18n.t('menu.vulnDetail'),
         },
         component: () => import('@/views/vuln/VulnDetail.vue'),
@@ -141,6 +148,7 @@ const routes: Array<RouteConfig> = [
     meta: {
       disabled: true,
       isMenu: true,
+      i18n: 'menu.sca',
       name: i18n.t('menu.sca'),
     },
     component: () => import('@/views/sca/Index.vue'),
@@ -150,6 +158,7 @@ const routes: Array<RouteConfig> = [
         name: 'scaList',
         meta: {
           disabled: true,
+          i18n: 'menu.scaList',
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
@@ -159,6 +168,7 @@ const routes: Array<RouteConfig> = [
         name: 'scaDetail/:page/:id',
         meta: {
           disabled: true,
+          i18n: 'menu.scaDetail',
           name: i18n.t('menu.scaDetail'),
         },
         component: () => import('@/views/sca/ScaDetail.vue'),
@@ -173,6 +183,7 @@ const routes: Array<RouteConfig> = [
       isMenu: true,
       keepAlive: true,
       disabled: true,
+      i18n: 'menu.taintPool',
       name: i18n.t('menu.taintPool'),
     },
     component: () => import('@/views/taint/Index.vue'),
@@ -190,6 +201,7 @@ const routes: Array<RouteConfig> = [
         meta: {
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.taintPool',
           name: i18n.t('menu.taintPool'),
         },
         component: () => import('@/views/taint/Search.vue'),
@@ -200,6 +212,7 @@ const routes: Array<RouteConfig> = [
         meta: {
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.poolDetail',
           name: i18n.t('menu.poolDetail'),
         },
         component: () => import('@/views/taint/PoolDetail.vue'),
@@ -212,6 +225,7 @@ const routes: Array<RouteConfig> = [
     redirect: '/setting/agentManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.setting',
       name: i18n.t('menu.setting'),
     },
     component: () => import('@/views/setting/Index.vue'),
@@ -221,6 +235,7 @@ const routes: Array<RouteConfig> = [
         name: 'agentManage',
         meta: {
           disabled: true,
+          i18n: 'menu.agentManage',
           name: i18n.t('menu.agentManage'),
         },
         component: () => import('@/views/setting/AgentManage.vue'),
@@ -229,6 +244,7 @@ const routes: Array<RouteConfig> = [
         path: 'strategyManage',
         name: 'strategyManage',
         meta: {
+          i18n: 'menu.strategyManage',
           name: i18n.t('menu.strategyManage'),
         },
         component: () => import('@/views/setting/StrategyManage.vue'),
@@ -238,6 +254,7 @@ const routes: Array<RouteConfig> = [
         name: 'hookRule',
         meta: {
           disabled: true,
+          i18n: 'menu.hookRule',
           name: i18n.t('menu.hookRule'),
         },
         component: () => import('@/views/setting/hookRule.vue'),
@@ -263,6 +280,7 @@ const routes: Array<RouteConfig> = [
         name: 'changePassword',
         meta: {
           disabled: true,
+          i18n: 'menu.changePassword',
           name: i18n.t('menu.changePassword'),
         },
         component: () => import('@/views/setting/ChangePassword.vue'),
@@ -272,6 +290,7 @@ const routes: Array<RouteConfig> = [
         name: 'logManage',
         meta: {
           disabled: true,
+          i18n: 'menu.logManage',
           name: i18n.t('menu.logManage'),
         },
         component: () => import('@/views/setting/LogManage.vue'),
@@ -281,9 +300,20 @@ const routes: Array<RouteConfig> = [
         name: 'serverRegister',
         meta: {
           disabled: true,
+          i18n: 'menu.serverRegister',
           name: i18n.t('menu.serverRegister'),
         },
         component: () => import('@/views/setting/serverRegister.vue'),
+      },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
     ],
   },
@@ -293,6 +323,7 @@ const routes: Array<RouteConfig> = [
     redirect: '/department/departmentList',
     meta: {
       isMenu: true,
+      i18n: 'menu.department',
       name: i18n.t('menu.department'),
     },
     component: () => import('@/views/department/Index.vue'),
@@ -301,6 +332,7 @@ const routes: Array<RouteConfig> = [
         path: 'departmentList',
         name: 'departmentList',
         meta: {
+          i18n: 'menu.department',
           name: i18n.t('menu.department'),
         },
         component: () => import('@/views/department/DepartmentList.vue'),
@@ -313,6 +345,7 @@ const routes: Array<RouteConfig> = [
     redirect: '/talent/talentList',
     meta: {
       isMenu: true,
+      i18n: 'menu.talent',
       name: i18n.t('menu.talent'),
     },
     component: () => import('@/views/talent/Index.vue'),
@@ -321,6 +354,7 @@ const routes: Array<RouteConfig> = [
         path: 'talentList',
         name: 'talentList',
         meta: {
+          i18n: 'menu.talent',
           name: i18n.t('menu.talent'),
         },
         component: () => import('@/views/talent/TalentList.vue'),
@@ -345,6 +379,7 @@ const adminRoutes: Array<RouteConfig> = [
     redirect: '/project/projectManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.projectManage',
       name: i18n.t('menu.projectManage'),
       disabled: true,
     },
@@ -355,6 +390,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'projectManage',
         meta: {
           disabled: true,
+          i18n: 'menu.projectManage',
           name: i18n.t('menu.projectManage'),
         },
         component: () => import('@/views/project/ProjectManage.vue'),
@@ -364,6 +400,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'projectEdit/:pid?',
         meta: {
           disabled: true,
+          i18n: 'menu.projectEdit',
           name: i18n.t('menu.projectEdit'),
         },
         component: () => import('@/views/project/ProjectEdit.vue'),
@@ -373,6 +410,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'projectDetail/:pid',
         meta: {
           disabled: true,
+          i18n: 'menu.projectDetail',
           name: i18n.t('menu.projectDetail'),
         },
         component: () => import('@/views/project/ProjectDetail.vue'),
@@ -385,6 +423,7 @@ const adminRoutes: Array<RouteConfig> = [
     redirect: '/vuln/vulnList',
     meta: {
       isMenu: true,
+      i18n: 'menu.vuln',
       name: i18n.t('menu.vuln'),
     },
     component: () => import('@/views/vuln/Index.vue'),
@@ -393,6 +432,7 @@ const adminRoutes: Array<RouteConfig> = [
         path: 'vulnList',
         name: 'vulnList',
         meta: {
+          i18n: 'menu.vulnList',
           name: i18n.t('menu.vulnList'),
         },
         component: () => import('@/views/vuln/VulnList.vue'),
@@ -401,6 +441,7 @@ const adminRoutes: Array<RouteConfig> = [
         path: 'vulnDetail/:page/:id',
         name: 'vulnDetail/:page/:id',
         meta: {
+          i18n: 'menu.vulnDetail',
           name: i18n.t('menu.vulnDetail'),
         },
         component: () => import('@/views/vuln/VulnDetail.vue'),
@@ -414,6 +455,7 @@ const adminRoutes: Array<RouteConfig> = [
     meta: {
       disabled: true,
       isMenu: true,
+      i18n: 'menu.sca',
       name: i18n.t('menu.sca'),
     },
     component: () => import('@/views/sca/Index.vue'),
@@ -423,6 +465,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'scaList',
         meta: {
           disabled: true,
+          i18n: 'menu.scaList',
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
@@ -432,6 +475,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'scaDetail/:page/:id',
         meta: {
           disabled: true,
+          i18n: 'menu.scaDetail',
           name: i18n.t('menu.scaDetail'),
         },
         component: () => import('@/views/sca/ScaDetail.vue'),
@@ -446,6 +490,7 @@ const adminRoutes: Array<RouteConfig> = [
       isMenu: true,
       keepAlive: true,
       disabled: true,
+      i18n: 'menu.taintPool',
       name: i18n.t('menu.taintPool'),
     },
     component: () => import('@/views/taint/Index.vue'),
@@ -463,6 +508,7 @@ const adminRoutes: Array<RouteConfig> = [
         meta: {
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.taintPool',
           name: i18n.t('menu.taintPool'),
         },
         component: () => import('@/views/taint/Search.vue'),
@@ -473,6 +519,7 @@ const adminRoutes: Array<RouteConfig> = [
         meta: {
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.poolDetail',
           name: i18n.t('menu.poolDetail'),
         },
         component: () => import('@/views/taint/PoolDetail.vue'),
@@ -485,6 +532,7 @@ const adminRoutes: Array<RouteConfig> = [
     redirect: '/setting/agentManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.setting',
       name: i18n.t('menu.setting'),
     },
     component: () => import('@/views/setting/Index.vue'),
@@ -494,6 +542,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'agentManage',
         meta: {
           disabled: true,
+          i18n: 'menu.agentManage',
           name: i18n.t('menu.agentManage'),
         },
         component: () => import('@/views/setting/AgentManage.vue'),
@@ -502,6 +551,7 @@ const adminRoutes: Array<RouteConfig> = [
         path: 'strategyManage',
         name: 'strategyManage',
         meta: {
+          i18n: 'menu.strategyManage',
           name: i18n.t('menu.strategyManage'),
         },
         component: () => import('@/views/setting/StrategyManage.vue'),
@@ -511,6 +561,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'hookRule',
         meta: {
           disabled: true,
+          i18n: 'menu.hookRule',
           name: i18n.t('menu.hookRule'),
         },
         component: () => import('@/views/setting/hookRule.vue'),
@@ -536,6 +587,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'changePassword',
         meta: {
           disabled: true,
+          i18n: 'menu.changePassword',
           name: i18n.t('menu.changePassword'),
         },
         component: () => import('@/views/setting/ChangePassword.vue'),
@@ -545,6 +597,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'logManage',
         meta: {
           disabled: true,
+          i18n: 'menu.logManage',
           name: i18n.t('menu.logManage'),
         },
         component: () => import('@/views/setting/LogManage.vue'),
@@ -554,9 +607,20 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'serverRegister',
         meta: {
           disabled: true,
+          i18n: 'menu.serverRegister',
           name: i18n.t('menu.serverRegister'),
         },
         component: () => import('@/views/setting/serverRegister.vue'),
+      },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
     ],
   },
@@ -566,6 +630,7 @@ const adminRoutes: Array<RouteConfig> = [
     redirect: '/department/departmentList',
     meta: {
       isMenu: true,
+      i18n: 'menu.department',
       name: i18n.t('menu.department'),
     },
     component: () => import('@/views/department/Index.vue'),
@@ -574,6 +639,7 @@ const adminRoutes: Array<RouteConfig> = [
         path: 'departmentList',
         name: 'departmentList',
         meta: {
+          i18n: 'menu.department',
           name: i18n.t('menu.department'),
         },
         component: () => import('@/views/department/DepartmentList.vue'),
@@ -598,6 +664,7 @@ const userRoutes: Array<RouteConfig> = [
     redirect: '/project/projectManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.projectManage',
       name: i18n.t('menu.projectManage'),
       disabled: true,
     },
@@ -608,6 +675,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'projectManage',
         meta: {
           disabled: true,
+          i18n: 'menu.projectManage',
           name: i18n.t('menu.projectManage'),
         },
         component: () => import('@/views/project/ProjectManage.vue'),
@@ -617,6 +685,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'projectEdit/:pid?',
         meta: {
           disabled: true,
+          i18n: 'menu.projectEdit',
           name: i18n.t('menu.projectEdit'),
         },
         component: () => import('@/views/project/ProjectEdit.vue'),
@@ -626,6 +695,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'projectDetail/:pid',
         meta: {
           disabled: true,
+          i18n: 'menu.projectDetail',
           name: i18n.t('menu.projectDetail'),
         },
         component: () => import('@/views/project/ProjectDetail.vue'),
@@ -638,6 +708,7 @@ const userRoutes: Array<RouteConfig> = [
     redirect: '/vuln/vulnList',
     meta: {
       isMenu: true,
+      i18n: 'menu.vuln',
       name: i18n.t('menu.vuln'),
     },
     component: () => import('@/views/vuln/Index.vue'),
@@ -646,6 +717,7 @@ const userRoutes: Array<RouteConfig> = [
         path: 'vulnList',
         name: 'vulnList',
         meta: {
+          i18n: 'menu.vulnList',
           name: i18n.t('menu.vulnList'),
         },
         component: () => import('@/views/vuln/VulnList.vue'),
@@ -654,6 +726,7 @@ const userRoutes: Array<RouteConfig> = [
         path: 'vulnDetail/:page/:id',
         name: 'vulnDetail/:page/:id',
         meta: {
+          i18n: 'menu.vulnDetail',
           name: i18n.t('menu.vulnDetail'),
         },
         component: () => import('@/views/vuln/VulnDetail.vue'),
@@ -667,6 +740,7 @@ const userRoutes: Array<RouteConfig> = [
     meta: {
       disabled: true,
       isMenu: true,
+      i18n: 'menu.sca',
       name: i18n.t('menu.sca'),
     },
     component: () => import('@/views/sca/Index.vue'),
@@ -676,6 +750,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'scaList',
         meta: {
           disabled: true,
+          i18n: 'menu.scaList',
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
@@ -685,6 +760,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'scaDetail/:page/:id',
         meta: {
           disabled: true,
+          i18n: 'menu.scaDetail',
           name: i18n.t('menu.scaDetail'),
         },
         component: () => import('@/views/sca/ScaDetail.vue'),
@@ -699,6 +775,7 @@ const userRoutes: Array<RouteConfig> = [
       isMenu: true,
       keepAlive: true,
       disabled: true,
+      i18n: 'menu.taintPool',
       name: i18n.t('menu.taintPool'),
     },
     component: () => import('@/views/taint/Index.vue'),
@@ -709,6 +786,7 @@ const userRoutes: Array<RouteConfig> = [
         meta: {
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.taintPool',
           name: i18n.t('menu.taintPool'),
         },
         component: () => import('@/views/taint/Search.vue'),
@@ -719,6 +797,7 @@ const userRoutes: Array<RouteConfig> = [
         meta: {
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.poolDetail',
           name: i18n.t('menu.poolDetail'),
         },
         component: () => import('@/views/taint/PoolDetail.vue'),
@@ -731,6 +810,7 @@ const userRoutes: Array<RouteConfig> = [
     redirect: '/setting/agentManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.setting',
       name: i18n.t('menu.setting'),
     },
     component: () => import('@/views/setting/Index.vue'),
@@ -740,6 +820,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'agentManage',
         meta: {
           disabled: true,
+          i18n: 'menu.agentManage',
           name: i18n.t('menu.agentManage'),
         },
         component: () => import('@/views/setting/AgentManage.vue'),
@@ -748,6 +829,7 @@ const userRoutes: Array<RouteConfig> = [
         path: 'strategyManage',
         name: 'strategyManage',
         meta: {
+          i18n: 'menu.strategyManage',
           name: i18n.t('menu.strategyManage'),
         },
         component: () => import('@/views/setting/StrategyManage.vue'),
@@ -757,6 +839,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'hookRule',
         meta: {
           disabled: true,
+          i18n: 'menu.hookRule',
           name: i18n.t('menu.hookRule'),
         },
         component: () => import('@/views/setting/hookRule.vue'),
@@ -782,6 +865,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'changePassword',
         meta: {
           disabled: true,
+          i18n: 'menu.changePassword',
           name: i18n.t('menu.changePassword'),
         },
         component: () => import('@/views/setting/ChangePassword.vue'),
@@ -791,9 +875,20 @@ const userRoutes: Array<RouteConfig> = [
         name: 'logManage',
         meta: {
           disabled: true,
+          i18n: 'menu.logManage',
           name: i18n.t('menu.logManage'),
         },
         component: () => import('@/views/setting/LogManage.vue'),
+      },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
     ],
   },

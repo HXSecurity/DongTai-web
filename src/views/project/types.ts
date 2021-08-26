@@ -20,6 +20,7 @@ export interface ProjectObj {
   owner: string
   latest_time: string
   versionData: any
+  agent_languag: Array<string>
 }
 
 export const enum SelectTabs {

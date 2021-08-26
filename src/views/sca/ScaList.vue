@@ -188,7 +188,7 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.name')"
           prop="package_name"
-          min-width="160px"
+          width="240px"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -198,7 +198,7 @@
               :disabled="row.package_name.length < 35"
               placement="top-start"
             >
-              <div class="dot">
+              <div class="dot" style="width: 240px">
                 {{ row.package_name }}
               </div>
             </el-tooltip>
@@ -217,7 +217,7 @@
               :disabled="row.version.length < 10"
               placement="top-start"
             >
-              <div class="dot">
+              <div class="dot" style="width: 80px">
                 {{ row.version }}
               </div>
             </el-tooltip>

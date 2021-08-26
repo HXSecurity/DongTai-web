@@ -197,7 +197,10 @@
             <span
               :class="vulnObj.vul.project_id && 'project-name'"
               @click="
-                $router.push('/project/projectDetail/' + vulnObj.vul.project_id)
+                vulnObj.vul.project_id &&
+                  $router.push(
+                    '/project/projectDetail/' + vulnObj.vul.project_id
+                  )
               "
               >{{ vulnObj.vul.project_name }}</span
             >
@@ -459,7 +462,9 @@
       width="25%"
     >
       <div style="text-align: center">
-        <p style="color: #959fb4">$t('views.vulnDetail.deleteVulnInfo')</p>
+        <p style="color: #959fb4">
+          {{ $t('views.vulnDetail.deleteVulnInfo') }}
+        </p>
         <p style="color: #959fb4; margin-top: 14px">
           {{ $t('views.vulnDetail.deleteVulnDesc') }}
         </p>

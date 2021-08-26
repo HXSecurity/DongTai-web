@@ -35,16 +35,23 @@
         <el-table-column
           width="200px"
           prop="name"
-          :show-overflow-tooltip="true"
           :label="$t('views.projectManage.name')"
         >
           <template slot-scope="{ row }">
-            <div
-              class="projectName"
-              @click="$router.push(`/project/projectDetail/${row.id}`)"
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="row.name"
+              placement="top"
+              :disabled="row.name.length < 24"
             >
-              {{ row.name }}
-            </div>
+              <div
+                class="projectName"
+                @click="$router.push(`/project/projectDetail/${row.id}`)"
+              >
+                {{ row.name }}
+              </div>
+            </el-tooltip>
           </template>
         </el-table-column>
         <el-table-column
@@ -238,6 +245,10 @@ export default class ProjectManage extends VueBase {
 }
 
 .projectName {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   cursor: pointer;
   &:hover {
     color: #4b99f1;

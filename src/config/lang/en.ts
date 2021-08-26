@@ -24,7 +24,7 @@ export default {
   base: {
     login: 'Login',
     loading: 'Loading...',
-    deploy: 'DEPLOYMENT GUIDELINES',
+    deploy: 'Add Agent',
     logout: 'Exit',
     setOpenapi: 'Please configure openapi first',
     helpOpenapi: 'Please contact the administrator to configure openapi',
@@ -34,19 +34,19 @@ export default {
     diffPassword: 'The two input passwords are inconsistent',
   },
   menu: {
-    projectEdit: 'projectEdit',
+    projectEdit: 'ProjectEdit',
     home: 'Home',
     login: 'Login',
     project: 'APPLICATIONS',
-    projectManage: 'Project Configuration',
+    projectManage: 'Applications',
     projectDetail: 'Project Details',
-    vuln: 'APPLICATION VULNERABILITY',
+    vuln: 'Vulnerabilities',
     vulnList: 'Application Vulnerability List',
     vulnDetail: 'Application vulnerability details',
-    sca: 'COMPONENT',
+    sca: 'Libraries',
     scaList: 'Component management list',
     scaDetail: 'Component management details',
-    setting: 'SETTINGS',
+    setting: 'Settings',
     agentManage: 'Engine',
     strategyManage: 'Strategy',
     hookRule: 'Custom Rule',
@@ -55,14 +55,90 @@ export default {
     changePassword: 'Account',
     logManage: 'Log',
     user: 'Role Management',
-    talent: 'TENANT',
-    department: 'ORGANIZATION',
-    taintPool: 'SEARCH',
+    talent: 'Tenant',
+    department: 'Organization',
+    taintPool: 'Search',
     search: 'Stain search',
     poolDetail: 'Stain details',
     serverRegister: 'Service Registration',
+    language: 'Language',
+    chinese: 'Chinese',
+    englist: 'English',
+    statusMonitoring: 'Status Monitoring',
   },
   views: {
+    statusMonitoring: {
+      on: 'running',
+      off: 'close',
+      oss: 'oss',
+      dongtai_openapi: 'Dongtai Openapi Status',
+      dongtai_engine: 'Dongtai Engine Status',
+      engine_monitoring_indicators: 'Engine Monitoring Indicators',
+    },
+    deploy: {
+      begin: 'Select a language and start the installation',
+      installing: 'Installing',
+      agent: 'Agent',
+      term:
+        'Before the installation, please make sure to confirm the following precautions: ',
+      download: 'Downloading Java Agent',
+      install: 'Installing Java Agent',
+      copy: 'copy',
+      downloadWorld: 'Download',
+      reloadTile: 'Restarting Services (For Manual Installation)',
+      reloadDesc: 'Please restart your application service.',
+      help: 'Instructions',
+      agentInstructions: 'Agent installation instructions',
+      moreDocument: 'More Document',
+      moreSupport: 'More Support',
+      issue: 'Submit ISSUE',
+      java: {
+        autoInstall: 'Automatic Installation',
+        ManualInstallation: 'Manual Installation',
+        autoInstallDesc:
+          'Attach the DongTai Java Agent into the application by service process id with the following command:',
+        term1: 'Ensure interworking between networks is available.',
+        term2: `Ensure your system meet the requirement as below: 
+        a. Operating system: Windows/Linux
+        b. JDK version: 1.6 and above;
+        c. Framework: Spring Boot
+        d. Middleware: Tomcat, JBoss, Jetty, Resin, WebLogic, WebSphere
+        e. DongTai IAST also supported Docker`,
+        p1:
+          'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
+        p2: '1. Check the agent.jar',
+        p3:
+          'Execute the following command “java -jar /temp/agent.jar” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p4: '2. Check the network connection',
+        p51: 'If the Web Service is unable to access to ',
+        p52:
+          'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+      },
+      python: {
+        ManualInstallation: 'Manual Installation',
+        term1: 'Python Version: 3.3 and above',
+        term2: 'Interpreter: CPython',
+        term3: 'Middleware: uWSGI',
+        term4: 'Web Framework: Django',
+        term5: 'Web Service: Django REST Framework',
+        term6: 'Module: psutil verion should be include and above 5.8.0',
+        manualInstallationDesc:
+          'Extract download file with the following command.',
+        settings: 'Settings',
+        p1:
+          'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
+        p2: '1. Check the dongtai-agent-python.tar.gz',
+        p3:
+          'Execute the following command “pip3 install ./dongtai-agent-python.tar.gz” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p4:
+          '2. Check the setting.py in Django application Ensure the following line is added to the MIDDLEWARE configuration.',
+        p5: `'dongtai_agent_python.middlewares.django_middleware.FireMiddleware'`,
+        p6: '3. Check the network connection',
+        p71: 'If the Web Service is unable to access to ',
+        p72:
+          'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+      },
+    },
     serverRegister: {
       save: 'Save',
       saveSuccess: 'Save successfully',
@@ -296,6 +372,7 @@ export default {
       confirmed: 'Confirmed',
       fixed: 'Fixed',
       ignored: 'Ignored',
+      vuln: 'vulnerability',
     },
     scaList: {
       filter: 'Filter',
@@ -372,6 +449,9 @@ export default {
       submit: 'Save',
     },
     agentManage: {
+      method_queue: 'Method Queue',
+      replay_queue: 'Replay Queue',
+      report_queue: 'Report Queue',
       step: 'time',
       delAgentInfo:
         'This operation will permanently delete the engine, do you want to continue?',
@@ -483,10 +563,27 @@ export default {
       description: 'Version Description',
       descriptionPlaceholder: 'Please enter a version description',
     },
+    apiList: {
+      methodPlaceHolder: 'Method',
+      searchPlaceHolder: 'Input api’s value, then enter for search',
+      statusPlaceHolder: 'State',
+      rate: 'covering-ratio',
+      parameters: 'Parameters',
+      view: 'View Request',
+      send: 'Initiate Request',
+      name: 'Name',
+      type: 'Type',
+      extra: 'Extra',
+      response: 'Response',
+      unlimited: 'Unlimited',
+      covered: 'Covered',
+      uncovered: 'Uncovered',
+    },
     projectDetail: {
       mode: 'Scan mode',
       latest_time: 'Latest time',
       projectDesc: 'Project Overview',
+      apiList: 'API Navigation',
       projectVul: 'Project Vulnerability',
       projectComponent: 'Project component',
       vulNum: 'vulnerability distribution',

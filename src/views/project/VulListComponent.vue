@@ -393,7 +393,7 @@ export default class VulListComponent extends VueBase {
     project_name: '',
     url: '',
     order: '',
-    status: '已确认',
+    status: '',
   }
 
   created() {
@@ -407,7 +407,7 @@ export default class VulListComponent extends VueBase {
     this.searchObj.level = ''
     this.searchObj.type = ''
     this.searchObj.project_name = ''
-    this.searchObj.status = '已确认'
+    this.searchObj.status = ''
     this.newSelectData()
   }
 

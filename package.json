@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@antv/g6": "^4.1.11",
+    "@innologica/vue-dropdown-menu": "^0.1.4",
     "axios": "^0.21.0",
     "cookies-js": "^1.2.3",
     "core-js": "^3.6.5",
@@ -17,6 +18,7 @@
     "js-base64": "^3.5.2",
     "markdown-it-xss": "^1.0.2",
     "nprogress": "^0.2.0",
+    "view-design": "^4.6.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-clipboard2": "^0.3.1",
@@ -38,6 +40,7 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-eslint": "10.1.0",
+    "babel-plugin-import": "^1.13.3",
     "eslint": "7.13.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-friendly-formatter": "4.0.1",
