@@ -284,7 +284,8 @@ export default {
       enter: 'OK',
       verificationBatch: 'Verify (Batch)',
       verificationAll: 'Verify (All)',
-      chooseWarning:'Please select the vulnerability that needs to be verified',
+      chooseWarning:
+        'Please select the vulnerability that needs to be verified',
       confirmButtonText: 'Confirm',
       cancelButtonText: 'Cancel',
       will: 'Coming soon',
@@ -356,7 +357,8 @@ export default {
       communicationMethod: 'Tainted Data',
       dangerMethod: 'Sink',
       deleteVuln: 'Delete Vulnerability',
-      deleteVulnInfo:'This vulnerability will be deleted immediately. You cannot undo this action.',
+      deleteVulnInfo:
+        'This vulnerability will be deleted immediately. You cannot undo this action.',
       deleteVulnDesc: 'Are you sure you want to delete this vulnerability? ',
       deleteVulnEnter: 'Delete',
       cancel: 'Cancel',
@@ -451,14 +453,16 @@ export default {
       replay_queue: 'Replay Queue',
       report_queue: 'Report Queue',
       step: 'time',
-      delAgentInfo:'This operation will permanently delete the agent, do you want to continue?',
+      delAgentInfo:
+        'This operation will permanently delete the agent, do you want to continue?',
       delAgentPop: 'Prompt',
       confirmButtonText: 'OK',
       cancelButtonText: 'Cancel',
       delAgent: 'Delete Agent',
       enterDel: 'Confirm to delete',
       clear: 'Cancel',
-      agentDelInfo:'This agent will be deleted immediately. You cannot undo this action.',
+      agentDelInfo:
+        'This agent will be deleted immediately. You cannot undo this action.',
       agentDelPop: 'Are you sure you want to delete this agent?',
       running: 'Running',
       not_running: 'Stopped',
@@ -491,7 +495,8 @@ export default {
       clear: 'Cancel',
       del: 'Delete',
       warning: 'Policy is currently edited',
-      deleteWarning:'This operation will permanently delete the data, do you want to continue?',
+      deleteWarning:
+        'This operation will permanently delete the data, do you want to continue?',
       deletePop: 'Prompt',
       name: 'Policy',
       detail: 'Description',
@@ -542,7 +547,8 @@ export default {
       back: 'Return',
       title: 'Settings',
       name: 'Application Name',
-      namePlaceholder: 'The application name must be less than 20 characters which included:Chinese characters, uppercase/lowercase letter, digit and symbol',
+      namePlaceholder:
+        'The application name must be less than 20 characters which included:Chinese characters, uppercase/lowercase letter, digit and symbol',
       mode: 'Scan Mode',
       mode1: 'Instrumentation Mode',
       mode2: 'Traffic mode',
@@ -606,7 +612,8 @@ export default {
       export: 'Reports',
       recheck: 'Vulnerability Verification',
       search_version_name: 'Enter version name, e.g.,v1',
-      search_description:'Enter version description, e.g.,the xth iteration of the xxx business',
+      search_description:
+        'Enter version description, e.g.,the xth iteration of the xxx business',
       pieType: 'Type',
       exportSuccess: 'Export report successful',
       exportFail: 'Export report failed',
@@ -644,7 +651,8 @@ export default {
       on: 'Enable',
       off: 'Disable',
       notLogin: 'Not logged in',
-      deleteConfirm:"User's password will reset immediately, are you sure you want to continue?",
+      deleteConfirm:
+        "User's password will reset immediately, are you sure you want to continue?",
       deleteConfirmPop: 'Prompt',
       edit: 'Modify',
       del: 'Delete',
@@ -653,7 +661,8 @@ export default {
       title: {
         add: 'Add Tenant',
         modify: 'Modify tenant information',
-        placeholder:'Enter the tenant name to search, e.g.,FireWire White Hat Community',
+        placeholder:
+          'Enter the tenant name to search, e.g.,FireWire White Hat Community',
       },
       table: {
         name: 'Tenant',
@@ -670,10 +679,12 @@ export default {
       },
       add: {
         email: 'Email',
-        emailPlaceholder:'Please enter a business email address. Note: Must use business email address',
+        emailPlaceholder:
+          'Please enter a business email address. Note: Must use business email address',
         enable: 'Status',
         enablePlaceholder: 'Enable/Disable tenant',
-        placeholder:'Please enter the tenant name. Note: the tenant name cannot be repeated',
+        placeholder:
+          'Please enter the tenant name. Note: the tenant name cannot be repeated',
         submit: 'Confirm',
         cancel: 'Cancel',
         on: 'Enable',
