@@ -477,7 +477,7 @@ export default class VulnList extends VueBase {
     project_name: '',
     url: '',
     order: '',
-    status: '已确认',
+    status: '',
     project_id: '',
   }
 
@@ -518,7 +518,9 @@ export default class VulnList extends VueBase {
       }${this.$t('views.vulnList.recheckDesc')}`,
       this.$t('views.vulnList.recheckInfo') as string,
       {
-        confirmButtonText: this.$t('views.vulnList.confirmButtonText') as string,
+        confirmButtonText: this.$t(
+          'views.vulnList.confirmButtonText'
+        ) as string,
         cancelButtonText: this.$t('views.vulnList.cancelButtonText') as string,
         type: 'warning',
       }
@@ -577,7 +579,7 @@ export default class VulnList extends VueBase {
     this.searchObj.level = ''
     this.searchObj.type = ''
     this.searchObj.project_name = ''
-    this.searchObj.status = '已确认'
+    this.searchObj.status = ''
     this.kw = ''
     this.newSelectData()
   }
@@ -876,8 +878,8 @@ export default class VulnList extends VueBase {
     width: 952px;
     padding: 16px 16px 0 16px;
     margin-left: -16px;
-    top: 65px;
-    z-index: 900;
+    top: 64px;
+    z-index: 5;
     background: #fff;
     border-bottom: 1px solid #eee;
   }

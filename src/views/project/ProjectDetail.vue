@@ -2,7 +2,17 @@
   <main class="container">
     <div v-if="projectObj" class="project-warp">
       <div class="title-warp">
-        <div class="name">{{ projectObj.name }}</div>
+        <div class="name">
+          {{ projectObj.name }}
+          <el-tag
+            v-for="item in projectObj.agent_language"
+            :key="item"
+            size="small"
+            :type="getTagColoe(item)"
+            style="margin-left: 12px"
+            >{{ item }}</el-tag
+          >
+        </div>
         <div class="info-line flex-row-space-between">
           <div class="info">
             <i class="iconfont iconjiance-copy"></i>
@@ -84,6 +94,16 @@
           <i class="el-icon-menu" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
+        <el-button
+          v-if="showApiListFlag"
+          type="text"
+          class="pTab"
+          :class="selectTab === 'apiList' ? 'selected' : ''"
+          @click="changeActive('apiList')"
+        >
+          <i class="iconfont iconzhongjianjian" style="line-height: 8px"></i>
+          {{ $t('views.projectDetail.apiList') }}
+        </el-button>
       </div>
       <div v-if="selectTab === 'desc'">
         <div
@@ -123,6 +143,14 @@
           :project-id="$route.params.pid"
           :version="projectObj.versionData.version_id"
         ></ScaList>
+      </div>
+      <div v-if="selectTab === 'apiList' && showApiListFlag">
+        <ApiList
+          ref="apiList"
+          :project-id="$route.params.pid"
+          :version-id="projectObj.versionData.version_id"
+        >
+        </ApiList>
       </div>
     </div>
 
@@ -242,12 +270,13 @@
 <script lang="ts">
 import VueBase from '../../VueBase'
 import { Component } from 'vue-property-decorator'
-import { ProjectObj, SelectTabs } from './types'
+import { ProjectObj } from './types'
 import { formatTimestamp } from '@/utils/utils'
 import request from '@/utils/request'
 import * as echarts from 'echarts'
 import { EChartsOption } from 'echarts'
 import VulListComponent from './VulListComponent.vue'
+import ApiList from './apiList.vue'
 import ScaList from '../sca/ScaList.vue'
 import merge from 'webpack-merge'
 
@@ -256,6 +285,7 @@ import merge from 'webpack-merge'
   components: {
     VulListComponent,
     ScaList,
+    ApiList,
   },
 })
 export default class ProjectDetail extends VueBase {
@@ -267,7 +297,9 @@ export default class ProjectDetail extends VueBase {
     owner: '',
     latest_time: '',
     versionData: {},
+    agent_languag: [],
   }
+  private showApiListFlag = false
   private versionTemp: any = {}
   private versionList: any[] = []
   private versionFlag = false
@@ -293,7 +325,6 @@ export default class ProjectDetail extends VueBase {
       })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
-      await this.projectsSummary()
     }
   }
 
@@ -435,7 +466,9 @@ export default class ProjectDetail extends VueBase {
       isEdit: true,
     })
   }
-  private changeVersion(value: any) {
+  private async changeVersion(value: any) {
+    await this.showApiList()
+    // await this.projectsSummary()
     this.$nextTick(() => {
       if (this.selectTab === 'desc') {
         this.projectsSummary(value)
@@ -447,13 +480,33 @@ export default class ProjectDetail extends VueBase {
         const c: any = this.$refs.componentList
         c.getTableData(true)
         c.scaSummary()
+      } else if (this.selectTab === 'apiList') {
+        const a: any = this.$refs.apiList
+        a.searchChange()
       }
     })
+  }
+  async showApiList() {
+    const res = await this.services.project.searchApi({
+      page_size: 1,
+      project_id: this.$route.params.pid,
+      version_id: this.projectObj.versionData.version_id,
+    })
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+    }
+    if (res.data.length > 0) {
+      this.showApiListFlag = true
+    } else {
+      this.showApiListFlag = false
+      this.selectTab = 'desc'
+    }
   }
   async mounted() {
     if (this.$route.query.activeName) {
       this.selectTab = this.$route.query.activeName as string
     }
+    await this.showApiList()
     await this.projectsSummary()
     await this.getVersionList()
   }
@@ -657,16 +710,25 @@ export default class ProjectDetail extends VueBase {
           })
         }
       })
-      .catch((error) => {
+      .catch(() => {
         this.$message.error({
           message: this.$t('views.projectDetail.exportFail') as string,
           showClose: true,
         })
       })
   }
-
+  private getTagColoe(language: string) {
+    switch (language) {
+      case 'JAVA':
+        return 'danger'
+      case 'PYTHON':
+        return ''
+      default:
+        return ''
+    }
+  }
   private async projectRecheck() {
-    const { status, msg, data } = await this.services.project.projectsRecheck(
+    const { status, msg } = await this.services.project.projectsRecheck(
       this.$route.params.pid
     )
     if (status !== 201) {
