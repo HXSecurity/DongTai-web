@@ -370,6 +370,7 @@ const routes: Array<RouteConfig> = [
     path: '/deploy',
     name: '/deploy',
     meta: {
+      i18n: 'deploy',
       name: '部署IAST',
       disabled: true,
     },
@@ -655,6 +656,7 @@ const adminRoutes: Array<RouteConfig> = [
     path: '/deploy',
     name: '/deploy',
     meta: {
+      i18n: 'deploy',
       name: '部署IAST',
       disabled: true,
     },
@@ -901,6 +903,7 @@ const userRoutes: Array<RouteConfig> = [
     path: '/deploy',
     name: '/deploy',
     meta: {
+      i18n: 'deploy',
       name: '部署IAST',
       disabled: true,
     },

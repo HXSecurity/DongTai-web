@@ -107,13 +107,13 @@ export default {
         ManualInstallation: 'Manual Installation',
         autoInstallDesc:
           'Attach the DongTai Java Agent into the application by service process id with the following command:',
-        term1: 'Ensure interworking between networks is available.',
-        term2: `Ensure your system meet the requirement as below:
-        a. Operating system: Windows/Linux
-        b. JDK version: 1.6 and above;
-        c. Framework: Spring Boot
-        d. Middleware: Tomcat, JBoss, Jetty, Resin, WebLogic, WebSphere
-        e. DongTai IAST also supported Docker`,
+        term1: '1. Ensure interworking between networks is available.',
+        term2: `2. Ensure your system meet the requirement as below:`,
+        term3: `a. Operating system: Windows/Linux`,
+        term4: `b. JDK version: 1.6 and above;`,
+        term5: `c. Framework: Spring Boot`,
+        term6: `d. Middleware: Tomcat, JBoss, Jetty, Resin, WebLogic, WebSphere`,
+        term7: `e. DongTai IAST also supported Docker`,
         p1:
           'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
         p2: '1. Check the agent.jar',
@@ -126,12 +126,12 @@ export default {
       },
       python: {
         ManualInstallation: 'Manual Installation',
-        term1: 'Python Version: 3.3 and above',
-        term2: 'Interpreter: CPython',
-        term3: 'Middleware: uWSGI',
-        term4: 'Web Framework: Django',
-        term5: 'Web Service: Django REST Framework',
-        term6: 'Module: psutil verion should be include and above 5.8.0',
+        term1: '1. Python Version: 3.3 and above',
+        term2: '2. Interpreter: CPython',
+        term3: '3. Middleware: uWSGI',
+        term4: '4. Web Framework: Django',
+        term5: '5. Web Service: Django REST Framework',
+        term6: '6. Module: psutil verion should be include and above 5.8.0',
         manualInstallationDesc:
           'Extract download file with the following command.',
         settings: 'Settings',
@@ -300,8 +300,8 @@ export default {
       cancelButtonText: 'Cancel',
       will: 'Coming soon',
       all: ' all vulnerabilities',
-      batch: ' multiple vulnerabilities',
-      recheckDesc: ' will be verified, are you suere you want to continue?',
+      batch: ' selected vulnerabilities',
+      recheckDesc: ' will be verified, are you sure you want to continue?',
       recheckInfo: 'Prompt',
       has: 'exist',
       vule: 'vulnerability',

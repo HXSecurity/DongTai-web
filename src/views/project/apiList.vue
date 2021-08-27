@@ -134,6 +134,17 @@
                 :label="$t('views.apiList.type')"
                 width="180"
               >
+                <template slot-scope="scope">
+                  <el-tooltip
+                    effect="light"
+                    :content="scope.row.parameter_type"
+                    placement="top"
+                  >
+                    <span>
+                      {{ scope.row.parameter_type_shortcut }}
+                    </span>
+                  </el-tooltip>
+                </template>
               </el-table-column>
               <el-table-column
                 prop="annotation"
@@ -144,7 +155,16 @@
             </el-table>
             <div class="table-foot">
               <span class="res"> {{ $t('views.apiList.response') }} </span>
-              <span class="type">{{ item.return_type }}</span>
+              <el-tooltip
+                class="item"
+                effect="light"
+                :content="item.return_type"
+                placement="top"
+              >
+                <span>
+                  {{ item.return_type_shortcut }}
+                </span>
+              </el-tooltip>
             </div>
 
             <SearchCard
@@ -192,10 +212,6 @@ export default class Index extends VueBase {
   private page_index = 1
   private pageSize = 20
   private coverRate = ''
-  private tableData = [
-    { name: 'name', parameter_type: 'java.lang.String', extra: '' },
-    { name: 'name', parameter_type: 'java.lang.String', extra: '' },
-  ]
   private openCollapse = [0]
   private apiList = []
   private getColor(type: string) {
@@ -289,6 +305,7 @@ export default class Index extends VueBase {
         description: item.description,
         is_cover: item.is_cover,
         return_type: item.responses[0].return_type,
+        return_type_shortcut: item.responses[0].return_type_shortcut,
         req_header_fs: `${item.method.httpmethods[0]} ${item.path} HTTP/1.1`,
         req_data: '',
         res_header: '',
