@@ -304,8 +304,9 @@ export default class Index extends VueBase {
         httpMethod: item.method.httpmethods[0],
         description: item.description,
         is_cover: item.is_cover,
-        return_type: item.responses[0].return_type,
-        return_type_shortcut: item.responses[0].return_type_shortcut,
+        return_type: item.responses[0] && item.responses[0].return_type,
+        return_type_shortcut:
+          item.responses[0] && item.responses[0].return_type_shortcut,
         req_header_fs: `${item.method.httpmethods[0]} ${item.path} HTTP/1.1`,
         req_data: '',
         res_header: '',
