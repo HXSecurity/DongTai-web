@@ -73,7 +73,9 @@
               <el-tag :class="getType(item.method)" class="tag" effect="dark">
                 {{ item.method }}
               </el-tag>
-              <span class="title-api-path"> {{ item.path }} </span>
+              <span class="title-api-path">
+                {{ item.path }}
+              </span>
               <span>
                 <span class="title-api-info"> {{ item.description }} </span>
                 <i
@@ -82,22 +84,25 @@
                   style="color: #65d6a6; margin-right: 16px"
                 ></i>
               </span>
+
               <el-tag
+                v-for="(vuln, index) in item.vulnerablities"
+                :key="index"
                 class="danger-tag"
                 size="small"
                 :style="
-                  item.level_type === 1
+                  vuln.level_id === 1
                     ? { background: '#EA7171', borderColor: '#EA7171' }
-                    : item.level_type === 2
+                    : vuln.level_id === 2
                     ? { background: '#F39D0A', borderColor: '#F39D0A' }
-                    : item.level_type === 3
+                    : vuln.level_id === 3
                     ? { background: '#2E8FE9', borderColor: '#2E8FE9' }
-                    : item.level_type === 4
+                    : vuln.level_id === 4
                     ? { background: '#7BC1AB', borderColor: '#7BC1AB' }
                     : { background: '#EA7171', borderColor: '#EA7171' }
                 "
               >
-                sql注入风险
+                {{ vuln.hook_type_name }}
               </el-tag>
             </div>
           </template>
@@ -278,6 +283,7 @@ export default class Index extends VueBase {
         poolId: -1,
         parameters: item.parameters,
         path: item.path,
+        vulnerablities: item.vulnerablities,
         method: item.method.apimethod,
         httpMethod: item.method.httpmethods[0],
         description: item.description,

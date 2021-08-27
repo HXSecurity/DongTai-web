@@ -7,6 +7,7 @@ const baseRoutes: Array<RouteConfig> = [
     name: '/',
     redirect: '/login',
     meta: {
+      i18n: 'menu.home',
       name: i18n.t('menu.home'),
     },
     component: () => import('@/views/layout/Index.vue'),
@@ -15,6 +16,7 @@ const baseRoutes: Array<RouteConfig> = [
         path: 'login',
         name: 'login',
         meta: {
+          i18n: 'menu.login',
           name: i18n.t('menu.login'),
           disabled: true,
         },
