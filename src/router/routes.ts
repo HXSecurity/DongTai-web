@@ -7,6 +7,7 @@ const baseRoutes: Array<RouteConfig> = [
     name: '/',
     redirect: '/login',
     meta: {
+      i18n: 'menu.home',
       name: i18n.t('menu.home'),
     },
     component: () => import('@/views/layout/Index.vue'),
@@ -15,6 +16,7 @@ const baseRoutes: Array<RouteConfig> = [
         path: 'login',
         name: 'login',
         meta: {
+          i18n: 'menu.login',
           name: i18n.t('menu.login'),
           disabled: true,
         },
@@ -28,6 +30,7 @@ const baseRoutes: Array<RouteConfig> = [
           isMenu: true,
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.taintPool',
           name: i18n.t('menu.taintPool'),
         },
         component: () => import('@/views/taint/Index.vue'),
@@ -45,6 +48,7 @@ const baseRoutes: Array<RouteConfig> = [
             meta: {
               keepAlive: true,
               disabled: true,
+              i18n: 'menu.taintPool',
               name: i18n.t('menu.taintPool'),
             },
             component: () => import('@/views/taint/Search.vue'),
@@ -55,6 +59,7 @@ const baseRoutes: Array<RouteConfig> = [
             meta: {
               keepAlive: true,
               disabled: true,
+              i18n: 'menu.poolDetail',
               name: i18n.t('menu.poolDetail'),
             },
             component: () => import('@/views/taint/PoolDetail.vue'),
@@ -305,6 +310,16 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/serverRegister.vue'),
       },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
+      },
     ],
   },
   {
@@ -355,6 +370,7 @@ const routes: Array<RouteConfig> = [
     path: '/deploy',
     name: '/deploy',
     meta: {
+      i18n: 'deploy',
       name: '部署IAST',
       disabled: true,
     },
@@ -602,6 +618,16 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/serverRegister.vue'),
       },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
+      },
     ],
   },
   {
@@ -630,6 +656,7 @@ const adminRoutes: Array<RouteConfig> = [
     path: '/deploy',
     name: '/deploy',
     meta: {
+      i18n: 'deploy',
       name: '部署IAST',
       disabled: true,
     },
@@ -860,12 +887,23 @@ const userRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/LogManage.vue'),
       },
+      {
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
+        meta: {
+          disabled: true,
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
+        },
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
+      },
     ],
   },
   {
     path: '/deploy',
     name: '/deploy',
     meta: {
+      i18n: 'deploy',
       name: '部署IAST',
       disabled: true,
     },

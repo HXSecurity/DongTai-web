@@ -98,13 +98,13 @@
         align="center"
         prop="source"
         :label="$t('views.hookPage.point')"
-        max-width="100"
+        :width="$i18n.locale === 'en' ? '120' : '100'"
       >
       </el-table-column>
       <el-table-column
         prop="target"
         :label="$t('views.hookPage.pointOut')"
-        max-width="100"
+        :width="$i18n.locale === 'en' ? '120' : '100'"
       >
       </el-table-column>
       <el-table-column
@@ -202,7 +202,11 @@
     </el-pagination>
 
     <el-dialog :visible.sync="hookTypeDialog">
-      <el-form :model="hookType" label-width="80px" size="small">
+      <el-form
+        :model="hookType"
+        :label-width="$i18n.locale === 'en' ? '140px' : '80px'"
+        size="small"
+      >
         <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
@@ -240,7 +244,11 @@
     </el-dialog>
 
     <el-dialog :visible.sync="hookDialog">
-      <el-form :model="hook" size="small" label-width="80px">
+      <el-form
+        :model="hook"
+        size="small"
+        :label-width="$i18n.locale === 'en' ? '140px' : '80px'"
+      >
         <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hook.type) }}</span>
         </el-form-item>
@@ -433,7 +441,7 @@ export default class HookTable extends VueBase {
     rule_value: '',
     source: [{ relation: '', origin: '', param: '' }],
     target: [{ relation: '', origin: '', param: '' }],
-    inherit: '',
+    inherit: 'false',
   }
   relations = [
     { label: this.$t('views.hookPage.or'), value: '|' },
@@ -611,7 +619,7 @@ export default class HookTable extends VueBase {
       if (this.multipleSelection.length === 0) {
         this.$message({
           type: 'warning',
-          message: this.$t('views.search.changeWarning') as string,
+          message: this.$t('views.hookPage.changeWarning') as string,
           showClose: true,
         })
         return
@@ -704,7 +712,7 @@ export default class HookTable extends VueBase {
       rule_value: '',
       source: [{ relation: '', origin: '', param: '' }],
       target: [{ relation: '', origin: '', param: '' }],
-      inherit: '',
+      inherit: 'false',
     }
     this.hookDialog = false
   }

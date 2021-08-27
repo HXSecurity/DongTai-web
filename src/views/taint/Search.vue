@@ -8,31 +8,45 @@
         <div class="title">{{ $t('views.search.commonly') }}：</div>
         <div class="example-box">
           <div class="example">
-            <div class="label">{{ $t('views.search.url') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.url') }}
+            </div>
             <div class="info">(.*?)/druid/.*?</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.req_data') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.req_data') }}
+            </div>
             <div class="info">(.*?)whoami(.*?)</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.signature') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.signature') }}
+            </div>
             <div class="info">whoami</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.res_header') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.res_header') }}
+            </div>
             <div class="info">set-cookie</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.req_header_fs') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.req_header_fs') }}
+            </div>
             <div class="info">(.*?)exec</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.req_data') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.req_data') }}
+            </div>
             <div class="info">&lt;script&gt; alert(1) &lt;/script&gt;</div>
           </div>
           <div class="example">
-            <div class="label">{{ $t('views.search.sinkvalues') }}</div>
+            <div class="label" :class="$i18n.locale">
+              {{ $t('views.search.sinkvalues') }}
+            </div>
             <div class="info">(.*?)rememberMe(.*?)</div>
           </div>
         </div>
@@ -50,7 +64,9 @@
           </div>
         </template>
         <template v-else>
-          <div class="no-data">{{ $t('views.search.empty') }}</div>
+          <div v-if="!loadingFlag" class="no-data">
+            {{ $t('views.search.empty') }}
+          </div>
         </template>
       </div>
     </transition>
@@ -129,6 +145,10 @@ export default class Index extends VueBase {
       exclude_ids: String(exclude_ids),
     })
     this.loadingFlag = false
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
     const tableList = res.data.method_pools.map((item: any, index: number) => {
       const vulnerablities_count_map = {}
       const relations_map = {}
@@ -192,7 +212,7 @@ main.container {
   box-sizing: border-box;
   position: relative;
   .search-box {
-    z-index: 90;
+    z-index: 5;
     background: #fff;
     position: fixed;
     height: 72px;
@@ -234,6 +254,9 @@ main.container {
           text-align: right;
           color: #959fb4;
           margin-right: 16px;
+          &.en {
+            width: 120px;
+          }
         }
         .info {
           font-size: 14px;

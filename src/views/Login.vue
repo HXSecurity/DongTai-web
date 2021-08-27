@@ -6,9 +6,16 @@
       <div class="loginCard">
         <div class="title">
           <img
-            src="../assets/img/loginLogo.png"
+            v-if="this.$i18n.locale == 'zh_cn'"
+            src="../assets/img/logo.png"
             alt="logo"
-            style="width: 140px; height: 32px"
+            style="width: 140px"
+          />
+          <img
+            v-if="this.$i18n.locale == 'en'"
+            src="../assets/img/logo_en.png"
+            alt="logo"
+            style="width: 140px"
           />
         </div>
         <div class="subTitle">
@@ -109,6 +116,9 @@ export default class Login extends VueBase {
     }
     this.loadingStart()
     const { status, msg } = await this.services.user.login(params)
+    let lang = (navigator as any).language || (navigator as any).userLanguage
+    lang = lang.substr(0, 2)
+    await this.services.setting.setLang(lang)
     this.loadingDone()
     if (status === 201) {
       await this.$store.dispatch('user/getUserInfo')

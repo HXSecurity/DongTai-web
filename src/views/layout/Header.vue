@@ -3,9 +3,16 @@
     <div class="container flex-row-space-between header-warp">
       <div class="logo flex-column-center" @click="$router.push('/')">
         <img
+          v-if="this.$i18n.locale == 'zh_cn'"
           src="../../assets/img/logo.png"
           alt="logo"
-          style="width: 98px; height: 22px"
+          style="width: 98px"
+        />
+        <img
+          v-if="this.$i18n.locale == 'en'"
+          src="../../assets/img/logo_en.png"
+          alt="logo"
+          style="width: 98px"
         />
       </div>
       <div v-if="userInfo" class="url-warp">
@@ -42,7 +49,7 @@
       </div>
       <div v-else style="display: flex; align-items: center">
         <el-button type="text" class="anent" @click="buildIAST">
-          {{ $t('base.deploy') }}
+          <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
         </el-button>
         <Dropdown>
           <img class="titleImg" src="../../assets/img/touxiang@2x.png" alt="" />
@@ -117,6 +124,7 @@ export default class Header extends VueBase {
         this.$i18n.locale = 'zh_cn'
         break
     }
+    document.title = this.$t(this.$route.meta.i18n) as string
     this.$emit('reload')
   }
   get userInfo(): { role: number } {
@@ -125,7 +133,7 @@ export default class Header extends VueBase {
   async buildIAST() {
     const res = await this.services.setting.openapi()
     if (res.status === 202) {
-      if (this.userInfo.role === 1) {
+      if (this.userInfo.role === 1 || this.userInfo.role === 2) {
         this.$message({
           type: 'warning',
           message: this.$t('base.setOpenapi') as string,
@@ -187,7 +195,7 @@ export default class Header extends VueBase {
 
     .url-warp {
       flex: 1;
-      margin-left: 68px;
+      margin-left: 26px;
       height: 100%;
       display: flex;
       flex-direction: row;
@@ -231,9 +239,14 @@ export default class Header extends VueBase {
     }
 
     .anent {
+      i {
+        line-height: 0px;
+        font-weight: 600;
+      }
       color: #fff;
-      width: 82px;
       height: 28px;
+      padding-left: 6px;
+      padding-right: 6px;
       line-height: 0;
       background: #4a72ae;
       border-radius: 4px;

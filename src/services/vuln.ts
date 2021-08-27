@@ -46,4 +46,8 @@ export default () =>
     vulRecheckAll(data: any): Promise<iResponse> {
       return request.get(`/vul/recheck`, { params: data })
     }
+
+    vulStatus(): Promise<iResponse> {
+      return request.get(`vul/status_list`)
+    }
   })()

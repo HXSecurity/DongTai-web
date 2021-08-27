@@ -101,36 +101,38 @@
 
     <div class="main-warp">
       <div class="selectForm">
-        <el-select
-          v-model="searchObj.order"
-          style="width: 160px; font-size: 14px"
-          class="commonSelect"
-          :placeholder="$t('views.vulnList.sort')"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option
-            v-for="item in searchOptionsObj.orderOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <i
-          v-if="searchObj.sort === null"
-          class="el-icon-sort sort-btn"
-          @click="sortSelect(true)"
-        ></i>
-        <i
-          v-if="searchObj.sort === true"
-          class="el-icon-sort-up sort-btn"
-          @click="sortSelect(false)"
-        ></i>
-        <i
-          v-if="searchObj.sort === false"
-          class="el-icon-sort-down sort-btn"
-          @click="sortSelect(null)"
-        ></i>
+        <div class="sort-box">
+          <el-select
+            v-model="searchObj.order"
+            style="width: 160px; font-size: 14px"
+            class="commonSelect"
+            :placeholder="$t('views.vulnList.sort')"
+            clearable
+            @change="newSelectData"
+          >
+            <el-option
+              v-for="item in searchOptionsObj.orderOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <i
+            v-if="searchObj.sort === null"
+            class="el-icon-sort sort-btn"
+            @click="sortSelect(true)"
+          ></i>
+          <i
+            v-if="searchObj.sort === true"
+            class="el-icon-sort-up sort-btn"
+            @click="sortSelect(false)"
+          ></i>
+          <i
+            v-if="searchObj.sort === false"
+            class="el-icon-sort-down sort-btn"
+            @click="sortSelect(null)"
+          ></i>
+        </div>
         <el-select
           v-model="searchObj.language"
           :placeholder="$t('views.vulnList.developLanguage')"
@@ -219,7 +221,7 @@
               v-model="item.checked"
               style="margin-right: 12px; margin-top: 2px"
             ></el-checkbox>
-            <span @click="goDetail(item.id)">
+            <span v-if="$i18n.locale === 'zh_cn'" @click="goDetail(item.id)">
               {{
                 `${item.uri}${$t('views.vulnList.is')}${item.http_method}${$t(
                   'views.vulnList.has'
@@ -230,6 +232,12 @@
                       }`
                     : ''
                 }`
+              }}
+            </span>
+            <span v-if="$i18n.locale === 'en'" @click="goDetail(item.id)">
+              {{ `${item.type} on \"${item.uri}\" with ${item.http_method}` }}
+              {{
+                item.taint_position ? `, Positon:${item.taint_position}` : ''
               }}
             </span>
           </span>
@@ -444,6 +452,14 @@ export default class VulListComponent extends VueBase {
           projectId: this.projectId,
         })
       } else {
+        if (!this.tableData.some((item: any) => item.checked)) {
+          this.$message({
+            type: 'warning',
+            message: this.$t('views.vulnList.chooseWarning') as string,
+            showClose: true,
+          })
+          return
+        }
         const ids = this.tableData
           .map((item) => {
             if (item.checked) {
@@ -555,7 +571,9 @@ export default class VulListComponent extends VueBase {
       project_id: this.projectId,
     }
     this.loadingStart()
-    const { status, data, msg } = await this.services.vuln.vulnList(params)
+    const { status, data, msg, page } = await this.services.vuln.vulnList(
+      params
+    )
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -752,6 +770,16 @@ export default class VulListComponent extends VueBase {
   }
   .selectForm {
     width: 100%;
+    .sort-box {
+      display: inline-flex;
+      align-items: center;
+      /deep/.el-input__inner {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
     .sort-btn {
       width: 38px;
       height: 38px;
@@ -764,6 +792,8 @@ export default class VulListComponent extends VueBase {
       line-height: 36px;
       font-size: 14px;
       cursor: pointer;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
     .selectInput {
       float: right;

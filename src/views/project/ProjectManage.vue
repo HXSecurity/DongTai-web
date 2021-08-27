@@ -86,7 +86,7 @@
         </el-table-column>
         <el-table-column
           prop="agent_count"
-          width="100px"
+          width="140px"
           :label="$t('views.projectManage.agent')"
         ></el-table-column>
         <el-table-column
@@ -113,14 +113,15 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        style="float: right"
-        layout="total, prev, pager, next, jumper"
-        :total="total"
-        :page-size="pageSize"
-        :current-page="page"
-        @current-change="currentChange"
-      ></el-pagination>
+      <div class="pagination">
+        <el-pagination
+          layout="total, prev, pager, next, jumper"
+          :total="total"
+          :page-size="pageSize"
+          :current-page="page"
+          @current-change="currentChange"
+        ></el-pagination>
+      </div>
     </div>
   </main>
 </template>
@@ -176,6 +177,7 @@ export default class ProjectManage extends VueBase {
     }
     this.tableData = data.reduce(
       (list: Array<ProjectListParams>, item: ProjectListParams) => {
+        item.vul_count.sort((a, b) => a.level - b.level)
         list.push({
           ...item,
           latest_time: formatTimestamp(item.latest_time),
@@ -208,8 +210,9 @@ export default class ProjectManage extends VueBase {
   width: 100%;
 
   .projectAdd {
-    width: 104px;
     height: 32px;
+    padding-left: 6px;
+    padding-right: 6px;
     line-height: 0;
     background: #ffffff;
     border-radius: 2px;
@@ -253,5 +256,9 @@ export default class ProjectManage extends VueBase {
   &:hover {
     color: #4b99f1;
   }
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

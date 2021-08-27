@@ -170,37 +170,39 @@
     <div class="main-warp">
       <div class="tool-box">
         <div class="selectForm">
-          <el-select
-            v-model="searchObj.order"
-            size="small"
-            style="width: 150px; font-size: 14px"
-            class="commonSelect vulnSelect"
-            :placeholder="$t('views.vulnList.sort')"
-            clearable
-            @change="newSelectData"
-          >
-            <el-option
-              v-for="item in searchOptionsObj.orderOptions"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            ></el-option>
-          </el-select>
-          <i
-            v-if="searchObj.sort === null"
-            class="el-icon-sort sort-btn"
-            @click="sortSelect(true)"
-          ></i>
-          <i
-            v-if="searchObj.sort === true"
-            class="el-icon-sort-up sort-btn"
-            @click="sortSelect(false)"
-          ></i>
-          <i
-            v-if="searchObj.sort === false"
-            class="el-icon-sort-down sort-btn"
-            @click="sortSelect(null)"
-          ></i>
+          <div class="sort-box">
+            <el-select
+              v-model="searchObj.order"
+              size="small"
+              style="width: 150px; font-size: 14px"
+              class="commonSelect vulnSelect"
+              :placeholder="$t('views.vulnList.sort')"
+              clearable
+              @change="newSelectData"
+            >
+              <el-option
+                v-for="item in searchOptionsObj.orderOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
+            <i
+              v-if="searchObj.sort === null"
+              class="el-icon-sort sort-btn"
+              @click="sortSelect(true)"
+            ></i>
+            <i
+              v-if="searchObj.sort === true"
+              class="el-icon-sort-up sort-btn"
+              @click="sortSelect(false)"
+            ></i>
+            <i
+              v-if="searchObj.sort === false"
+              class="el-icon-sort-down sort-btn"
+              @click="sortSelect(null)"
+            ></i>
+          </div>
           <el-select
             v-model="searchObj.language"
             :placeholder="$t('views.vulnList.developLanguage')"
@@ -223,24 +225,10 @@
             @change="newSelectData"
           >
             <el-option
-              :label="$t('views.vulnList.toVeVerified')"
-              value="待验证"
-            ></el-option>
-            <el-option
-              :label="$t('views.vulnList.verification')"
-              value="验证中"
-            ></el-option>
-            <el-option
-              :label="$t('views.vulnList.confirmed')"
-              value="已确认"
-            ></el-option>
-            <el-option
-              :label="$t('views.vulnList.ignored')"
-              value="已忽略"
-            ></el-option>
-            <el-option
-              :label="$t('views.vulnList.processed')"
-              value="已处理"
+              v-for="item in searchOptionsObj.statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
             ></el-option>
           </el-select>
           <div class="selectInput">
@@ -295,7 +283,7 @@
               v-model="item.checked"
               style="margin-right: 12px; margin-top: 2px"
             ></el-checkbox>
-            <span @click="goDetail(item.id)">
+            <span v-if="$i18n.locale === 'zh_cn'" @click="goDetail(item.id)">
               {{
                 `${item.uri}${$t('views.vulnList.is')}${item.http_method}${$t(
                   'views.vulnList.reqHas'
@@ -306,6 +294,12 @@
                       }`
                     : ''
                 }`
+              }}
+            </span>
+            <span v-if="$i18n.locale === 'en'" @click="goDetail(item.id)">
+              {{ `${item.type} on \"${item.uri}\" with ${item.http_method}` }}
+              {{
+                item.taint_position ? `, Positon:${item.taint_position}` : ''
               }}
             </span>
           </span>
@@ -406,7 +400,11 @@
                   class="iconfont iconicon_yingyong_table"
                   style="color: #fce9de"
                 ></i>
-                <span style="background: #fce9de; color: #e07d43">
+                <span
+                  style="background: #fce9de; color: #e07d43"
+                  :title="item.type"
+                  class="showDot"
+                >
                   {{ item.type }}
                 </span>
               </div>
@@ -467,6 +465,21 @@ export default class VulnList extends VueBase {
         value: 'first_time',
       },
     ],
+    statusOptions: [],
+  }
+
+  private async getStatus() {
+    const res = await this.services.vuln.vulStatus()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.searchOptionsObj.statusOptions = res.data.map((item: any) => {
+      return {
+        value: item.name,
+        label: item.name,
+      }
+    })
   }
 
   private searchObj = {
@@ -482,6 +495,7 @@ export default class VulnList extends VueBase {
   }
 
   created() {
+    this.getStatus()
     this.getTableData()
     this.vulnSummary()
   }
@@ -529,7 +543,7 @@ export default class VulnList extends VueBase {
       if (type === 'all') {
         res = await this.services.vuln.vulRecheckAll({ type })
       } else {
-        if (this.tableData.length === 0) {
+        if (!this.tableData.some((item: any) => item.checked)) {
           this.$message({
             type: 'warning',
             message: this.$t('views.vulnList.chooseWarning') as string,
@@ -580,6 +594,8 @@ export default class VulnList extends VueBase {
     this.searchObj.type = ''
     this.searchObj.project_name = ''
     this.searchObj.status = ''
+    this.searchObj.project_id = ''
+    this.searchObj.url = ''
     this.kw = ''
     this.newSelectData()
   }
@@ -778,6 +794,11 @@ export default class VulnList extends VueBase {
     font-weight: 500;
   }
 }
+
+.sort-box {
+  display: inline-flex;
+  align-items: center;
+}
 .sort-btn {
   width: 32px;
   height: 32px;
@@ -840,6 +861,11 @@ export default class VulnList extends VueBase {
     }
 
     .selectOption {
+      display: inline-block;
+      width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
       color: #4b99f1;
       font-size: 14px;
     }
@@ -1080,6 +1106,13 @@ export default class VulnList extends VueBase {
     .iconyingyong {
       color: #ddcc9e;
     }
+  }
+  .showDot {
+    display: inline-block;
+    max-width: 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 .search-box {

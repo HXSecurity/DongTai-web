@@ -4,6 +4,7 @@ import routes from './routes'
 import store from '@/store'
 import Nprogress from 'nprogress'
 import { getToken } from '@/utils/utils'
+import { i18n } from '@/config/lang'
 
 Vue.use(VueRouter)
 
@@ -62,7 +63,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
 router.afterEach((to: any) => {
   Nprogress.done()
   if (to.meta.name) {
-    document.title = to.meta.name
+    document.title = i18n.t(to.meta.i18n) as string
   }
 })
 

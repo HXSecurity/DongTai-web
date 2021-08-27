@@ -28,8 +28,16 @@
             <div class="title-2">
               {{ $t('views.deploy.term') }}
             </div>
-            <p v-for="(item, index) in obj[language].term" :key="item">
-              {{ index + 1 }}. {{ item }}
+            <p
+              v-for="(item, index) in obj[language].term"
+              :key="item"
+              :style="{
+                textIndent: `${
+                  language === 'java' && index > 1 ? '20px' : '0'
+                }`,
+              }"
+            >
+              <span>{{ item }}</span>
             </p>
           </div>
         </div>
@@ -298,7 +306,6 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
-import App from '@/App.vue'
 
 @Component({ name: 'Deploy' })
 export default class Deploy extends VueBase {
@@ -316,6 +323,11 @@ export default class Deploy extends VueBase {
       term: [
         this.$t('views.deploy.java.term1'),
         this.$t('views.deploy.java.term2'),
+        this.$t('views.deploy.java.term3'),
+        this.$t('views.deploy.java.term4'),
+        this.$t('views.deploy.java.term5'),
+        this.$t('views.deploy.java.term6'),
+        this.$t('views.deploy.java.term7'),
       ],
       download: 'java -jar agent.jar -m install -p <pid>',
       video:

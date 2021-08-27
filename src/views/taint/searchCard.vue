@@ -15,7 +15,11 @@
         ></div>
         <div v-else>{{ info.method_pools.url }}</div>
       </span>
-      <span class="el-icon-link icon" @click="goPath(info.method_pools.url)">
+      <span
+        v-if="!isApi"
+        class="el-icon-link icon"
+        @click="goPath(info.method_pools.url)"
+      >
       </span>
       <el-tooltip
         class="item"
@@ -33,7 +37,7 @@
       </el-tooltip>
       <div style="flex: 1"></div>
       <el-button
-        v-if="showGraph === false"
+        v-if="showGraph === false || isApi"
         class="card-btn"
         :loading="buttonLoading"
         @click="send"
@@ -42,7 +46,7 @@
         }}</el-button
       >
     </div>
-    <div class="summary">
+    <div v-if="!isApi" class="summary">
       <div class="summary-item">
         <div class="label">
           <i class="iconfont icontanzhen"></i> {{ $t('views.search.agent') }}：
@@ -179,7 +183,13 @@
         ></el-tab-pane>
       </el-tabs>
     </div>
-    <div v-if="activeKey === 'first'" class="info">
+    <div
+      v-if="activeKey === 'first'"
+      class="info"
+      :style="{
+        height: isApi && '323px',
+      }"
+    >
       <div class="info-box">
         <MyMarkdownIt
           v-if="!isEdit"
@@ -196,7 +206,7 @@
           placement="top"
         >
           <span
-            v-if="showGraph !== false"
+            v-if="showGraph !== false && !isApi"
             v-clipboard:error="onError"
             v-clipboard:copy="reqStr"
             v-clipboard:success="onCopy"
@@ -210,7 +220,7 @@
           placement="top"
         >
           <span
-            v-if="showGraph === false"
+            v-if="showGraph === false || isApi"
             class="el-icon-edit copy-icon"
             @click="isEdit = !isEdit"
           ></span>
@@ -248,17 +258,21 @@ export default class SearchCard extends VueBase {
   created() {
     this.reqStr =
       (this.info.method_pools.req_header_fs_highlight ||
-        this.info.method_pools.req_header_fs) +
+        this.info.method_pools.req_header_fs ||
+        '') +
       '\n\n' +
       (this.info.method_pools.req_data_highlight ||
-        this.info.method_pools.req_data)
+        this.info.method_pools.req_data ||
+        '')
 
     this.resStr =
       (this.info.method_pools.res_header_highlight ||
-        this.info.method_pools.res_header) +
+        this.info.method_pools.res_header ||
+        '') +
       '\n\n' +
       (this.info.method_pools.res_body_highlight ||
-        this.info.method_pools.res_body)
+        this.info.method_pools.res_body ||
+        '')
   }
   get req() {
     return this.reqStr
@@ -301,6 +315,8 @@ export default class SearchCard extends VueBase {
     return this.resStr
       .split(`\n`)
       .join('<br/>')
+      .split(`*`)
+      .join('\\*')
       .replace(new RegExp('\<em\>', 'gi'), '\<tt\>')
       .replace(new RegExp('\<\/em\>', 'gi'), '\</tt\>')
   }
@@ -319,8 +335,15 @@ export default class SearchCard extends VueBase {
       this.$router.push('/vuln/vulnDetail/1/' + id)
     }
   }
-  private async getMethodPool(isReplay?: boolean) {
+  private async getMethodPool(
+    isReplay?: boolean,
+    replay_id?: number,
+    method_pool_replay_id?: number
+  ) {
     const res = await this.services.taint.graph({
+      replay_id: this.isApi ? replay_id : undefined,
+      replay_type: this.isApi ? 3 : undefined,
+      method_pool_replay_id: this.isApi ? method_pool_replay_id : undefined,
       method_pool_id: this.info.method_pools.id,
       method_pool_type: isReplay ? 'replay' : 'normal',
     })
@@ -347,12 +370,20 @@ export default class SearchCard extends VueBase {
     clearInterval(this.timer)
   }
 
+  beforeDestroy() {
+    clearInterval(this.timer)
+  }
+
   private async send() {
     this.loadingStart()
     const res = await this.services.taint.replay({
-      methodPoolId: this.isApi ? -1 : this.$route.params.id,
-      agent_id: this.info.relations.agent_id,
+      methodPoolId: this.isApi
+        ? this.info.method_pools.id
+        : this.$route.params.id,
+      agent_id:
+        this.info.method_pools.id > -1 ? undefined : this.info.relations.agent,
       replayRequest: this.reqStr,
+      replay_type: this.isApi ? 3 : undefined,
     })
     this.loadingDone()
     if (res.status !== 201) {
@@ -363,8 +394,11 @@ export default class SearchCard extends VueBase {
       })
       return
     }
+    this.buttonLoading = true
     this.timer = setInterval(async () => {
-      this.buttonLoading = true
+      if (this.isApi) {
+        res.data.replay_type = 3
+      }
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
         this.resStr = resT.data.response
@@ -373,7 +407,13 @@ export default class SearchCard extends VueBase {
           edges: [],
         }
         this.$nextTick(async () => {
-          await this.getMethodPool(true)
+          await this.getMethodPool(
+            true,
+            res.data.replayId,
+            resT.data.method_pool_replay_id
+          )
+          this.info.method_pools.id = resT.data.method_pool_replay_id
+          this.$forceUpdate()
         })
         clearInterval(this.timer)
         this.buttonLoading = false
@@ -381,7 +421,7 @@ export default class SearchCard extends VueBase {
         clearInterval(this.timer)
         this.buttonLoading = false
       }
-    }, 1000)
+    }, 5000)
   }
 }
 </script>
@@ -551,7 +591,7 @@ export default class SearchCard extends VueBase {
 .card-btn {
   background: #4a72ae;
   border-radius: 2px;
-  width: 76px;
+  min-width: 76px;
   height: 32px;
   font-size: 14px;
   display: flex;
