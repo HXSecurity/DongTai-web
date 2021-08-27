@@ -207,7 +207,7 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.version')"
           prop="version"
-          width="80px"
+          :width="'80px'"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -345,7 +345,9 @@ export default class ScaList extends VueBase {
     this.searchObj.language = ''
     this.searchObj.level = ''
     this.searchObj.project_name = ''
-    this.searchObj.project_id = ''
+    if (this.$route.name !== 'projectDetail/:pid') {
+      this.searchObj.project_id = ''
+    }
     this.kw = ''
     this.newSelectData()
   }

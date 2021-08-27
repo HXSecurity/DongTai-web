@@ -206,7 +206,11 @@
     </el-pagination>
 
     <el-dialog :visible.sync="hookTypeDialog">
-      <el-form :model="hookType" label-width="80px" size="small">
+      <el-form
+        :model="hookType"
+        :label-width="$i18n.locale === 'en' ? '140px' : '80px'"
+        size="small"
+      >
         <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
@@ -244,7 +248,11 @@
     </el-dialog>
 
     <el-dialog :visible.sync="hookDialog">
-      <el-form :model="hook" size="small" label-width="80px">
+      <el-form
+        :model="hook"
+        size="small"
+        :label-width="$i18n.locale === 'en' ? '140px' : '80px'"
+      >
         <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hook.type) }}</span>
         </el-form-item>
@@ -387,7 +395,7 @@ export default class HookTable extends VueBase {
     rule_type_id: '',
     rule_value: '',
     source: [{ relation: '', origin: '', param: '' }],
-    inherit: '',
+    inherit: 'false',
     track: '',
   }
   relations = [
@@ -651,7 +659,7 @@ export default class HookTable extends VueBase {
       rule_type_id: '',
       rule_value: '',
       source: [{ relation: '', origin: '', param: '' }],
-      inherit: '',
+      inherit: 'false',
       track: '',
     }
     this.hookDialog = false

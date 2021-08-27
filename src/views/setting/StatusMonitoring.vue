@@ -14,7 +14,7 @@
             }}
           </div>
           <div class="footer">
-            <span>{{ $t('views.statusMonitoring.dongtai_openapi') }}</span>
+            <b>{{ $t('views.statusMonitoring.dongtai_openapi') }}</b>
           </div>
         </el-card>
       </el-col>
@@ -31,7 +31,7 @@
             }}
           </div>
           <div class="footer">
-            {{ $t('views.statusMonitoring.dongtai_engine') }}
+            <b>{{ $t('views.statusMonitoring.dongtai_engine') }}</b>
           </div>
         </el-card>
       </el-col>
@@ -40,8 +40,8 @@
           <div class="item" :class="healthData.oss.status ? 'green' : 'red'">
             {{
               healthData.oss.status
-                ? $t('views.statusMonitoring.on')
-                : $t('views.statusMonitoring.off')
+                ? $t('views.statusMonitoring.normal')
+                : $t('views.statusMonitoring.error')
             }}
             <i
               class="el-icon-refresh"
@@ -50,7 +50,7 @@
             ></i>
           </div>
           <div class="footer">
-            {{ $t('views.statusMonitoring.oss') }}
+            <b>{{ $t('views.statusMonitoring.oss') }}</b>
           </div>
         </el-card>
       </el-col>
@@ -60,7 +60,9 @@
         <el-card class="box-card" shadow="hover">
           <div slot="header" class="clearfix">
             <span>
-              {{ $t('views.statusMonitoring.dongtai_engine') }}
+              <b>{{
+                $t('views.statusMonitoring.engine_monitoring_indicators')
+              }}</b>
             </span>
             <!-- <el-button style="float: right; padding: 3px 0" type="text"
               >操作按钮</el-button
@@ -71,7 +73,12 @@
             :key="k"
             class="text"
           >
-            {{ i.name }}:{{ i.value }}
+            {{ i.name }} :
+            {{
+              `${$t('views.statusMonitoring.padding')} ${i.value} ${$t(
+                'views.statusMonitoring.item'
+              )}`
+            }}
           </div>
         </el-card>
       </el-col>

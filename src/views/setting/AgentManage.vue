@@ -80,25 +80,33 @@
       >
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.system_load }}
+            {{ row.system_load.rate }}
           </div>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('views.agentManage.flow')"
+        :label="
+          $t('views.agentManage.flow') +
+          ' (' +
+          $t('views.agentManage.step') +
+          ')'
+        "
         prop="is_core_running"
-        width="100px"
+        width="140px"
       >
         <template slot-scope="{ row }">
-          <div>
-            {{ (row.flow || 0) + $t('views.agentManage.step') }}
-          </div>
+          <div>{{ row.flow || 0 }}</div>
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('views.agentManage.method_queue')"
+        :label="
+          $t('views.agentManage.method_queue') +
+          ' (' +
+          $t('views.agentManage.item') +
+          ')'
+        "
         prop="server"
-        width="120px"
+        width="160px"
       >
         <template slot-scope="{ row }">
           <div class="dot">
@@ -107,7 +115,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('views.agentManage.replay_queue')"
+        :label="
+          $t('views.agentManage.replay_queue') +
+          ' (' +
+          $t('views.agentManage.item') +
+          ')'
+        "
+        width="160px"
         prop="server"
       >
         <template slot-scope="{ row }">
@@ -117,7 +131,13 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('views.agentManage.report_queue')"
+        :label="
+          $t('views.agentManage.report_queue') +
+          ' (' +
+          $t('views.agentManage.item') +
+          ')'
+        "
+        width="160px"
         prop="server"
       >
         <template slot-scope="{ row }">
@@ -130,7 +150,7 @@
       <el-table-column
         :label="$t('views.agentManage.status')"
         prop="is_core_running"
-        width="120px"
+        width="130px"
       >
         <template slot-scope="{ row }">
           <div>
@@ -338,11 +358,11 @@ export default class AgentManage extends VueBase {
       data.forEach((item: any) => {
         return (dataMap[item.id] = item)
       })
-    console.log(this.tableData, dataMap)
     this.tableData.forEach((item: any) => {
       for (const key in item) {
         item[key] = dataMap[item.id][key]
       }
+      item.system_load = JSON.parse(item.system_load)
     })
   }
 
@@ -367,6 +387,9 @@ export default class AgentManage extends VueBase {
       return
     }
     this.tableData = data
+    this.tableData.forEach((item) => {
+      item.system_load = JSON.parse(item.system_load)
+    })
     this.currentPageSize = data.length
     this.total = page.alltotal
     this.currentPageDelete = 0
@@ -391,6 +414,12 @@ export default class AgentManage extends VueBase {
   }
 
   private async deleteAgents() {
+    if (this.multipleSelection.length === 0) {
+      this.$message.warning(
+        this.$t('views.agentManage.selectWarning') as string
+      )
+      return
+    }
     this.$confirm(
       this.$t('views.agentManage.delAgentInfo') as string,
       this.$t('views.agentManage.delAgentPop') as string,
@@ -430,6 +459,14 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentStart(id: any) {
+    if (id === 0) {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning(
+          this.$t('views.agentManage.selectWarning') as string
+        )
+        return
+      }
+    }
     this.loadingStart()
     let params = {}
     if (id) {
@@ -460,6 +497,14 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentStop(id: any) {
+    if (id === 0) {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning(
+          this.$t('views.agentManage.selectWarning') as string
+        )
+        return
+      }
+    }
     this.loadingStart()
     let params: any
     if (id) {

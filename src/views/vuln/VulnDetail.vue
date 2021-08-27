@@ -2,8 +2,8 @@
   <main class="container">
     <div v-if="!sliderWarpContract" class="fixed-warp">
       <div class="slider-warp">
-        <div class="titleForm flex-row-space-between">
-          <el-select v-model="searchObj.order" size="mini" style="width: 90px">
+        <div class="titleForm">
+          <!-- <el-select v-model="searchObj.order" size="mini" style="width: 90px">
             <el-option
               v-for="item in orderOptions"
               :key="item.value"
@@ -17,7 +17,8 @@
               class="el-input__icon el-icon-search"
               @click="newSelectData"
             />
-          </el-input>
+          </el-input> -->
+          {{ $t('views.vulnDetail.vulnList') }}
         </div>
         <div class="page-line flex-column-center">
           <div class="flex-row-space-between">
@@ -497,21 +498,36 @@ import qs from 'qs'
 export default class VulnDetail extends VueBase {
   private sliderWarpContract = false
   private deleteDialogOpen = false
+
+  private async getStatus() {
+    const res = await this.services.vuln.vulStatus()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.statusOptions = res.data.map((item: any) => {
+      return {
+        value: item.name,
+        label: item.name,
+      }
+    })
+  }
+
   private statusOptions: Array<any> = [
     {
-      value: '已上报',
+      value: this.$t('views.vulnDetail.reported'),
       label: this.$t('views.vulnDetail.reported'),
     },
     {
-      value: '已确认',
+      value: this.$t('views.vulnDetail.confirmed'),
       label: this.$t('views.vulnDetail.confirmed'),
     },
     {
-      value: '已修复',
+      value: this.$t('views.vulnDetail.fixed'),
       label: this.$t('views.vulnDetail.fixed'),
     },
     {
-      value: '已忽略',
+      value: this.$t('views.vulnDetail.ignored'),
       label: this.$t('views.vulnDetail.ignored'),
     },
   ]
@@ -599,6 +615,7 @@ export default class VulnDetail extends VueBase {
     this.page = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
     this.cardIndex = 0
+    await this.getStatus()
     await this.getVulnDetail()
     await this.getTableData()
   }
@@ -873,7 +890,7 @@ export default class VulnDetail extends VueBase {
           })
         }
       })
-      .catch((error) => {
+      .catch(() => {
         this.$message.error({
           message: this.$t('views.vulnDetail.exportFail') as string,
           showClose: true,
@@ -885,7 +902,7 @@ export default class VulnDetail extends VueBase {
     const params = {
       ids: this.selectedId.toString(),
     }
-    const { status, data, msg } = await this.services.vuln.vulRecheck(params)
+    const { status, msg } = await this.services.vuln.vulRecheck(params)
     if (status !== 201) {
       this.$message({
         type: 'error',
@@ -929,7 +946,10 @@ export default class VulnDetail extends VueBase {
 
   .titleForm {
     border-bottom: 1px solid #e6e9ec;
-    padding: 14px 4px;
+    padding: 14px 0;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 12px;
   }
 
   .page-line {
@@ -1130,7 +1150,8 @@ export default class VulnDetail extends VueBase {
         display: flex;
         .iconyuandianzhong {
           font-size: 18px;
-          margin-right: 14px;
+          margin-left: 6px;
+          margin-right: 4px;
           line-height: 18px;
         }
       }
