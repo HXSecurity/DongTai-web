@@ -28,6 +28,7 @@ const baseRoutes: Array<RouteConfig> = [
           isMenu: true,
           keepAlive: true,
           disabled: true,
+          i18n: 'menu.taintPool',
           name: i18n.t('menu.taintPool'),
         },
         component: () => import('@/views/taint/Index.vue'),
@@ -45,6 +46,7 @@ const baseRoutes: Array<RouteConfig> = [
             meta: {
               keepAlive: true,
               disabled: true,
+              i18n: 'menu.taintPool',
               name: i18n.t('menu.taintPool'),
             },
             component: () => import('@/views/taint/Search.vue'),
@@ -55,6 +57,7 @@ const baseRoutes: Array<RouteConfig> = [
             meta: {
               keepAlive: true,
               disabled: true,
+              i18n: 'menu.poolDetail',
               name: i18n.t('menu.poolDetail'),
             },
             component: () => import('@/views/taint/PoolDetail.vue'),

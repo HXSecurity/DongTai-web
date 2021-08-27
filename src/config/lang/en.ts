@@ -165,7 +165,7 @@ export default {
       edit: 'Edit',
       http: 'HTTP Info',
       no: 'No',
-      assignVuln: 'Associated Vulnerability',
+      assignVuln: 'Vulnerability',
       project: 'Application',
       user: 'User',
       no_project_name: 'Unbound',
@@ -241,7 +241,7 @@ export default {
       origin: 'Please select the data source',
       paramPlaceholder: 'Parameter number, starting from 1',
       add: 'Add',
-      hookTrack: 'Inherit',
+      hookTrack: 'Tracked',
       depth: 'Inheritance Depth',
       onlyChildren: 'Subclass',
       onlyNow: 'Class',
@@ -317,6 +317,7 @@ export default {
       },
     },
     vulnDetail: {
+      vulnList: 'Applications',
       source_value: 'Initial stain',
       target_value: 'Spread tainted',
       baseInfo: 'Information',
@@ -443,6 +444,7 @@ export default {
       operate: 'Operation',
       detail: 'Details',
       reload: 'Refresh',
+      scaList: 'Libraries',
       vulDetail: {
         title: 'Vulnerability Details',
         num: 'Vulnerability Number',

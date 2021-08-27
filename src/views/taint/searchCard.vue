@@ -177,7 +177,7 @@
           name="first"
         ></el-tab-pane>
         <el-tab-pane
-          v-if="this.showGraph !== false"
+          v-if="showGraph !== false"
           :label="$t('views.search.graph')"
           name="second"
         ></el-tab-pane>
@@ -591,7 +591,7 @@ export default class SearchCard extends VueBase {
 .card-btn {
   background: #4a72ae;
   border-radius: 2px;
-  width: 76px;
+  min-width: 76px;
   height: 32px;
   font-size: 14px;
   display: flex;

@@ -124,6 +124,7 @@ export default class Header extends VueBase {
         this.$i18n.locale = 'zh_cn'
         break
     }
+    document.title = this.$t(this.$route.meta.i18n) as string
     this.$emit('reload')
   }
   get userInfo(): { role: number } {

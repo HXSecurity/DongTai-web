@@ -58,10 +58,11 @@
       </div>
     </div>
     <div class="infoList">
-      <el-collapse>
+      <el-collapse v-model="openCollapse">
         <el-collapse-item
-          v-for="item in apiList"
+          v-for="(item, key) in apiList"
           :key="item.id"
+          :name="key"
           :style="{ borderColor: getColor(item.method).borderColor }"
         >
           <template slot="title">
@@ -69,7 +70,7 @@
               class="collapse-title"
               :style="{ backgroundColor: getColor(item.method).bgColor }"
             >
-              <el-tag :class="getType(item.method)" effect="dark">
+              <el-tag :class="getType(item.method)" class="tag" effect="dark">
                 {{ item.method }}
               </el-tag>
               <span class="title-api-path"> {{ item.path }} </span>
@@ -78,9 +79,26 @@
                 <i
                   v-if="item.is_cover"
                   class="el-icon-success"
-                  style="color: #65d6a6"
+                  style="color: #65d6a6; margin-right: 16px"
                 ></i>
               </span>
+              <el-tag
+                class="danger-tag"
+                size="small"
+                :style="
+                  item.level_type === 1
+                    ? { background: '#EA7171', borderColor: '#EA7171' }
+                    : item.level_type === 2
+                    ? { background: '#F39D0A', borderColor: '#F39D0A' }
+                    : item.level_type === 3
+                    ? { background: '#2E8FE9', borderColor: '#2E8FE9' }
+                    : item.level_type === 4
+                    ? { background: '#7BC1AB', borderColor: '#7BC1AB' }
+                    : { background: '#EA7171', borderColor: '#EA7171' }
+                "
+              >
+                sql注入风险
+              </el-tag>
             </div>
           </template>
           <div>
@@ -173,7 +191,7 @@ export default class Index extends VueBase {
     { name: 'name', parameter_type: 'java.lang.String', extra: '' },
     { name: 'name', parameter_type: 'java.lang.String', extra: '' },
   ]
-
+  private openCollapse = [0]
   private apiList = []
   private getColor(type: string) {
     switch (type) {
@@ -364,6 +382,7 @@ export default class Index extends VueBase {
       text-align: center;
     }
     .title-api-path {
+      font-weight: 600;
       font-size: 16px;
       display: inline-block;
       max-width: 700px;
@@ -380,9 +399,18 @@ export default class Index extends VueBase {
     .el-icon-success {
       font-size: 18px;
     }
+    .danger-tag {
+      font-weight: 600;
+      color: #fff;
+      margin-left: 6px;
+    }
   }
   .el-collapse-item__arrow {
-    display: none;
+    position: absolute;
+    right: 0;
+    font-size: 16px;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0);
   }
   .table-toolbar {
     padding: 6px 12px;
@@ -405,6 +433,11 @@ export default class Index extends VueBase {
       width: 175px;
     }
   }
+  .tag {
+    text-align: center;
+    min-width: 110px;
+    font-weight: 600;
+  }
   .iast-tag-get {
     border: none;
     background: #61affe;
@@ -426,6 +459,7 @@ export default class Index extends VueBase {
     background: #909399;
   }
   .el-collapse-item {
+    position: relative;
     border: 1px solid #ccc;
     border-radius: 4px;
     margin-bottom: 6px;

@@ -86,7 +86,7 @@
         </el-table-column>
         <el-table-column
           prop="agent_count"
-          width="100px"
+          width="140px"
           :label="$t('views.projectManage.agent')"
         ></el-table-column>
         <el-table-column
@@ -113,14 +113,15 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        style="float: right"
-        layout="total, prev, pager, next, jumper"
-        :total="total"
-        :page-size="pageSize"
-        :current-page="page"
-        @current-change="currentChange"
-      ></el-pagination>
+      <div class="pagination">
+        <el-pagination
+          layout="total, prev, pager, next, jumper"
+          :total="total"
+          :page-size="pageSize"
+          :current-page="page"
+          @current-change="currentChange"
+        ></el-pagination>
+      </div>
     </div>
   </main>
 </template>
@@ -255,5 +256,9 @@ export default class ProjectManage extends VueBase {
   &:hover {
     color: #4b99f1;
   }
+}
+.pagination {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

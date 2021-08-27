@@ -309,6 +309,7 @@ export default {
       },
     },
     vulnDetail: {
+      vulnList: '应用列表',
       source_value: '初始污点',
       target_value: '传播后污点',
       baseInfo: '基本信息',
@@ -434,6 +435,7 @@ export default {
       operate: '操作',
       detail: '详情',
       reload: '刷新',
+      scaList: '组件列表',
       vulDetail: {
         title: '漏洞详情',
         num: '漏洞编号',
