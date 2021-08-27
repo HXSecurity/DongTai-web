@@ -2,8 +2,9 @@
   <main class="container">
     <div v-if="!sliderWarpContract" class="fixed-warp">
       <div class="slider-warp">
-        <div class="titleForm flex-row-space-between">
-          <el-select v-model="searchObj.order" size="mini" style="width: 90px">
+        <div class="titleForm">
+          {{ $t('views.scaDetail.scaList') }}
+          <!-- <el-select v-model="searchObj.order" size="mini" style="width: 90px">
             <el-option
               v-for="item in orderOptions"
               :key="item.value"
@@ -21,7 +22,7 @@
               class="el-input__icon el-icon-search"
               @click="newSelectData"
             />
-          </el-input>
+          </el-input> -->
         </div>
         <div class="page-line flex-column-center">
           <div class="flex-row-space-between">
@@ -50,7 +51,7 @@
                 style="color: #5782db"
                 @click="getTableData"
               >
-                刷新
+                {{ $t('views.scaDetail.reload') }}
               </el-button>
             </div>
           </div>
@@ -139,7 +140,10 @@
           </span>
           <span
             style="cursor: pointer"
-            @click="$router.push('/project/projectDetail/' + scaObj.project_id)"
+            @click="
+              scaObj.project_id &&
+                $router.push('/project/projectDetail/' + scaObj.project_id)
+            "
           >
             {{ scaObj.project_name }}
           </span>
@@ -383,7 +387,10 @@ export default class ScaDetail extends VueBase {
 
   .titleForm {
     border-bottom: 1px solid #e6e9ec;
-    padding: 14px 4px;
+    padding: 14px 0;
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0 12px;
   }
 
   .page-line {
@@ -508,9 +515,9 @@ export default class ScaDetail extends VueBase {
 }
 .long-dot {
   display: inline-block;
-  overflow: hidden; //超出的文本隐藏
-  text-overflow: ellipsis; //溢出用省略号显示
-  white-space: nowrap; //溢出不换行
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   max-width: 70px;
   margin-left: 6px;
 }

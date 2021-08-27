@@ -15,9 +15,18 @@
         ></div>
         <div v-else>{{ info.method_pools.url }}</div>
       </span>
-      <span class="el-icon-link icon" @click="goPath(info.method_pools.url)">
+      <span
+        v-if="!isApi"
+        class="el-icon-link icon"
+        @click="goPath(info.method_pools.url)"
+      >
       </span>
-      <el-tooltip class="item" effect="dark" content="复制" placement="top">
+      <el-tooltip
+        class="item"
+        effect="dark"
+        :content="$t('views.search.copy')"
+        placement="top"
+      >
         <span
           v-clipboard:error="onError"
           v-clipboard:copy="info.method_pools.url"
@@ -28,21 +37,29 @@
       </el-tooltip>
       <div style="flex: 1"></div>
       <el-button
-        v-if="showGraph === false"
+        v-if="showGraph === false || isApi"
         class="card-btn"
         :loading="buttonLoading"
         @click="send"
-        >{{ buttonLoading ? '重放中' : '发送' }}</el-button
+        >{{
+          buttonLoading ? $t('views.search.sending') : $t('views.search.send')
+        }}</el-button
       >
     </div>
-    <div class="summary">
+    <div v-if="!isApi" class="summary">
       <div class="summary-item">
-        <div class="label"><i class="iconfont icontanzhen"></i> 探针：</div>
+        <div class="label">
+          <i class="iconfont icontanzhen"></i> {{ $t('views.search.agent') }}：
+        </div>
         <div class="info">
           <el-tooltip
             class="item"
             effect="light"
-            :content="info.relations.agent_is_running ? '运行中' : '已停止'"
+            :content="
+              info.relations.agent_is_running
+                ? $t('views.search.running')
+                : $t('views.search.stop')
+            "
             placement="top"
           >
             <div
@@ -56,7 +73,9 @@
         </div>
       </div>
       <div class="summary-item">
-        <div class="label"><i class="iconfont iconyonghu"></i> 用户：</div>
+        <div class="label">
+          <i class="iconfont iconyonghu"></i> {{ $t('views.search.user') }}：
+        </div>
         <div class="info">
           <span style="width: 60px" :title="info.relations.agent_name">{{
             info.relations.user_name
@@ -64,20 +83,26 @@
         </div>
       </div>
       <div v-if="info.relations.project_name" class="summary-item">
-        <div class="label"><i class="iconfont iconxiangmu"></i> 项目：</div>
+        <div class="label">
+          <i class="iconfont iconxiangmu"></i>
+          {{ $t('views.search.project') }}：
+        </div>
         <div
           class="info"
           :class="info.relations.project_name && 'pointer blue'"
           @click="goProject(info.relations.project_id)"
         >
           <span style="width: 100px" :title="info.relations.project_name">
-            {{ info.relations.project_name || '未绑定' }}
+            {{
+              info.relations.project_name || $t('views.search.no_project_name')
+            }}
           </span>
         </div>
       </div>
       <div v-if="info.relations.vulnerablities[0]" class="summary-item">
         <div class="label">
-          <i class="iconfont iconloudong1"></i> 关联漏洞：
+          <i class="iconfont iconloudong1"></i>
+          {{ $t('views.search.assignVuln') }}：
         </div>
         <div
           class="info"
@@ -106,7 +131,7 @@
             {{
               info.relations.vulnerablities[0]
                 ? info.relations.vulnerablities[0].vulnerablity_type
-                : '无'
+                : $t('views.search.no')
             }}
           </span>
           <el-popover
@@ -135,7 +160,10 @@
               </el-tooltip>
               {{ item.vulnerablity_type }}
             </div>
-            <span slot="reference" class="blue" style="margin-left: 6px;font-size: 12px;margin-top:6px;"
+            <span
+              slot="reference"
+              class="blue"
+              style="margin-left: 6px; font-size: 12px; margin-top: 6px"
               >+{{ info.vulnerablities_count.count - 1 }}</span
             >
           </el-popover>
@@ -144,15 +172,24 @@
     </div>
     <div class="tabs">
       <el-tabs v-model="activeKey" @tab-click="changeActiveKey">
-        <el-tab-pane label="HTTP数据包" name="first"></el-tab-pane>
+        <el-tab-pane
+          :label="$t('views.search.http')"
+          name="first"
+        ></el-tab-pane>
         <el-tab-pane
           v-if="showGraph !== false"
-          label="方法调用链"
+          :label="$t('views.search.graph')"
           name="second"
         ></el-tab-pane>
       </el-tabs>
     </div>
-    <div v-if="activeKey === 'first'" class="info">
+    <div
+      v-if="activeKey === 'first'"
+      class="info"
+      :style="{
+        height: isApi && '323px',
+      }"
+    >
       <div class="info-box">
         <MyMarkdownIt
           v-if="!isEdit"
@@ -162,18 +199,28 @@
         <div v-else>
           <el-input v-model="reqStr" type="textarea" autosize> </el-input>
         </div>
-        <el-tooltip class="item" effect="dark" content="复制" placement="top">
+        <el-tooltip
+          class="item"
+          effect="dark"
+          :content="$t('views.search.copy')"
+          placement="top"
+        >
           <span
-            v-if="showGraph !== false"
+            v-if="showGraph !== false && !isApi"
             v-clipboard:error="onError"
             v-clipboard:copy="reqStr"
             v-clipboard:success="onCopy"
             class="el-icon-document-copy copy-icon"
           ></span>
         </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="编辑" placement="top">
+        <el-tooltip
+          class="item"
+          effect="dark"
+          :content="$t('views.search.edit')"
+          placement="top"
+        >
           <span
-            v-if="showGraph === false"
+            v-if="showGraph === false || isApi"
             class="el-icon-edit copy-icon"
             @click="isEdit = !isEdit"
           ></span>
@@ -194,7 +241,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from 'vue-property-decorator'
+import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import { GraphData } from '@/views/taint/types/search'
 import Dagre from '@/components/G6/Dagre.vue'
@@ -202,6 +249,8 @@ import Dagre from '@/components/G6/Dagre.vue'
 export default class SearchCard extends VueBase {
   @Prop() info!: any
   @Prop() showGraph: boolean | undefined
+  @Prop() isApi: boolean | undefined
+
   private isEdit = false
   private reqStr = ''
   private resStr = ''
@@ -209,17 +258,21 @@ export default class SearchCard extends VueBase {
   created() {
     this.reqStr =
       (this.info.method_pools.req_header_fs_highlight ||
-        this.info.method_pools.req_header_fs) +
+        this.info.method_pools.req_header_fs ||
+        '') +
       '\n\n' +
       (this.info.method_pools.req_data_highlight ||
-        this.info.method_pools.req_data)
+        this.info.method_pools.req_data ||
+        '')
 
     this.resStr =
       (this.info.method_pools.res_header_highlight ||
-        this.info.method_pools.res_header) +
+        this.info.method_pools.res_header ||
+        '') +
       '\n\n' +
       (this.info.method_pools.res_body_highlight ||
-        this.info.method_pools.res_body)
+        this.info.method_pools.res_body ||
+        '')
   }
   get req() {
     return this.reqStr
@@ -233,14 +286,19 @@ export default class SearchCard extends VueBase {
 
   private levelClass(i: number) {
     const levelArr = ['important', 'height', 'middle', 'low']
-    const titleArr = ['高危', '中危', '低危', '无风险']
+    const titleArr = [
+      this.$t('views.search.important'),
+      this.$t('views.search.height'),
+      this.$t('views.search.middle'),
+      this.$t('views.search.low'),
+    ]
     return { level: levelArr[i - 1], title: titleArr[i - 1] }
   }
 
   private onCopy() {
     this.$message({
       showClose: true,
-      message: '已复制',
+      message: this.$t('views.search.copySuccess') as string,
       type: 'success',
     })
   }
@@ -248,7 +306,7 @@ export default class SearchCard extends VueBase {
   private onError() {
     this.$message({
       showClose: true,
-      message: '复制失败！',
+      message: this.$t('views.search.copyFail') as string,
       type: 'error',
     })
   }
@@ -257,6 +315,8 @@ export default class SearchCard extends VueBase {
     return this.resStr
       .split(`\n`)
       .join('<br/>')
+      .split(`*`)
+      .join('\\*')
       .replace(new RegExp('\<em\>', 'gi'), '\<tt\>')
       .replace(new RegExp('\<\/em\>', 'gi'), '\</tt\>')
   }
@@ -275,10 +335,17 @@ export default class SearchCard extends VueBase {
       this.$router.push('/vuln/vulnDetail/1/' + id)
     }
   }
-  private async getMethodPool() {
+  private async getMethodPool(
+    isReplay?: boolean,
+    replay_id?: number,
+    method_pool_replay_id?: number
+  ) {
     const res = await this.services.taint.graph({
+      replay_id: this.isApi ? replay_id : undefined,
+      replay_type: this.isApi ? 3 : undefined,
+      method_pool_replay_id: this.isApi ? method_pool_replay_id : undefined,
       method_pool_id: this.info.method_pools.id,
-      method_pool_type: 'normal',
+      method_pool_type: isReplay ? 'replay' : 'normal',
     })
     this.graphData = res.data
   }
@@ -296,11 +363,27 @@ export default class SearchCard extends VueBase {
     window.open(url)
   }
 
+  private timer: any
+
+  @Watch('$route', { deep: true })
+  onRouteChange() {
+    clearInterval(this.timer)
+  }
+
+  beforeDestroy() {
+    clearInterval(this.timer)
+  }
+
   private async send() {
     this.loadingStart()
     const res = await this.services.taint.replay({
-      methodPoolId: this.$route.params.id,
+      methodPoolId: this.isApi
+        ? this.info.method_pools.id
+        : this.$route.params.id,
+      agent_id:
+        this.info.method_pools.id > -1 ? undefined : this.info.relations.agent,
       replayRequest: this.reqStr,
+      replay_type: this.isApi ? 3 : undefined,
     })
     this.loadingDone()
     if (res.status !== 201) {
@@ -311,18 +394,34 @@ export default class SearchCard extends VueBase {
       })
       return
     }
-    const timer = setInterval(async () => {
-      this.buttonLoading = true
+    this.buttonLoading = true
+    this.timer = setInterval(async () => {
+      if (this.isApi) {
+        res.data.replay_type = 3
+      }
       const resT = await this.services.taint.getReplay(res.data)
       if (resT.status === 201) {
-        this.resStr = resT.data
-        clearInterval(timer)
+        this.resStr = resT.data.response
+        this.graphData = {
+          nodes: [],
+          edges: [],
+        }
+        this.$nextTick(async () => {
+          await this.getMethodPool(
+            true,
+            res.data.replayId,
+            resT.data.method_pool_replay_id
+          )
+          this.info.method_pools.id = resT.data.method_pool_replay_id
+          this.$forceUpdate()
+        })
+        clearInterval(this.timer)
         this.buttonLoading = false
-      } else {
-        clearInterval(timer)
+      } else if (resT.status === 203) {
+        clearInterval(this.timer)
         this.buttonLoading = false
       }
-    }, 1000)
+    }, 5000)
   }
 }
 </script>
@@ -369,9 +468,9 @@ export default class SearchCard extends VueBase {
         height: auto;
         span {
           display: inline-block;
-          overflow: hidden; //超出的文本隐藏
-          text-overflow: ellipsis; //溢出用省略号显示
-          white-space: nowrap; //溢出不换行
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .dot {
@@ -492,7 +591,7 @@ export default class SearchCard extends VueBase {
 .card-btn {
   background: #4a72ae;
   border-radius: 2px;
-  width: 76px;
+  min-width: 76px;
   height: 32px;
   font-size: 14px;
   display: flex;

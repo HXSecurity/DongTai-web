@@ -1,13 +1,16 @@
 <template>
   <div>
-    <Header class="layoutHeader" />
+    <Header class="layoutHeader" @reload="reload" />
     <keep-alive>
       <router-view
-        v-if="$route.meta.keepAlive"
+        v-if="$route.meta.keepAlive && flag"
         class="layoutMain"
       ></router-view>
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive" class="layoutMain"></router-view>
+    <router-view
+      v-if="!$route.meta.keepAlive && flag"
+      class="layoutMain"
+    ></router-view>
   </div>
 </template>
 
@@ -20,7 +23,15 @@ import Header from './Header.vue'
     Header,
   },
 })
-export default class Index extends Vue {}
+export default class Index extends Vue {
+  private flag = true
+  private reload() {
+    this.flag = false
+    this.$nextTick(() => {
+      this.flag = true
+    })
+  }
+}
 </script>
 
 <style scoped lang="scss">

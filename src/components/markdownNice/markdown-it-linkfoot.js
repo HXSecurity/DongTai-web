@@ -214,7 +214,6 @@ function linkFoot (state, silent) {
   // so all that's left to do is to call tokenizer.
   //
   if (!silent) {
-    // 如果存在标题则转成脚注
     if (title) {
       state.pos = labelStart
       state.posMax = labelEnd
@@ -240,7 +239,7 @@ function linkFoot (state, silent) {
       token.meta = { id: footnoteId }
 
       state.env.footnotes.list[footnoteId] = { tokens: tokens }
-    } else { // 不存在标题则判断域名
+    } else {
       state.pos = labelStart
       state.posMax = labelEnd
 

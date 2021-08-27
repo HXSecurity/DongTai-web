@@ -101,39 +101,41 @@
 
     <div class="main-warp">
       <div class="selectForm">
-        <el-select
-          v-model="searchObj.order"
-          style="width: 160px; font-size: 14px"
-          class="commonSelect"
-          placeholder="请选择排序条件"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option
-            v-for="item in searchOptionsObj.orderOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select>
-        <i
-          v-if="searchObj.sort === null"
-          class="el-icon-sort sort-btn"
-          @click="sortSelect(true)"
-        ></i>
-        <i
-          v-if="searchObj.sort === true"
-          class="el-icon-sort-up sort-btn"
-          @click="sortSelect(false)"
-        ></i>
-        <i
-          v-if="searchObj.sort === false"
-          class="el-icon-sort-down sort-btn"
-          @click="sortSelect(null)"
-        ></i>
+        <div class="sort-box">
+          <el-select
+            v-model="searchObj.order"
+            style="width: 160px; font-size: 14px"
+            class="commonSelect"
+            :placeholder="$t('views.vulnList.sort')"
+            clearable
+            @change="newSelectData"
+          >
+            <el-option
+              v-for="item in searchOptionsObj.orderOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+          <i
+            v-if="searchObj.sort === null"
+            class="el-icon-sort sort-btn"
+            @click="sortSelect(true)"
+          ></i>
+          <i
+            v-if="searchObj.sort === true"
+            class="el-icon-sort-up sort-btn"
+            @click="sortSelect(false)"
+          ></i>
+          <i
+            v-if="searchObj.sort === false"
+            class="el-icon-sort-down sort-btn"
+            @click="sortSelect(null)"
+          ></i>
+        </div>
         <el-select
           v-model="searchObj.language"
-          placeholder="请选择开发语言"
+          :placeholder="$t('views.vulnList.developLanguage')"
           style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
@@ -144,22 +146,37 @@
         </el-select>
         <el-select
           v-model="searchObj.status"
-          placeholder="请选择漏洞状态"
+          :placeholder="$t('views.vulnList.vulnStatus')"
           style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
           @change="newSelectData"
         >
-          <el-option label="待验证" value="待验证"></el-option>
-          <el-option label="验证中" value="验证中"></el-option>
-          <el-option label="已确认" value="已确认"></el-option>
-          <el-option label="已忽略" value="已忽略"></el-option>
-          <el-option label="已处理" value="已处理"></el-option>
+          <el-option
+            :label="$t('views.vulnList.toVeVerified')"
+            value="待验证"
+          ></el-option>
+          <el-option
+            :label="$t('views.vulnList.verification')"
+            value="验证中"
+          ></el-option>
+          <el-option
+            :label="$t('views.vulnList.confirmed')"
+            value="已确认"
+          ></el-option>
+          <el-option
+            :label="$t('views.vulnList.ignored')"
+            value="已忽略"
+          ></el-option>
+          <el-option
+            :label="$t('views.vulnList.processed')"
+            value="已处理"
+          ></el-option>
         </el-select>
         <div class="selectInput">
           <el-input
             v-model="searchObj.url"
-            placeholder="请输入搜索条件，如：http://127.0.0.1:8080"
+            :placeholder="$t('views.vulnList.searchExample')"
             class="commonInput"
             style="width: 312px"
             @keyup.enter.native="newSelectData"
@@ -178,16 +195,16 @@
             tableData.length > 0 && tableData.every((item) => item.checked)
           "
           @change="selectAll"
-          >已选中{{
-            tableData.filter((item) => item.checked).length
-          }}项</el-checkbox
+          >{{ $t('views.vulnList.choose')
+          }}{{ tableData.filter((item) => item.checked).length
+          }}{{ $t('views.vulnList.strip') }}</el-checkbox
         >
         <div>
           <el-button class="checkedAllBtn" @click="recheck('project')">
-            批量验证
+            {{ $t('views.vulnList.verificationBatch') }}
           </el-button>
           <el-button class="checkedAllBtn" @click="recheck('all')">
-            全量验证
+            {{ $t('views.vulnList.verificationAll') }}
           </el-button>
         </div>
       </div>
@@ -204,11 +221,23 @@
               v-model="item.checked"
               style="margin-right: 12px; margin-top: 2px"
             ></el-checkbox>
-            <span @click="goDetail(item.id)">
+            <span v-if="$i18n.locale === 'zh_cn'" @click="goDetail(item.id)">
               {{
-                `${item.uri}的${item.http_method}请求出现${item.type}漏洞${
-                  item.taint_position ? `，位置：${item.taint_position}` : ''
+                `${item.uri}${$t('views.vulnList.is')}${item.http_method}${$t(
+                  'views.vulnList.has'
+                )}${item.type}${$t('views.vulnList.vule')}${
+                  item.taint_position
+                    ? `，${$t('views.vulnList.position')}：${
+                        item.taint_position
+                      }`
+                    : ''
                 }`
+              }}
+            </span>
+            <span v-if="$i18n.locale === 'en'" @click="goDetail(item.id)">
+              {{ `${item.type} on \"${item.uri}\" with ${item.http_method}` }}
+              {{
+                item.taint_position ? `, Positon:${item.taint_position}` : ''
               }}
             </span>
           </span>
@@ -372,7 +401,7 @@ export default class VulListComponent extends VueBase {
     project_name: '',
     url: '',
     order: '',
-    status: '已确认',
+    status: '',
   }
 
   created() {
@@ -386,7 +415,7 @@ export default class VulListComponent extends VueBase {
     this.searchObj.level = ''
     this.searchObj.type = ''
     this.searchObj.project_name = ''
-    this.searchObj.status = '已确认'
+    this.searchObj.status = ''
     this.newSelectData()
   }
 
@@ -402,11 +431,17 @@ export default class VulListComponent extends VueBase {
 
   private recheck(type: string) {
     this.$confirm(
-      `即将进行${type === 'all' ? '全量' : '选中条目'}验证，是否继续?`,
-      '提示',
+      `${this.$t('views.vulnList.will')}${
+        type === 'all'
+          ? this.$t('views.vulnList.all')
+          : this.$t('views.vulnList.batch')
+      }${this.$t('views.vulnList.recheckDesc')}`,
+      this.$t('views.vulnList.recheckDesc') as string,
       {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+        confirmButtonText: this.$t(
+          'views.vulnList.confirmButtonText'
+        ) as string,
+        cancelButtonText: this.$t('views.vulnList.cancelButtonText') as string,
         type: 'warning',
       }
     ).then(async () => {
@@ -417,6 +452,14 @@ export default class VulListComponent extends VueBase {
           projectId: this.projectId,
         })
       } else {
+        if (!this.tableData.some((item: any) => item.checked)) {
+          this.$message({
+            type: 'warning',
+            message: this.$t('views.vulnList.chooseWarning') as string,
+            showClose: true,
+          })
+          return
+        }
         const ids = this.tableData
           .map((item) => {
             if (item.checked) {
@@ -528,7 +571,9 @@ export default class VulListComponent extends VueBase {
       project_id: this.projectId,
     }
     this.loadingStart()
-    const { status, data, msg } = await this.services.vuln.vulnList(params)
+    const { status, data, msg, page } = await this.services.vuln.vulnList(
+      params
+    )
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -725,6 +770,16 @@ export default class VulListComponent extends VueBase {
   }
   .selectForm {
     width: 100%;
+    .sort-box {
+      display: inline-flex;
+      align-items: center;
+      /deep/.el-input__inner {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
     .sort-btn {
       width: 38px;
       height: 38px;
@@ -737,6 +792,8 @@ export default class VulListComponent extends VueBase {
       line-height: 36px;
       font-size: 14px;
       cursor: pointer;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
     }
     .selectInput {
       float: right;
