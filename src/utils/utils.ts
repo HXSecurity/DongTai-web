@@ -1,5 +1,3 @@
-import { i18n } from '@/config/lang'
-
 // Format timestamp 2020.1.1 10:23:23
 export const formatTimestamp = (timestamp: number | any): string => {
   const addZero = (m: number) => {
@@ -48,17 +46,17 @@ export const getPassedTime = (timestamp: number | any): string => {
   const month = timeGap % 12
   const year = (timeGap - month) / 12
   if (year > 0) {
-    return `${year} ${i18n.t('base.yearAgo')}`
+    return `${year}年前`
   } else if (month > 0) {
-    return `${month} ${i18n.t('base.monthAgo')}`
+    return `${month}月前`
   } else if (day > 0) {
-    return `${day} ${i18n.t('base.dayAgo')}`
+    return `${day}天前`
   } else if (hour > 0) {
-    return `${hour} ${i18n.t('base.hourAgo')}`
+    return `${hour}小时前`
   } else if (minute > 0) {
-    return `${minute} ${i18n.t('base.minuteAgo')}`
+    return `${minute}分钟前`
   } else if (second > 0) {
-    return `${second} ${i18n.t('base.secondAgo')}`
+    return `${second}秒前`
   } else {
     return ''
   }
@@ -68,9 +66,7 @@ export const getPassedTime = (timestamp: number | any): string => {
 export const debounce = (fn: any, wait: number) => {
   let timeout: any = null
   return () => {
-    if (timeout !== null) {
-      clearTimeout(timeout)
-    }
+    if (timeout !== null) { clearTimeout(timeout) }
     timeout = setTimeout(fn, wait)
   }
 }

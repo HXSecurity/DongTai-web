@@ -723,7 +723,7 @@
     .el-checkbox__input.is-checked + .el-checkbox__label {
       color: #2D82FF; }
     .el-checkbox__input.is-focus {
-       }
+      /*focus时 视觉上区分*/ }
       .el-checkbox__input.is-focus .el-checkbox__inner {
         border-color: #2D82FF; }
     .el-checkbox__input.is-indeterminate .el-checkbox__inner {
@@ -1386,7 +1386,7 @@
     bottom: 0;
     margin: 0; }
   .el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) {
-    }
+    /*获得焦点时 样式提醒*/ }
     .el-radio:focus:not(.is-focus):not(:active):not(.is-disabled) .el-radio__inner {
       -webkit-box-shadow: 0 0 2px 2px #2D82FF;
       box-shadow: 0 0 2px 2px #2D82FF; }

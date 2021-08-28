@@ -5,55 +5,41 @@
     </div>
     <transition name="fade">
       <div v-if="!active" class="desc">
-        <div class="title">{{ $t('views.search.commonly') }}：</div>
+        <div class="title">常用查询语法：</div>
         <div class="example-box">
           <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.url') }}
-            </div>
+            <div class="label">URL</div>
             <div class="info">(.*?)/druid/.*?</div>
           </div>
           <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.req_data') }}
-            </div>
+            <div class="label">请求体</div>
             <div class="info">(.*?)whoami(.*?)</div>
           </div>
           <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.signature') }}
-            </div>
+            <div class="label">方法签名</div>
             <div class="info">whoami</div>
           </div>
           <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.res_header') }}
-            </div>
+            <div class="label">响应头</div>
             <div class="info">set-cookie</div>
           </div>
           <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.req_header_fs') }}
-            </div>
+            <div class="label">请求头</div>
             <div class="info">(.*?)exec</div>
           </div>
           <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.req_data') }}
-            </div>
+            <div class="label">响应体</div>
             <div class="info">&lt;script&gt; alert(1) &lt;/script&gt;</div>
           </div>
           <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.sinkvalues') }}
-            </div>
+            <div class="label">污点数据</div>
             <div class="info">(.*?)rememberMe(.*?)</div>
           </div>
         </div>
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="status" v-loading.body.lock="loadingFlag" class="search-list">
+      <div v-if="status" class="search-list">
         <template v-if="tableList.length">
           <div
             v-for="item in tableList"
@@ -64,9 +50,7 @@
           </div>
         </template>
         <template v-else>
-          <div v-if="!loadingFlag" class="no-data">
-            {{ $t('views.search.empty') }}
-          </div>
+          <div class="no-data">无匹配数据</div>
         </template>
       </div>
     </transition>
@@ -95,7 +79,7 @@ export default class Index extends VueBase {
   private value = ''
   private tableList: Array<any> = []
   private afterkeys = ''
-  private loadingFlag = false
+
   private search([type, value]: any[]) {
     this.type = type
     this.value = value
@@ -103,11 +87,9 @@ export default class Index extends VueBase {
     this.tableList = []
     this.afterkeys = ''
     if (!value) {
-      this.$message.warning(this.$t('views.search.warning') as string)
+      this.$message.warning('请输入搜索内容')
     }
-
     if (value) {
-      this.loadingFlag = true
       this.changeActive()
       this.getList()
     }
@@ -134,21 +116,12 @@ export default class Index extends VueBase {
         searchKey[keyArr[i]] = this.value
       }
     }
-    const exclude_ids = this.tableList.map((item) => {
-      return item.method_pools.id
-    })
     const res: any = await this.services.taint.search({
       ...searchKey,
       page_index: this.page,
       page_size: 10,
       search_after_update_time: this.afterkeys || undefined,
-      exclude_ids: String(exclude_ids),
     })
-    this.loadingFlag = false
-    if (res.status !== 201) {
-      this.$message.error(res.msg)
-      return
-    }
     const tableList = res.data.method_pools.map((item: any, index: number) => {
       const vulnerablities_count_map = {}
       const relations_map = {}
@@ -212,7 +185,7 @@ main.container {
   box-sizing: border-box;
   position: relative;
   .search-box {
-    z-index: 5;
+    z-index: 90;
     background: #fff;
     position: fixed;
     height: 72px;
@@ -254,9 +227,6 @@ main.container {
           text-align: right;
           color: #959fb4;
           margin-right: 16px;
-          &.en {
-            width: 120px;
-          }
         }
         .info {
           font-size: 14px;

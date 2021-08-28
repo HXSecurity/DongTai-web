@@ -46,14 +46,14 @@
           accept=".jar"
           :auto-upload="false"
         >
-          <el-button slot="trigger" type="text" class="fileBtn">{{
-            $t('views.upgradeOnline.selectFile')
-          }}</el-button>
-          <el-button type="text" class="uploadBtn" @click="uploadOneFile">{{
-            $t('views.upgradeOnline.upload')
-          }}</el-button>
+          <el-button slot="trigger" type="text" class="fileBtn"
+            >选取文件</el-button
+          >
+          <el-button type="text" class="uploadBtn" @click="uploadOneFile"
+            >上传到服务器</el-button
+          >
           <div slot="tip" class="el-upload__tip" style="margin-left: 20px">
-            {{ $t('views.upgradeOnline.uploadInfo') }}
+            只能上传jar文件
           </div>
         </el-upload>
       </div>

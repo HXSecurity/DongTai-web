@@ -2,49 +2,33 @@
   <div class="hook-rule">
     <div class="top-info">
       <div class="column">
-        <span class="top-title">{{ $t('views.hookPage.allHooksNum') }}:</span>
-        <span class="bottom-info">{{ base.ruleCount }}</span>
-        {{ $t('views.hookPage.strip') }}
+        <span class="top-title">规则总数:</span>
+        <span class="bottom-info">{{ base.ruleCount }}</span
+        >条
       </div>
       <div class="column">
-        <span class="top-title">{{ $t('views.hookPage.hooksType') }}:</span>
-        <span class="bottom-info">{{ base.typeCount }}</span>
-        {{ $t('views.hookPage.race') }}
+        <span class="top-title">规则类型:</span>
+        <span class="bottom-info">{{ base.typeCount }}</span
+        >种
       </div>
       <div class="column">
-        <span class="top-title">{{ $t('views.hookPage.sinkHooksNum') }}:</span>
-        <span class="bottom-info">{{ base.sinkCount }}</span>
-        {{ $t('views.hookPage.strip') }}
+        <span class="top-title">sink规则数量:</span>
+        <span class="bottom-info">{{ base.sinkCount }}</span
+        >条
       </div>
     </div>
     <div class="info-body">
       <el-tabs v-model="type" class="info-tabs">
-        <el-tab-pane
-          :label="$t('views.hookPage.sourceRule')"
-          name="2"
-          class="info-tab"
-        >
+        <el-tab-pane label="污点源方法规则" name="2" class="info-tab">
           <HookTable v-if="type === '2'" :rule-type="type"
         /></el-tab-pane>
-        <el-tab-pane
-          :label="$t('views.hookPage.propRule')"
-          name="1"
-          class="info-tab"
-        >
+        <el-tab-pane label="传播方法规则" name="1" class="info-tab">
           <HookTable v-if="type === '1'" :rule-type="type"
         /></el-tab-pane>
-        <el-tab-pane
-          :label="$t('views.hookPage.filterRule')"
-          name="3"
-          class="info-tab"
-        >
+        <el-tab-pane label="过滤方法规则" name="3" class="info-tab">
           <HookTable v-if="type === '3'" :rule-type="type"
         /></el-tab-pane>
-        <el-tab-pane
-          :label="$t('views.hookPage.dangerRule')"
-          name="4"
-          class="info-tab"
-        >
+        <el-tab-pane label="危险方法规则" name="4" class="info-tab">
           <DangerTable v-if="type === '4'" :rule-type="type" />
         </el-tab-pane>
       </el-tabs>

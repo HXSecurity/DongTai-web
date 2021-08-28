@@ -6,7 +6,6 @@ import './styles/common.scss'
 import './styles/theme/index.css'
 import './styles/iconfont/iconfont.css'
 import './styles/iconfont/iconfont'
-import 'view-design/dist/styles/iview.css'
 import ElementUI from 'element-ui'
 import { i18n } from '@/config/lang'
 import MyMarkdownIt from '@/components/markdownNice/Index'
@@ -19,7 +18,7 @@ Vue.use(VueDOMPurifyHTML)
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
-Vue.use(ElementUI, { i18n: (key: any, value: any) => i18n.t(key, value) })
+Vue.use(ElementUI)
 Vue.component('MyMarkdownIt', MyMarkdownIt)
 dot(Vue)
 new Vue({

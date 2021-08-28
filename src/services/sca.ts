@@ -14,17 +14,17 @@ interface scaListParams {
 
 export default () =>
   new (class {
-    // scaList
+    // 组件列表
     scaList(params: scaListParams): Promise<iResponse> {
       return request.get('/scas', { params })
     }
 
-    // scaSummary
+    // 组件概要
     scaSummary(params: scaListParams): Promise<iResponse> {
       return request.get('/sca/summary', { params })
     }
 
-    // getScaDetail
+    // 组件详情
     getScaDetail(id: number): Promise<iResponse> {
       return request.get(`/sca/${id}`)
     }

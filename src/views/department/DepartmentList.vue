@@ -19,7 +19,7 @@
               <el-input
                 v-model="currentDepartmentName"
                 class="tree-node-input"
-                style="height: 20px; line-height: 20px"
+                style="height:20px line-height:20px"
                 @blur="() => submitEdit(node, data)"
               ></el-input>
             </template>
@@ -31,14 +31,14 @@
                 size="mini"
                 @click="() => edit(node, data)"
               >
-                {{ $t('views.strategyManage.edit') }}
+                修改
               </el-button>
               <el-button
                 type="text"
                 size="mini"
                 @click="() => append(node, data)"
               >
-                {{ $t('views.strategyManage.addChildren') }}
+                新增子部门
               </el-button>
               <el-button
                 v-if="data.id != -1"
@@ -46,7 +46,7 @@
                 size="mini"
                 @click="() => remove(node, data)"
               >
-                {{ $t('views.strategyManage.del') }}
+                删除
               </el-button>
             </span>
           </span>
@@ -88,11 +88,7 @@
             prop="is_superuser"
           >
             <template slot-scope="{ row }">
-              {{
-                row.is_superuser === 0
-                  ? $t('views.userList.user')
-                  : $t('views.userList.admin')
-              }}
+              {{ row.is_superuser === 0 ? '普通用户' : '管理员' }}
             </template>
           </el-table-column>
           <el-table-column
@@ -129,11 +125,7 @@
           <el-table-column :label="$t('views.userList.isActive')">
             <template slot-scope="scope">
               <div>
-                {{
-                  scope.row.is_active
-                    ? $t('views.userList.on')
-                    : $t('views.userList.off')
-                }}
+                {{ scope.row.is_active ? '启用' : '禁用' }}
               </div>
             </template>
           </el-table-column>
@@ -210,14 +202,8 @@
             size="small"
             style="width: 400px"
           >
-            <el-option
-              :label="$t('views.userList.admin')"
-              :value="2"
-            ></el-option>
-            <el-option
-              :label="$t('views.userList.user')"
-              :value="0"
-            ></el-option>
+            <el-option label="管理员" :value="2"></el-option>
+            <el-option label="普通用户" :value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('views.userList.department')">
@@ -381,13 +367,13 @@ export default class DepartmentList extends VueBase {
   private data = []
   private formatTime(time: string) {
     if (!time) {
-      return this.$t('views.userList.notLogin') as string
+      return '未登录'
     }
     return formatTimestamp(new Date(time).getTime())
   }
   private validateNewPass(rule: any, value: string, callback: any) {
     if (value === '') {
-      callback(new Error(this.$t('views.userList.needPWD') as string))
+      callback(new Error('请输入密码'))
     } else {
       if (this.userForm.password !== '') {
         ;(this.$refs.ruleForm as Form).validateField('re_password')
@@ -397,9 +383,9 @@ export default class DepartmentList extends VueBase {
   }
   private validateCheckPass(rule: any, value: any, callback: any) {
     if (value === '') {
-      callback(new Error(this.$t('views.userList.rePWD') as string))
+      callback(new Error('请再次输入密码'))
     } else if (value !== this.userForm.password) {
-      callback(new Error(this.$t('views.userList.diffPWD') as string))
+      callback(new Error('两次输入密码不一致!'))
     } else {
       callback()
     }
@@ -447,15 +433,11 @@ export default class DepartmentList extends VueBase {
   }
 
   private async resetPwd(item: any) {
-    this.$confirm(
-      this.$t('views.userList.deleteConfirm') as string,
-      this.$t('views.userList.deleteConfirmPop') as string,
-      {
-        confirmButtonText: this.$t('views.userList.submit') as string,
-        cancelButtonText: this.$t('views.userList.cancel') as string,
-        type: 'warning',
-      }
-    ).then(async () => {
+    this.$confirm('此操作将重置用户密码, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
       const { status, msg } = await this.services.user.reset({
         userId: item.id as number,
       })
@@ -600,14 +582,19 @@ export default class DepartmentList extends VueBase {
     await this.getTableData()
   }
 
-  private append(node: any, data: any) {
+  private async depatmentAdd() {}
+
+  private async departmentDel() {}
+
+  private append(
+    node: any,
+    data: { id: number; label: string; children: [{}] }
+  ) {
     this.newDepartment = true
-    const defaultDepartmentName = this.$t(
-      'views.strategyManage.children'
-    ) as string
+    const defaultDepartmentName = '子部门'
     const newChild = {
       id: data.id + 1,
-      label: this.$t('views.strategyManage.children') as string,
+      label: '子部门',
       isEdit: 1,
       children: [],
     }
@@ -619,6 +606,7 @@ export default class DepartmentList extends VueBase {
   }
 
   private async remove(node: any, data: any) {
+    // 执行删除
     const { status, msg } = await this.services.department.departmentDel(
       data.id
     )
@@ -648,13 +636,14 @@ export default class DepartmentList extends VueBase {
       data.isEdit === undefined ||
       (data.isEdit === 0 && this.newDepartment == false && data.id !== -1)
     ) {
+      // 触发用户查询
       this.department.id = data.id
       this.department.name = data.label
       this.getTableData()
     }
   }
 
-  edit(node: any, data: { id: number; label: string; isEdit: boolean }) {
+  edit(node: object, data: { id: number; label: string; isEdit: boolean }) {
     this.newDepartment = false
     this.$set(data, 'isEdit', 1)
     this.currentDepartmentName = data.label
@@ -662,6 +651,7 @@ export default class DepartmentList extends VueBase {
 
   private async submitEdit(node: any, nodeData: any) {
     if (nodeData.label == this.currentDepartmentName) {
+      console.log('没有修改')
       this.currentDepartmentName = ''
       this.$set(nodeData, 'isEdit', 0)
 

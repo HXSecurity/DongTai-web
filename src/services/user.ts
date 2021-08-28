@@ -6,7 +6,7 @@ interface loginParams {
   password: string
 }
 
-// Change Password
+// 修改密码
 interface changePasswordParams {
   username: string
   old_password: string
@@ -19,39 +19,39 @@ interface UserAddParams {
   re_password: string
   email: string
   role: number
-  department: any
+  department: object
   phone: string
   uid?: number
 }
 
 export default () =>
   new (class {
-    // Get verification code
+    // 获取验证码
     initCaptcha(): Promise<iResponse> {
       return request.get('/captcha/refresh')
     }
 
-    // Login
+    // 登陆
     login(params: loginParams): Promise<iResponse> {
       return request.post('/user/login', params)
     }
 
-    // Get user information
+    // 获取用户信息
     getUserInfo(): Promise<iResponse> {
       return request.get('/user/info')
     }
 
-    // logout
+    // 退出登陆
     logout(): Promise<iResponse> {
       return request.get('/user/logout')
     }
 
-    // changePassword
+    // 修改密码
     changePassword(params: changePasswordParams): Promise<iResponse> {
       return request.post('/user/changePassword', params)
     }
 
-    // userList
+    // 用户列表
     userList(params: {
       page: number
       pageSize: number
@@ -60,12 +60,12 @@ export default () =>
       return request.get('/users', { params })
     }
 
-    // userAdd
+    // 新增用户
     userAdd(params: UserAddParams): Promise<iResponse> {
       return request.put('/user/add', params)
     }
 
-    // userEdit
+    // 修改用户信息
     userEdit(params: UserAddParams): Promise<iResponse> {
       return request.post('/user/' + params.uid, params)
     }
@@ -74,17 +74,17 @@ export default () =>
       return request.delete('/user/' + params.uid + '/delete')
     }
 
-    // departmentList
+    // 部门列表
     departmentList(): Promise<iResponse> {
       return request.get('/departments')
     }
 
-    // Get user token and system update URL
+    // 获取用户token、系统更新url
     userToken(): Promise<iResponse> {
       return request.get('/user/token')
     }
 
-    // User list
+    // 用户列表
     reset(params: { userId: number }): Promise<iResponse> {
       return request.post('/user/password/reset', params)
     }

@@ -2,8 +2,8 @@
   <main class="container">
     <div v-if="!sliderWarpContract" class="fixed-warp">
       <div class="slider-warp">
-        <div class="titleForm">
-          <!-- <el-select v-model="searchObj.order" size="mini" style="width: 90px">
+        <div class="titleForm flex-row-space-between">
+          <el-select v-model="searchObj.order" size="mini" style="width: 90px">
             <el-option
               v-for="item in orderOptions"
               :key="item.value"
@@ -17,8 +17,7 @@
               class="el-input__icon el-icon-search"
               @click="newSelectData"
             />
-          </el-input> -->
-          {{ $t('views.vulnDetail.vulnList') }}
+          </el-input>
         </div>
         <div class="page-line flex-column-center">
           <div class="flex-row-space-between">
@@ -47,7 +46,7 @@
                 style="color: #5782db"
                 @click="getTableData"
               >
-                {{ $t('views.vulnDetail.reload') }}
+                刷新
               </el-button>
             </div>
           </div>
@@ -65,11 +64,7 @@
           @click="idChange(item.id)"
         >
           <div class="titleLine">
-            {{
-              `${item.uri} ${$t('views.vulnDetail.has')} ${item.type} ${$t(
-                'views.vulnDetail.vuln'
-              )}`
-            }}
+            {{ `${item.uri}存在${item.type}漏洞` }}
           </div>
           <div class="infoLine flex-row-space-between">
             <span
@@ -118,15 +113,11 @@
       <div class="vuln-title flex-row-space-between">
         <div style="flex: 1; max-width: 700px; word-break: break-all">
           {{
-            `${vulnObj.vul.url}${$t('views.vulnDetail.is')}${
-              vulnObj.vul.http_method
-            }${$t('views.vulnDetail.reqHas')}${vulnObj.vul.type}${$t(
-              'views.vulnDetail.vuln'
-            )}${
+            `${vulnObj.vul.url}的${vulnObj.vul.http_method}请求出现${
+              vulnObj.vul.type
+            }漏洞${
               vulnObj.vul.taint_position
-                ? `,${$t('views.vulnDetail.position')}:${
-                    vulnObj.vul.taint_position
-                  }`
+                ? `，位置：${vulnObj.vul.taint_position}`
                 : ''
             }`
           }}
@@ -198,10 +189,7 @@
             <span
               :class="vulnObj.vul.project_id && 'project-name'"
               @click="
-                vulnObj.vul.project_id &&
-                  $router.push(
-                    '/project/projectDetail/' + vulnObj.vul.project_id
-                  )
+                $router.push('/project/projectDetail/' + vulnObj.vul.project_id)
               "
               >{{ vulnObj.vul.project_name }}</span
             >
@@ -221,7 +209,7 @@
             <span>{{
               (vulnObj.vul.param_name &&
                 Object.values(vulnObj.vul.param_name).join(',')) ||
-              $t('views.vulnDetail.empty')
+              '无'
             }}</span>
           </div>
           <div v-dot class="info">
@@ -261,7 +249,7 @@
             </span>
             <el-select
               v-model="vulnObj.vul.status"
-              :placeholder="$t('views.vulnDetail.untreated')"
+              placeholder="未处理"
               size="mini"
               style="width: 40%"
               filterable
@@ -310,7 +298,7 @@
             class="iconfont icongears"
             style="margin-right: 6px; font-size: 12px"
           ></i
-          >{{ $t('views.vulnDetail.replay') }}</el-button
+          >请求重放</el-button
         >
       </div>
       <div class="selectForm">
@@ -346,15 +334,15 @@
           <div class="flex-row-space-between dot-list">
             <div class="tip">
               <i class="iconfont iconyuandianzhong" style="color: #5491ef"></i>
-              <span>{{ $t('views.vulnDetail.stainSource') }}</span>
+              <span>污点来源</span>
             </div>
             <div class="tip">
               <i class="iconfont iconyuandianzhong" style="color: #f3bc3f"></i>
-              <span>{{ $t('views.vulnDetail.communicationMethod') }}</span>
+              <span>传播方法</span>
             </div>
             <div class="tip">
               <i class="iconfont iconyuandianzhong" style="color: #ec984f"></i>
-              <span>{{ $t('views.vulnDetail.dangerMethod') }}</span>
+              <span>危险方法</span>
             </div>
           </div>
           <div
@@ -456,30 +444,21 @@
         </div>
       </div>
     </div>
-
-    <el-dialog
-      :visible.sync="deleteDialogOpen"
-      :title="$t('views.vulnDetail.deleteVuln')"
-      width="25%"
-    >
+    <el-dialog :visible.sync="deleteDialogOpen" title="删除漏洞" width="25%">
       <div style="text-align: center">
-        <p style="color: #959fb4">
-          {{ $t('views.vulnDetail.deleteVulnInfo') }}
-        </p>
-        <p style="color: #959fb4; margin-top: 14px">
-          {{ $t('views.vulnDetail.deleteVulnDesc') }}
-        </p>
+        <p style="color: #959fb4">漏洞删除后，将不可恢复</p>
+        <p style="color: #959fb4; margin-top: 14px">请确认是否删除？</p>
       </div>
       <div slot="footer" style="text-align: center">
         <el-button type="text" class="confirmDel" @click="vulnDelete">
-          {{ $t('views.vulnDetail.deleteVulnEnter') }}
+          确认删除
         </el-button>
         <el-button
           type="text"
           class="cancelDel"
           @click="deleteDialogOpen = false"
         >
-          {{ $t('views.vulnDetail.cancel') }}
+          取消
         </el-button>
       </div>
     </el-dialog>
@@ -498,43 +477,28 @@ import qs from 'qs'
 export default class VulnDetail extends VueBase {
   private sliderWarpContract = false
   private deleteDialogOpen = false
-
-  private async getStatus() {
-    const res = await this.services.vuln.vulStatus()
-    if (res.status !== 201) {
-      this.$message.error(res.msg)
-      return
-    }
-    this.statusOptions = res.data.map((item: any) => {
-      return {
-        value: item.name,
-        label: item.name,
-      }
-    })
-  }
-
   private statusOptions: Array<any> = [
     {
-      value: this.$t('views.vulnDetail.reported'),
-      label: this.$t('views.vulnDetail.reported'),
+      value: '已上报',
+      label: '已上报',
     },
     {
-      value: this.$t('views.vulnDetail.confirmed'),
-      label: this.$t('views.vulnDetail.confirmed'),
+      value: '已确认',
+      label: '已确认',
     },
     {
-      value: this.$t('views.vulnDetail.fixed'),
-      label: this.$t('views.vulnDetail.fixed'),
+      value: '已修复',
+      label: '已修复',
     },
     {
-      value: this.$t('views.vulnDetail.ignored'),
-      label: this.$t('views.vulnDetail.ignored'),
+      value: '已忽略',
+      label: '已忽略',
     },
   ]
   private state = 1
   private httpOptions = [
-    { value: 1, label: this.$t('views.vulnDetail.req') },
-    { value: 0, label: this.$t('views.vulnDetail.res') },
+    { value: 1, label: '请求' },
+    { value: 0, label: '响应' },
   ]
 
   private vulnObj: VulnObj = {
@@ -615,7 +579,6 @@ export default class VulnDetail extends VueBase {
     this.page = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
     this.cardIndex = 0
-    await this.getStatus()
     await this.getVulnDetail()
     await this.getTableData()
   }
@@ -629,7 +592,7 @@ export default class VulnDetail extends VueBase {
     } else {
       this.$message({
         showClose: true,
-        message: this.$t('views.vulnDetail.canNotReplay') as string,
+        message: '历史数据不支持重放',
         type: 'error',
       })
     }
@@ -868,33 +831,24 @@ export default class VulnDetail extends VueBase {
     var projectName = this.vulnObj.vul.project_name
     request
       .get(`project/export?pname=${projectName}&vid=${this.selectedId}`, {
-        responseType: 'blob',
+        responseType: 'blob', // 告诉服务器我们需要的响应格式
       })
       .then((res: any) => {
-        if (res.type === 'application/json') {
-          this.$message.error({
-            message: this.$t('views.vulnDetail.exportFail') as string,
-            showClose: true,
-          })
+        if (res.hasOwnProperty('response')) {
+          this.$message.error({ message: '报告导出失败', showClose: true })
         } else {
           const blob = new Blob([res], {
-            type: 'application/octet-stream',
+            type: 'application/octet-stream', // 将会被放入到blob中的数组内容的MIME类型
           })
           const link = document.createElement('a')
           link.href = window.URL.createObjectURL(blob)
           link.download = projectName + '.doc'
           link.click()
-          this.$message.success({
-            message: this.$t('views.vulnDetail.exportSuccess') as string,
-            showClose: true,
-          })
+          this.$message.success({ message: '报告导出成功', showClose: true })
         }
       })
-      .catch(() => {
-        this.$message.error({
-          message: this.$t('views.vulnDetail.exportFail') as string,
-          showClose: true,
-        })
+      .catch((error) => {
+        this.$message.error({ message: '报告导出失败', showClose: true })
       })
   }
 
@@ -902,7 +856,7 @@ export default class VulnDetail extends VueBase {
     const params = {
       ids: this.selectedId.toString(),
     }
-    const { status, msg } = await this.services.vuln.vulRecheck(params)
+    const { status, data, msg } = await this.services.vuln.vulRecheck(params)
     if (status !== 201) {
       this.$message({
         type: 'error',
@@ -946,10 +900,7 @@ export default class VulnDetail extends VueBase {
 
   .titleForm {
     border-bottom: 1px solid #e6e9ec;
-    padding: 14px 0;
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 12px;
+    padding: 14px 4px;
   }
 
   .page-line {
@@ -1150,8 +1101,7 @@ export default class VulnDetail extends VueBase {
         display: flex;
         .iconyuandianzhong {
           font-size: 18px;
-          margin-left: 6px;
-          margin-right: 4px;
+          margin-right: 14px;
           line-height: 18px;
         }
       }
@@ -1219,9 +1169,9 @@ export default class VulnDetail extends VueBase {
               font-size: 12px;
               line-height: 14px;
               max-width: 160px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
+              white-space: nowrap; //不换行
+              overflow: hidden; //超出隐藏
+              text-overflow: ellipsis; //变成...
             }
             .line {
               color: #e18c58;

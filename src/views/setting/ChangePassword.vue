@@ -3,7 +3,7 @@
     <el-form
       ref="ruleForm"
       :model="submitForm"
-      :label-width="$i18n.locale == 'en' ? '170px' : '100px'"
+      label-width="100px"
       style="margin-top: 54px"
       status-icon
       :rules="rules"
@@ -84,7 +84,7 @@ export default class ChangePassword extends VueBase {
 
   private validateOldPass(rule: any, value: any, callback: any) {
     if (value === '') {
-      callback(new Error(this.$t('base.oldPassword') as string))
+      callback(new Error('请输入旧密码'))
     } else {
       if (this.submitForm.old_password !== '') {
         ;(this.$refs.ruleForm as Form).validateField('new_password')
@@ -95,7 +95,7 @@ export default class ChangePassword extends VueBase {
 
   private validateNewPass(rule: any, value: string, callback: any) {
     if (value === '') {
-      callback(new Error(this.$t('base.newPassword') as string))
+      callback(new Error('请输入新密码'))
     } else {
       if (this.submitForm.new_password !== '') {
         ;(this.$refs.ruleForm as Form).validateField('checkPass')
@@ -106,9 +106,9 @@ export default class ChangePassword extends VueBase {
 
   private validateCheckPass(rule: any, value: any, callback: any) {
     if (value === '') {
-      callback(new Error(this.$t('base.rePassword') as string))
+      callback(new Error('请再次输入密码'))
     } else if (value !== this.submitForm.new_password) {
-      callback(new Error(this.$t('base.diffPassword') as string))
+      callback(new Error('两次输入密码不一致!'))
     } else {
       callback()
     }

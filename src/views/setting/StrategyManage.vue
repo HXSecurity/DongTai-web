@@ -1,13 +1,9 @@
 <template>
   <div class="content-warp">
     <el-table :data="tableData" class="strategyManageTable">
-      <el-table-column
-        :label="$t('views.strategyManage.name')"
-        prop="vul_name"
-        width="160px"
-      >
+      <el-table-column :label="$t('views.strategyManage.name')" prop="vul_name">
         <template slot-scope="{ row }">
-          <div v-if="!row.isEdit" class="two-line">{{ row.vul_name }}</div>
+          <div v-if="!row.isEdit">{{ row.vul_name }}</div>
           <el-input
             v-else
             v-model="row.vul_name"
@@ -43,9 +39,7 @@
         align="center"
       >
         <template slot-scope="{ row }">
-          <div v-if="!row.isEdit">
-            {{ row.vul_fix || $t('views.strategyManage.no') }}
-          </div>
+          <div v-if="!row.isEdit">{{ row.vul_fix || '无' }}</div>
           <el-input
             v-else
             v-model="row.vul_fix"
@@ -58,7 +52,7 @@
       </el-table-column>
 
       <el-table-column
-        v-if="userInfo.role === 1 || userInfo.role === 2"
+        v-if="userInfo.role === 1"
         :label="$t('views.strategyManage.status')"
         prop="state"
         width="100px"
@@ -74,26 +68,22 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column
-        v-if="userInfo.role === 1 || userInfo.role === 2"
-        :label="$t('views.strategyManage.settings')"
-        width="160px"
-      >
+      <el-table-column v-if="userInfo.role === 1" label="操作" width="160px">
         <template slot-scope="{ row }">
           <el-button
             v-if="!row.isEdit"
             size="small"
             class="btn"
             @click="editStart(row)"
-            >{{ $t('views.strategyManage.edit') }}</el-button
+            >编辑</el-button
           >
           <template v-else>
-            <el-button size="small" class="btn" @click="editEnd(row, true)">{{
-              $t('views.strategyManage.enter')
-            }}</el-button>
-            <el-button size="small" class="btn" @click="editEnd(row, false)">{{
-              $t('views.strategyManage.clear')
-            }}</el-button>
+            <el-button size="small" class="btn" @click="editEnd(row, true)"
+              >确认</el-button
+            >
+            <el-button size="small" class="btn" @click="editEnd(row, false)"
+              >取消</el-button
+            >
           </template>
 
           <el-button
@@ -101,7 +91,7 @@
             size="small"
             class="btn"
             @click="deleteManage(row)"
-            >{{ $t('views.strategyManage.del') }}</el-button
+            >删除</el-button
           >
         </template>
       </el-table-column>
@@ -130,7 +120,7 @@ export default class StrategyManage extends VueBase {
     if (this.tableData.some((i: any) => i.isEdit)) {
       this.$message({
         type: 'warning',
-        message: this.$t('views.strategyManage.warning') as string,
+        message: '当前有策略正在编辑',
         showClose: true,
       })
       return
@@ -143,20 +133,16 @@ export default class StrategyManage extends VueBase {
     if (this.tableData.some((i: any) => i.isEdit)) {
       this.$message({
         type: 'warning',
-        message: this.$t('views.strategyManage.warning') as string,
+        message: '当前有策略正在编辑',
         showClose: true,
       })
       return
     }
-    this.$confirm(
-      this.$t('views.strategyManage.deleteWarning') as string,
-      this.$t('views.strategyManage.deletePop') as string,
-      {
-        confirmButtonText: this.$t('views.strategyManage.enter') as string,
-        cancelButtonText: this.$t('views.strategyManage.clear') as string,
-        type: 'warning',
-      }
-    ).then(async () => {
+    this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
       const { status, msg } = await this.services.setting.deleteManage(item.id)
       if (status !== 201) {
         this.$message({
@@ -165,7 +151,7 @@ export default class StrategyManage extends VueBase {
           showClose: true,
         })
       } else {
-        this.$message({ type: 'success', message: msg, showClose: true })
+        this.$message({ type: 'success', message: '删除成功', showClose: true })
         await this.getTableData()
       }
     })
@@ -184,7 +170,7 @@ export default class StrategyManage extends VueBase {
           showClose: true,
         })
       } else {
-        this.$message({ type: 'success', message: msg, showClose: true })
+        this.$message({ type: 'success', message: '修改成功', showClose: true })
       }
     } else {
       for (const key in item) {
@@ -211,33 +197,42 @@ export default class StrategyManage extends VueBase {
   }
 
   private async stateChange(id: number, state: string) {
-    if (state === 'enable') {
-      this.loadingStart()
-      const { status, msg } = await this.services.setting.strategyDisable(id)
-      this.loadingDone()
-      if (status !== 201) {
-        this.$message({
-          type: 'error',
-          message: msg,
-          showClose: true,
-        })
-        return
+    if (this.$store.getters.userInfo.role === 1) {
+      if (state === 'enable') {
+        this.loadingStart()
+        const { status, msg } = await this.services.setting.strategyDisable(id)
+        this.loadingDone()
+        if (status !== 201) {
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
+          return
+        }
+        await this.getTableData()
       }
-      await this.getTableData()
-    }
-    if (state === 'disable') {
-      this.loadingStart()
-      const { status, msg } = await this.services.setting.strategyEnable(id)
-      this.loadingDone()
-      if (status !== 201) {
-        this.$message({
-          type: 'error',
-          message: msg,
-          showClose: true,
-        })
-        return
+      if (state === 'disable') {
+        this.loadingStart()
+        const { status, msg } = await this.services.setting.strategyEnable(id)
+        this.loadingDone()
+        if (status !== 201) {
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
+          return
+        }
+        await this.getTableData()
       }
-      await this.getTableData()
+    } else {
+      this.$message({
+        showClose: true,
+        message: '当前用户无修改权限',
+        type: 'error',
+      })
+      return
     }
   }
 }
@@ -264,15 +259,5 @@ export default class StrategyManage extends VueBase {
   background: #4a72ae;
   border-radius: 2px;
   color: #fff;
-}
-.two-line {
-  letter-spacing: 0;
-  width: 140px;
-  overflow: hidden;
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2; /*要显示的行数*/
-  -webkit-box-orient: vertical;
-  font-size: 12px;
 }
 </style>

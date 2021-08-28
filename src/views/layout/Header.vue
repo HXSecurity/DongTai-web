@@ -3,29 +3,62 @@
     <div class="container flex-row-space-between header-warp">
       <div class="logo flex-column-center" @click="$router.push('/')">
         <img
-          v-if="this.$i18n.locale == 'zh_cn'"
           src="../../assets/img/logo.png"
           alt="logo"
-          style="width: 98px"
-        />
-        <img
-          v-if="this.$i18n.locale == 'en'"
-          src="../../assets/img/logo_en.png"
-          alt="logo"
-          style="width: 98px"
+          style="width: 98px; height: 22px"
         />
       </div>
       <div v-if="userInfo" class="url-warp">
         <div
-          v-for="item in $store.getters.routers[0].children.filter(
-            (i) => i.meta && i.meta.isMenu
-          )"
-          :key="item.name"
           class="url flex-column-center"
-          :class="currentRoute(item.path) ? 'currentRoute' : ''"
-          @click="$router.push(item.path)"
+          :class="currentRoute('/project') ? 'currentRoute' : ''"
+          @click="$router.push('/project')"
         >
-          {{ $t(item.meta.i18n) }}
+          {{ $t('menu.project') }}
+        </div>
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/vuln') ? 'currentRoute' : ''"
+          @click="$router.push('/vuln')"
+        >
+          {{ $t('menu.vuln') }}
+        </div>
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/sca') ? 'currentRoute' : ''"
+          @click="$router.push('/sca')"
+        >
+          {{ $t('menu.sca') }}
+        </div>
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/taint') ? 'currentRoute' : ''"
+          @click="$router.push('/taint')"
+        >
+          {{ $t('menu.taintPool') }}
+        </div>
+        <div
+          class="url flex-column-center"
+          :class="currentRoute('/setting') ? 'currentRoute' : ''"
+          @click="$router.push('/setting')"
+        >
+          {{ $t('menu.setting') }}
+        </div>
+        <div
+          v-if="userInfo.role === 1 || userInfo.role === 2"
+          class="url flex-column-center"
+          :class="currentRoute('/department') ? 'currentRoute' : ''"
+          @click="$router.push('/department')"
+        >
+          {{ $t('menu.department') }}
+        </div>
+        <div
+          v-if="userInfo.role === 1"
+          class="url flex-column-center"
+          :class="currentRoute('/talent') ? 'currentRoute' : ''"
+          @click="$router.push('/talent')"
+        >
+          {{ $t('menu.talent') }}
         </div>
       </div>
       <div
@@ -40,51 +73,33 @@
         >
           {{ $t('menu.taintPool') }}
         </div>
-        <el-button
-          v-if="!userInfo && $route.name !== 'login'"
-          type="text"
-          @click="$router.push('/login')"
+        <el-button v-if="!userInfo" type="text" @click="$router.push('/login')"
           >{{ $t('menu.login') }}
         </el-button>
       </div>
-      <div v-else style="display: flex; align-items: center">
+      <div v-else>
         <el-button type="text" class="anent" @click="buildIAST">
-          <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
+          部署IAST
         </el-button>
-        <Dropdown>
-          <img class="titleImg" src="../../assets/img/touxiang@2x.png" alt="" />
-          <DropdownMenu slot="list">
-            <DropdownItem
-              :disabled="true"
-              style="color: #515a6e; cursor: default"
-            >
+        <el-dropdown>
+          <div style="height: 64px" class="flex-column-center">
+            <div>
+              <img
+                class="titleImg"
+                src="../../assets/img/touxiang@2x.png"
+                alt=""
+              />
               <span>
                 {{ userInfo.username || '' }}
-              </span></DropdownItem
-            >
-            <Dropdown placement="right-start">
-              <DropdownItem divided>
-                {{ $t('menu.language') }}
-                <Icon type="ios-arrow-forward"></Icon>
-              </DropdownItem>
-              <DropdownMenu slot="list">
-                <DropdownItem>
-                  <p @click="changeLanguage('zh')">
-                    {{ $t('menu.chinese') }}
-                  </p></DropdownItem
-                >
-                <DropdownItem>
-                  <p @click="changeLanguage('en')">
-                    {{ $t('menu.englist') }}
-                  </p></DropdownItem
-                >
-              </DropdownMenu>
-            </Dropdown>
-            <DropdownItem>
-              <p @click="logOut">{{ $t('base.logout') }}</p>
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+              </span>
+            </div>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item>
+              <p @click="logOut">退出</p>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
   </header>
@@ -93,71 +108,40 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import { Dropdown, DropdownMenu, DropdownItem, Icon } from 'view-design'
-@Component({
-  name: 'layoutHeader',
-  components: {
-    Dropdown,
-    DropdownMenu,
-    DropdownItem,
-    Icon,
-  },
-})
+
+@Component({ name: 'layoutHeader' })
 export default class Header extends VueBase {
-  private show = false
-  private async changeLanguage(language: string) {
-    const userInfo: any = this.userInfo
-    const res = await this.services.setting.setLang(language)
-    if (res.status !== 201) {
-      this.$message.error(res.msg)
-      return
-    }
-    window.localStorage.setItem(userInfo.username + '-language', language)
-    switch (language) {
-      case 'zh':
-        this.$i18n.locale = 'zh_cn'
-        break
-      case 'en':
-        this.$i18n.locale = 'en'
-        break
-      default:
-        this.$i18n.locale = 'zh_cn'
-        break
-    }
-    document.title = this.$t(this.$route.meta.i18n) as string
-    this.$emit('reload')
-  }
   get userInfo(): { role: number } {
     return this.$store.getters.userInfo
   }
   async buildIAST() {
     const res = await this.services.setting.openapi()
-    if (res.status === 202) {
-      if (this.userInfo.role === 1 || this.userInfo.role === 2) {
-        this.$message({
-          type: 'warning',
-          message: this.$t('base.setOpenapi') as string,
-          showClose: true,
-        })
-        this.$router.push('/setting/serverRegister?needBack=1')
-      } else {
-        this.$message({
-          type: 'warning',
-          message: this.$t('base.helpOpenapi') as string,
-          showClose: true,
-        })
-      }
-      return
-    }
     if (res.status !== 201) {
       this.$message({
         type: 'error',
         message: res.msg,
         showClose: true,
       })
-      return
+    } else {
+      if (res.data.url) {
+        this.$router.push('/deploy')
+      } else {
+        if (this.userInfo.role === 1) {
+          this.$message({
+            type: 'warning',
+            message: '请先配置openapi',
+            showClose: true,
+          })
+          this.$router.push('/setting/serverRegister?needBack=1')
+        } else {
+          this.$message({
+            type: 'warning',
+            message: '请联系管理员配置openapi',
+            showClose: true,
+          })
+        }
+      }
     }
-    this.$router.push('/deploy')
   }
 
   canShow(name: string) {
@@ -167,11 +151,9 @@ export default class Header extends VueBase {
     return this.$route.matched.some((item) => item.path === path)
   }
 
-  private async logOut() {
-    await this.$store.dispatch('user/logOut')
-  }
-  created() {
-    console.log(this.$store.getters.routers[0].children)
+  private logOut() {
+    this.$store.dispatch('user/logOut')
+    this.$router.push('/login')
   }
 }
 </script>
@@ -195,7 +177,7 @@ export default class Header extends VueBase {
 
     .url-warp {
       flex: 1;
-      margin-left: 26px;
+      margin-left: 68px;
       height: 100%;
       display: flex;
       flex-direction: row;
@@ -207,6 +189,7 @@ export default class Header extends VueBase {
         font-weight: normal;
         color: #38435a;
         cursor: pointer;
+        margin-left: 10px;
         min-width: 100px;
         text-align: center;
         padding: 0 15px;
@@ -239,14 +222,9 @@ export default class Header extends VueBase {
     }
 
     .anent {
-      i {
-        line-height: 0px;
-        font-weight: 600;
-      }
       color: #fff;
+      width: 82px;
       height: 28px;
-      padding-left: 6px;
-      padding-right: 6px;
       line-height: 0;
       background: #4a72ae;
       border-radius: 4px;

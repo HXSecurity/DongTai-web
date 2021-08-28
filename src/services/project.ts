@@ -70,21 +70,6 @@ export default () =>
       })
     }
 
-    //项目详情 - api列表
-    searchApi(params: any): Promise<iResponse> {
-      return request.get('/api_route/search', { params })
-    }
-
-    //项目详情 - 覆盖率
-    coverRate(params: any): Promise<iResponse> {
-      return request.get('/api_route/cover_rate', { params })
-    }
-
-    //项目详情 - api 查看详情
-    relationrequest(params: any): Promise<iResponse> {
-      return request.get('/api_route/relationrequest', { params })
-    }
-
     //项目详情 - 漏洞验证
     projectsRecheck(id: string): Promise<iResponse> {
       return request.get(`/vul/recheck?projectId=${id}`)

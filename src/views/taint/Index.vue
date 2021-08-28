@@ -1,6 +1,6 @@
 <template>
   <main class="container">
-    <keep-alive include="TaintIndex">
+    <keep-alive>
       <router-view></router-view>
     </keep-alive>
   </main>

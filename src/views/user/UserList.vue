@@ -35,7 +35,7 @@
         ></el-table-column>
         <el-table-column :label="$t('views.userList.role')" prop="is_superuser">
           <template slot-scope="{ row }">
-            {{ row.is_superuser ? $t('views.userList.admin') : $t('views.userList.user') }}
+            {{ row.is_superuser ? '超级管理员' : '普通用户' }}
           </template>
         </el-table-column>
         <el-table-column
@@ -104,8 +104,8 @@
             clearable
             style="width: 400px"
           >
-            <el-option :label="$t('views.userList.admin')" :value="1"></el-option>
-            <el-option :label="$t('views.userList.user')" :value="0"></el-option>
+            <el-option label="超级管理员" :value="1"></el-option>
+            <el-option label="普通用户" :value="0"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('views.userList.department')">
@@ -258,7 +258,7 @@ export default class UserList extends VueBase {
 
   private validateNewPass(rule: any, value: string, callback: any) {
     if (value === '') {
-      callback(new Error(this.$t('views.userList.needPWD') as string))
+      callback(new Error('请输入密码'))
     } else {
       if (this.userForm.password !== '') {
         ;(this.$refs.ruleForm as Form).validateField('re_password')
@@ -268,9 +268,9 @@ export default class UserList extends VueBase {
   }
   private validateCheckPass(rule: any, value: any, callback: any) {
     if (value === '') {
-      callback(new Error(this.$t('views.userList.rePWD') as string))
+      callback(new Error('请再次输入密码'))
     } else if (value !== this.userForm.password) {
-      callback(new Error(this.$t('views.userList.diffPWD') as string))
+      callback(new Error('两次输入密码不一致!'))
     } else {
       callback()
     }

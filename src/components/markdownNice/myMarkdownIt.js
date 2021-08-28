@@ -14,7 +14,7 @@ import markdownItLiReplacer from "./markdown-it-li"
 import markdownItXss from "markdown-it-xss"
 import highLightJs from './langHighLight'
 
-// Highlight the markdown parser code
+// markdown解析器 代码高亮用highlight
 export const markdownParser = new MarkdownIt({
   html: true,
   highlight: (str, lang) => {
@@ -39,19 +39,19 @@ export const markdownParser = new MarkdownIt({
 })
 
 markdownParser
-  .use(markdownItSpan) // Add span to title label
-  .use(markdownItTableContainer) // Add container outside table
-  .use(markdownItMath) // mathematical formula
-  .use(markdownItLinkfoot) // Modify footnote
-  .use(markdownItXss) // Prevent XSS injection
+  .use(markdownItSpan) // 在标题标签中添加span
+  .use(markdownItTableContainer) // 在表格外部添加容器
+  .use(markdownItMath) // 数学公式
+  .use(markdownItLinkfoot) // 修改脚注
+  .use(markdownItXss) // 防止xss注入
   .use(markdownItTableOfContents, {
     transformLink: () => "",
     includeLevel: [2, 3],
     markerPattern: /^\[toc\]/im,
-  }) // TOC only supports Level 2 and level 3 titles
-  .use(markdownItRuby) // Phonetic symbols
-  .use(markdownItImplicitFigures, { figcaption: true }) // Illustration
-  .use(markdownItDeflist) // Definition list
-  .use(markdownItLiReplacer) // Add P tag to Li tag
-  .use(markdownItImageFlow) // Horizontal screen mobile plug-in
+  }) // TOC仅支持二级和三级标题
+  .use(markdownItRuby) // 注音符号
+  .use(markdownItImplicitFigures, { figcaption: true }) // 图示
+  .use(markdownItDeflist) // 定义列表
+  .use(markdownItLiReplacer) // li 标签中加入 p 标签
+  .use(markdownItImageFlow) // 横屏移动插件
   .use(markdownItImsize)

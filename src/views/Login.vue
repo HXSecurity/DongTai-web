@@ -6,16 +6,9 @@
       <div class="loginCard">
         <div class="title">
           <img
-            v-if="this.$i18n.locale == 'zh_cn'"
-            src="../assets/img/logo.png"
+            src="../assets/img/loginLogo.png"
             alt="logo"
-            style="width: 140px"
-          />
-          <img
-            v-if="this.$i18n.locale == 'en'"
-            src="../assets/img/logo_en.png"
-            alt="logo"
-            style="width: 140px"
+            style="width: 140px; height: 32px"
           />
         </div>
         <div class="subTitle">
@@ -63,13 +56,14 @@
               type="primary"
               style="width: 100%; background: #4a72ae"
               @click="login"
-              >{{ $t('base.login') }}
+              >登录
             </el-button>
           </el-form-item>
         </el-form>
       </div>
     </div>
     <div class="loginFooter"></div>
+    <!-- </div> -->
   </main>
 </template>
 
@@ -84,7 +78,7 @@ export default class Login extends VueBase {
   private captcha = ''
   private captcha_hash_key = ''
   private captcha_url = ''
-  private login_lock = false
+
   created() {
     this.initCaptcha()
   }
@@ -104,10 +98,6 @@ export default class Login extends VueBase {
   }
 
   private async login() {
-    if (this.login_lock) {
-      return
-    }
-    this.login_lock = true
     const params = {
       username: this.userName,
       password: this.password,
@@ -116,13 +106,9 @@ export default class Login extends VueBase {
     }
     this.loadingStart()
     const { status, msg } = await this.services.user.login(params)
-    let lang = (navigator as any).language || (navigator as any).userLanguage
-    lang = lang.substr(0, 2)
-    await this.services.setting.setLang(lang)
     this.loadingDone()
     if (status === 201) {
-      await this.$store.dispatch('user/getUserInfo')
-      await this.$router.push('/project')
+      await this.$router.push('/')
     } else if (status === 204) {
       this.$message({
         type: 'error',
@@ -137,7 +123,6 @@ export default class Login extends VueBase {
       })
       this.initCaptcha()
     }
-    this.login_lock = false
   }
 }
 </script>
@@ -225,12 +210,5 @@ main {
   width: 100%;
   height: 218px;
   // margin-top: calc(100vh - 928px);
-}
-</style>
-
-<style>
-/*Edge compatible password input box*/
-input[type='password']::-ms-reveal {
-  display: none;
 }
 </style>

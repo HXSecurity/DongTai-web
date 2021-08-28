@@ -38,7 +38,7 @@
               style="margin: 12px 0 0 0"
               class="commonInput"
               clearable
-              :placeholder="$t('views.scaList.searchName')"
+              placeholder="请输入项目名称搜索"
               :fetch-suggestions="querySearchAsync"
               @select="handleSelect"
             ></el-autocomplete>
@@ -141,7 +141,7 @@
           v-model="searchObj.order"
           style="width: 160px; font-size: 14px"
           class="commonSelect"
-          :placeholder="$t('views.scaList.sort')"
+          placeholder="请选择排序条件"
           clearable
           @change="newSelectData"
         >
@@ -154,7 +154,7 @@
         </el-select>
         <el-select
           v-model="searchObj.language"
-          :placeholder="$t('views.scaList.developLanguage')"
+          placeholder="请选择开发语言"
           style="margin-left: 10px; width: 160px; font-size: 14px"
           class="commonSelect"
           clearable
@@ -167,7 +167,7 @@
           <el-input
             v-model="searchObj.keyword"
             style="width: 412px"
-            :placeholder="$t('views.scaList.searchExample')"
+            placeholder="请输入搜索条件，如：spring"
             class="commonInput"
             @keyup.enter.native="newSelectData"
           >
@@ -188,7 +188,7 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.name')"
           prop="package_name"
-          width="240px"
+          min-width="160px"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -198,7 +198,7 @@
               :disabled="row.package_name.length < 35"
               placement="top-start"
             >
-              <div class="dot" style="width: 240px">
+              <div class="dot">
                 {{ row.package_name }}
               </div>
             </el-tooltip>
@@ -207,7 +207,7 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.version')"
           prop="version"
-          :width="'80px'"
+          width="80px"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -217,7 +217,7 @@
               :disabled="row.version.length < 10"
               placement="top-start"
             >
-              <div class="dot" style="width: 80px">
+              <div class="dot">
                 {{ row.version }}
               </div>
             </el-tooltip>
@@ -345,9 +345,7 @@ export default class ScaList extends VueBase {
     this.searchObj.language = ''
     this.searchObj.level = ''
     this.searchObj.project_name = ''
-    if (this.$route.name !== 'projectDetail/:pid') {
-      this.searchObj.project_id = ''
-    }
+    this.searchObj.project_id = ''
     this.kw = ''
     this.newSelectData()
   }
@@ -461,7 +459,7 @@ export default class ScaList extends VueBase {
       },
       []
     )
-    if (tableData.length < this.pageSize) {
+    if (tableData.length < 20) {
       this.dataEnd = true
     }
     if (flag === true) {

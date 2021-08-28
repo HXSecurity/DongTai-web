@@ -29,11 +29,7 @@
           prop="is_active"
         >
           <template slot-scope="{ row }">
-            {{
-              row.is_active
-                ? $t('views.talent.table.on')
-                : $t('views.talent.table.off')
-            }}
+            {{ row.is_active ? '启用' : '禁用' }}
           </template>
         </el-table-column>
         <el-table-column
@@ -41,11 +37,7 @@
           prop="create_time"
         >
           <template slot-scope="{ row }">
-            {{
-              row.is_superuser
-                ? $t('views.talent.table.superAdmin')
-                : $t('views.talent.table.user')
-            }}
+            {{ row.is_superuser ? '超级管理员' : '普通用户' }}
           </template>
         </el-table-column>
         <el-table-column
@@ -123,8 +115,8 @@
             clearable
             style="width: 400px"
           >
-            <el-option :label="$t('views.talent.add.on')" :value="true"></el-option>
-            <el-option :label="$t('views.talent.add.off')" :value="false"></el-option>
+            <el-option label="启用" :value="true"></el-option>
+            <el-option label="禁用" :value="false"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>

@@ -5,10 +5,7 @@
       class="poolDetail-tab"
       @tab-click="changeActive"
     >
-      <el-tab-pane
-        :label="$t('views.scaList.tableHeaders.dataTest')"
-        name="flowDebug"
-      >
+      <el-tab-pane label="数据包调试" name="flowDebug">
         <SearchCard v-if="info" :info="info" :show-graph="false" />
         <div class="dagre-box">
           <Dagre
@@ -19,10 +16,7 @@
           ></Dagre>
         </div>
       </el-tab-pane>
-      <el-tab-pane
-        :label="$t('views.scaList.tableHeaders.componentInfo')"
-        name="dependency"
-      >
+      <el-tab-pane label="组件信息" name="dependency">
         <el-table
           class="sca-list"
           :data="dependencies"

@@ -6,10 +6,7 @@ export type WildcardHandler = (type: EventType, event?: any) => void
 export type EventHandlerList = Array<Handler>
 export type WildCardEventHandlerList = Array<WildcardHandler>
 
-export type EventHandlerMap = Map<
-  EventType,
-  EventHandlerList | WildCardEventHandlerList
->
+export type EventHandlerMap = Map<EventType, EventHandlerList | WildCardEventHandlerList>
 
 export interface Emitter {
   all: EventHandlerMap
@@ -40,6 +37,7 @@ export default (all?: EventHandlerMap): Emitter => {
       }
     },
 
+
     off<T = any>(type: EventType, handler: Handler<T>): void {
       const handlers = mittAll.get(type)
       if (handlers) {
@@ -47,17 +45,17 @@ export default (all?: EventHandlerMap): Emitter => {
       }
     },
 
+
     emit<T = any>(type: EventType, event: T): void {
-      ;((mittAll.get(type) || []) as EventHandlerList)
-        .slice()
-        .map((handler: Handler) => {
+      ((mittAll.get(type) || []) as EventHandlerList).slice().map((handler: Handler) => {
           handler(event)
-        })
-      ;((mittAll.get('*') || []) as WildCardEventHandlerList)
-        .slice()
-        .map((wildcardHandler: WildcardHandler) => {
+        }
+      );
+      ((mittAll.get('*') || []) as WildCardEventHandlerList).slice().map((wildcardHandler: WildcardHandler) => {
           wildcardHandler(type, event)
-        })
-    },
+        }
+      )
+    }
+
   }
 }

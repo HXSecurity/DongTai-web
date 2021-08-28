@@ -473,7 +473,7 @@
     .el-checkbox__input.is-checked + .el-checkbox__label {
       color: #2D82FF; }
     .el-checkbox__input.is-focus {
-       }
+      /*focus时 视觉上区分*/ }
       .el-checkbox__input.is-focus .el-checkbox__inner {
         border-color: #2D82FF; }
     .el-checkbox__input.is-indeterminate .el-checkbox__inner {

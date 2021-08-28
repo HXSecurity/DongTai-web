@@ -25,16 +25,15 @@ const response = (response: AxiosResponse) => {
   return response.data
 }
 
-const responseError = async (error: any) => {
+const responseError = (error: any) => {
   if (error.message && error.message.indexOf('timeout') !== -1) {
     Message.error('请求超时')
     return
   }
   if (error.response.status === 403) {
-    await store.dispatch('user/logOut')
-    await store.dispatch('user/clearInfo')
+    store.dispatch('user/logOut')
+    store.dispatch('user/clearInfo')
     router.push('/login')
-    Message.error('身份认证信息未提供')
   }
   if (error.response.status === 500) {
     // No permission

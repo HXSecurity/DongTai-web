@@ -3,13 +3,13 @@
     <div style="height: 28px"></div>
     <div class="content-warp">
       <div class="back" @click="$router.push('/project')">
-        <i class="el-icon-back"></i>{{ $t('views.projectEdit.back') }}
+        <i class="el-icon-back"></i>返回
       </div>
       <div class="title">{{ $t('views.projectEdit.title') }}</div>
       <el-form
         ref="submitForm"
         :model="submitForm"
-        :label-width="$i18n.locale === 'en' ? '160px' : '100px'"
+        label-width="100px"
         style="margin-top: 32px"
         status-icon
         :rules="rules"
@@ -113,24 +113,17 @@
         </el-form-item>
       </el-form>
     </div>
-    <el-dialog
-      :visible.sync="scanAddDialogOpen"
-      :title="$t('views.projectEdit.addScan')"
-      width="650px"
-    >
+    <el-dialog :visible.sync="scanAddDialogOpen" title="创建策略" width="650px">
       <div>
-        <el-form :label-width="$i18n.locale === 'en' ? '120px' : '80px'">
-          <el-form-item :label="$t('views.projectEdit.scanName')">
+        <el-form label-width="80px">
+          <el-form-item label="策略名称">
             <el-input
               v-model="scanForm.name"
               class="commonInput"
               style="width: 400px"
             ></el-input>
           </el-form-item>
-          <el-form-item
-            :label="$t('views.projectEdit.fid')"
-            style="margin-bottom: 0"
-          >
+          <el-form-item label="漏洞类型" style="margin-bottom: 0">
             <el-radio-group
               v-model="scanForm.fid"
               class="scanRadioGroup"
@@ -152,7 +145,7 @@
                 v-model="isSelectAll"
                 @change="selectAllChange"
               ></el-checkbox>
-              {{ $t('views.projectEdit.selectAll') }}
+              全选
             </div>
           </el-form-item>
           <el-form-item v-if="strategyTypeList.length > 0">
@@ -174,14 +167,14 @@
       </div>
       <div slot="footer" style="text-align: center">
         <el-button type="text" class="submit" @click="strategyUserAdd">
-          {{ $t('views.projectEdit.save') }}
+          保存
         </el-button>
         <el-button
           type="text"
           class="cancel"
           @click="scanAddDialogOpen = false"
         >
-          {{ $t('views.projectEdit.clear') }}
+          取消
         </el-button>
       </div>
     </el-dialog>
@@ -448,6 +441,7 @@ export default class ProjectEdit extends VueBase {
     }
     this.scanAddDialogOpen = false
     this.strategyUserList()
+    // 设置策略id为刚增加的策略
     this.submitForm.scanId = data.id
   }
 
