@@ -347,7 +347,7 @@ export default class SearchCard extends VueBase {
       method_pool_id: this.info.method_pools.id,
       method_pool_type: isReplay ? 'replay' : 'normal',
     })
-    if (res.code === 201) {
+    if (res.status === 201) {
       this.graphData = res.data
     }
   }
