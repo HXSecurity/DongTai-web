@@ -82,7 +82,7 @@ export default {
       dongtai_openapi: 'Dongtai Openapi Status',
       dongtai_engine: 'Dongtai Engine Status',
       engine_monitoring_indicators: 'Engine Monitoring Indicators',
-      padding: 'Padding',
+      padding: 'Pending',
       item: '',
     },
     deploy: {
