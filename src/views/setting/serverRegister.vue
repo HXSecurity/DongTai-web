@@ -36,6 +36,12 @@ export default class StrategyManage extends VueBase {
     }
   }
   public async setOpenapi() {
+    if (!this.openapi) {
+      this.$message.warning(
+        this.$t('views.serverRegister.saveWarning') as string
+      )
+      return
+    }
     const res = await this.services.setting.setOpenapi({ value: this.openapi })
     if (res.status !== 201) {
       this.$message({

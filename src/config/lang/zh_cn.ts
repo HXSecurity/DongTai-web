@@ -150,6 +150,7 @@ export default {
     serverRegister: {
       save: '保 存',
       saveSuccess: '保存成功',
+      saveWarning: 'OpenAPI 不能为空',
     },
     search: {
       commonly: '常用查询语法',

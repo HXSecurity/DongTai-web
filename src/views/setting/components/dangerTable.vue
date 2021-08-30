@@ -338,7 +338,7 @@
             </div>
           </el-form-item>
         </template>
-        <el-form-item :label="$t('views.hookPage.hookTrack')">
+        <el-form-item :label="$t('views.hookPage.track')">
           <el-radio v-model="hook.track" label="true">{{
             $t('views.hookPage.on')
           }}</el-radio>
@@ -387,7 +387,7 @@ export default class HookTable extends VueBase {
   hookTypeDialog = false
   hookDialog = false
   rule_type = ''
-  hookType = { type: '1', name: '', short_name: '', enable: 0 }
+  hookType = { type: '1', name: '', short_name: '', enable: 1 }
   types = []
   hook = {
     id: 0,
@@ -396,7 +396,7 @@ export default class HookTable extends VueBase {
     rule_value: '',
     source: [{ relation: '', origin: '', param: '' }],
     inherit: 'false',
-    track: '',
+    track: 'true',
   }
   relations = [
     { label: this.$t('views.hookPage.or'), value: '|' },
@@ -660,7 +660,7 @@ export default class HookTable extends VueBase {
       rule_value: '',
       source: [{ relation: '', origin: '', param: '' }],
       inherit: 'false',
-      track: '',
+      track: 'true',
     }
     this.hookDialog = false
   }

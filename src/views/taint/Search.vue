@@ -259,6 +259,7 @@ main.container {
           }
         }
         .info {
+          width: 180px;
           font-size: 14px;
           line-height: 14px;
           color: #38435a;

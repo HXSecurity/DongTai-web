@@ -195,9 +195,9 @@
             tableData.length > 0 && tableData.every((item) => item.checked)
           "
           @change="selectAll"
-          >{{ $t('views.vulnList.choose')
-          }}{{ tableData.filter((item) => item.checked).length
-          }}{{ $t('views.vulnList.strip') }}</el-checkbox
+          >{{ $t('views.vulnList.choose') }}
+          {{ tableData.filter((item) => item.checked).length }}
+          {{ $t('views.vulnList.strip') }}</el-checkbox
         >
         <div>
           <el-button class="checkedAllBtn" @click="recheck('project')">

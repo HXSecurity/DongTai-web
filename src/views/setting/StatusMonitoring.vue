@@ -152,9 +152,9 @@ export default class StatusMonitoring extends VueBase {
     this.healthData = res.data
   }
   private async reflash() {
-    this.reflashFlag = true
+    this.loadingStart()
     const res = await this.services.setting.ossHealth()
-    this.reflashFlag = false
+    this.loadingDone()
     if (res.status !== 201) {
       this.$message.error(res.msg)
       return

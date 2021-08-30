@@ -327,7 +327,6 @@ export default class Deploy extends VueBase {
         this.$t('views.deploy.java.term4'),
         this.$t('views.deploy.java.term5'),
         this.$t('views.deploy.java.term6'),
-        this.$t('views.deploy.java.term7'),
       ],
       download: 'java -jar agent.jar -m install -p <pid>',
       video:
