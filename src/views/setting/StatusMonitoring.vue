@@ -142,7 +142,9 @@ export default class StatusMonitoring extends VueBase {
     engine_monitoring_indicators: [],
   }
   private async getHealth() {
+    this.loadingStart()
     const res = await this.services.setting.health()
+    this.loadingDone()
     if (res.status !== 201) {
       this.$message.error(res.msg)
       return

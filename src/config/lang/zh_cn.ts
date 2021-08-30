@@ -492,7 +492,7 @@ export default {
       owner: '负责人',
       timestapm: '时间',
       projectName: '项目名称',
-      healthy: '健康',
+      healthy: '健康状态',
       language: '语言',
       selectWarning: '请先选择需要操作的Agent',
     },

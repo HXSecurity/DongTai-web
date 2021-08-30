@@ -498,7 +498,7 @@ export default {
       owner: 'User',
       timestapm: 'Create Time',
       projectName: 'Application',
-      healthy: 'Health',
+      healthy: 'Health Status',
       language: 'Language',
       selectWarning: 'Please Select The Agent To Operate',
     },

@@ -1,7 +1,7 @@
 <template>
   <div class="content-warp">
     <el-form ref="form" label-width="140px">
-      <el-form-item label="dongtai-openapi：">
+      <el-form-item label="OpenAPI：">
         <el-input v-model="openapi" style="width: 90%"> </el-input>
       </el-form-item>
     </el-form>
