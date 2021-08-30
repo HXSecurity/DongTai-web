@@ -17,6 +17,7 @@
             @click="changeLanguage('python')"
           >
             <img src="../../assets/img/deploy/python.png" />
+            <span class="beta">beta</span>
           </div>
         </div>
         <div class="title">
@@ -327,7 +328,6 @@ export default class Deploy extends VueBase {
         this.$t('views.deploy.java.term4'),
         this.$t('views.deploy.java.term5'),
         this.$t('views.deploy.java.term6'),
-        this.$t('views.deploy.java.term7'),
       ],
       download: 'java -jar agent.jar -m install -p <pid>',
       video:
@@ -453,6 +453,7 @@ main {
       padding: 16px 0;
       display: flex;
       .language {
+        position: relative;
         width: 88px;
         height: 88px;
         background: #fff;
@@ -462,6 +463,13 @@ main {
         display: flex;
         justify-content: center;
         align-items: center;
+        .beta {
+          position: absolute;
+          bottom: 0;
+          right: 4px;
+          font-size: 12px;
+          color: #aaaaaa;
+        }
         img {
           width: 40%;
           height: 40%;

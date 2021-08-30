@@ -428,7 +428,7 @@ export default class HookTable extends VueBase {
   rule_type = ''
   hookTypeDialog = false
   hookDialog = false
-  hookType = { type: '1', name: '', short_name: '', enable: 0 }
+  hookType = { type: '1', name: '', short_name: '', enable: 1 }
   types = []
   multipleSelection = []
   handleSelectionChange(val: any) {
@@ -669,7 +669,7 @@ export default class HookTable extends VueBase {
       type: this.ruleType,
       name: '',
       short_name: '',
-      enable: 0,
+      enable: 1,
     }
     this.hookTypeDialog = false
   }
