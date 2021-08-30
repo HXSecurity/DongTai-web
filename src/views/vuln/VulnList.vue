@@ -370,7 +370,7 @@
                 <i class="iconfont iconweixian"></i>
                 {{ item.level }}
               </span>
-              <span class="info">
+              <span class="info" style="flex: 1.2">
                 <i
                   class="iconfont iconshijian-2"
                   style="color: #a2a5ab; font-size: 14px"

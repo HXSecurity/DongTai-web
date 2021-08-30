@@ -32,10 +32,20 @@
         {{ $t('views.agentManage.strip') }}
       </div>
       <div>
-        <el-button size="small" class="resetAllBtn" @click="agentStart(0)">
+        <el-button
+          size="small"
+          class="resetAllBtn"
+          :disabled="!state"
+          @click="agentStart(0)"
+        >
           {{ $t('views.agentManage.on') }}</el-button
         >
-        <el-button size="small" class="resetAllBtn" @click="agentStop(0)">
+        <el-button
+          size="small"
+          class="resetAllBtn"
+          :disabled="!state"
+          @click="agentStop(0)"
+        >
           {{ $t('views.agentManage.off') }}</el-button
         >
         <el-button size="small" class="resetAllBtn" @click="deleteAgents">
@@ -106,7 +116,7 @@
           ')'
         "
         prop="server"
-        width="160px"
+        width="170px"
       >
         <template slot-scope="{ row }">
           <div class="dot">
@@ -165,7 +175,7 @@
       <el-table-column
         :label="$t('views.agentManage.healthy')"
         prop="running_status"
-        width="90px"
+        width="130px"
       >
         <template slot-scope="{ row }">
           <div>
@@ -206,17 +216,22 @@
         <template slot-scope="{ row }">
           <div class="icon-box">
             <template v-if="row.is_control === 1">
-              <i class="icon el-icon-loading"></i>
+              <i
+                class="icon el-icon-loading"
+                :class="!state && 'icon-disabled'"
+              ></i>
             </template>
             <template v-else>
               <i
                 v-if="row.is_core_running == 0"
                 class="icon el-icon-video-play"
+                :class="!state && 'icon-disabled'"
                 @click="agentStart(row.id)"
               ></i>
               <i
                 v-else
                 class="icon el-icon-video-pause"
+                :class="!state && 'icon-disabled'"
                 @click="agentStop(row.id)"
               ></i>
             </template>
@@ -459,6 +474,9 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentStart(id: any) {
+    if (!this.state) {
+      return
+    }
     if (id === 0) {
       if (this.multipleSelection.length === 0) {
         this.$message.warning(
@@ -497,6 +515,9 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentStop(id: any) {
+    if (!this.state) {
+      return
+    }
     if (id === 0) {
       if (this.multipleSelection.length === 0) {
         this.$message.warning(
@@ -659,5 +680,13 @@ export default class AgentManage extends VueBase {
   background: #4a72ae;
   border-radius: 2px;
   color: #fff;
+  &:hover {
+    background: #4a72ae;
+    color: #fff;
+    border-radius: 2px;
+  }
+}
+.icon-disabled {
+  cursor: not-allowed;
 }
 </style>

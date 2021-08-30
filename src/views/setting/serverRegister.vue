@@ -1,7 +1,7 @@
 <template>
   <div class="content-warp">
     <el-form ref="form" label-width="140px">
-      <el-form-item label="dongtai-openapi：">
+      <el-form-item :label="$t('views.serverRegister.openAPI')">
         <el-input v-model="openapi" style="width: 90%"> </el-input>
       </el-form-item>
     </el-form>
@@ -36,6 +36,12 @@ export default class StrategyManage extends VueBase {
     }
   }
   public async setOpenapi() {
+    if (!this.openapi) {
+      this.$message.warning(
+        this.$t('views.serverRegister.saveWarning') as string
+      )
+      return
+    }
     const res = await this.services.setting.setOpenapi({ value: this.openapi })
     if (res.status !== 201) {
       this.$message({

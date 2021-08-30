@@ -98,11 +98,12 @@
           <el-table-column
             :label="$t('views.userList.department')"
             prop="department.name"
+            width="120px"
           ></el-table-column>
           <el-table-column
             :label="$t('views.userList.phone')"
             prop="phone"
-            min-width="110px"
+            min-width="130px"
           ></el-table-column>
           <el-table-column
             :label="$t('views.userList.dateJoined')"

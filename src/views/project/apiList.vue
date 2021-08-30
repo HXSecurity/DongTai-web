@@ -174,7 +174,7 @@
               :info="{
                 method_pools: {
                   id: item.poolId,
-                  url: item.path,
+                  url: item.url || item.path,
                   req_header_fs: item.req_header_fs,
                   req_data: item.req_data,
                   res_header: item.res_header,
@@ -254,6 +254,7 @@ export default class Index extends VueBase {
     if (res.status !== 201) {
       this.$message.error(res.msg)
     }
+    item.url = res.data.url
     item.poolId = res.data.id
     item.req_header_fs = res.data.req_header_fs
     item.req_data = res.data.req_data

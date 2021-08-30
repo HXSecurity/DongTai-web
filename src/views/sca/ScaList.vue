@@ -53,7 +53,7 @@
                 ? { cursor: 'not-allowed', height: '30px' }
                 : { height: '30px' }
             "
-            @click="projectNameChange(item.project_id, item.count === 0)"
+            @click="projectNameChange(item.id, item.count === 0)"
           >
             <div class="selectOption" :title="item.project_name">
               {{ projectNameSplit(item.project_name, 12)
