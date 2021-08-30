@@ -11,13 +11,13 @@
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.url') }}
             </div>
-            <div class="info">(.*?)/druid/.*?</div>
+            <div class="info">(.*)/druid/.*</div>
           </div>
           <div class="example">
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.req_data') }}
             </div>
-            <div class="info">(.*?)whoami(.*?)</div>
+            <div class="info">(.*)whoami(.*)</div>
           </div>
           <div class="example">
             <div class="label" :class="$i18n.locale">
@@ -35,7 +35,7 @@
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.req_header_fs') }}
             </div>
-            <div class="info">(.*?)exec</div>
+            <div class="info">(.*)exec</div>
           </div>
           <div class="example">
             <div class="label" :class="$i18n.locale">
@@ -47,7 +47,7 @@
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.sinkvalues') }}
             </div>
-            <div class="info">(.*?)rememberMe(.*?)</div>
+            <div class="info">(.*)rememberMe(.*)</div>
           </div>
         </div>
       </div>

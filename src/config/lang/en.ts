@@ -150,6 +150,7 @@ export default {
       },
     },
     serverRegister: {
+      openAPI: 'OpenAPI Service',
       save: 'Save',
       saveSuccess: 'Saved successfully',
       saveWarning: 'OpenAPI cannot be empty',

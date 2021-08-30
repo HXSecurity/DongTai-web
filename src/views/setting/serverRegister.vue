@@ -1,7 +1,7 @@
 <template>
   <div class="content-warp">
     <el-form ref="form" label-width="140px">
-      <el-form-item label="OpenAPI：">
+      <el-form-item :label="$t('views.serverRegister.openAPI')">
         <el-input v-model="openapi" style="width: 90%"> </el-input>
       </el-form-item>
     </el-form>

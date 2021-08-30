@@ -148,6 +148,7 @@ export default {
       },
     },
     serverRegister: {
+      openAPI: 'OpenAPI 服务',
       save: '保 存',
       saveSuccess: '保存成功',
       saveWarning: 'OpenAPI 不能为空',
