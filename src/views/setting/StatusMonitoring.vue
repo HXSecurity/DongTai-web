@@ -139,16 +139,7 @@ export default class StatusMonitoring extends VueBase {
     oss: {
       status: 0,
     },
-    engine_monitoring_indicators: [
-      {
-        value: 0,
-        name: '',
-      },
-      {
-        value: 0,
-        name: '',
-      },
-    ],
+    engine_monitoring_indicators: [],
   }
   private async getHealth() {
     const res = await this.services.setting.health()
