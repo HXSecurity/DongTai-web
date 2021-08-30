@@ -328,7 +328,11 @@
                   class="iconfont iconicon_yingyong_table"
                   style="color: #fce9de"
                 ></i>
-                <span style="background: #fce9de; color: #e07d43">
+                <span
+                  style="background: #fce9de; color: #e07d43"
+                  :title="item.type"
+                  class="showDot"
+                >
                   {{ item.type }}
                 </span>
               </div>
@@ -964,6 +968,13 @@ export default class VulListComponent extends VueBase {
     .iconyingyong {
       color: #ddcc9e;
     }
+  }
+  .showDot {
+    display: inline-block;
+    max-width: 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 </style>
