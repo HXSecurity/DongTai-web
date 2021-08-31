@@ -676,7 +676,7 @@ export default class VulnDetail extends VueBase {
       project_name: this.searchObj.project_name,
       url: this.searchObj.url,
       order: this.searchObj.order,
-      status: this.$route.query.status,
+      status_id: this.$route.query.status,
     }
     this.loadingStart()
     const { status, data, page, msg } = await this.services.vuln.vulnList(

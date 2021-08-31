@@ -153,24 +153,10 @@
           @change="newSelectData"
         >
           <el-option
-            :label="$t('views.vulnList.toVeVerified')"
-            value="待验证"
-          ></el-option>
-          <el-option
-            :label="$t('views.vulnList.verification')"
-            value="验证中"
-          ></el-option>
-          <el-option
-            :label="$t('views.vulnList.confirmed')"
-            value="已确认"
-          ></el-option>
-          <el-option
-            :label="$t('views.vulnList.ignored')"
-            value="已忽略"
-          ></el-option>
-          <el-option
-            :label="$t('views.vulnList.processed')"
-            value="已处理"
+            v-for="item in searchOptionsObj.statusOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
           ></el-option>
         </el-select>
         <div class="selectInput">
@@ -395,6 +381,21 @@ export default class VulListComponent extends VueBase {
         value: 'first_time',
       },
     ],
+    statusOptions: [],
+  }
+
+  private async getStatus() {
+    const res = await this.services.vuln.vulStatus()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.searchOptionsObj.statusOptions = res.data.map((item: any) => {
+      return {
+        value: item.id,
+        label: item.name,
+      }
+    })
   }
 
   private searchObj = {
@@ -409,6 +410,7 @@ export default class VulListComponent extends VueBase {
   }
 
   created() {
+    this.getStatus()
     this.getTableData()
     this.vulnSummary()
   }
@@ -571,7 +573,7 @@ export default class VulListComponent extends VueBase {
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
-      status: this.searchObj.status,
+      status_id: this.searchObj.status,
       project_id: this.projectId,
     }
     this.loadingStart()
@@ -619,7 +621,7 @@ export default class VulListComponent extends VueBase {
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
-      status: this.searchObj.status,
+      status_id: this.searchObj.status,
       project_id: this.projectId,
     }
     this.loadingStart()
@@ -640,7 +642,9 @@ export default class VulListComponent extends VueBase {
   }
 
   private goDetail(id: number) {
-    this.$router.push(`/vuln/vulnDetail/${this.page}/${id}`)
+    this.$router.push(
+      `/vuln/vulnDetail/${this.page}/${id}?status=${this.searchObj.status}`
+    )
   }
 
   switchServerType(serverType: string) {

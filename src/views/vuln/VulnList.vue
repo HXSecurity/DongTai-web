@@ -476,7 +476,7 @@ export default class VulnList extends VueBase {
     }
     this.searchOptionsObj.statusOptions = res.data.map((item: any) => {
       return {
-        value: item.name,
+        value: item.id,
         label: item.name,
       }
     })
@@ -672,7 +672,7 @@ export default class VulnList extends VueBase {
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
-      status: this.searchObj.status,
+      status_id: this.searchObj.status,
       project_id: this.searchObj.project_id,
     }
     this.loadingStart()
@@ -713,7 +713,7 @@ export default class VulnList extends VueBase {
       order: `${
         this.searchObj.sort === false && this.searchObj.order ? '-' : ''
       }${this.searchObj.order}`,
-      status: this.searchObj.status,
+      status_id: this.searchObj.status,
       project_id: this.searchObj.project_id,
     }
     this.loadingStart()
