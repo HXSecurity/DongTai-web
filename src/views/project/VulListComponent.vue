@@ -737,7 +737,12 @@ export default class VulListComponent extends VueBase {
     }
 
     .selectOption {
+      display: inline-block;
+      width: 80%;
       color: #4b99f1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
       font-size: 14px;
     }
 
