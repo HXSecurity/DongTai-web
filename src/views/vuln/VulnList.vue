@@ -862,7 +862,7 @@ export default class VulnList extends VueBase {
 
     .selectOption {
       display: inline-block;
-      width: 100%;
+      width: 80%;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
