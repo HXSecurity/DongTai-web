@@ -83,7 +83,7 @@
         </div>
         <div class="title-2 margin-t-24">
           <span class="icon-no">2</span>
-          {{ $t('views.deploy.java.autoInstall') }}
+          {{ $t('views.deploy.install') }}
         </div>
         <div class="install">
           <template v-if="language === 'java'">
