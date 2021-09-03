@@ -377,7 +377,11 @@ export default class AgentManage extends VueBase {
       for (const key in item) {
         item[key] = dataMap[item.id][key]
       }
-      item.system_load = JSON.parse(item.system_load)
+      try {
+        item.system_load = JSON.parse(item.system_load)
+      } catch (err) {
+        item.system_load = { rate: 0 }
+      }
     })
   }
 
@@ -402,13 +406,17 @@ export default class AgentManage extends VueBase {
       return
     }
     this.tableData = data
-    this.tableData.forEach((item) => {
-      item.system_load = JSON.parse(item.system_load)
+    this.tableData.forEach((item: any) => {
+      try {
+        item.system_load = JSON.parse(item.system_load)
+      } catch (err) {
+        item.system_load = { rate: 0 }
+      }
     })
     this.currentPageSize = data.length
     this.total = page.alltotal
+    console.log(this.total)
     this.currentPageDelete = 0
-    console.log(this.currentPageSize)
   }
 
   private async agentInstall(id: string | number) {
