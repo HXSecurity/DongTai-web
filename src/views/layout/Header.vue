@@ -199,7 +199,7 @@ export default class Header extends VueBase {
       height: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: start;
+      justify-content: flex-start;
 
       .url {
         height: 100%;
