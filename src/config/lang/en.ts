@@ -91,8 +91,8 @@ export default {
       agent: 'Agent',
       term:
         'Before the installation, please make sure to confirm the following precautions: ',
-      download: 'Downloading Java Agent',
-      install: 'Installing Java Agent',
+      download: 'Downloading Agent',
+      install: 'Installing Agent',
       copy: 'copy',
       downloadWorld: 'Download',
       reloadTile: 'Restarting Services (For Manual Installation)',
