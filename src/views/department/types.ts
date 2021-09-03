@@ -1,6 +1,11 @@
+export interface Department {
+  id: number
+  name: string
+}
+
 export interface UserListObj {
   username: string
-  department: object
+  department: Department
   email: string
   id: number
   is_superuser: number
@@ -13,7 +18,7 @@ export interface UserAddParams {
   re_password: string
   email: string
   role: number
-  department: object
+  department: Department
   phone: string
   uid?: number
 }
