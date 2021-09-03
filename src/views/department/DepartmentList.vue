@@ -321,7 +321,7 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
-import { UserListObj, UserAddParams } from './types'
+import { UserListObj, UserAddParams, Department } from './types'
 import { Form } from 'element-ui'
 import { formatTimestamp } from '@/utils/utils'
 
@@ -333,16 +333,13 @@ export default class DepartmentList extends VueBase {
   private keywords = ''
   private newDepartment = false
   private currentDepartmentName = ''
-  private department = {
+  private department: Department = {
     id: -1,
     name: '',
   }
   private isAdd = true
   private tableData: Array<UserListObj> = []
-  private departments: Array<{
-    id: number
-    name: string
-  }> = []
+  private departments: Array<Department> = []
   private addDialogOpen = false
   private userForm: UserAddParams = {
     username: '',
@@ -350,7 +347,10 @@ export default class DepartmentList extends VueBase {
     re_password: '',
     email: '',
     role: 0,
-    department: {},
+    department: {
+      id: -1,
+      name: '',
+    },
     phone: '',
     uid: 0,
   }
