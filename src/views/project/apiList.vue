@@ -347,10 +347,10 @@ export default class Index extends VueBase {
     this.coverRate = res.data.cover_rate
   }
 
-  mounted() {
+  async mounted() {
     this.cover()
     this.pageSize = Math.ceil((document.body.clientHeight - 280) / 48)
-    this.getApiList()
+    await this.getApiList()
     window.addEventListener('scroll', this.myScroll)
   }
 
