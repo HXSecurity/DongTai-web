@@ -5,7 +5,7 @@
 
 [中文版本(Chinese version)](README.ZH_CN.md)
 
-##Project introduction
+## Project introduction
 "huoxian DongTaiIast" is an auxiliary tool specially designed for Party A's security personnel, Party A's code audit engineers and 0 day.
 
 vulnerability mining personnel. It can be used to integrate Devops environment for vulnerability detection, as an auxiliary tool for code audit and automatic mining 0 day.
@@ -17,7 +17,7 @@ vulnerability mining personnel. It can be used to integrate Devops environment f
 - `dongtai web `is the front-end project of "huoxian DongTaiIast" and is responsible for page display
 - The `agent` is the data collection terminal of each language. It collects the corresponding data from the project where the probe is installed and sends it to the `Dongtai OpenAPI` service
 
-##Local development
+## Local development
 
 1. Install `NPM` dependency
 
@@ -27,7 +27,7 @@ $ npm install
 
 2. Modify local configuration file
 
-Change the `.Env ` file in the `directory_ TARGET_ HOST = ' http://test.iast.huoxian.cn:8081 '` modified to ` Vue_ TARGET_ Host = 'address of your backend service'`
+Change the `.env` file in the `directory_TARGET_HOST = 'http://test.iast.huoxian.cn:8081'` modified to ` Vue_TARGET_Host = 'address of your backend service'`
 
 3. Execute the operation command
 
@@ -35,7 +35,7 @@ Change the `.Env ` file in the `directory_ TARGET_ HOST = ' http://test.iast.huo
 $ npm run dev
 ```
 
-##Deployment scheme
+## Deployment scheme
 
 1. Install `NPM` dependency
 
@@ -51,9 +51,9 @@ $ npm run build
 
 3. Put the `dist` directory into the static resource directory of nginx service
 
-4. Modify nginx configuration and set the back-end service corresponding to the front-end interface. For nginx configuration, refer to ` nginx.conf`
+4. Modify nginx configuration and set the back-end service corresponding to the front-end interface. For nginx configuration, refer to `nginx.conf`
 
-###Documentation
+### Documentation
 
 - [official documents](https://hxsecurity.github.io/DongTai-Doc/#/)
 - [quick experience](http://aws.iast.huoxian.cn:8000/login)
