@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 import { iResponse } from '@/services/types'
+import { Message } from 'element-ui'
+import { i18n } from '@/config/lang'
 
 interface AgentDeploySubmitParams {
   agent_value?: string
@@ -19,6 +21,10 @@ export default () =>
           responseType: 'blob',
         })
         .then((res: any) => {
+          if (Object.prototype.toString.call(res) !== '[object Blob]') {
+            Message.error(i18n.t('base.downloadError') as string)
+            return
+          }
           const blob = new Blob([res], {
             type: 'application/octet-stream',
           })
