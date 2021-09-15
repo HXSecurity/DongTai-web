@@ -10,11 +10,12 @@ module.exports = {
   },
   devServer: {
     // During local test, configure host and add 127.0.0.1 dev.iast.huoxian.cn
-    host: 'dev.iast.huoxian.cn',
+    host: 'dev.iast.io',
     // Module hot swap with webpack enabled
     hot: true,
     // Only hot replacements are allowed
     hotOnly: true,
+    https:true,
     port: 80,
     open: true,
     proxy: {

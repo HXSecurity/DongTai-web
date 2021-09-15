@@ -137,7 +137,7 @@
       :style="{ marginLeft: projectId && '28px', width: projectId && '910px' }"
     >
       <div class="selectForm">
-        <el-select
+        <!-- <el-select
           v-model="searchObj.order"
           style="width: 160px; font-size: 14px"
           class="commonSelect"
@@ -151,11 +151,11 @@
             :label="item.label"
             :value="item.value"
           ></el-option>
-        </el-select>
+        </el-select> -->
         <el-select
           v-model="searchObj.language"
           :placeholder="$t('views.scaList.developLanguage')"
-          style="margin-left: 10px; width: 160px; font-size: 14px"
+          style="idth: 160px; font-size: 14px"
           class="commonSelect"
           clearable
           @change="newSelectData"
@@ -184,11 +184,13 @@
         :data="tableData"
         style="width: 100%; margin-top: 18px; cursor: pointer"
         @row-click="goDetail"
+        @sort-change="tableSort"
       >
         <el-table-column
           :label="$t('views.scaList.tableHeaders.name')"
           prop="package_name"
-          width="240px"
+          sortable="custom"
+          width="220px"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -207,7 +209,8 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.version')"
           prop="version"
-          :width="'80px'"
+          :width="'100px'"
+          sortable="custom"
         >
           <template slot-scope="{ row }">
             <el-tooltip
@@ -226,6 +229,7 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.application')"
           prop="project_name"
+          sortable="custom"
         >
           <template slot-scope="{ row }">
             <div>
@@ -236,7 +240,8 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.language')"
           prop="language"
-          width="100px"
+          width="110px"
+          sortable="custom"
         >
           <template slot-scope="{ row }">
             <div>
@@ -248,6 +253,7 @@
           :label="$t('views.scaList.tableHeaders.level')"
           prop="level"
           width="100px"
+          sortable="custom"
         >
           <template slot-scope="{ row }">
             <div>
@@ -258,7 +264,8 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.count')"
           prop="vul_count"
-          width="80px"
+          width="100px"
+          sortable="custom"
         >
           <template slot-scope="{ row }">
             <div>
@@ -270,6 +277,7 @@
           :label="$t('views.scaList.tableHeaders.time')"
           prop="dt"
           width="160px"
+          sortable="custom"
         >
           <template slot-scope="{ row }">
             <div>
@@ -341,6 +349,17 @@ export default class ScaList extends VueBase {
       this.searchObj.project_id = this.projectId
     }
   }
+
+  private tableSort(e: any) {
+    if (e.order == 'ascending') {
+      this.searchObj.order = e.prop
+    } else {
+      this.searchObj.order = '-' + e.prop
+    }
+    this.newSelectData()
+    //
+  }
+
   private reset() {
     this.searchObj.language = ''
     this.searchObj.level = ''
