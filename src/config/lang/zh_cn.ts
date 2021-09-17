@@ -38,6 +38,7 @@ export default {
     newPassword: '请输入新密码',
     rePassword: '请再次输入密码',
     diffPassword: '两次输入密码不一致',
+    downloadError: '请检查OpenAPI配置',
   },
   menu: {
     projectEdit: '项目配置',
