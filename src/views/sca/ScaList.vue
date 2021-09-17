@@ -256,7 +256,19 @@
           sortable="custom"
         >
           <template slot-scope="{ row }">
-            <div>
+            <div
+              :style="
+                row.level_type === 1
+                  ? { color: '#EA7171' }
+                  : row.level_type === 2
+                  ? { color: '#F39D0A' }
+                  : row.level_type === 3
+                  ? { color: '#2E8FE9' }
+                  : row.level_type === 4
+                  ? { color: '#7BC1AB' }
+                  : ''
+              "
+            >
               {{ row.level }}
             </div>
           </template>
