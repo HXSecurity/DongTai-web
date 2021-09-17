@@ -229,7 +229,6 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.application')"
           prop="project_name"
-          sortable="custom"
         >
           <template slot-scope="{ row }">
             <div>
@@ -241,7 +240,6 @@
           :label="$t('views.scaList.tableHeaders.language')"
           prop="language"
           width="110px"
-          sortable="custom"
         >
           <template slot-scope="{ row }">
             <div>
