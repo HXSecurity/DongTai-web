@@ -124,7 +124,9 @@ export default class Header extends VueBase {
         this.$i18n.locale = 'zh_cn'
         break
     }
-    document.title = this.$t(this.$route.meta.i18n) as string
+    if (this.$router && this.$route.meta) {
+      document.title = this.$t(this.$route.meta.i18n) as string
+    }
     this.$emit('reload')
   }
   get userInfo(): { role: number } {
@@ -199,7 +201,7 @@ export default class Header extends VueBase {
       height: 100%;
       display: flex;
       flex-direction: row;
-      justify-content: start;
+      justify-content: flex-start;
 
       .url {
         height: 100%;

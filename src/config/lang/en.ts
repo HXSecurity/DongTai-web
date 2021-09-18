@@ -38,6 +38,7 @@ export default {
     newPassword: 'Please enter a new password',
     rePassword: 'Please enter the password again',
     diffPassword: 'Password does Not match',
+    downloadError: 'Please check the OpenAPI configuration',
   },
   menu: {
     projectEdit: 'ProjectEdit',
