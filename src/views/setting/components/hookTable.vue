@@ -210,6 +210,9 @@
         <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hookType.type) }}</span>
         </el-form-item>
+        <el-form-item label="语言">
+          <span>{{ activeLanguageName }}</span>
+        </el-form-item>
         <el-form-item :label="$t('views.hookPage.typeName')">
           <el-input
             v-model="hookType.name"
@@ -425,10 +428,19 @@ import { formatTimestamp } from '@/utils/utils'
 })
 export default class HookTable extends VueBase {
   @Prop({ default: '0', type: String }) ruleType!: string
+  @Prop({ default: 1, type: Number }) activeLanguage!: number
+  @Prop({ default: '', type: String }) activeLanguageName!: string
   rule_type = ''
   hookTypeDialog = false
   hookDialog = false
-  hookType = { type: '1', name: '', short_name: '', enable: 1 }
+  hookType = {
+    type: '1',
+    name: '',
+    short_name: '',
+    enable: 1,
+    language_id: this.activeLanguage,
+  }
+
   types = []
   multipleSelection = []
   handleSelectionChange(val: any) {
@@ -546,6 +558,7 @@ export default class HookTable extends VueBase {
     this.loadingStart()
     const { status, msg, data } = await this.services.setting.ruleTypes({
       type: this.ruleType,
+      language_id: this.activeLanguage,
     })
     this.loadingDone()
 
@@ -668,6 +681,7 @@ export default class HookTable extends VueBase {
     this.hookType = {
       type: this.ruleType,
       name: '',
+      language_id: this.activeLanguage,
       short_name: '',
       enable: 1,
     }
@@ -794,6 +808,7 @@ export default class HookTable extends VueBase {
       pageSize: this.pageSize,
       type: this.ruleType,
       strategy_type: this.rule_type,
+      language_id: this.activeLanguage,
     })
     this.loadingDone()
     if (status !== 201) {
