@@ -313,7 +313,7 @@ export default class Deploy extends VueBase {
   private activeName = 'SpringBoot'
   private language = 'java'
   private token = ''
-  private openapi = ''
+  private openapi = 'http://wait.com'
   private documents = []
   private md = {}
 
@@ -360,12 +360,26 @@ export default class Deploy extends VueBase {
     this.getDoc()
     this.getMd()
   }
+
+  fmtUrl() {
+    const url = new URL('/api/v1/agent/download', this.openapi)
+    return url.href
+  }
+
   get shell() {
     switch (this.language) {
       case 'java':
-        return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}&language=java" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
+        return `curl -X GET "${this.fmtUrl()}?url=${
+          this.openapi
+        }&language=java" -H 'Authorization: Token ${
+          this.token
+        }' -o agent.jar -k`
       case 'python':
-        return `curl -X GET "${this.openapi}/api/v1/agent/download?url=${this.openapi}&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-agent-python.tar.gz -k`
+        return `curl -X GET "${this.fmtUrl()}?url=${
+          this.openapi
+        }&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${
+          this.token
+        }' -o dongtai-agent-python.tar.gz -k`
     }
   }
   get pythonShell() {
