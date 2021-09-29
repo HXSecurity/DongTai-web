@@ -1,51 +1,83 @@
 <template>
   <div class="hook-rule">
-    <div class="top-info">
-      <div class="column">
-        <span class="top-title">{{ $t('views.hookPage.allHooksNum') }}:</span>
-        <span class="bottom-info">{{ base.ruleCount }}</span>
-        {{ $t('views.hookPage.strip') }}
+    <div class="top-bar">
+      <div class="top-info">
+        <div class="column">
+          <span class="top-title">{{ $t('views.hookPage.allHooksNum') }}:</span>
+          <span class="bottom-info">{{ base.ruleCount }}</span>
+          {{ $t('views.hookPage.strip') }}
+        </div>
+        <div class="column">
+          <span class="top-title">{{ $t('views.hookPage.hooksType') }}:</span>
+          <span class="bottom-info">{{ base.typeCount }}</span>
+          {{ $t('views.hookPage.race') }}
+        </div>
+        <div class="column">
+          <span class="top-title"
+            >{{ $t('views.hookPage.sinkHooksNum') }}:</span
+          >
+          <span class="bottom-info">{{ base.sinkCount }}</span>
+          {{ $t('views.hookPage.strip') }}
+        </div>
       </div>
-      <div class="column">
-        <span class="top-title">{{ $t('views.hookPage.hooksType') }}:</span>
-        <span class="bottom-info">{{ base.typeCount }}</span>
-        {{ $t('views.hookPage.race') }}
-      </div>
-      <div class="column">
-        <span class="top-title">{{ $t('views.hookPage.sinkHooksNum') }}:</span>
-        <span class="bottom-info">{{ base.sinkCount }}</span>
-        {{ $t('views.hookPage.strip') }}
+      <div class="top-select">
+        <div
+          v-for="item in languageOptions"
+          :key="item.id"
+          :class="activeLanguage === item.id && 'active'"
+          @click="activeLanguage !== item.id && changeLanguage(item)"
+        >
+          {{ item.name }}
+        </div>
       </div>
     </div>
+
     <div class="info-body">
-      <el-tabs v-model="type" class="info-tabs">
+      <el-tabs v-if="reflash" v-model="type" class="info-tabs">
         <el-tab-pane
           :label="$t('views.hookPage.sourceRule')"
           name="2"
           class="info-tab"
         >
-          <HookTable v-if="type === '2'" :rule-type="type"
+          <HookTable
+            v-if="type === '2'"
+            :active-language="activeLanguage"
+            :active-language-name="activeLanguageName"
+            :rule-type="type"
         /></el-tab-pane>
         <el-tab-pane
           :label="$t('views.hookPage.propRule')"
           name="1"
           class="info-tab"
         >
-          <HookTable v-if="type === '1'" :rule-type="type"
+          <HookTable
+            v-if="type === '1'"
+            :active-language="activeLanguage"
+            :active-language-name="activeLanguageName"
+            :rule-type="type"
         /></el-tab-pane>
         <el-tab-pane
           :label="$t('views.hookPage.filterRule')"
           name="3"
           class="info-tab"
         >
-          <HookTable v-if="type === '3'" :rule-type="type"
+          <HookTable
+            v-if="type === '3'"
+            :active-language="activeLanguage"
+            :active-language-name="activeLanguageName"
+            :rule-type="type"
         /></el-tab-pane>
         <el-tab-pane
           :label="$t('views.hookPage.dangerRule')"
           name="4"
           class="info-tab"
         >
-          <DangerTable v-if="type === '4'" :rule-type="type" />
+          <DangerTable
+            v-if="type === '4'"
+            :active-language="activeLanguage"
+            :active-language-name="activeLanguageName"
+            :rule-type="type"
+          />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -65,7 +97,20 @@ import HookTable from '@/views/setting/components/hookTable.vue'
   },
 })
 export default class ChangePassword extends VueBase {
-  type = '2'
+  activeLanguage = 0
+  activeLanguageName = ''
+  languageOptions = []
+  reflash = true
+  changeLanguage(item: any) {
+    this.activeLanguage = item.id
+    this.activeLanguageName = item.name
+    this.reflash = false
+    this.$nextTick(() => {
+      this.getBase()
+      this.reflash = true
+    })
+  }
+  type = '0'
   base = {
     ruleCount: 0,
     typeCount: 0,
@@ -73,7 +118,9 @@ export default class ChangePassword extends VueBase {
   }
   async getBase() {
     this.loadingStart()
-    const { status, msg, data } = await this.services.setting.hookRuleSummary()
+    const { status, msg, data } = await this.services.setting.hookRuleSummary({
+      language_id: this.activeLanguage,
+    })
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -85,8 +132,26 @@ export default class ChangePassword extends VueBase {
     }
     this.base = data
   }
-  created() {
+  async getProgramLanguage() {
+    this.loadingStart()
+    const { status, msg, data } = await this.services.setting.programLanguage()
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
+      return
+    }
+    this.languageOptions = data
+    this.activeLanguage = data[0].id
+    this.activeLanguageName = data[0].name
+    this.type = '2'
     this.getBase()
+  }
+  created() {
+    this.getProgramLanguage()
   }
 }
 </script>
@@ -135,6 +200,31 @@ export default class ChangePassword extends VueBase {
 <style scoped lang="scss">
 .hook-rule {
   padding: 20px;
+  .top-bar {
+    display: flex;
+    justify-content: space-between;
+    .top-select {
+      padding: 20px 20px 4px 20px;
+      display: flex;
+      div {
+        width: 60px;
+        line-height: 34px;
+        text-align: center;
+        color: #959fb4;
+        // background: aliceblue;
+        border: 2px solid aliceblue;
+        cursor: pointer;
+        //
+        & + div {
+          border-left: none;
+        }
+        &.active {
+          color: #4a72ae;
+          background: aliceblue;
+        }
+      }
+    }
+  }
   .top-info {
     display: flex;
     padding: 20px 20px 4px 20px;

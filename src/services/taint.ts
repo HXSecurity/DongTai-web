@@ -60,7 +60,7 @@ export default () =>
       return request.get(`/engine/request/replay`, { params })
     }
     search(params: any): Promise<iResponse> {
-      return request.get(`/engine/method_pool/search`, { params })
+      return request.post(`/engine/method_pool/search`, params)
     }
     graph(params: any): Promise<iResponse> {
       return request.get(`engine/graph`, { params })
