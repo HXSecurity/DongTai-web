@@ -63,6 +63,7 @@ export default class StrategyManage extends VueBase {
   }
   created() {
     this.getOpenapi()
+    console.log('/')
   }
 }
 </script>
