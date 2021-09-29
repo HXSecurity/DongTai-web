@@ -153,6 +153,9 @@ export default {
       save: '保 存',
       saveSuccess: '保存成功',
       saveWarning: 'OpenAPI 不能为空',
+      urlError: '请输入正确的url',
+      onlyHttp: 'openapi仅支持http和https协议',
+      withoutLocalhost: 'openapi不可以配置为localhost或127网段',
     },
     search: {
       commonly: '常用查询语法',

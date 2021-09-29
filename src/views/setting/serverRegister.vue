@@ -42,6 +42,25 @@ export default class StrategyManage extends VueBase {
       )
       return
     }
+
+    const apiArr = this.openapi.split('://')
+    if (apiArr[0] != 'http' && apiArr[0] != 'https') {
+      this.$message.warning(this.$t('views.serverRegister.onlyHttp') as string)
+      return false
+    }
+    if (!apiArr[1]) {
+      this.$message.warning(this.$t('views.serverRegister.urlError') as string)
+      return
+    }
+    if (
+      apiArr[1] &&
+      (apiArr[1].indexOf('/127.') || apiArr[1].indexOf('/localhost.'))
+    ) {
+      this.$message.warning(
+        this.$t('views.serverRegister.withoutLocalhost') as string
+      )
+      return false
+    }
     const res = await this.services.setting.setOpenapi({ value: this.openapi })
     if (res.status !== 201) {
       this.$message({
