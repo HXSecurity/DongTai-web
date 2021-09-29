@@ -54,7 +54,7 @@ export default class StrategyManage extends VueBase {
     }
     if (
       apiArr[1] &&
-      (apiArr[1].indexOf('/127.') || apiArr[1].indexOf('/localhost.'))
+      (apiArr[1].indexOf('/127.') > -1 || apiArr[1].indexOf('/localhost.') > -1)
     ) {
       this.$message.warning(
         this.$t('views.serverRegister.withoutLocalhost') as string
