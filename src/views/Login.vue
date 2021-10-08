@@ -7,13 +7,13 @@
         <div class="title">
           <img
             v-if="this.$i18n.locale == 'zh_cn'"
-            src="../assets/img/logo.png"
+            :src="logo"
             alt="logo"
             style="width: 140px"
           />
           <img
             v-if="this.$i18n.locale == 'en'"
-            src="../assets/img/logo_en.png"
+            :src="logo_en"
             alt="logo"
             style="width: 140px"
           />
@@ -76,6 +76,7 @@
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
+import emitter from './taint/Emitter'
 
 @Component({ name: 'Login' })
 export default class Login extends VueBase {
@@ -85,7 +86,14 @@ export default class Login extends VueBase {
   private captcha_hash_key = ''
   private captcha_url = ''
   private login_lock = false
+  private logo = '/upload/assets/img/logo.png'
+  private logo_en = '/upload/assets/img/logo_en.png'
+  changelogo() {
+    this.logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
+    this.logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
+  }
   created() {
+    emitter.on('changelogo', this.changelogo)
     this.initCaptcha()
   }
 

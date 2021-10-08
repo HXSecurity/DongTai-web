@@ -138,7 +138,6 @@ export default () =>
     }): Promise<iResponse> {
       return request.post('/engine/hook/rule/add', params)
     }
-
     modifyAdd(params: {
       rule_id: number
       rule_type_id: string

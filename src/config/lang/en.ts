@@ -53,6 +53,7 @@ export default {
     sca: 'Libraries',
     scaList: 'Component management list',
     scaDetail: 'Component management details',
+    changeLogo: 'Configure Logo',
     setting: 'Settings',
     agentManage: 'Agent',
     strategyManage: 'Strategy',
