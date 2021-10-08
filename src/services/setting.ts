@@ -103,8 +103,12 @@ export default () =>
       return request.post('/strategy/user/add', params)
     }
 
-    hookRuleSummary(): Promise<iResponse> {
-      return request.get('/engine/hook/rule/summary')
+    hookRuleSummary(params: { language_id: number }): Promise<iResponse> {
+      return request.get('/engine/hook/rule/summary', { params })
+    }
+
+    programLanguage(): Promise<iResponse> {
+      return request.get('/program_language')
     }
 
     hookRuleList(params: {
@@ -112,11 +116,15 @@ export default () =>
       page: number
       pageSize: number
       strategy_type?: any
+      language_id: number
     }): Promise<iResponse> {
       return request.get('/engine/hook/rules', { params })
     }
 
-    ruleTypes(params: { type: string }): Promise<iResponse> {
+    ruleTypes(params: {
+      type: string
+      language_id: number
+    }): Promise<iResponse> {
       return request.get('/engine/hook/rule_types', { params })
     }
     ruleTypeAdd(params: {

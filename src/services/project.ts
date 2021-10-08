@@ -72,7 +72,7 @@ export default () =>
 
     //项目详情 - api列表
     searchApi(params: any): Promise<iResponse> {
-      return request.get('/api_route/search', { params })
+      return request.post('/api_route/search', params)
     }
 
     //项目详情 - 覆盖率

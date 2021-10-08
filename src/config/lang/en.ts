@@ -156,6 +156,10 @@ export default {
       save: 'Save',
       saveSuccess: 'Saved successfully',
       saveWarning: 'OpenAPI cannot be empty',
+      urlError: 'Please enter the correct URL',
+      onlyHttp: 'OpenAPI only supports HTTP and HTTPS protocols',
+      withoutLocalhost:
+        'OpenAPI cannot be configured as localhost or 127 network segment',
     },
     search: {
       commonly: 'Common query syntax',
