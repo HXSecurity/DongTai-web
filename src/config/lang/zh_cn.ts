@@ -54,6 +54,7 @@ export default {
     scaList: '组件管理列表',
     scaDetail: '组件管理详情',
     setting: '系统配置',
+    changeLogo: 'Logo配置',
     agentManage: '引擎管理',
     strategyManage: '策略管理',
     hookRule: '自定义规则',

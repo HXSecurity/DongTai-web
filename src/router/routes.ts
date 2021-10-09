@@ -291,6 +291,16 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/setting/ChangePassword.vue'),
       },
       {
+        path: 'changeLogo',
+        name: 'changeLogo',
+        meta: {
+          disabled: true,
+          i18n: 'menu.changeLogo',
+          name: i18n.t('menu.changeLogo'),
+        },
+        component: () => import('@/views/setting/changeLogo.vue'),
+      },
+      {
         path: 'logManage',
         name: 'logManage',
         meta: {
@@ -599,6 +609,16 @@ const adminRoutes: Array<RouteConfig> = [
         component: () => import('@/views/setting/ChangePassword.vue'),
       },
       {
+        path: 'changeLogo',
+        name: 'changeLogo',
+        meta: {
+          disabled: true,
+          i18n: 'menu.changeLogo',
+          name: i18n.t('menu.changeLogo'),
+        },
+        component: () => import('@/views/setting/changeLogo.vue'),
+      },
+      {
         path: 'logManage',
         name: 'logManage',
         meta: {
@@ -876,6 +896,16 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.changePassword'),
         },
         component: () => import('@/views/setting/ChangePassword.vue'),
+      },
+      {
+        path: 'changeLogo',
+        name: 'changeLogo',
+        meta: {
+          disabled: true,
+          i18n: 'menu.changeLogo',
+          name: i18n.t('menu.changeLogo'),
+        },
+        component: () => import('@/views/setting/changeLogo.vue'),
       },
       {
         path: 'logManage',
