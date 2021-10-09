@@ -897,16 +897,16 @@ const userRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/ChangePassword.vue'),
       },
-      {
-        path: 'changeLogo',
-        name: 'changeLogo',
-        meta: {
-          disabled: true,
-          i18n: 'menu.changeLogo',
-          name: i18n.t('menu.changeLogo'),
-        },
-        component: () => import('@/views/setting/changeLogo.vue'),
-      },
+      // {
+      //   path: 'changeLogo',
+      //   name: 'changeLogo',
+      //   meta: {
+      //     disabled: true,
+      //     i18n: 'menu.changeLogo',
+      //     name: i18n.t('menu.changeLogo'),
+      //   },
+      //   component: () => import('@/views/setting/changeLogo.vue'),
+      // },
       {
         path: 'logManage',
         name: 'logManage',
