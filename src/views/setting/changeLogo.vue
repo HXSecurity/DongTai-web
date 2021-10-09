@@ -145,9 +145,11 @@ export default class StrategyManage extends VueBase {
 
     if (!isJPG) {
       this.$message.error(this.$t('views.changeLogo.warningPng') as string)
+      return false
     }
     if (!isLt2M) {
       this.$message.error(this.$t('views.changeLogo.warning2M') as string)
+      return false
     }
     return isJPG && isLt2M
   }
@@ -157,9 +159,11 @@ export default class StrategyManage extends VueBase {
 
     if (!isJPG) {
       this.$message.error(this.$t('views.changeLogo.warningPng') as string)
+      return false
     }
     if (!isLt2M) {
       this.$message.error(this.$t('views.changeLogo.warning2M') as string)
+      return false
     }
     return isJPG && isLt2M
   }
@@ -169,9 +173,11 @@ export default class StrategyManage extends VueBase {
 
     if (!isJPG) {
       this.$message.error(this.$t('views.changeLogo.warningICO') as string)
+      return false
     }
     if (!isLt2M) {
       this.$message.error(this.$t('views.changeLogo.warning128K') as string)
+      return false
     }
     return isJPG && isLt2M
   }
