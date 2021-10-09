@@ -123,12 +123,15 @@ export default class Login extends VueBase {
       captcha_hash_key: this.captcha_hash_key,
     }
     this.loadingStart()
-    const { status, msg } = await this.services.user.login(params)
-    let lang = (navigator as any).language || (navigator as any).userLanguage
-    lang = lang.substr(0, 2)
-    await this.services.setting.setLang(lang)
+    const { status, data, msg } = await this.services.user.login(params)
     this.loadingDone()
     if (status === 201) {
+      let lang =
+        data.default_language ||
+        (navigator as any).language ||
+        (navigator as any).userLanguage
+      lang = lang.substr(0, 2)
+      await this.services.setting.setLang(lang)
       await this.$store.dispatch('user/getUserInfo')
       await this.$router.push('/project')
     } else if (status === 204) {
