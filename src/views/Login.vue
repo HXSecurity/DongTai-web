@@ -124,14 +124,14 @@ export default class Login extends VueBase {
     }
     this.loadingStart()
     const { status, data, msg } = await this.services.user.login(params)
-    let lang =
-      data.default_language ||
-      (navigator as any).language ||
-      (navigator as any).userLanguage
-    lang = lang.substr(0, 2)
-    await this.services.setting.setLang(lang)
     this.loadingDone()
     if (status === 201) {
+      let lang =
+        data.default_language ||
+        (navigator as any).language ||
+        (navigator as any).userLanguage
+      lang = lang.substr(0, 2)
+      await this.services.setting.setLang(lang)
       await this.$store.dispatch('user/getUserInfo')
       await this.$router.push('/project')
     } else if (status === 204) {
