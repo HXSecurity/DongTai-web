@@ -53,7 +53,7 @@ export default {
     sca: 'Libraries',
     scaList: 'Component management list',
     scaDetail: 'Component management details',
-    changeLogo: 'Configure Logo',
+    changeLogo: 'Site Identity',
     setting: 'Settings',
     agentManage: 'Agent',
     strategyManage: 'Strategy',
@@ -75,6 +75,25 @@ export default {
     statusMonitoring: 'Status Monitoring',
   },
   views: {
+    changeLogo: {
+      settingTitle: 'Customize Site Logo',
+      settingInfo:
+        'You can upload a logo and icon image to appear, otherwise "DongTai" will be the default.Notice: You MUST upload Logo and Icon at the same time.',
+      uploadLogo: 'Upload Logo',
+      uploadLogoOne: `1. Before uploading your logo, ensure it match the image requirements: Min: 100 × 30 pixel, Max: 200 × 30 pixels, Image ratio: 10:3, PNG file format only, Image transparent, Max size: 2MB.`,
+      uploadLogoTwo: '2. You can preview your logo before upload.',
+      enLogo: 'English Logo',
+      zhLogo: 'Chinese Logo',
+      change: 'Click To Select Logo',
+      uploadIcon: 'Upload Icon',
+      uploadIconOne:
+        '1. Before uploading your icon, ensure it match the image requirements: Min: 32 × 32 pixel, Max: 128 × 128 pixels, Image ratio: 1:1, ICO file format only, Image transparent, Max size: 128KB.',
+      uploadIconTwo: ' 2. You can preview your logo before upload.',
+      warningPng: 'PNG file format only',
+      warning2M: 'Max size: 2 MB',
+      warningICO: 'ICO file format only',
+      warning128K: 'Max size: 128 KB',
+    },
     statusMonitoring: {
       on: 'Running',
       off: 'Close',
