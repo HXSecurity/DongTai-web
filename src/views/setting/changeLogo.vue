@@ -168,7 +168,7 @@ export default class StrategyManage extends VueBase {
     return isJPG && isLt2M
   }
   public beforeAvatarUploadIcon(file: any) {
-    const isJPG = file.type === 'image/x-icon'
+    const isJPG = file.type.indexOf('icon') > -1
     const isLt2M = file.size / 1024 < 128
 
     if (!isJPG) {

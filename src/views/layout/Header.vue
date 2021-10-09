@@ -6,13 +6,13 @@
           v-if="this.$i18n.locale == 'zh_cn'"
           :src="logo"
           alt="logo"
-          style="width: 98px"
+          style="width: 98px; height: 32px"
         />
         <img
           v-if="this.$i18n.locale == 'en'"
           :src="logo_en"
           alt="logo"
-          style="width: 98px"
+          style="width: 98px; height: 32px"
         />
       </div>
       <div v-if="userInfo" class="url-warp">
