@@ -24,24 +24,6 @@ const mutations: any = {
   },
   UPDATE_USER_INFO(state: any, userInfo: any) {
     state.userInfo = userInfo
-    if (userInfo) {
-      const language = window.localStorage.getItem(
-        userInfo.username + '-language'
-      )
-      let DEFAULT_LANG = 'zh_cn'
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      let lang = language || navigator.language || navigator.userLanguage //常规浏览器语言和IE浏览器
-      lang = lang.substr(0, 2) //截取lang前2位字符
-      if (lang == 'zh') {
-        DEFAULT_LANG = 'zh_cn'
-      } else if (lang == 'en') {
-        DEFAULT_LANG = 'en'
-      } else {
-        DEFAULT_LANG = 'zh_cn'
-      }
-      i18n.locale = DEFAULT_LANG
-    }
   },
 }
 

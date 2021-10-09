@@ -4,15 +4,15 @@
       <div class="logo flex-column-center" @click="$router.push('/')">
         <img
           v-if="this.$i18n.locale == 'zh_cn'"
-          src="../../assets/img/logo.png"
+          :src="logo"
           alt="logo"
-          style="width: 98px"
+          style="width: 98px; height: 32px"
         />
         <img
           v-if="this.$i18n.locale == 'en'"
-          src="../../assets/img/logo_en.png"
+          :src="logo_en"
           alt="logo"
-          style="width: 98px"
+          style="width: 98px; height: 32px"
         />
       </div>
       <div v-if="userInfo" class="url-warp">
@@ -94,6 +94,7 @@
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import { Dropdown, DropdownMenu, DropdownItem, Icon } from 'view-design'
+import emitter from '../taint/Emitter'
 @Component({
   name: 'layoutHeader',
   components: {
@@ -104,6 +105,12 @@ import { Dropdown, DropdownMenu, DropdownItem, Icon } from 'view-design'
   },
 })
 export default class Header extends VueBase {
+  private logo_en = '/upload/assets/img/logo_en.png'
+  private logo = '/upload/assets/img/logo.png'
+  changelogo() {
+    this.logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
+    this.logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
+  }
   private show = false
   private async changeLanguage(language: string) {
     const userInfo: any = this.userInfo
@@ -173,7 +180,7 @@ export default class Header extends VueBase {
     await this.$store.dispatch('user/logOut')
   }
   created() {
-    console.log(this.$store.getters.routers[0].children)
+    emitter.on('changelogo', this.changelogo)
   }
 }
 </script>

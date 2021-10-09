@@ -54,6 +54,7 @@ export default {
     scaList: '组件管理列表',
     scaDetail: '组件管理详情',
     setting: '系统配置',
+    changeLogo: '品牌配置',
     agentManage: '引擎管理',
     strategyManage: '策略管理',
     hookRule: '自定义规则',
@@ -74,6 +75,28 @@ export default {
     statusMonitoring: '状态监控',
   },
   views: {
+    changeLogo: {
+      settingTitle: '品牌显示配置',
+      settingInfo:
+        'Logo 样式与 Icon 样式需要同时上传，未配置项将显示洞态图标。',
+      uploadLogo: '上传Logo样式',
+      uploadLogoOne:
+        '1. 支持上传品牌 Logo, 默认展示 “洞态” Logo，上传前可预览线上场景，如下图所示。',
+      uploadLogoTwo:
+        '2. Logo 建议使用彩色图片，最小尺寸 100*30，最大尺寸200*60，支持png格式，最大 2 MB，宽高比为10:3，无背景。',
+      enLogo: '英文logo',
+      zhLogo: '中文logo',
+      change: '点击图片替换',
+      uploadIcon: '上传Icon样式',
+      uploadIconOne:
+        '1. 支持上传品牌 Icon, 默认展示 “洞态”Icon，上传前可预览线上场景，如下图所示。',
+      uploadIconTwo:
+        ' 2. Icon 建议使用彩色图片，最小尺寸32*32，最大尺寸128*128，支持ico格式，最大128KB，宽高比为1:1，无背景。',
+      warningPng: '上传头像图片只能是 PNG 格式!',
+      warning2M: '上传图片大小不能超过 2MB!',
+      warningICO: '上传图片只能是 ICO 格式!',
+      warning128K: '上传图片大小不能超过 128KB!',
+    },
     statusMonitoring: {
       on: '运行中',
       off: '关闭',
@@ -153,6 +176,9 @@ export default {
       save: '保 存',
       saveSuccess: '保存成功',
       saveWarning: 'OpenAPI 不能为空',
+      urlError: '请输入正确的url',
+      onlyHttp: 'openapi仅支持http和https协议',
+      withoutLocalhost: 'openapi不可以配置为localhost或127网段',
     },
     search: {
       commonly: '常用查询语法',
