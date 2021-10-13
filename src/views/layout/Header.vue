@@ -85,6 +85,40 @@
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
+        <el-popover
+          placement="bottom"
+          trigger="click"
+          @show="
+            () => {
+              num_pages = 1
+              showMessage()
+            }
+          "
+        >
+          <div class="badge-header">
+            <el-button size="small" @click="deleteMessage(0)"
+              >全部清除</el-button
+            >
+          </div>
+          <div v-loading="mLoading">
+            <div v-for="item in mList" :key="item.id" class="badge-info">
+              <span>{{ item.message }}</span
+              ><i class="el-icon-close" @click="deleteMessage(item.id)"></i>
+            </div>
+          </div>
+
+          <el-pagination
+            layout="prev, pager, next"
+            :page-size="mSize"
+            :total="mTotal"
+            :current-page="num_pages"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
+          <el-badge slot="reference" :value="count">
+            <i style="font-size: 26px" class="el-icon-bell"></i>
+          </el-badge>
+        </el-popover>
       </div>
     </div>
   </header>
@@ -105,8 +139,8 @@ import emitter from '../taint/Emitter'
   },
 })
 export default class Header extends VueBase {
-  private logo_en = '/upload/assets/img/logo_en.png'
-  private logo = '/upload/assets/img/logo.png'
+  private logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
+  private logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
   changelogo() {
     this.logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
     this.logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
@@ -169,6 +203,67 @@ export default class Header extends VueBase {
     this.$router.push('/deploy')
   }
 
+  async messageList() {
+    const res = await this.services.message.list({
+      page_size: this.mSize,
+      page: this.num_pages,
+    })
+    console.log(res)
+  }
+  private count = 0
+  async messageUnreadCount() {
+    const res = await this.services.message.unreadCount()
+    if (res.status === 201) {
+      this.count = res.data.new_message_count
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+
+  private mList = []
+  private mTotal = 0
+  private mLoading = false
+  private num_pages = 1
+  private mSize = 5
+
+  private async deleteMessage(id: number) {
+    let res
+    if (id) {
+      res = await this.services.message.mDelete({
+        id: id,
+        all: false,
+      })
+    } else {
+      res = await this.services.message.mDelete({
+        all: true,
+      })
+    }
+    if (res.status === 201) {
+      this.showMessage()
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+  handleCurrentChange(val: number) {
+    this.num_pages = val
+    this.showMessage()
+  }
+  async showMessage() {
+    this.mLoading = true
+    const res = await this.services.message.list({
+      page_size: this.mSize,
+      page: this.num_pages,
+    })
+    await this.messageUnreadCount()
+    this.mLoading = false
+    if (res.status === 201) {
+      this.mList = res.data.messages
+      this.mTotal = res.data.page.alltotal
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+
   canShow(name: string) {
     return this.$store.getters.routers.includes(name)
   }
@@ -179,7 +274,12 @@ export default class Header extends VueBase {
   private async logOut() {
     await this.$store.dispatch('user/logOut')
   }
+  private timer: any = null
   created() {
+    this.messageUnreadCount()
+    this.timer = setInterval(() => {
+      this.messageUnreadCount()
+    }, 60 * 1000)
     emitter.on('changelogo', this.changelogo)
   }
 }
@@ -262,5 +362,17 @@ export default class Header extends VueBase {
       margin-right: 20px;
     }
   }
+}
+.badge-header {
+  display: flex;
+  justify-content: flex-end;
+  height: 28px;
+}
+.badge-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 36px;
+  border-bottom: 1px solid #ccc;
 }
 </style>
