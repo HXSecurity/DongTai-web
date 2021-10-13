@@ -86,8 +86,8 @@ export default class Login extends VueBase {
   private captcha_hash_key = ''
   private captcha_url = ''
   private login_lock = false
-  private logo = '/upload/assets/img/logo.png'
-  private logo_en = '/upload/assets/img/logo_en.png'
+  private logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
+  private logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
   changelogo() {
     this.logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
     this.logo = '/upload/assets/img/logo.png?v=' + String(Math.random())

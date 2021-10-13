@@ -184,9 +184,9 @@ export default class StrategyManage extends VueBase {
 
   public path = process.env.VUE_APP_BASE_API
   public token = getToken()
-  public logo = '/upload/assets/img/logo.png'
-  public logo_en = '/upload/assets/img/logo_en.png'
-  public favicon = '/upload/assets/img/favicon.ico'
+  public logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
+  public logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
+  public favicon = '/upload/assets/img/favicon.ico?v=' + String(Math.random())
 
   public handleAvatarSuccess(res: any) {
     if (res.status === 201) {
