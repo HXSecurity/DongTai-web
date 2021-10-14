@@ -51,6 +51,52 @@
         <el-button type="text" class="anent" @click="buildIAST">
           <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
         </el-button>
+        <el-popover
+          v-model="showPop"
+          style="margin-right: 20px"
+          placement="bottom"
+          trigger="click"
+          @show="showMessage()"
+        >
+          <div class="badge-header">
+            <span>消息通知</span>
+            <el-button size="small" type="text" @click="deleteMessage(0)"
+              >全部清除</el-button
+            >
+          </div>
+          <div v-loading="mLoading">
+            <div v-for="item in mList" :key="item.id" class="badge-info">
+              <div>
+                <el-badge is-dot class="item" :hidden="item.is_read">
+                  <div class="info">
+                    {{ item.message || '空消息'
+                    }}<i
+                      v-if="item.relative_url"
+                      class="el-icon-link"
+                      @click="goPath(item.relative_url)"
+                    ></i>
+                  </div>
+                </el-badge>
+                <div class="time">{{ fmtStr(item.create_time * 1000) }}</div>
+              </div>
+              <div class="close" @click="deleteMessage(item.id)">
+                <i class="el-icon-close"></i>
+              </div>
+            </div>
+          </div>
+
+          <el-pagination
+            layout="prev, pager, next"
+            :page-size="mSize"
+            :total="mTotal"
+            :current-page="num_pages"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
+          <el-badge slot="reference" :value="count">
+            <i style="font-size: 26px" class="el-icon-bell"></i>
+          </el-badge>
+        </el-popover>
         <Dropdown>
           <img class="titleImg" src="../../assets/img/touxiang@2x.png" alt="" />
           <DropdownMenu slot="list">
@@ -85,40 +131,6 @@
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
-        <el-popover
-          placement="bottom"
-          trigger="click"
-          @show="
-            () => {
-              num_pages = 1
-              showMessage()
-            }
-          "
-        >
-          <div class="badge-header">
-            <el-button size="small" @click="deleteMessage(0)"
-              >全部清除</el-button
-            >
-          </div>
-          <div v-loading="mLoading">
-            <div v-for="item in mList" :key="item.id" class="badge-info">
-              <span>{{ item.message }}</span
-              ><i class="el-icon-close" @click="deleteMessage(item.id)"></i>
-            </div>
-          </div>
-
-          <el-pagination
-            layout="prev, pager, next"
-            :page-size="mSize"
-            :total="mTotal"
-            :current-page="num_pages"
-            @current-change="handleCurrentChange"
-          >
-          </el-pagination>
-          <el-badge slot="reference" :value="count">
-            <i style="font-size: 26px" class="el-icon-bell"></i>
-          </el-badge>
-        </el-popover>
       </div>
     </div>
   </header>
@@ -129,6 +141,7 @@ import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import { Dropdown, DropdownMenu, DropdownItem, Icon } from 'view-design'
 import emitter from '../taint/Emitter'
+import { formatTimestamp } from '../../utils/utils'
 @Component({
   name: 'layoutHeader',
   components: {
@@ -144,6 +157,14 @@ export default class Header extends VueBase {
   changelogo() {
     this.logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
     this.logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
+  }
+  private goPath(str: string) {
+    if (str) {
+      window.open(str)
+    }
+  }
+  private fmtStr(timestamp: number | any) {
+    return formatTimestamp(timestamp)
   }
   private show = false
   private async changeLanguage(language: string) {
@@ -225,24 +246,31 @@ export default class Header extends VueBase {
   private mLoading = false
   private num_pages = 1
   private mSize = 5
-
+  private showPop = false
   private async deleteMessage(id: number) {
-    let res
-    if (id) {
-      res = await this.services.message.mDelete({
-        id: id,
-        all: false,
-      })
-    } else {
-      res = await this.services.message.mDelete({
-        all: true,
-      })
-    }
-    if (res.status === 201) {
-      this.showMessage()
-    } else {
-      this.$message.error(res.msg)
-    }
+    this.$confirm('此操作将删除消息, 是否继续?', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }).then(async () => {
+      let res
+      if (id) {
+        res = await this.services.message.mDelete({
+          id: id,
+          all: false,
+        })
+      } else {
+        res = await this.services.message.mDelete({
+          all: true,
+        })
+      }
+      if (res.status === 201) {
+        this.showMessage()
+      } else {
+        this.$message.error(res.msg)
+      }
+      this.showPop = true
+    })
   }
   handleCurrentChange(val: number) {
     this.num_pages = val
@@ -276,10 +304,12 @@ export default class Header extends VueBase {
   }
   private timer: any = null
   created() {
-    this.messageUnreadCount()
-    this.timer = setInterval(() => {
+    if (this.userInfo) {
       this.messageUnreadCount()
-    }, 60 * 1000)
+      this.timer = setInterval(() => {
+        this.messageUnreadCount()
+      }, 60 * 1000)
+    }
     emitter.on('changelogo', this.changelogo)
   }
 }
@@ -365,14 +395,54 @@ export default class Header extends VueBase {
 }
 .badge-header {
   display: flex;
-  justify-content: flex-end;
-  height: 28px;
+  justify-content: space-between;
+  height: 56px;
+  border-bottom: 1px solid #e6e9ec;
+  margin-right: -12px;
+  margin-left: -12px;
+  margin-top: -12px;
+  line-height: 56px;
+  min-width: 400px;
+  span {
+    margin-left: 12px;
+    color: #38435a;
+  }
+  .el-button {
+    color: #4a72ae;
+    font-size: 14px;
+    margin-right: 12px;
+  }
 }
 .badge-info {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  line-height: 36px;
-  border-bottom: 1px solid #ccc;
+  line-height: 18px;
+  border-bottom: 1px solid #e6e9ec;
+  width: 380px;
+  padding: 16px 0px;
+  .info {
+    color: #38435a;
+    margin-bottom: 6px;
+  }
+  .time {
+    color: #959fb4;
+  }
+  .close {
+    width: 24px;
+    height: 24px;
+    background: #f4f7f9;
+    border-radius: 2px;
+    color: #1a80f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .el-icon-link {
+    color: #1a80f2;
+    margin-left: 2px;
+    cursor: pointer;
+  }
 }
 </style>
