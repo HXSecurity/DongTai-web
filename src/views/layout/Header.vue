@@ -59,17 +59,17 @@
           @show="showMessage()"
         >
           <div class="badge-header">
-            <span>消息通知</span>
-            <el-button size="small" type="text" @click="deleteMessage(0)"
-              >全部清除</el-button
-            >
+            <span>{{ $t('message.notice') }}</span>
+            <el-button size="small" type="text" @click="deleteMessage(0)">{{
+              $t('message.clearAll')
+            }}</el-button>
           </div>
           <div v-loading="mLoading">
             <div v-for="item in mList" :key="item.id" class="badge-info">
               <div>
                 <el-badge is-dot class="item" :hidden="item.is_read">
                   <div class="info">
-                    {{ item.message || '空消息'
+                    {{ item.message || $t('message.Empty')
                     }}<i
                       v-if="item.relative_url"
                       class="el-icon-link"
@@ -248,11 +248,15 @@ export default class Header extends VueBase {
   private mSize = 5
   private showPop = false
   private async deleteMessage(id: number) {
-    this.$confirm('此操作将删除消息, 是否继续?', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }).then(async () => {
+    this.$confirm(
+      this.$t('message.warning') as string,
+      this.$t('message.tips') as string,
+      {
+        confirmButtonText: this.$t('message.confirm') as string,
+        cancelButtonText: this.$t('message.cancel') as string,
+        type: 'warning',
+      }
+    ).then(async () => {
       let res
       if (id) {
         res = await this.services.message.mDelete({

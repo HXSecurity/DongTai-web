@@ -40,6 +40,15 @@ export default {
     diffPassword: 'Password does Not match',
     downloadError: 'Please check the OpenAPI configuration',
   },
+  message: {
+    notice: 'Notice',
+    clearAll: 'Clear All',
+    Empty: 'Empty',
+    warning: 'This operation will delete the message. Do you want to continue?',
+    tips: 'Tips',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+  },
   menu: {
     projectEdit: 'ProjectEdit',
     home: 'Home',
