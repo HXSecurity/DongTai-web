@@ -13,6 +13,8 @@ const request = (config: AxiosRequestConfig) => {
   if (getToken()) {
     config.headers['csrf-token'] = getToken()
   }
+  config.headers['Authorization'] =
+    'Token a1c0fbd5c98ecf4539e9d293b5bde73d9b208ede'
   return config
 }
 

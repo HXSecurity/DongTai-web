@@ -51,6 +51,52 @@
         <el-button type="text" class="anent" @click="buildIAST">
           <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
         </el-button>
+        <el-popover
+          v-model="showPop"
+          style="margin-right: 20px"
+          placement="bottom"
+          trigger="click"
+          @show="showMessage()"
+        >
+          <div class="badge-header">
+            <span>{{ $t('message.notice') }}</span>
+            <el-button size="small" type="text" @click="deleteMessage(0)">{{
+              $t('message.clearAll')
+            }}</el-button>
+          </div>
+          <div v-loading="mLoading">
+            <div v-for="item in mList" :key="item.id" class="badge-info">
+              <div>
+                <el-badge is-dot class="item" :hidden="item.is_read">
+                  <div class="info">
+                    {{ item.message || $t('message.Empty')
+                    }}<i
+                      v-if="item.relative_url"
+                      class="el-icon-link"
+                      @click="goPath(item.relative_url)"
+                    ></i>
+                  </div>
+                </el-badge>
+                <div class="time">{{ fmtStr(item.create_time * 1000) }}</div>
+              </div>
+              <div class="close" @click="deleteMessage(item.id)">
+                <i class="el-icon-close"></i>
+              </div>
+            </div>
+          </div>
+
+          <el-pagination
+            layout="prev, pager, next"
+            :page-size="mSize"
+            :total="mTotal"
+            :current-page="num_pages"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
+          <el-badge slot="reference" :value="count">
+            <i style="font-size: 26px" class="el-icon-bell"></i>
+          </el-badge>
+        </el-popover>
         <Dropdown>
           <img class="titleImg" src="../../assets/img/touxiang@2x.png" alt="" />
           <DropdownMenu slot="list">
@@ -95,6 +141,7 @@ import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import { Dropdown, DropdownMenu, DropdownItem, Icon } from 'view-design'
 import emitter from '../taint/Emitter'
+import { formatTimestamp } from '../../utils/utils'
 @Component({
   name: 'layoutHeader',
   components: {
@@ -110,6 +157,14 @@ export default class Header extends VueBase {
   changelogo() {
     this.logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
     this.logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
+  }
+  private goPath(str: string) {
+    if (str) {
+      window.open(str)
+    }
+  }
+  private fmtStr(timestamp: number | any) {
+    return formatTimestamp(timestamp)
   }
   private show = false
   private async changeLanguage(language: string) {
@@ -169,6 +224,78 @@ export default class Header extends VueBase {
     this.$router.push('/deploy')
   }
 
+  async messageList() {
+    const res = await this.services.message.list({
+      page_size: this.mSize,
+      page: this.num_pages,
+    })
+    console.log(res)
+  }
+  private count = 0
+  async messageUnreadCount() {
+    const res = await this.services.message.unreadCount()
+    if (res.status === 201) {
+      this.count = res.data.new_message_count
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+
+  private mList = []
+  private mTotal = 0
+  private mLoading = false
+  private num_pages = 1
+  private mSize = 5
+  private showPop = false
+  private async deleteMessage(id: number) {
+    this.$confirm(
+      this.$t('message.warning') as string,
+      this.$t('message.tips') as string,
+      {
+        confirmButtonText: this.$t('message.confirm') as string,
+        cancelButtonText: this.$t('message.cancel') as string,
+        type: 'warning',
+      }
+    ).then(async () => {
+      let res
+      if (id) {
+        res = await this.services.message.mDelete({
+          id: id,
+          all: false,
+        })
+      } else {
+        res = await this.services.message.mDelete({
+          all: true,
+        })
+      }
+      if (res.status === 201) {
+        this.showMessage()
+      } else {
+        this.$message.error(res.msg)
+      }
+      this.showPop = true
+    })
+  }
+  handleCurrentChange(val: number) {
+    this.num_pages = val
+    this.showMessage()
+  }
+  async showMessage() {
+    this.mLoading = true
+    const res = await this.services.message.list({
+      page_size: this.mSize,
+      page: this.num_pages,
+    })
+    await this.messageUnreadCount()
+    this.mLoading = false
+    if (res.status === 201) {
+      this.mList = res.data.messages
+      this.mTotal = res.data.page.alltotal
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+
   canShow(name: string) {
     return this.$store.getters.routers.includes(name)
   }
@@ -179,7 +306,14 @@ export default class Header extends VueBase {
   private async logOut() {
     await this.$store.dispatch('user/logOut')
   }
+  private timer: any = null
   created() {
+    if (this.userInfo) {
+      this.messageUnreadCount()
+      this.timer = setInterval(() => {
+        this.messageUnreadCount()
+      }, 60 * 1000)
+    }
     emitter.on('changelogo', this.changelogo)
   }
 }
@@ -261,6 +395,58 @@ export default class Header extends VueBase {
       border-radius: 4px;
       margin-right: 20px;
     }
+  }
+}
+.badge-header {
+  display: flex;
+  justify-content: space-between;
+  height: 56px;
+  border-bottom: 1px solid #e6e9ec;
+  margin-right: -12px;
+  margin-left: -12px;
+  margin-top: -12px;
+  line-height: 56px;
+  min-width: 400px;
+  span {
+    margin-left: 12px;
+    color: #38435a;
+  }
+  .el-button {
+    color: #4a72ae;
+    font-size: 14px;
+    margin-right: 12px;
+  }
+}
+.badge-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  line-height: 18px;
+  border-bottom: 1px solid #e6e9ec;
+  width: 380px;
+  padding: 16px 0px;
+  .info {
+    color: #38435a;
+    margin-bottom: 6px;
+  }
+  .time {
+    color: #959fb4;
+  }
+  .close {
+    width: 24px;
+    height: 24px;
+    background: #f4f7f9;
+    border-radius: 2px;
+    color: #1a80f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
+  .el-icon-link {
+    color: #1a80f2;
+    margin-left: 2px;
+    cursor: pointer;
   }
 }
 </style>

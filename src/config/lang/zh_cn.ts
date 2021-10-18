@@ -21,6 +21,15 @@ export default {
     clearDesc: '请确认是否清空？',
     choseLog: '请选择日志',
   },
+  message: {
+    notice: '消息通知',
+    clearAll: '全部清除',
+    Empty: '空消息',
+    warning: '此操作将删除消息, 是否继续?',
+    tips: '提示',
+    confirm: '确定',
+    cancel: '取消',
+  },
   base: {
     yearAgo: '年前',
     monthAgo: '月前',
