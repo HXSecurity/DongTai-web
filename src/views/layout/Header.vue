@@ -93,7 +93,7 @@
             @current-change="handleCurrentChange"
           >
           </el-pagination>
-          <el-badge slot="reference" :value="count">
+          <el-badge slot="reference" :value="count" :hidden="!count">
             <i style="font-size: 26px" class="el-icon-bell"></i>
           </el-badge>
         </el-popover>
