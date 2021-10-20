@@ -12,6 +12,10 @@ export default () =>
       return request.get('/agent/status/update', { timeout: 1000 })
     }
 
+    aliasModified(data: any): Promise<iResponse> {
+      return request.post('/agent/alias/modified', data)
+    }
+
     agentList(params: agentListParams): Promise<iResponse> {
       return request.get('/agents', { params })
     }
@@ -201,5 +205,13 @@ export default () =>
 
     ossHealth(): Promise<iResponse> {
       return request.get(`/oss/health`)
+    }
+
+    profileGet(data: any): Promise<iResponse> {
+      return request.post(`/profile/batch/get`, data)
+    }
+
+    profileModified(data: any): Promise<iResponse> {
+      return request.post(`/profile/batch/modified`, data)
     }
   })()
