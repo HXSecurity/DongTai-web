@@ -231,7 +231,7 @@ main.container {
     display: flex;
     justify-content: center;
     .search-bar {
-      width: 908px;
+      width: 948px;
     }
   }
   .top {

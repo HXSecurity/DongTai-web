@@ -43,7 +43,7 @@
         v-model="search_model"
         :placeholder="$t('views.search.prependPlace')"
         clearable
-        style="width: 74px"
+        style="width: 104px"
         class="search-bar-select"
       >
         <el-option :label="$t('views.search.contain')" value="1"></el-option>
