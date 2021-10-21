@@ -192,13 +192,19 @@
           {{ scope.row.latest_time | formatTimestamp }}
           <el-popover placement="top-start" width="170" trigger="hover">
             <p style="font-size: 12px; color: #ccc; margin-bottom: 6px">
-              Agent 启动时间:
+              Agent 注册时间:
             </p>
-            <p>{{ scope.row.startup_time | formatTimestamp }}</p>
+            <p>{{ scope.row.register_time | formatTimestamp }}</p>
             <i slot="reference" class="el-icon-info"></i>
           </el-popover>
         </template>
       </el-table-column>
+      <el-table-column
+        v-if="userInfo.role === 1 || userInfo.role === 2"
+        :label="$t('views.agentManage.startupTime')"
+        prop="startup_time"
+        width="180px"
+      ></el-table-column>
       <el-table-column
         :label="$t('views.agentManage.owner')"
         prop="owner"
@@ -351,6 +357,10 @@ export default class AgentManage extends VueBase {
   private closeEdit(item: any) {
     item.isEdit = false
     item.alias = item.backAlias
+  }
+
+  get userInfo() {
+    return this.$store.getters.userInfo
   }
 
   private async enterEdit(item: any) {

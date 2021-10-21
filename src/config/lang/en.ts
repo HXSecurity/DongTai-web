@@ -224,6 +224,31 @@ export default {
       res_body: 'Response Body',
       empty: 'No matches found for your search',
       warning: 'Enter search content',
+      contain: 'contain',
+      exclude: 'exclude',
+
+      farthest: 'farthest',
+      lately: 'lately',
+
+      day: 'day',
+      hour: 'hour',
+      minute: 'minute',
+      second: 'second',
+
+      timeWarning: 'Please enter an integer greater than 0',
+      enterTime: 'Enter',
+
+      quickSelection: 'Quick Selection',
+
+      commonlyU: 'Commonly',
+
+      today: 'today',
+      '24Hours': '24 Hours',
+      thisWeek: 'This Week',
+      '7Day': '7 Day',
+      '15Minutes': '15 Minutes',
+      '30Minutes': '30 Minutes',
+      '1Hour': '1 Hour',
     },
     hookPage: {
       sourceRule: 'Source Rules',
@@ -538,6 +563,7 @@ export default {
       healthy: 'Health Status',
       language: 'Language',
       selectWarning: 'Please Select The Agent To Operate',
+      startupTime: 'Startup Time（ms）',
     },
     strategyManage: {
       no: 'No',

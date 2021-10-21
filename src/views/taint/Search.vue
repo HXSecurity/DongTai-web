@@ -1,7 +1,7 @@
 <template>
   <main class="container">
     <div class="search-box" :class="active ? 'top' : ''">
-      <SearchBar @enter="search" />
+      <SearchBar ref="SearchBar" @enter="search" />
     </div>
     <transition name="fade">
       <div v-if="!active" class="desc">
@@ -137,12 +137,18 @@ export default class Index extends VueBase {
     const exclude_ids = this.tableList.map((item) => {
       return item.method_pools.id
     })
+    const SearchBar: any = this.$refs.SearchBar
     const res: any = await this.services.taint.search({
       ...searchKey,
+      search_model: SearchBar.search_model,
+      time_range: [
+        ~~(SearchBar.time_range[0].getTime() / 1000),
+        ~~(SearchBar.time_range[1].getTime() / 1000),
+      ],
       page_index: this.page,
       page_size: 10,
       search_after_update_time: this.afterkeys || undefined,
-      exclude_ids: String(exclude_ids),
+      exclude_ids: exclude_ids,
     })
     this.loadingFlag = false
     if (res.status !== 201) {
@@ -293,5 +299,12 @@ main.container {
 <style>
 html {
   overflow-y: overlay;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 </style>
