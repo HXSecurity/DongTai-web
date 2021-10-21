@@ -5,9 +5,9 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  Deploy-To-Test:
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x]
