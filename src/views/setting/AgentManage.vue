@@ -199,11 +199,6 @@
           </el-popover>
         </template>
       </el-table-column>
-      <el-table-column width="160px" :label="$t('views.agentManage.lastTime')">
-        <template slot-scope="scope">
-          {{ scope.row.latest_request_time | formatTimestamp }}
-        </template>
-      </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.owner')"
         prop="owner"

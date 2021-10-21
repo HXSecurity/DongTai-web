@@ -530,7 +530,6 @@ export default {
       manage: '管理',
       owner: '负责人',
       timestapm: '时间',
-      lastTime: '最后请求时间',
       projectName: '项目名称',
       healthy: '健康状态',
       language: '语言',

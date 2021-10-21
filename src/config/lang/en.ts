@@ -534,7 +534,6 @@ export default {
       manage: 'Settings',
       owner: 'User',
       timestapm: 'Create Time',
-      lastTime: 'Last Time',
       projectName: 'Application',
       healthy: 'Health Status',
       language: 'Language',
