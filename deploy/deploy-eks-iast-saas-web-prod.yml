@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: dongtai-web-container
-          image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:VERSION
+          image: dongtai/dongtai-web:VERSION
           imagePullPolicy: Always
 
           resources:
@@ -29,5 +29,3 @@ spec:
             requests:
               cpu: "500m"
               memory: 1000Mi
-      imagePullSecrets:
-        - name: aliyun-registry-secret
