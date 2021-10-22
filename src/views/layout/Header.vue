@@ -66,7 +66,6 @@
           </div>
           <div
             v-loading="mLoading"
-            v-infinite-scroll="loadMore"
             class="msg-box"
             infinite-scroll-distance="20"
           >
@@ -146,9 +145,6 @@ import { formatTimestamp } from '../../utils/utils'
   },
 })
 export default class Header extends VueBase {
-  private loaloadMored() {
-    console.log(123)
-  }
   private logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
   private logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
   changelogo() {

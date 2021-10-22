@@ -1,17 +1,17 @@
 <template>
   <main>
-    <div class="moudleTitle">{{ $('views.sysInfo.infoTitle') }}</div>
+    <div class="moudleTitle">{{ $t('views.sysInfo.infoTitle') }}</div>
     <div class="form-box">
       <div class="cpu-box">
         <div class="moudleTitle-th">
-          {{ $('views.sysInfo.agentThreshold') }}
+          {{ $t('views.sysInfo.agentThreshold') }}
           <el-popover placement="top-start" width="340" trigger="hover">
-            <p>{{ $('views.sysInfo.open') }}</p>
-            <p>{{ $('views.sysInfo.close') }}</p>
+            <p>{{ $t('views.sysInfo.open') }}</p>
+            <p>{{ $t('views.sysInfo.close') }}</p>
             <span slot="reference"> <i class="el-icon-question"></i>： </span>
           </el-popover>
         </div>
-        <span style="margin-right: 16px">{{ $('views.sysInfo.cpu') }} ≥ </span>
+        <span style="margin-right: 16px">{{ $t('views.sysInfo.cpu') }} ≥ </span>
         <el-input-number
           v-model="form.cpu_limit"
           :max="100"
@@ -28,7 +28,7 @@
           class="btn"
           type="primary"
           @click="profileModified"
-          >{{ $('views.sysInfo.enter') }}</el-button
+          >{{ $t('views.sysInfo.enter') }}</el-button
         >
       </div>
     </div>

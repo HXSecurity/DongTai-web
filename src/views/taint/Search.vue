@@ -140,7 +140,7 @@ export default class Index extends VueBase {
     const SearchBar: any = this.$refs.SearchBar
     const res: any = await this.services.taint.search({
       ...searchKey,
-      search_model: SearchBar.search_model,
+      search_mode: SearchBar.search_mode,
       time_range: [
         ~~(SearchBar.time_range[0].getTime() / 1000),
         ~~(SearchBar.time_range[1].getTime() / 1000),

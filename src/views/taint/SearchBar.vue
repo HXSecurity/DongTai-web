@@ -40,14 +40,14 @@
     <div class="flex-item">
       <el-select
         slot="prepend"
-        v-model="search_model"
+        v-model="search_mode"
         :placeholder="$t('views.search.prependPlace')"
         clearable
         style="width: 104px"
         class="search-bar-select"
       >
-        <el-option :label="$t('views.search.contain')" value="1"></el-option>
-        <el-option :label="$t('views.search.exclude')" value="2"></el-option>
+        <el-option :label="$t('views.search.contain')" :value="1"></el-option>
+        <el-option :label="$t('views.search.exclude')" :value="2"></el-option>
       </el-select>
       <el-input
         v-model="searchValue"
@@ -175,7 +175,7 @@ export default class SearchBar extends VueBase {
   private searchType = ''
   private searchValue = ''
   private showSelect = false
-  public search_model = '1'
+  public search_mode = 1
   private timeStep = 15
   private timeUnit = '60'
   private timeNode = '1'

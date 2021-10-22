@@ -110,7 +110,7 @@ export default class ChangePassword extends VueBase {
       this.reflash = true
     })
   }
-  type = '0'
+  type = '2'
   base = {
     ruleCount: 0,
     typeCount: 0,
