@@ -42,7 +42,6 @@
         slot="prepend"
         v-model="search_mode"
         :placeholder="$t('views.search.prependPlace')"
-        clearable
         style="width: 104px"
         class="search-bar-select"
       >
