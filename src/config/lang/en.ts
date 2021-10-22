@@ -153,15 +153,22 @@ export default {
         p51: 'If the Web Service is unable to access to ',
         p52:
           'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        title2:
+          'Ensure the service of installing the probe meet the requirement as below',
       },
       python: {
         ManualInstallation: 'Manual Installation',
         term1: '1. Python Version: 3.3 and above',
         term2: '2. Interpreter: CPython',
         term3: '3. Middleware: uWSGI',
-        term4: '4. Web Framework: Django',
+        term4: '4. Web Framework: ',
+        'term4-1': ' - Django：3.0-3.2',
+        'term4-2': ' - Flask：1.0-1.2',
         term5: '5. Web Service: Django REST Framework',
-        term6: '6. Module: psutil verion should be include and above 5.8.0',
+        term6: '6. Module: ',
+        'term6-1': ' - psutil >= 5.8.0',
+        'term6-2': ' - requests >= 2.25.1',
+        'term6-3': ' - pip >= 19.2.3',
         manualInstallationDesc:
           'Extract download file with the following command.',
         settings: 'Settings',

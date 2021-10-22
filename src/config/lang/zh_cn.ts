@@ -157,15 +157,21 @@ export default {
         p51: '在 Web 应用服务器中，检查是否可访问',
         p52:
           '服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往 github 给工程师提交 issue，我们会及时给您回复',
+        title2: '确认Agent端所在环境在我们的支持列表中。',
       },
       python: {
         ManualInstallation: '手动安装',
         term1: 'Python 版本：3.3及以上',
         term2: '解释器：CPython',
         term3: '中间件：uWSGI',
-        term4: 'Web框架：Django',
+        term4: 'Web框架：',
+        'term4-1': '- Django：3.0-3.2',
+        'term4-2': '- Flask：1.0-1.2',
         term5: 'Web Service：Django REST Framework',
-        term6: 'python依赖包：psutil >= 5.8.0',
+        term6: 'python依赖包：',
+        'term6-1': '- psutil >= 5.8.0',
+        'term6-2': '- requests >= 2.25.1',
+        'term6-3': '- pip >= 19.2.3',
         manualInstallationDesc: '找到第一步下载的压缩文件执行以下命令',
         settings: '项目配置',
         p1:
