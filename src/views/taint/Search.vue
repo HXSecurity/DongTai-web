@@ -155,7 +155,7 @@ export default class Index extends VueBase {
       this.$message.error(res.msg)
       return
     }
-    const tableList = res.data.method_pools.map((item: any, index: number) => {
+    const tableList = res.data.method_pools.map((item: any) => {
       const vulnerablities_count_map = {}
       const relations_map = {}
       res.data.aggregation.vulnerablities_count.forEach((i: any) => {

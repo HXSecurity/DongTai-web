@@ -68,7 +68,7 @@ export default {
     strategyManage: 'Strategy',
     hookRule: 'Custom Rule',
     upgradeOnline: 'System upgrade',
-    sysInfo: 'System Information',
+    sysInfo: 'Agent Config',
     changePassword: 'Account',
     logManage: 'Log',
     user: 'Role Management',
@@ -601,7 +601,13 @@ export default {
     },
     sysInfo: {
       infoTitle: 'Authorization Information',
-      infolicense: '',
+      agentThreshold: 'Agent Threshold',
+      open:
+        'When the CPU utilization meets the threshold condition, the agent automatically stops.',
+      close:
+        'When the CPU utilization is lower than the threshold condition, the agent starts automatically.',
+      cpu: 'CPU Utilization      ',
+      enter: 'Enter',
     },
     projectManage: {
       title: 'APPLICATIONS',

@@ -224,13 +224,22 @@
       <el-table-column label="Agent" width="320" prop="alias">
         <template slot-scope="{ row }">
           <div v-if="!row.isEdit" style="display: flex; align-items: center">
-            <div class="dot" style="width: 280px">
+            <div class="dot" style="width: 280px" :title="row.alias">
               {{ row.alias }}
             </div>
             <i class="edit-icon el-icon-edit" @click="openEdit(row)"></i>
           </div>
-          <div v-else style="display: flex; align-items: center">
-            <el-input v-model="row.alias" style="width: 280px"></el-input>
+          <div
+            v-else
+            style="display: flex; align-items: center"
+            class="edit-agent"
+          >
+            <el-input
+              v-model="row.alias"
+              maxlength="100"
+              style="width: 280px"
+            ></el-input>
+            <span class="alias-num">{{ row.alias.length }}/100</span>
             <i class="edit-icon el-icon-check" @click="enterEdit(row)"></i>
             <i class="edit-icon el-icon-close" @click="closeEdit(row)"></i>
           </div>
@@ -757,6 +766,23 @@ export default class AgentManage extends VueBase {
   color: #4a72ae;
   &.el-icon-close {
     color: red;
+  }
+}
+.edit-agent {
+  position: relative;
+  .alias-num {
+    position: absolute;
+    display: inline-block;
+    width: 60px;
+    right: 42px;
+    top: 9px;
+    color: #959fb4;
+  }
+  /deep/.el-input__inner {
+    background: #f6f8fa;
+    border: none;
+    padding: 0;
+    padding-right: 60px;
   }
 }
 </style>

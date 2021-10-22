@@ -68,7 +68,7 @@ export default {
     strategyManage: '策略管理',
     hookRule: '自定义规则',
     upgradeOnline: '系统升级',
-    sysInfo: '系统信息',
+    sysInfo: 'Agent 配置',
     changePassword: '密码修改',
     logManage: '操作日志',
     user: '角色管理',
@@ -141,7 +141,8 @@ export default {
           '上传 DongTai JAVA 探针到应用服务器，查看需要部署探针的 JAVA Web应用的进程 id，然后运行命令安装探针，命令如下',
         term1:
           '检查Agent所在系统与DongTai OpenApi之间网络环境是否可以互相连接。',
-        term2: '确认Agent端所在环境在我们的支持列表中。',
+        term2:
+          '确认Agent端所在环境在我们的支持列表中。支持列表：Any Java EEServer、Tomcat、JBoss、Jetty、Resin、WebLogic、WebSphere',
         term3: ``,
         term4: ``,
         term5: ``,
@@ -590,7 +591,11 @@ export default {
     },
     sysInfo: {
       infoTitle: '授权信息',
-      infolicense: '',
+      agentThreshold: 'Agent 停止阈值',
+      open: '当CPU利用率满足阈值条件时，Agent自动停止。',
+      close: '当CPU利用率低于阈值条件时，Agent自动启动。',
+      cpu: 'CPU 利用率 ',
+      enter: '确定',
     },
     projectManage: {
       title: '项目列表',

@@ -64,19 +64,22 @@
               $t('message.clearAll')
             }}</el-button>
           </div>
-          <div v-loading="mLoading">
+          <div
+            v-loading="mLoading"
+            v-infinite-scroll="loadMore"
+            class="msg-box"
+            infinite-scroll-distance="20"
+          >
             <div v-for="item in mList" :key="item.id" class="badge-info">
               <div>
-                <el-badge is-dot class="item" :hidden="item.is_read">
-                  <div class="info">
-                    {{ item.message || $t('message.Empty')
-                    }}<i
-                      v-if="item.relative_url"
-                      class="el-icon-link"
-                      @click="goPath(item.relative_url)"
-                    ></i>
-                  </div>
-                </el-badge>
+                <div class="info">
+                  {{ item.message || $t('message.Empty')
+                  }}<i
+                    v-if="item.relative_url"
+                    class="el-icon-link"
+                    @click="goPath(item.relative_url)"
+                  ></i>
+                </div>
                 <div class="time">{{ fmtStr(item.create_time * 1000) }}</div>
               </div>
               <div class="close" @click="deleteMessage(item.id)">
@@ -84,15 +87,6 @@
               </div>
             </div>
           </div>
-
-          <el-pagination
-            layout="prev, pager, next"
-            :page-size="mSize"
-            :total="mTotal"
-            :current-page="num_pages"
-            @current-change="handleCurrentChange"
-          >
-          </el-pagination>
           <el-badge slot="reference" :value="count" :hidden="!count">
             <i style="font-size: 26px" class="el-icon-bell"></i>
           </el-badge>
@@ -152,6 +146,9 @@ import { formatTimestamp } from '../../utils/utils'
   },
 })
 export default class Header extends VueBase {
+  private loaloadMored() {
+    console.log(123)
+  }
   private logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
   private logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
   changelogo() {
@@ -233,6 +230,9 @@ export default class Header extends VueBase {
   }
   private count = 0
   async messageUnreadCount() {
+    if (!this.userInfo) {
+      return
+    }
     const res = await this.services.message.unreadCount()
     if (res.status === 201) {
       this.count = res.data.new_message_count
@@ -245,7 +245,7 @@ export default class Header extends VueBase {
   private mTotal = 0
   private mLoading = false
   private num_pages = 1
-  private mSize = 5
+  private mSize = 999
   private showPop = false
   private async deleteMessage(id: number) {
     this.$confirm(
@@ -270,6 +270,7 @@ export default class Header extends VueBase {
       }
       if (res.status === 201) {
         this.showMessage()
+        this.messageUnreadCount()
       } else {
         this.$message.error(res.msg)
       }
@@ -308,12 +309,10 @@ export default class Header extends VueBase {
   }
   private timer: any = null
   created() {
-    if (this.userInfo) {
+    this.messageUnreadCount()
+    this.timer = setInterval(() => {
       this.messageUnreadCount()
-      this.timer = setInterval(() => {
-        this.messageUnreadCount()
-      }, 60 * 1000)
-    }
+    }, 60 * 1000)
     emitter.on('changelogo', this.changelogo)
   }
 }
@@ -448,5 +447,9 @@ export default class Header extends VueBase {
     margin-left: 2px;
     cursor: pointer;
   }
+}
+.msg-box {
+  height: 400px;
+  overflow: auto;
 }
 </style>

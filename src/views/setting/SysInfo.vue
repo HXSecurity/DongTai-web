@@ -1,46 +1,36 @@
 <template>
   <main>
-    <div class="moudleTitle">授权信息</div>
+    <div class="moudleTitle">{{ $('views.sysInfo.infoTitle') }}</div>
     <div class="form-box">
-      <div class="moudleTitle-th">
-        cpu阈值
-        <el-popover placement="top-start" width="300" trigger="hover">
-          <p>当CPU利用率满足阈值条件时，Agent自动停止。</p>
-          <p>当CPU利用率低于阈值条件时，Agent自动启动。</p>
-          <i slot="reference" class="el-icon-question"></i>
-        </el-popover>
+      <div class="cpu-box">
+        <div class="moudleTitle-th">
+          {{ $('views.sysInfo.agentThreshold') }}
+          <el-popover placement="top-start" width="340" trigger="hover">
+            <p>{{ $('views.sysInfo.open') }}</p>
+            <p>{{ $('views.sysInfo.close') }}</p>
+            <span slot="reference"> <i class="el-icon-question"></i>： </span>
+          </el-popover>
+        </div>
+        <span style="margin-right: 16px">{{ $('views.sysInfo.cpu') }} ≥ </span>
+        <el-input-number
+          v-model="form.cpu_limit"
+          :max="100"
+          :min="0"
+          :controls="false"
+          style="margin-right: 12px"
+          class="num-input"
+        ></el-input-number>
+        <span> %</span>
       </div>
-
-      <el-form
-        ref="form"
-        :disabled="userInfo.role !== 1 && userInfo.role !== 2"
-        class="form"
-        :model="form"
-        label-width="120px"
-      >
-        <el-form-item label="cpu利用率">
-          <div class="cpu-box">
-            <span style="margin-right: 16px"> ≥ </span>
-            <el-input-number
-              v-model="form.cpu_limit"
-              :max="100"
-              :min="0"
-              :controls="false"
-              style="margin-right: 12px"
-            ></el-input-number>
-            <span> %</span>
-          </div>
-        </el-form-item>
-        <el-form-item class="btn-box">
-          <el-button
-            v-if="userInfo.role === 1 || userInfo.role === 2"
-            class="btn"
-            type="primary"
-            @click="profileModified"
-            >确定</el-button
-          >
-        </el-form-item>
-      </el-form>
+      <div class="btn-box">
+        <el-button
+          v-if="userInfo.role === 1 || userInfo.role === 2"
+          class="btn"
+          type="primary"
+          @click="profileModified"
+          >{{ $('views.sysInfo.enter') }}</el-button
+        >
+      </div>
     </div>
   </main>
 </template>
@@ -118,9 +108,9 @@ main {
   border-bottom: 1px solid #e6e9ec;
 }
 .moudleTitle-th {
-  width: 470px;
+  width: 160px;
   font-size: 16px;
-  margin-bottom: 12px;
+  display: flex;
 }
 
 .btn-box {
@@ -135,14 +125,19 @@ main {
     border-color: #4a72ae;
     border-radius: 2px;
     margin-right: 20px;
+    margin-top: 20px;
+    background: #4a72ae;
   }
 }
 
 .cpu-box {
   display: flex;
-  .label_th {
-    font-size: 12px;
-    width: 140px;
+  justify-content: flex-start;
+  align-items: center;
+  .num-input {
+    /deep/.el-input__inner {
+      border-radius: 2px;
+    }
   }
 }
 
