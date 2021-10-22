@@ -343,7 +343,6 @@ export default class Deploy extends VueBase {
         this.$t('views.deploy.python.term4'),
         this.$t('views.deploy.python.term4-1'),
         this.$t('views.deploy.python.term4-2'),
-        this.$t('views.deploy.python.term5'),
         this.$t('views.deploy.python.term6'),
         this.$t('views.deploy.python.term6-1'),
         this.$t('views.deploy.python.term6-2'),

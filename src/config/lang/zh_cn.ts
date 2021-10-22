@@ -167,7 +167,6 @@ export default {
         term4: 'Web框架：',
         'term4-1': '- Django：3.0-3.2',
         'term4-2': '- Flask：1.0-1.2',
-        term5: 'Web Service：Django REST Framework',
         term6: 'python依赖包：',
         'term6-1': '- psutil >= 5.8.0',
         'term6-2': '- requests >= 2.25.1',
