@@ -213,6 +213,14 @@
                     ></MyMarkdownIt>
                   </div>
                 </el-tab-pane>
+                <el-tab-pane label="Flask" name="Flask">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
               </el-tabs>
             </div>
           </template>
