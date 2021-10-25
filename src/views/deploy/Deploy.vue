@@ -48,7 +48,7 @@
         </div>
         <div class="download">
           <p v-if="language === 'java'" class="download-desc margin-t-8">
-            {{ obj['java'].term[1] }}
+            {{ $t('views.deploy.java.title2') }}
           </p>
           <div class="download-item margin-t-16">
             <div class="label">{{ $t('views.deploy.downloadWorld') }}：</div>
@@ -213,6 +213,14 @@
                     ></MyMarkdownIt>
                   </div>
                 </el-tab-pane>
+                <el-tab-pane label="Flask" name="Flask">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
               </el-tabs>
             </div>
           </template>
@@ -341,8 +349,12 @@ export default class Deploy extends VueBase {
         this.$t('views.deploy.python.term2'),
         this.$t('views.deploy.python.term3'),
         this.$t('views.deploy.python.term4'),
-        this.$t('views.deploy.python.term5'),
+        this.$t('views.deploy.python.term4-1'),
+        this.$t('views.deploy.python.term4-2'),
         this.$t('views.deploy.python.term6'),
+        this.$t('views.deploy.python.term6-1'),
+        this.$t('views.deploy.python.term6-2'),
+        this.$t('views.deploy.python.term6-3'),
       ],
       download: 'pip3  install ./dongtai-agent-python.tar.gz',
       video:

@@ -272,14 +272,15 @@ const routes: Array<RouteConfig> = [
       //   },
       //   component: () => import('@/views/setting/UpgradeOnline.vue'),
       // },
-      // {
-      //   path: 'sysInfo',
-      //   name: 'sysInfo',
-      //   meta: {
-      //     name: i18n.t('menu.sysInfo'),
-      //   },
-      //   component: () => import('@/views/setting/SysInfo.vue'),
-      // },
+      {
+        path: 'sysInfo',
+        name: 'sysInfo',
+        meta: {
+          i18n: 'menu.sysInfo',
+          name: i18n.t('menu.sysInfo'),
+        },
+        component: () => import('@/views/setting/SysInfo.vue'),
+      },
       {
         path: 'changePassword',
         name: 'changePassword',
@@ -590,14 +591,15 @@ const adminRoutes: Array<RouteConfig> = [
       //   },
       //   component: () => import('@/views/setting/UpgradeOnline.vue'),
       // },
-      // {
-      //   path: 'sysInfo',
-      //   name: 'sysInfo',
-      //   meta: {
-      //     name: i18n.t('menu.sysInfo'),
-      //   },
-      //   component: () => import('@/views/setting/SysInfo.vue'),
-      // },
+      {
+        path: 'sysInfo',
+        name: 'sysInfo',
+        meta: {
+          i18n: 'menu.sysInfo',
+          name: i18n.t('menu.sysInfo'),
+        },
+        component: () => import('@/views/setting/SysInfo.vue'),
+      },
       {
         path: 'changePassword',
         name: 'changePassword',
@@ -879,14 +881,15 @@ const userRoutes: Array<RouteConfig> = [
       //   },
       //   component: () => import('@/views/setting/UpgradeOnline.vue'),
       // },
-      // {
-      //   path: 'sysInfo',
-      //   name: 'sysInfo',
-      //   meta: {
-      //     name: i18n.t('menu.sysInfo'),
-      //   },
-      //   component: () => import('@/views/setting/SysInfo.vue'),
-      // },
+      {
+        path: 'sysInfo',
+        name: 'sysInfo',
+        meta: {
+          i18n: 'menu.sysInfo',
+          name: i18n.t('menu.sysInfo'),
+        },
+        component: () => import('@/views/setting/SysInfo.vue'),
+      },
       {
         path: 'changePassword',
         name: 'changePassword',

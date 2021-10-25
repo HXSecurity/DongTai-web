@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="change-pwd">
     <el-form
       ref="ruleForm"
+      class="ruleForm"
       :model="submitForm"
       :label-width="$i18n.locale == 'en' ? '170px' : '100px'"
       style="margin-top: 54px"
@@ -48,7 +49,7 @@
         <el-button
           size="mini"
           type="primary"
-          style="width: 104px"
+          class="btn"
           @click="changePassword"
         >
           {{ $t('views.changePassword.submit') }}
@@ -143,4 +144,21 @@ export default class ChangePassword extends VueBase {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.change-pwd {
+  display: flex;
+  justify-content: center;
+  .ruleForm {
+    width: 470px;
+  }
+  /deep/.el-input__inner {
+    border-radius: 2px;
+  }
+
+  .btn {
+    background: #4a72ae;
+    border-color: #4a72ae;
+    background: #4a72ae;
+  }
+}
+</style>
