@@ -187,11 +187,24 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column width="160px" :label="$t('views.agentManage.timestapm')">
+      <el-table-column width="170px" :label="$t('views.agentManage.timestapm')">
         <template slot-scope="scope">
           {{ scope.row.latest_time | formatTimestamp }}
+          <el-popover placement="top-start" width="170" trigger="hover">
+            <p style="font-size: 12px; color: #ccc; margin-bottom: 6px">
+              Agent 注册时间:
+            </p>
+            <p>{{ scope.row.register_time | formatTimestamp }}</p>
+            <i slot="reference" class="el-icon-info"></i>
+          </el-popover>
         </template>
       </el-table-column>
+      <el-table-column
+        v-if="userInfo.role === 1 || userInfo.role === 2"
+        :label="$t('views.agentManage.startupTime')"
+        prop="startup_time"
+        width="180px"
+      ></el-table-column>
       <el-table-column
         :label="$t('views.agentManage.owner')"
         prop="owner"
@@ -205,6 +218,30 @@
         <template slot-scope="{ row }">
           <div class="dot">
             {{ row.language }}
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="Agent" width="320" prop="alias">
+        <template slot-scope="{ row }">
+          <div v-if="!row.isEdit" style="display: flex; align-items: center">
+            <div class="dot" style="width: 280px" :title="row.alias">
+              {{ row.alias }}
+            </div>
+            <i class="edit-icon el-icon-edit" @click="openEdit(row)"></i>
+          </div>
+          <div
+            v-else
+            style="display: flex; align-items: center"
+            class="edit-agent"
+          >
+            <el-input
+              v-model="row.alias"
+              maxlength="100"
+              style="width: 280px"
+            ></el-input>
+            <span class="alias-num">{{ row.alias.length }}/100</span>
+            <i class="edit-icon el-icon-check" @click="enterEdit(row)"></i>
+            <i class="edit-icon el-icon-close" @click="closeEdit(row)"></i>
           </div>
         </template>
       </el-table-column>
@@ -237,13 +274,6 @@
             </template>
 
             <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="Agent" width="320" prop="token">
-        <template slot-scope="{ row }">
-          <div class="dot" style="width: 320px">
-            {{ row.token }}
           </div>
         </template>
       </el-table-column>
@@ -327,6 +357,34 @@ export default class AgentManage extends VueBase {
       }, 400)
     }
   }
+
+  private openEdit(item: any) {
+    item.isEdit = true
+    item.backAlias = item.alias
+  }
+
+  private closeEdit(item: any) {
+    item.isEdit = false
+    item.alias = item.backAlias
+  }
+
+  get userInfo() {
+    return this.$store.getters.userInfo
+  }
+
+  private async enterEdit(item: any) {
+    const res = await this.services.setting.aliasModified({
+      id: item.id,
+      alias: item.alias,
+    })
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+      item.isEdit = false
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+
   private handleSelectionChange(val: any) {
     this.multipleSelection = val
   }
@@ -352,14 +410,15 @@ export default class AgentManage extends VueBase {
   }
 
   private async reflashTable() {
+    if (this.tableData.some((item: any) => item.isEdit)) {
+      return
+    }
     const params = {
       page: this.page,
       pageSize: this.pageSize,
       state: this.state,
     }
-    this.loadingStart()
     const { status, msg, data } = await this.services.setting.agentList(params)
-    this.loadingDone()
     if (status !== 201) {
       this.$message({
         type: 'error',
@@ -407,6 +466,8 @@ export default class AgentManage extends VueBase {
     }
     this.tableData = data
     this.tableData.forEach((item: any) => {
+      this.$set(item, 'isEdit', false)
+      this.$set(item, 'backAlias', '')
       try {
         item.system_load = JSON.parse(item.system_load)
       } catch (err) {
@@ -696,5 +757,32 @@ export default class AgentManage extends VueBase {
 }
 .icon-disabled {
   cursor: not-allowed;
+}
+
+.edit-icon {
+  margin-left: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #4a72ae;
+  &.el-icon-close {
+    color: red;
+  }
+}
+.edit-agent {
+  position: relative;
+  .alias-num {
+    position: absolute;
+    display: inline-block;
+    width: 60px;
+    right: 42px;
+    top: 9px;
+    color: #959fb4;
+  }
+  /deep/.el-input__inner {
+    background: #f6f8fa;
+    border: none;
+    padding: 0;
+    padding-right: 60px;
+  }
 }
 </style>

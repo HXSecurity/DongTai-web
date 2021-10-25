@@ -132,6 +132,17 @@ export default class Login extends VueBase {
         (navigator as any).userLanguage
       lang = lang.substr(0, 2)
       await this.services.setting.setLang(lang)
+      switch (lang) {
+        case 'zh':
+          this.$i18n.locale = 'zh_cn'
+          break
+        case 'en':
+          this.$i18n.locale = 'en'
+          break
+        default:
+          this.$i18n.locale = 'zh_cn'
+          break
+      }
       await this.$store.dispatch('user/getUserInfo')
       await this.$router.push('/project')
     } else if (status === 204) {

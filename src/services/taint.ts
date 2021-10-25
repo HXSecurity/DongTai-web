@@ -19,6 +19,10 @@ export default () =>
       return request.get('/method_pools', { params })
     }
 
+    timerange(): Promise<iResponse> {
+      return request.get('/engine/method_pool/timerange')
+    }
+
     methodPoolSearch(
       latest: number,
       params: methodPoolSearchParams

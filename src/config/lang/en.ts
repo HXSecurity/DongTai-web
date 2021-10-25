@@ -40,6 +40,15 @@ export default {
     diffPassword: 'Password does Not match',
     downloadError: 'Please check the OpenAPI configuration',
   },
+  message: {
+    notice: 'Notice',
+    clearAll: 'Clear All',
+    Empty: 'Empty',
+    warning: 'This operation will delete the message. Do you want to continue?',
+    tips: 'Tips',
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+  },
   menu: {
     projectEdit: 'ProjectEdit',
     home: 'Home',
@@ -59,7 +68,7 @@ export default {
     strategyManage: 'Strategy',
     hookRule: 'Custom Rule',
     upgradeOnline: 'System upgrade',
-    sysInfo: 'System Information',
+    sysInfo: 'Agent Config',
     changePassword: 'Account',
     logManage: 'Log',
     user: 'Role Management',
@@ -144,15 +153,21 @@ export default {
         p51: 'If the Web Service is unable to access to ',
         p52:
           'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        title2:
+          'Ensure the service of installing the probe meet the requirement as below',
       },
       python: {
         ManualInstallation: 'Manual Installation',
         term1: '1. Python Version: 3.3 and above',
         term2: '2. Interpreter: CPython',
         term3: '3. Middleware: uWSGI',
-        term4: '4. Web Framework: Django',
-        term5: '5. Web Service: Django REST Framework',
-        term6: '6. Module: psutil verion should be include and above 5.8.0',
+        term4: '4. Web Framework: ',
+        'term4-1': ' - Django：3.0-3.2',
+        'term4-2': ' - Flask：1.0-1.2',
+        term6: '5. Module: ',
+        'term6-1': ' - psutil >= 5.8.0',
+        'term6-2': ' - requests >= 2.25.1',
+        'term6-3': ' - pip >= 19.2.3',
         manualInstallationDesc:
           'Extract download file with the following command.',
         settings: 'Settings',
@@ -215,6 +230,31 @@ export default {
       res_body: 'Response Body',
       empty: 'No matches found for your search',
       warning: 'Enter search content',
+      contain: 'contain',
+      exclude: 'exclude',
+
+      farthest: 'farthest',
+      lately: 'lately',
+
+      day: 'day',
+      hour: 'hour',
+      minute: 'minute',
+      second: 'second',
+
+      timeWarning: 'Please enter an integer greater than 0',
+      enterTime: 'Enter',
+
+      quickSelection: 'Quick Selection',
+
+      commonlyU: 'Commonly',
+
+      today: 'today',
+      '24Hours': '24 Hours',
+      thisWeek: 'This Week',
+      '7Day': '7 Day',
+      '15Minutes': '15 Minutes',
+      '30Minutes': '30 Minutes',
+      '1Hour': '1 Hour',
     },
     hookPage: {
       sourceRule: 'Source Rules',
@@ -529,6 +569,7 @@ export default {
       healthy: 'Health Status',
       language: 'Language',
       selectWarning: 'Please Select The Agent To Operate',
+      startupTime: 'Startup Time（ms）',
     },
     strategyManage: {
       no: 'No',
@@ -566,7 +607,13 @@ export default {
     },
     sysInfo: {
       infoTitle: 'Authorization Information',
-      infolicense: '',
+      agentThreshold: 'Agent Threshold',
+      open:
+        'When the CPU utilization meets the threshold condition, the agent automatically stops.',
+      close:
+        'When the CPU utilization is lower than the threshold condition, the agent starts automatically.',
+      cpu: 'CPU Utilization      ',
+      enter: 'Enter',
     },
     projectManage: {
       title: 'APPLICATIONS',
