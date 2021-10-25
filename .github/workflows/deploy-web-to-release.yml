@@ -60,6 +60,15 @@ jobs:
             dongtai/dongtai-web:${{ steps.release.outputs.version }}
             dongtai/dongtai-web:latest
 
+      - name: Deploy-To-Prod
+        uses: wahyd4/kubectl-helm-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: |
+            find deploy/deploy-eks-iast-saas-web-prod.yml -type f -exec sed -i 's/VERSION/${{ steps.release.outputs.version }}/g' {} \;
+            ls deploy/deploy-eks-iast-saas-web-prod.yml | xargs -I {} kubectl apply -f {}
+
       - name: finish build
         uses: joelwmale/webhook-action@master
         with:
