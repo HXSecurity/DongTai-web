@@ -3,11 +3,12 @@ name: Deploy DongTai-Web to AWS
 on:
   pull_request:
     branches: [ main ]
-
+  push:
+    branches: [ main ]
 jobs:
-  build:
+  Deploy-To-Test:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x]
