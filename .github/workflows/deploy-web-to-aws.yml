@@ -51,8 +51,8 @@ jobs:
           context: .
           push: true
           tags: |
-            registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:latest
-            registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web:1.0.${{github.run_number}}
+            registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:latest
+            registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:1.0.${{github.run_number}}
 
       - uses: actions/checkout@master
       - name: deploy to cluster
