@@ -1,14 +1,14 @@
 <template>
   <div class="table-body">
     <div class="flex-between">
-      <div style="flex: 1">
+      <div :style="{ display: 'flex', flex: 1 }">
         <el-select
           v-model="rule_type"
           class="search-input"
           size="small"
           :placeholder="$t('views.hookPage.selectType')"
           filterable
-          clearable
+          clearab
           @change="getTable"
         >
           <el-option
@@ -18,6 +18,19 @@
             :value="item.id"
           ></el-option>
         </el-select>
+        <el-input
+          v-model="keyword"
+          size="small"
+          style="width: 260px"
+          class="search-input"
+          :placeholder="$t('views.hookPage.searchDesc')"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="getTable"
+          ></el-button>
+        </el-input>
       </div>
       <div>
         <el-button
@@ -389,7 +402,7 @@ export default class HookTable extends VueBase {
   @Prop({ default: '0', type: String }) ruleType!: string
   @Prop({ default: 1, type: Number }) activeLanguage!: number
   @Prop({ default: '', type: String }) activeLanguageName!: string
-
+  keyword = ''
   hookTypeDialog = false
   hookDialog = false
   rule_type = ''
@@ -759,6 +772,7 @@ export default class HookTable extends VueBase {
       type: this.ruleType,
       strategy_type: this.rule_type,
       language_id: this.activeLanguage,
+      keyword: this.keyword,
     })
     this.loadingDone()
     if (status !== 201) {

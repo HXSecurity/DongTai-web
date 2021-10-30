@@ -89,4 +89,18 @@ export default () =>
     projectsRecheck(id: string): Promise<iResponse> {
       return request.get(`/vul/recheck?projectId=${id}`)
     }
+
+    async_add(params: any): Promise<iResponse> {
+      return request.post(`/project/report/async_add`, params)
+    }
+
+    exportList(params: any): Promise<iResponse> {
+      return request.get(
+        `project/report/list?page=${params.page}&page_size=${params.pageSize}`
+      )
+    }
+
+    exportDelete(params: any): Promise<iResponse> {
+      return request.post(`/project/report/delete`, params)
+    }
   })()

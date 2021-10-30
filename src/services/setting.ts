@@ -121,6 +121,7 @@ export default () =>
       pageSize: number
       strategy_type?: any
       language_id: number
+      keyword?: string
     }): Promise<iResponse> {
       return request.get('/engine/hook/rules', { params })
     }
