@@ -33,9 +33,6 @@ export default class DepartmentIndex extends VueBase {
     )
     return nowRoute[0].children
   }
-  created() {
-    this.getRouter()
-  }
 }
 </script>
 

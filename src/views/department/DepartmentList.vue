@@ -2,42 +2,50 @@
   <main class="depart">
     <div>
       <div class="top">
-        <el-button class="btn">
-          <i class="el-icon-circle-plus-outline"></i> 新增部门
+        <el-button class="btn" style="visibility: hidden">
+          <i class="el-icon-circle-plus-outline" @click="addDepart()"></i>
+          新增部门
         </el-button>
         <el-input class="ipt" placeholder="输入部门名称进行搜索"></el-input>
       </div>
       <div class="bottom">
-        <el-table :data="tableData" class="depart-table" style="width: 100%">
-          <el-table-column prop="date" label="日期" width="180">
+        <el-table
+          row-key="id"
+          :data="tableData"
+          :tree-props="{ children: 'children' }"
+          style="width: 100%"
+          default-expand-all
+        >
+          <el-table-column sortable prop="label" label="名称">
           </el-table-column>
-          <el-table-column prop="name" label="姓名" width="180">
-          </el-table-column>
-          <el-table-column prop="address" label="地址"> </el-table-column>
           <el-table-column label="操作">
             <template slot-scope="scope">
-              <el-button type="text" @click="openDialog('edit', scope.row)"
+              <el-button type="text" @click="addDepart(scope.row)"
+                >新增部门</el-button
+              >
+              <el-button
+                v-if="scope.row.id > 0"
+                type="text"
+                @click="editDepart(scope.row)"
                 >编辑</el-button
               >
-              <el-button type="text">删除</el-button>
+              <el-button
+                v-if="scope.row.id > 0"
+                type="text"
+                @click="deleteDepart(scope.row)"
+                >删除</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
-        <div class="pagination">
-          <el-pagination
-            :current-page.sync="currentPage"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
-            layout="total, prev,pager,next,jumper"
-            :total="1000"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          >
-          </el-pagination>
-        </div>
       </div>
-      <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-        <el-form :model="form" label-width="140px" :rules="rules">
+      <el-dialog title="部门操作" :visible.sync="dialogFormVisible">
+        <el-form
+          ref="ruleForm"
+          :model="form"
+          label-width="140px"
+          :rules="rules"
+        >
           <el-form-item label="部门名称" prop="name">
             <el-input
               v-model="form.name"
@@ -45,42 +53,10 @@
               autocomplete="off"
             ></el-input>
           </el-form-item>
-          <el-form-item label="负责人" prop="region">
-            <el-select
-              v-model="form.region"
-              class="depart-dialog-item"
-              placeholder="请选择活动区域"
-            >
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="用户">
-            <el-select
-              v-model="form.region"
-              class="depart-dialog-item"
-              placeholder="请选择活动区域"
-            >
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-              <el-option>
-                <div class="add-user">
-                  <i class="el-icon-circle-plus-outline"></i> 新增用户
-                </div>
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="启用">
-            <div class="depart-dialog-item">
-              <el-switch v-model="form.value"> </el-switch>
-            </div>
-          </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"
-            >确 定</el-button
-          >
+          <el-button type="primary" @click="enterAdd">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -97,40 +73,104 @@ import { formatTimestamp } from '@/utils/utils'
 @Component({ name: 'DepartmentList' })
 export default class DepartmentList extends VueBase {
   private dialogFormVisible = false
-  private openDialog(type: string, row?: any) {
+  private type = 'add'
+  private addDepart(row: any) {
+    this.type = 'add'
     this.dialogFormVisible = true
+    this.form.talent = row.departmentId
+    this.form.parent = row.id > 0 ? row.id : -1
+    console.log(this.form)
+  }
+  private editDepart(row: any) {
+    this.type = 'edit'
+    this.dialogFormVisible = true
+    this.form.talent = row.departmentId
+    this.form.id = row.id
+    this.form.name = row.label
+  }
+
+  private async deleteDepart(row: any) {
+    const params = { talent: 0, id: 0 }
+    params.talent = row.departmentId
+    params.id = row.id
+    const res = await this.services.department.departmentDel(row.id, params)
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+      this.departmentList()
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+
+  private enterAdd() {
+    ;(this.$refs.ruleForm as Form).validate(async (valid: any) => {
+      if (valid) {
+        if (this.form.name === '') {
+          this.$message.warning('请输入部门名称')
+          return
+        }
+        let res: any
+        switch (this.type) {
+          case 'add':
+            res = await this.services.department.departmentAdd(this.form)
+            break
+          case 'edit':
+            res = await this.services.department.departmentUpdate(
+              this.form.id,
+              this.form
+            )
+            break
+        }
+        if (res.status === 201) {
+          this.$message.success(res.msg)
+          this.form = {
+            id: 0,
+            name: '',
+            parent: 0,
+            talent: 0,
+          }
+          this.dialogFormVisible = false
+          this.departmentList()
+        } else {
+          this.$message.error(res.msg)
+        }
+      }
+    })
   }
   private form = {
     name: '',
-    region: '',
-    value: true,
+    parent: 0,
+    id: 0,
+    talent: 0,
   }
   private rules = {
-    name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
-    region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
+    name: [{ required: true, message: '请输入部门名称', trigger: 'change' }],
   }
-  private tableData = [
-    {
-      date: '2016-05-02',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1518 弄',
-    },
-    {
-      date: '2016-05-04',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1517 弄',
-    },
-    {
-      date: '2016-05-01',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1519 弄',
-    },
-    {
-      date: '2016-05-03',
-      name: '王小虎',
-      address: '上海市普陀区金沙江路 1516 弄',
-    },
-  ]
+  private tableData = []
+  fmtOptions(options: Array<any>, id: number) {
+    options.forEach((item: any) => {
+      if (id) {
+        item.departmentId = id
+      } else {
+        item.departmentId = -item.id
+      }
+      if (item.children.length) {
+        this.fmtOptions(item.children, item.departmentId)
+      } else {
+        delete item.children
+      }
+    })
+  }
+  async departmentList() {
+    const res = await this.services.user.departmentList()
+    if (res.status === 201) {
+      this.fmtOptions(res.data, 0)
+      this.tableData = res.data
+    }
+  }
+  created() {
+    this.departmentList()
+  }
 }
 </script>
 

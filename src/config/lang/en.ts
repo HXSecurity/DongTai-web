@@ -82,6 +82,7 @@ export default {
     chinese: 'Chinese',
     englist: 'English',
     statusMonitoring: 'Status Monitoring',
+    userSetting: 'User Setting',
   },
   views: {
     changeLogo: {
@@ -757,6 +758,7 @@ export default {
       deleteConfirmPop: 'Prompt',
       edit: 'Modify',
       del: 'Delete',
+      talent: 'Talent',
     },
     talent: {
       title: {

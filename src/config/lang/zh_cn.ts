@@ -82,6 +82,7 @@ export default {
     chinese: '简体中文',
     englist: '英文',
     statusMonitoring: '状态监控',
+    userSetting: '用户管理',
   },
   views: {
     changeLogo: {
@@ -741,6 +742,7 @@ export default {
       deleteConfirmPop: '提示',
       edit: '修改',
       del: '删除',
+      talent: '部门名称',
     },
     talent: {
       title: {
