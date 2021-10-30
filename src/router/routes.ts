@@ -353,6 +353,15 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/department/DepartmentList.vue'),
       },
+      {
+        path: 'userSetting',
+        name: 'userSetting',
+        meta: {
+          i18n: 'menu.userSetting',
+          name: i18n.t('menu.userSetting'),
+        },
+        component: () => import('@/views/department/userSetting.vue'),
+      },
     ],
   },
   {
@@ -671,6 +680,15 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.department'),
         },
         component: () => import('@/views/department/DepartmentList.vue'),
+      },
+      {
+        path: 'userSetting',
+        name: 'userSetting',
+        meta: {
+          i18n: 'menu.userSetting',
+          name: i18n.t('menu.userSetting'),
+        },
+        component: () => import('@/views/department/userSetting.vue'),
       },
     ],
   },

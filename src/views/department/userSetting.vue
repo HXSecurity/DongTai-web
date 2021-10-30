@@ -2,7 +2,7 @@
   <main class="depart">
     <div>
       <div class="top">
-        <el-button class="btn">
+        <el-button class="btn" @click="openDialog('add')">
           <i class="el-icon-circle-plus-outline"></i> 新增部门
         </el-button>
         <el-input class="ipt" placeholder="输入部门名称进行搜索"></el-input>
@@ -36,54 +36,78 @@
           </el-pagination>
         </div>
       </div>
-      <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-        <el-form :model="form" label-width="140px" :rules="rules">
-          <el-form-item label="部门名称" prop="name">
-            <el-input
-              v-model="form.name"
-              class="depart-dialog-item"
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="负责人" prop="region">
-            <el-select
-              v-model="form.region"
-              class="depart-dialog-item"
-              placeholder="请选择活动区域"
-            >
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="用户">
-            <el-select
-              v-model="form.region"
-              class="depart-dialog-item"
-              placeholder="请选择活动区域"
-            >
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
-              <el-option>
-                <div class="add-user">
-                  <i class="el-icon-circle-plus-outline"></i> 新增用户
-                </div>
-              </el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item label="启用">
-            <div class="depart-dialog-item">
-              <el-switch v-model="form.value"> </el-switch>
-            </div>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogFormVisible = false"
-            >确 定</el-button
-          >
-        </div>
-      </el-dialog>
     </div>
+
+    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
+      <el-form :model="form" label-width="140px" :rules="rules">
+        <el-form-item label="部门名称" prop="name">
+          <el-input
+            v-model="form.name"
+            class="depart-dialog-item"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="用户邮箱" prop="name">
+          <el-input
+            v-model="form.name"
+            class="depart-dialog-item"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="角色" prop="region">
+          <el-select
+            v-model="form.region"
+            class="depart-dialog-item"
+            placeholder="请选择活动区域"
+          >
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="所属部门" prop="region">
+          <el-select
+            v-model="form.region"
+            class="depart-dialog-item"
+            placeholder="请选择活动区域"
+          >
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="name">
+          <el-input
+            v-model="form.name"
+            class="depart-dialog-item"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="密码" prop="name">
+          <el-input
+            v-model="form.name"
+            class="depart-dialog-item"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="确认密码" prop="name">
+          <el-input
+            v-model="form.name"
+            class="depart-dialog-item"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="启用">
+          <div class="depart-dialog-item">
+            <el-switch v-model="form.value"> </el-switch>
+          </div>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
   </main>
 </template>
 
@@ -174,17 +198,5 @@ export default class DepartmentList extends VueBase {
       justify-content: flex-end;
     }
   }
-}
-/deep/.depart-dialog-item {
-  width: calc(100% - 160px);
-}
-/deep/.add-user {
-  margin-left: -20px;
-  margin-right: -20px;
-  padding-left: 20px;
-  padding-right: 20px;
-  font-weight: 500;
-  color: #4a72ae;
-  border-top: 1px solid #ccc;
 }
 </style>
