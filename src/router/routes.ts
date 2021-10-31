@@ -339,8 +339,8 @@ const routes: Array<RouteConfig> = [
     redirect: '/department/departmentList',
     meta: {
       isMenu: true,
-      i18n: 'menu.department',
-      name: i18n.t('menu.department'),
+      i18n: 'menu.roleSetting',
+      name: i18n.t('menu.roleSetting'),
     },
     component: () => import('@/views/department/Index.vue'),
     children: [
@@ -667,8 +667,8 @@ const adminRoutes: Array<RouteConfig> = [
     redirect: '/department/departmentList',
     meta: {
       isMenu: true,
-      i18n: 'menu.department',
-      name: i18n.t('menu.department'),
+      i18n: 'menu.roleSetting',
+      name: i18n.t('menu.roleSetting'),
     },
     component: () => import('@/views/department/Index.vue'),
     children: [

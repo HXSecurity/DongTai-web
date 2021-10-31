@@ -1,7 +1,7 @@
 <template>
   <div class="container depart-box">
     <div class="left">
-      <div class="title">组织管理</div>
+      <div class="title">{{ $t('menu.roleSetting') }}</div>
       <div class="dapart-list">
         <div
           v-for="(item, index) in getRouter"

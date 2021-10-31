@@ -4,9 +4,11 @@
       <div class="top">
         <el-button class="btn" style="visibility: hidden">
           <i class="el-icon-circle-plus-outline" @click="addDepart()"></i>
-          新增部门
         </el-button>
-        <el-input class="ipt" placeholder="输入部门名称进行搜索"></el-input>
+        <el-input
+          class="ipt"
+          :placeholder="$t('views.strategyManage.twnamep')"
+        ></el-input>
       </div>
       <div class="bottom">
         <el-table
@@ -16,37 +18,43 @@
           style="width: 100%"
           default-expand-all
         >
-          <el-table-column sortable prop="label" label="名称">
+          <el-table-column
+            prop="label"
+            :label="$t('views.strategyManage.tname')"
+          >
           </el-table-column>
-          <el-table-column label="操作">
+          <el-table-column :label="$t('views.strategyManage.operate')">
             <template slot-scope="scope">
-              <el-button type="text" @click="addDepart(scope.row)"
-                >新增部门</el-button
-              >
+              <el-button type="text" @click="addDepart(scope.row)">{{
+                $t('views.strategyManage.addChildren')
+              }}</el-button>
               <el-button
                 v-if="scope.row.id > 0"
                 type="text"
                 @click="editDepart(scope.row)"
-                >编辑</el-button
+                >{{ $t('views.strategyManage.edit') }}</el-button
               >
               <el-button
                 v-if="scope.row.id > 0"
                 type="text"
                 @click="deleteDepart(scope.row)"
-                >删除</el-button
+                >{{ $t('views.strategyManage.del') }}</el-button
               >
             </template>
           </el-table-column>
         </el-table>
       </div>
-      <el-dialog title="部门操作" :visible.sync="dialogFormVisible">
+      <el-dialog
+        :title="$t('views.strategyManage.operate')"
+        :visible.sync="dialogFormVisible"
+      >
         <el-form
           ref="ruleForm"
           :model="form"
           label-width="140px"
           :rules="rules"
         >
-          <el-form-item label="部门名称" prop="name">
+          <el-form-item :label="$t('views.strategyManage.tname')" prop="name">
             <el-input
               v-model="form.name"
               class="depart-dialog-item"
@@ -55,8 +63,12 @@
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="enterAdd">确 定</el-button>
+          <el-button @click="dialogFormVisible = false">
+            {{ $t('views.strategyManage.clear') }}
+          </el-button>
+          <el-button type="primary" @click="enterAdd">{{
+            $t('views.strategyManage.enter')
+          }}</el-button>
         </div>
       </el-dialog>
     </div>
@@ -106,7 +118,9 @@ export default class DepartmentList extends VueBase {
     ;(this.$refs.ruleForm as Form).validate(async (valid: any) => {
       if (valid) {
         if (this.form.name === '') {
-          this.$message.warning('请输入部门名称')
+          this.$message.warning(
+            this.$t('views.strategyManage.twname') as string
+          )
           return
         }
         let res: any
@@ -144,7 +158,13 @@ export default class DepartmentList extends VueBase {
     talent: 0,
   }
   private rules = {
-    name: [{ required: true, message: '请输入部门名称', trigger: 'change' }],
+    name: [
+      {
+        required: true,
+        message: this.$t('views.strategyManage.twname') as string,
+        trigger: 'change',
+      },
+    ],
   }
   private tableData = []
   fmtOptions(options: Array<any>, id: number) {

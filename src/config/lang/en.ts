@@ -83,6 +83,7 @@ export default {
     englist: 'English',
     statusMonitoring: 'Status Monitoring',
     userSetting: 'User Setting',
+    roleSetting: 'Role Setting',
   },
   views: {
     changeLogo: {
@@ -591,6 +592,9 @@ export default {
       fix: 'Recommendation',
       addChildren: 'Add Group',
       children: 'Subgroup',
+      tname: 'Department name',
+      twname: 'Please enter department name',
+      twnamep: 'Please enter department name to search',
     },
     upgradeOnline: {
       online: 'Online upgrade',

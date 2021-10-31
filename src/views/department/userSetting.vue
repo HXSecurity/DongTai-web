@@ -431,6 +431,9 @@ export default class DepartmentList extends VueBase {
   }
   fmtOptions(options: Array<any>) {
     options.forEach((item: any) => {
+      if (item.id < 0) {
+        item.disabled = true
+      }
       item.value = { name: item.label, id: item.id }
       if (item.children.length) {
         this.fmtOptions(item.children)
