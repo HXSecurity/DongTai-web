@@ -339,8 +339,8 @@ const routes: Array<RouteConfig> = [
     redirect: '/department/departmentList',
     meta: {
       isMenu: true,
-      i18n: 'menu.department',
-      name: i18n.t('menu.department'),
+      i18n: 'menu.roleSetting',
+      name: i18n.t('menu.roleSetting'),
     },
     component: () => import('@/views/department/Index.vue'),
     children: [
@@ -352,6 +352,15 @@ const routes: Array<RouteConfig> = [
           name: i18n.t('menu.department'),
         },
         component: () => import('@/views/department/DepartmentList.vue'),
+      },
+      {
+        path: 'userSetting',
+        name: 'userSetting',
+        meta: {
+          i18n: 'menu.userSetting',
+          name: i18n.t('menu.userSetting'),
+        },
+        component: () => import('@/views/department/userSetting.vue'),
       },
     ],
   },
@@ -658,8 +667,8 @@ const adminRoutes: Array<RouteConfig> = [
     redirect: '/department/departmentList',
     meta: {
       isMenu: true,
-      i18n: 'menu.department',
-      name: i18n.t('menu.department'),
+      i18n: 'menu.roleSetting',
+      name: i18n.t('menu.roleSetting'),
     },
     component: () => import('@/views/department/Index.vue'),
     children: [
@@ -671,6 +680,15 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.department'),
         },
         component: () => import('@/views/department/DepartmentList.vue'),
+      },
+      {
+        path: 'userSetting',
+        name: 'userSetting',
+        meta: {
+          i18n: 'menu.userSetting',
+          name: i18n.t('menu.userSetting'),
+        },
+        component: () => import('@/views/department/userSetting.vue'),
       },
     ],
   },

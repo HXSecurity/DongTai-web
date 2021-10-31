@@ -73,7 +73,7 @@ export default {
     logManage: '操作日志',
     user: '角色管理',
     talent: '租户管理',
-    department: '组织管理',
+    department: '部门管理',
     taintPool: '搜索',
     search: '污点搜索',
     poolDetail: '污点详情',
@@ -82,6 +82,8 @@ export default {
     chinese: '简体中文',
     englist: '英文',
     statusMonitoring: '状态监控',
+    userSetting: '用户管理',
+    roleSetting: '组织管理',
   },
   views: {
     changeLogo: {
@@ -565,8 +567,8 @@ export default {
     strategyManage: {
       no: '无',
       edit: '编辑',
-      enter: '确定',
-      clear: '取消',
+      enter: '确 定',
+      clear: '取 消',
       del: '删除',
       warning: '当前有策略正在编辑',
       deleteWarning: '此操作将永久删除该数据, 是否继续?',
@@ -579,6 +581,9 @@ export default {
       fix: '修复建议',
       addChildren: '新增子部门',
       children: '子部门',
+      tname: '部门名称',
+      twname: '请输入部门名称',
+      twnamep: '请输入部门名称进行搜索',
     },
     upgradeOnline: {
       online: '在线升级',
@@ -715,7 +720,7 @@ export default {
       emailPlaceholder: '请输入用户邮箱',
       role: '用户级别',
       department: '所属部门',
-      departmentPlaceholder: '请选择所属部门',
+      departmentPlaceholder: '请输入所属部门',
       phone: '联系电话',
       phonePlaceholder: '请输入联系电话',
       operate: '操作',
@@ -741,6 +746,7 @@ export default {
       deleteConfirmPop: '提示',
       edit: '修改',
       del: '删除',
+      talent: '部门名称',
     },
     talent: {
       title: {
