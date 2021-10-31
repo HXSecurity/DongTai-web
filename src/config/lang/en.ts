@@ -82,6 +82,8 @@ export default {
     chinese: 'Chinese',
     englist: 'English',
     statusMonitoring: 'Status Monitoring',
+    userSetting: 'User Setting',
+    roleSetting: 'Role Setting',
   },
   views: {
     changeLogo: {
@@ -327,6 +329,7 @@ export default {
       filterType: 'Filter Rules',
       dangerType: 'Sink Rules',
       enterType: 'Entry Method Rules',
+      searchDesc: 'Find rule details',
     },
     login: {
       title: 'User login',
@@ -589,6 +592,9 @@ export default {
       fix: 'Recommendation',
       addChildren: 'Add Group',
       children: 'Subgroup',
+      tname: 'Department name',
+      twname: 'Please enter department name',
+      twnamep: 'Please enter department name to search',
     },
     upgradeOnline: {
       online: 'Online upgrade',
@@ -707,6 +713,16 @@ export default {
       pieType: 'Type',
       exportSuccess: 'Export report successful',
       exportFail: 'Export report failed',
+      exportType: 'Report Format',
+      exportbtn: 'Export',
+      exportHistory: 'History',
+      reportTtype: 'Type',
+      reportTtime: 'time',
+      reportStatus: 'Status',
+      done: 'Done',
+      loading: 'Loading',
+      rWarningInfo:
+        'This operation will permanently delete this report, do you want to continue?',
     },
     userList: {
       keywordPlaceholder: 'Enter the keyword of username to search',
@@ -746,6 +762,7 @@ export default {
       deleteConfirmPop: 'Prompt',
       edit: 'Modify',
       del: 'Delete',
+      talent: 'Talent',
     },
     talent: {
       title: {

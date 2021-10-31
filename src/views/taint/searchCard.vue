@@ -35,7 +35,9 @@
         >
         </span>
       </el-tooltip>
-      <div style="flex: 1"></div>
+      <div style="flex: 1; text-align: right">
+        {{ formatTimestamp(info.method_pools.update_time) }}
+      </div>
       <el-button
         v-if="showGraph === false || isApi"
         class="card-btn"
@@ -245,12 +247,16 @@ import { Component, Prop, Watch } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import { GraphData } from '@/views/taint/types/search'
 import Dagre from '@/components/G6/Dagre.vue'
+import { formatTimestamp } from '@/utils/utils'
+
 @Component({ name: 'SearchCard', components: { Dagre } })
 export default class SearchCard extends VueBase {
   @Prop() info!: any
   @Prop() showGraph: boolean | undefined
   @Prop() isApi: boolean | undefined
-
+  formatTimestamp(time: number) {
+    return formatTimestamp(time)
+  }
   private isEdit = false
   private reqStr = ''
   private resStr = ''
