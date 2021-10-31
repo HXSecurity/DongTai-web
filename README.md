@@ -1,7 +1,7 @@
 # DongTai-web
 [![django-project](https://img.shields.io/badge/django%20versions-3.0.3-blue)](https://www.djangoproject.com/)
 [![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/huoxianclub/DongTai)
-[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.0.0-lightgrey)](https://github.com/huoxianclub/DongTai-web)
+[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.0.6-lightgrey)](https://github.com/huoxianclub/DongTai-web)
 
 [中文版本(Chinese version)](README.ZH_CN.md)
 

@@ -321,6 +321,7 @@ export default {
       filterType: '过滤方法规则',
       dangerType: '危险方法规则',
       enterType: '入口方法规则',
+      searchDesc: '查找规则详情',
     },
     login: {
       title: '用户登录',
@@ -693,6 +694,15 @@ export default {
       pieType: '类型',
       exportSuccess: '导出报告成功',
       exportFail: '导出报告失败',
+      exportType: '报告格式',
+      exportbtn: '导出',
+      exportHistory: '导出记录',
+      reportTtype: '格式',
+      reportTtime: '生成时间',
+      reportStatus: '状态',
+      done: '已完成',
+      loading: '进行中',
+      rWarningInfo: '此操作将永久删除该报告, 是否继续?',
     },
     userList: {
       keywordPlaceholder: '请输入名称关键字',

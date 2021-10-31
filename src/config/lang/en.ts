@@ -327,6 +327,7 @@ export default {
       filterType: 'Filter Rules',
       dangerType: 'Sink Rules',
       enterType: 'Entry Method Rules',
+      searchDesc: 'Find rule details',
     },
     login: {
       title: 'User login',
@@ -707,6 +708,16 @@ export default {
       pieType: 'Type',
       exportSuccess: 'Export report successful',
       exportFail: 'Export report failed',
+      exportType: 'Report Format',
+      exportbtn: 'Export',
+      exportHistory: 'History',
+      reportTtype: 'Type',
+      reportTtime: 'time',
+      reportStatus: 'Status',
+      done: 'Done',
+      loading: 'Loading',
+      rWarningInfo:
+        'This operation will permanently delete this report, do you want to continue?',
     },
     userList: {
       keywordPlaceholder: 'Enter the keyword of username to search',
