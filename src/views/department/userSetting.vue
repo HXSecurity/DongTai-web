@@ -137,7 +137,7 @@
         <el-form-item :label="$t('views.userList.department')">
           <el-cascader
             v-model="userForm.department"
-            :props="{ checkStrictly: true }"
+            :props="{ checkStrictly: true, value: 'id', emitPath: false }"
             class="addUserInput"
             :options="options"
             :placeholder="$t('views.userList.department')"
@@ -341,7 +341,7 @@ export default class DepartmentList extends VueBase {
     re_password: '',
     email: '',
     role: 0,
-    department: {},
+    department: '',
     phone: '',
     uid: 0,
   }
@@ -353,7 +353,7 @@ export default class DepartmentList extends VueBase {
       re_password: '',
       email: '',
       role: 0,
-      department: {},
+      department: '',
       phone: '',
       uid: 0,
     }
@@ -368,7 +368,7 @@ export default class DepartmentList extends VueBase {
       re_password: '',
       email: row.email,
       role: row.is_superuser,
-      department: row.department,
+      department: row.department.id,
       phone: row.phone,
       uid: row.id,
     }
@@ -389,7 +389,7 @@ export default class DepartmentList extends VueBase {
           re_password: this.userForm.re_password,
           email: this.userForm.email,
           role: this.userForm.role,
-          department: this.userForm.department[0],
+          department: this.userForm.department,
           phone: this.userForm.phone,
         }
         if (this.userForm.uid) {

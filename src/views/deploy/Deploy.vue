@@ -17,7 +17,6 @@
             @click="changeLanguage('python')"
           >
             <img src="../../assets/img/deploy/python.png" />
-            <span class="beta">beta</span>
           </div>
         </div>
         <div class="title">
@@ -489,13 +488,6 @@ main {
         display: flex;
         justify-content: center;
         align-items: center;
-        .beta {
-          position: absolute;
-          bottom: 0;
-          right: 4px;
-          font-size: 12px;
-          color: #aaaaaa;
-        }
         img {
           width: 40%;
           height: 40%;
