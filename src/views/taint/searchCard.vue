@@ -2,6 +2,7 @@
   <div class="search-card">
     <div class="title">
       <span
+        :title="info.method_pools.url"
         class="title-url pointer"
         @click="$router.push(`/taint/poolDetail/${info.method_pools.id}`)"
       >
@@ -35,7 +36,7 @@
         >
         </span>
       </el-tooltip>
-      <div style="flex: 1; text-align: right">
+      <div style="flex: 1; text-align: right; min-width: 140px">
         {{ formatTimestamp(info.method_pools.update_time) }}
       </div>
       <el-button
@@ -437,6 +438,17 @@ export default class SearchCard extends VueBase {
 <style scoped lang="scss">
 .pointer {
   cursor: pointer;
+}
+.title-url {
+  max-width: 800px;
+  word-break: break-all;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .search-card {
   width: 100%;
