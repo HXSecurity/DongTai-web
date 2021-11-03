@@ -179,6 +179,7 @@
                   req_data: item.req_data,
                   res_header: item.res_header,
                   res_body: item.res_body,
+                  update_time: item.update_time,
                 },
                 relations: { agent: item.agent, vulnerablities: [] },
               }"
@@ -260,7 +261,7 @@ export default class Index extends VueBase {
     item.req_data = res.data.req_data
     item.res_body = res.data.res_body
     item.res_header = res.data.res_header
-
+    item.update_time = res.data.update_time
     if (res.status)
       this.$nextTick(() => {
         item.showSend = true
