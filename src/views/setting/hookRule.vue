@@ -100,7 +100,7 @@ export default class ChangePassword extends VueBase {
   activeLanguage = 0
   activeLanguageName = ''
   languageOptions = []
-  reflash = true
+  reflash = false
   changeLanguage(item: any) {
     this.activeLanguage = item.id
     this.activeLanguageName = item.name
@@ -148,7 +148,10 @@ export default class ChangePassword extends VueBase {
     this.activeLanguage = data[0].id
     this.activeLanguageName = data[0].name
     this.type = '2'
-    this.getBase()
+    this.$nextTick(() => {
+      this.getBase()
+      this.reflash = true
+    })
   }
   created() {
     this.getProgramLanguage()
