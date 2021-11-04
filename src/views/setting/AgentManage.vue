@@ -779,7 +779,7 @@ export default class AgentManage extends VueBase {
     color: #959fb4;
   }
   /deep/.el-input__inner {
-    background: #f6f8fa;
+    background: #e6f8ea;
     border: none;
     padding: 0;
     padding-right: 60px;
