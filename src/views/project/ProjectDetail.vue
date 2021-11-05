@@ -840,7 +840,7 @@ export default class ProjectDetail extends VueBase {
     const res = await this.services.project.exportList({
       page: this.exp_page,
       pageSize: 20,
-      pid: this.projectObj.id,
+      pid: this.$route.params.pid,
     })
     if (res.status === 201) {
       this.exportList = res.data
