@@ -18,6 +18,14 @@
           >
             <img src="../../assets/img/deploy/python.png" />
           </div>
+          <div
+            class="language"
+            :class="language === 'php' && 'active'"
+            @click="changeLanguage('php')"
+          >
+            <img src="../../assets/img/deploy/php.png" />
+            <span class="beta">beta</span>
+          </div>
         </div>
         <div class="title">
           {{ $t('views.deploy.installing') }} {{ obj[language].key }}
@@ -133,6 +141,21 @@
               </el-tooltip>
             </div>
           </template>
+
+          <template v-if="language === 'php'">
+            <div class="title-3 margin-t-16">
+              1. {{ $t('views.deploy.php.ManualInstallation') }}
+            </div>
+            <div class="install-desc margin-t-8">
+              {{ $t('views.deploy.php.manualInstallationDesc1') }}
+            </div>
+            <div class="install-desc margin-t-8">
+              {{ $t('views.deploy.php.manualInstallationDesc2') }}
+            </div>
+            <div class="install-desc margin-t-8">
+              {{ $t('views.deploy.php.manualInstallationDesc3') }}
+            </div>
+          </template>
           <template v-if="language === 'java'">
             <div class="title-3 margin-t-16">
               2. {{ $t('views.deploy.java.ManualInstallation') }}
@@ -200,7 +223,27 @@
           </template>
           <template v-if="language === 'python'">
             <div class="title-3 margin-t-16">
-              2. {{ $t('views.deploy.python.settings') }}
+              2.{{ $t('views.python.settingName') }}
+            </div>
+            <div class="margin-t-8">
+              {{ $t('views.python.p1') }}
+            </div>
+            <div>
+              <p class="margin-t-8">{{ $t('views.python.p2') }}</p>
+              <p class="margin-l-16">{{ $t('views.python.p3') }}</p>
+              <p class="margin-t-8">{{ $t('views.python.p4') }}</p>
+              <p class="margin-l-16">
+                <a href="https://sysin.org/blog/windows-env/"
+                  >https://sysin.org/blog/windows-env/</a
+                >
+              </p>
+              <p class="margin-t-8">{{ $t('views.python.p5') }}</p>
+              <p class="margin-t-8">
+                {{ $t('views.python.p6') }}
+              </p>
+            </div>
+            <div class="title-3 margin-t-16">
+              3. {{ $t('views.deploy.python.settings') }}
             </div>
             <div class="install-tabs">
               <el-tabs v-model="activeName" @tab-click="getMd">
@@ -223,50 +266,80 @@
               </el-tabs>
             </div>
           </template>
+          <!-- 
+          <template v-if="language === 'php'">
+            <div class="title-3 margin-t-16">
+              2. {{ $t('views.deploy.python.settings') }}
+            </div>
+            <div class="install-tabs">
+              <el-tabs v-model="activeName" @tab-click="getMd">
+                <el-tab-pane label="Django" name="Django">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+                <el-tab-pane label="Flask" name="Flask">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane>
+              </el-tabs>
+            </div>
+          </template> -->
         </div>
-
-        <div class="title-2 margin-t-24">
-          <span class="icon-no">3</span> {{ $t('views.deploy.reloadTile') }}
-        </div>
-        <div class="reload">
-          <div class="reload-desc margin-t-8">
-            {{ $t('views.deploy.reloadDesc') }}
+        <template v-if="language !== 'php'">
+          <div class="title-2 margin-t-24">
+            <span class="icon-no">3</span> {{ $t('views.deploy.reloadTile') }}
           </div>
-          <div v-if="language === 'java'" class="margin-t-16 reload-markdown">
-            <p class="indent">
-              {{ $t('views.deploy.java.p1') }}
-            </p>
-            <p>{{ $t('views.deploy.java.p2') }}</p>
-            <p class="indent">
-              {{ $t('views.deploy.java.p3') }}
-            </p>
-            <p>{{ $t('views.deploy.java.p4') }}</p>
-            <p class="indent">
-              {{ $t('views.deploy.java.p51') }}
-              {{ openapi }}
-              {{ $t('views.deploy.java.p52') }}
-            </p>
+          <div class="reload">
+            <div class="reload-desc margin-t-8">
+              {{ $t('views.deploy.reloadDesc') }}
+            </div>
+            <div v-if="language === 'java'" class="margin-t-16 reload-markdown">
+              <p class="indent">
+                {{ $t('views.deploy.java.p1') }}
+              </p>
+              <p>{{ $t('views.deploy.java.p2') }}</p>
+              <p class="indent">
+                {{ $t('views.deploy.java.p3') }}
+              </p>
+              <p>{{ $t('views.deploy.java.p4') }}</p>
+              <p class="indent">
+                {{ $t('views.deploy.java.p51') }}
+                {{ openapi }}
+                {{ $t('views.deploy.java.p52') }}
+              </p>
+            </div>
+            <div
+              v-if="language === 'python'"
+              class="margin-t-16 reload-markdown"
+            >
+              <p class="indent">
+                {{ $t('views.deploy.python.p1') }}
+              </p>
+              <p>{{ $t('views.deploy.python.p2') }}</p>
+              <p class="indent">
+                {{ $t('views.deploy.python.p3') }}
+              </p>
+              <p>{{ $t('views.deploy.python.p4') }}</p>
+              <p class="indent">
+                {{ $t('views.deploy.python.p5') }}
+              </p>
+              <p>{{ $t('views.deploy.python.p6') }}</p>
+              <p class="indent">
+                {{ $t('views.deploy.python.p71') }}
+                {{ openapi }}
+                {{ $t('views.deploy.python.p72') }}
+              </p>
+            </div>
           </div>
-          <div v-if="language === 'python'" class="margin-t-16 reload-markdown">
-            <p class="indent">
-              {{ $t('views.deploy.python.p1') }}
-            </p>
-            <p>{{ $t('views.deploy.python.p2') }}</p>
-            <p class="indent">
-              {{ $t('views.deploy.python.p3') }}
-            </p>
-            <p>{{ $t('views.deploy.python.p4') }}</p>
-            <p class="indent">
-              {{ $t('views.deploy.python.p5') }}
-            </p>
-            <p>{{ $t('views.deploy.python.p6') }}</p>
-            <p class="indent">
-              {{ $t('views.deploy.python.p71') }}
-              {{ openapi }}
-              {{ $t('views.deploy.python.p72') }}
-            </p>
-          </div>
-        </div>
+        </template>
       </div>
       <div class="container-right">
         <div class="title">{{ $t('views.deploy.help') }}</div>
@@ -359,6 +432,14 @@ export default class Deploy extends VueBase {
       video:
         'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
     },
+    php: {
+      key: 'PHP',
+      name: 'PHP',
+      term: [this.$t('views.deploy.php.term1')],
+      download: 'pip3  install ./dongtai-agent-python.tar.gz',
+      video:
+        'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
+    },
   }
   changeLanguage(language: string) {
     this.language = language
@@ -367,6 +448,11 @@ export default class Deploy extends VueBase {
     }
     if (language === 'python') {
       this.activeName = 'Django'
+    }
+    if (language === 'php') {
+      this.activeName = ''
+      this.getDoc()
+      return
     }
     this.getDoc()
     this.getMd()
@@ -391,6 +477,12 @@ export default class Deploy extends VueBase {
         }&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${
           this.token
         }' -o dongtai-agent-python.tar.gz -k`
+      case 'php':
+        return `curl -X GET "${this.fmtUrl()}?url=${
+          this.openapi
+        }&language=php" -H 'Authorization: Token ${
+          this.token
+        }' -o php-agent-test.tar.gz`
     }
   }
   get pythonShell() {
@@ -488,6 +580,13 @@ main {
         display: flex;
         justify-content: center;
         align-items: center;
+        .beta {
+          position: absolute;
+          bottom: 0;
+          right: 4px;
+          font-size: 12px;
+          color: #aaaaaa;
+        }
         img {
           width: 40%;
           height: 40%;
@@ -555,6 +654,9 @@ main {
 }
 .margin-t-16 {
   margin-top: 16px;
+}
+.margin-l-16 {
+  margin-left: 16px;
 }
 .margin-t-32 {
   margin-top: 32px;

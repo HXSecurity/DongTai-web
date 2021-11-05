@@ -186,6 +186,25 @@ export default {
         p71: '在 Web 应用服务器中，检查是否可访问',
         p72:
           ' 服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往 github 给工程师提交 issue，我们会及时给您回复',
+        settingName: '配置项目名称',
+        n1:
+          '配置系统环境变量projectName，demoProjectName为自定义项目名称，与web页面，项目管理中新增项目名称保持一致，否则无法上报流量',
+        n2: 'linux/mac命令导入：',
+        n3: 'export projectName=demoProjectName',
+        n4: 'Windows 增加环境变量:',
+        n5: '验证： 命令行 直接输入 env 即可查看',
+        n6:
+          '注意，若无法配置系统环境变量，可更改agent配置文件，修改项目名称，找到python安装agent扩展包路径地址，例如：/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/dongtai_agent_python修改dongtai_agent_python/config.json中的project.name，系统环境变量projectName优先级高于配置文件中的project.name；',
+      },
+      php: {
+        ManualInstallation: '手动安装',
+        term1: 'PHP版本不低于8.0.9',
+        manualInstallationDesc1:
+          'a. 手动解压缩php-agent-test.tar.gz，php-agent-test里面有三个文件，分别是：dongtai_php_agent.so& test.json & run-tests.php，复制dongtai_php_agent.so到php安装环境中的extension中，例如：/usr/local/lib/php/pecl/20200930',
+        manualInstallationDesc2:
+          'b. 找到php.ini，使用命令：php -i | grep php.ini，在php.ini添加：extension_dir = " dongtai_php_agent.so在php内部的路径" , extension=dongtai_php_agent，之后执行php –v，正常显示PHP版本信息,php –m 查看会有dongtai_php_agent，即安装成功。',
+        manualInstallationDesc3:
+          'c. 通过终端，进入php-agent-test，执行 php run-tests.php测试结果，也可以进入靶场测试，靶场地址：https://github.com/jinghao1/phpvul',
       },
     },
     serverRegister: {
