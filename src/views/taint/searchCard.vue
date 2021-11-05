@@ -256,7 +256,11 @@ export default class SearchCard extends VueBase {
   @Prop() showGraph: boolean | undefined
   @Prop() isApi: boolean | undefined
   formatTimestamp(time: number) {
-    return formatTimestamp(time)
+    if (time) {
+      return formatTimestamp(time)
+    } else {
+      return ''
+    }
   }
   private isEdit = false
   private reqStr = ''
