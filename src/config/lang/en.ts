@@ -646,7 +646,7 @@ export default {
       vul: 'Confirmed Vulnerabilities',
       agent: 'Live Agent',
       owner: 'User',
-      time: 'Created Date',
+      time: 'Update Date',
       manage: 'Settings',
       add: 'New Application',
       searchName: 'Enter the application name in the search field',

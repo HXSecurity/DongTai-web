@@ -633,7 +633,7 @@ export default {
       vul: '已确认漏洞',
       agent: '存活探针数量(个)',
       owner: '负责人',
-      time: '创建时间',
+      time: '最近更新时间',
       manage: '管理',
       add: '新建项目',
       searchName: '请输入项目名称，然后回车或点击搜索图标进行搜索',
