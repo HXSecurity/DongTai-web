@@ -6,8 +6,10 @@
           <i class="el-icon-circle-plus-outline" @click="addDepart()"></i>
         </el-button>
         <el-input
+          v-model="keyword"
           class="ipt"
           :placeholder="$t('views.strategyManage.twnamep')"
+          @keyup.enter.native="newSelectData"
         ></el-input>
       </div>
       <div class="bottom">
@@ -86,6 +88,7 @@ import { formatTimestamp } from '@/utils/utils'
 export default class DepartmentList extends VueBase {
   private dialogFormVisible = false
   private type = 'add'
+  private keyword = ''
   private addDepart(row: any) {
     this.type = 'add'
     this.dialogFormVisible = true
@@ -113,7 +116,9 @@ export default class DepartmentList extends VueBase {
       this.$message.error(res.msg)
     }
   }
-
+  private newSelectData() {
+    this.departmentList()
+  }
   private enterAdd() {
     ;(this.$refs.ruleForm as Form).validate(async (valid: any) => {
       if (valid) {
@@ -184,6 +189,9 @@ export default class DepartmentList extends VueBase {
   async departmentList() {
     const res = await this.services.user.departmentList()
     if (res.status === 201) {
+      res.data = res.data.filter(
+        (item: any) => item.label.indexOf(this.keyword) > -1
+      )
       this.fmtOptions(res.data, 0)
       this.tableData = res.data
     }

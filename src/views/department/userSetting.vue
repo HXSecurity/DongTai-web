@@ -7,6 +7,7 @@
           {{ $t('views.userList.addUser') }}
         </el-button>
         <el-input
+          v-model="keyword"
           class="ipt"
           :placeholder="$t('views.userList.keywordPlaceholder')"
           @keyup.enter.native="newSelectData"
@@ -246,6 +247,7 @@ export default class DepartmentList extends VueBase {
   private allTotal = 0
   private isAdd = true
   private options = []
+  private keyword = ''
   private form = {
     name: '',
     region: '',
@@ -323,10 +325,13 @@ export default class DepartmentList extends VueBase {
   }
   private tableData = []
   async getTableData() {
+    this.loadingStart()
     const res = await this.services.user.userList({
       page: this.page,
       pageSize: 10,
+      keywords: this.keyword,
     })
+    this.loadingDone()
     if (res.status === 201) {
       this.tableData = res.data
       this.allTotal = res.page.alltotal
