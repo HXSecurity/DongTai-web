@@ -223,23 +223,23 @@
           </template>
           <template v-if="language === 'python'">
             <div class="title-3 margin-t-16">
-              2.{{ $t('views.python.settingName') }}
+              2.{{ $t('views.deploy.python.settingName') }}
             </div>
             <div class="margin-t-8">
-              {{ $t('views.python.p1') }}
+              {{ $t('views.deploy.python.n1') }}
             </div>
             <div>
-              <p class="margin-t-8">{{ $t('views.python.p2') }}</p>
-              <p class="margin-l-16">{{ $t('views.python.p3') }}</p>
-              <p class="margin-t-8">{{ $t('views.python.p4') }}</p>
+              <p class="margin-t-8">{{ $t('views.deploy.python.n2') }}</p>
+              <p class="margin-l-16">{{ $t('views.deploy.python.n3') }}</p>
+              <p class="margin-t-8">{{ $t('views.deploy.python.n4') }}</p>
               <p class="margin-l-16">
                 <a href="https://sysin.org/blog/windows-env/"
                   >https://sysin.org/blog/windows-env/</a
                 >
               </p>
-              <p class="margin-t-8">{{ $t('views.python.p5') }}</p>
+              <p class="margin-t-8">{{ $t('views.deploy.python.n5') }}</p>
               <p class="margin-t-8">
-                {{ $t('views.python.p6') }}
+                {{ $t('views.deploy.python.n6') }}
               </p>
             </div>
             <div class="title-3 margin-t-16">
