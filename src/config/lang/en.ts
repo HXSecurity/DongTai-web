@@ -185,6 +185,25 @@ export default {
         p71: 'If the Web Service is unable to access to ',
         p72:
           'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        settingName: 'Configuration Item Name',
+        n1:
+          'Configure the projectName in the system environment variable, demoProjectName is the custom project name. Keep it consistent with the new application name in the Applications list, otherwise, the traffic cannot be uploaded.',
+        n2: 'Import linux/mac command:',
+        n3: 'export projectName=demoProjectName',
+        n4: 'Adds Windows  environment variables:',
+        n5: 'Verification: Enter env directly on the command line to view',
+        n6:
+          'Note: If you cannot configure the system environment variables, you can change the agent configuration file, modify the project name, and find the path address of the python installation agent extension package, for example: /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site -packages/dongtai_agent_python modify project.name in dongtai_agent_python/config.json, the priority of system environment variable projectName is higher than project.name in configuration file;',
+      },
+      php: {
+        ManualInstallation: 'Manual Installation',
+        term1: 'Python Version: 8.0.9 and above',
+        manualInstallationDesc1:
+          'a. Manually unzip php-agent-test.tar.gz. There are three files in PHP agent test: Dongtai_ php_ Agent.so & test.json & run-tests.php, copy Dongtai_ php_ Agent.so to the extension in the PHP installation environment, for example:/usr/local/lib/php/pecl/20200930.',
+        manualInstallationDesc2:
+          'b. Find php.ini, use the command: PHP - I | grep php.ini, and add: extension in php.ini_ Dir = "path of dongtai_php_agent.so inside PHP", extension = Dongtai_ php_ Agent, then execute PHP – V, the PHP version information is displayed normally, and there will be Dongtai in PHP – M_ php_ Agent, that is, the installation is successful.',
+        manualInstallationDesc3:
+          'c. Through the terminal, enter PHP agent test, execute PHP run-tests.php test results, or enter the shooting range test. The shooting range address is: https://github.com/jinghao1/phpvul',
       },
     },
     serverRegister: {
