@@ -51,11 +51,7 @@
             ></i>
           </div>
           <div class="operate">
-            <el-button
-              type="text"
-              class="operateBtn"
-              @click="exportDialog = true"
-            >
+            <el-button type="text" class="operateBtn" @click="openExport()">
               <i class="iconfont icondaochu-5"></i>
               {{ $t('views.projectDetail.export') }}
             </el-button>
@@ -416,6 +412,10 @@ export default class ProjectDetail extends VueBase {
   private versionFlag = false
   private enterVersionDialog() {
     this.versionFlag = false
+  }
+  private openExport() {
+    this.getExportList()
+    this.exportDialog = true
   }
   private async versionCurrent(item: any) {
     const res: any = await this.services.project.versionCurrent({
@@ -908,10 +908,6 @@ export default class ProjectDetail extends VueBase {
         showClose: true,
       })
     }
-  }
-
-  created() {
-    this.getExportList()
   }
 }
 </script>

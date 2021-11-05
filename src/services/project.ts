@@ -96,7 +96,7 @@ export default () =>
 
     exportList(params: any): Promise<iResponse> {
       return request.get(
-        `project/report/list?page=${params.page}&page_size=${params.pageSize}`
+        `project/report/list?page=${params.page}&page_size=${params.pageSize}&pid=${params.pid}`
       )
     }
 
