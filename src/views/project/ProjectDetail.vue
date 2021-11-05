@@ -273,7 +273,6 @@
       custom-class="exp_dialog"
       :title="$t('views.projectDetail.export')"
       :visible.sync="exportDialog"
-      width="80%"
     >
       <div style="padding: 20px 60px">
         <el-form :model="form">
@@ -308,7 +307,7 @@
             <el-table-column
               prop="create_time"
               :label="$t('views.projectDetail.reportTtime')"
-              width="180"
+              min-width="180"
             >
               <template slot-scope="scope">
                 <div>{{ formatTimestamp(scope.row.create_time) }}</div>
@@ -317,6 +316,7 @@
             <el-table-column
               prop="status"
               :label="$t('views.projectDetail.reportStatus')"
+              width="180"
             >
               <template slot-scope="scope">
                 <div>
@@ -328,7 +328,10 @@
                 </div>
               </template>
             </el-table-column>
-            <el-table-column prop="status" label="状态">
+            <el-table-column
+              :label="$t('views.projectDetail.handle')"
+              width="180"
+            >
               <template slot-scope="scope">
                 <div>
                   <el-button
@@ -816,7 +819,6 @@ export default class ProjectDetail extends VueBase {
   }
   async async_add() {
     const res = await this.services.project.async_add({
-      vid: this.projectObj.versionData.version_id,
       type: this.type,
       pname: this.projectObj.name,
       pid: this.$route.params.pid,
