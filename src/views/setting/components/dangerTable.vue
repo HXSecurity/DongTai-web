@@ -9,7 +9,7 @@
           :placeholder="$t('views.hookPage.selectType')"
           filterable
           clearab
-          @change="getTable"
+          @change="handleCurrentChange(1)"
         >
           <el-option
             v-for="item in types"
@@ -24,11 +24,12 @@
           style="width: 260px"
           class="search-input"
           :placeholder="$t('views.hookPage.searchDesc')"
+          @keyup.enter.native="handleCurrentChange(1)"
         >
           <el-button
             slot="append"
             icon="el-icon-search"
-            @click="getTable"
+            @click="handleCurrentChange(1)"
           ></el-button>
         </el-input>
       </div>
