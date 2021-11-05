@@ -273,6 +273,7 @@
       custom-class="exp_dialog"
       :title="$t('views.projectDetail.export')"
       :visible.sync="exportDialog"
+      width="80%"
     >
       <div style="padding: 20px 60px">
         <el-form :model="form">
