@@ -41,13 +41,10 @@ export default {
     loading: '正在加载...',
     deploy: 'Add Agent',
     logout: '退出',
-    setOpenapi: '请先配置openapi',
-    helpOpenapi: 'openapi地址尚未配置，请联系管理员前往服务注册进行配置',
     oldPassword: '请输入原有密码',
     newPassword: '请输入新密码',
     rePassword: '请再次输入密码',
     diffPassword: '两次输入密码不一致',
-    downloadError: '请检查OpenAPI配置',
   },
   menu: {
     projectEdit: '项目配置',
@@ -77,7 +74,6 @@ export default {
     taintPool: '搜索',
     search: '污点搜索',
     poolDetail: '污点详情',
-    serverRegister: '服务注册',
     language: '语言选择',
     chinese: '简体中文',
     englist: '英文',
@@ -206,15 +202,6 @@ export default {
         manualInstallationDesc3:
           'c. 通过终端，进入php-agent-test，执行 php run-tests.php测试结果，也可以进入靶场测试，靶场地址：https://github.com/jinghao1/phpvul',
       },
-    },
-    serverRegister: {
-      openAPI: 'OpenAPI 服务',
-      save: '保 存',
-      saveSuccess: '保存成功',
-      saveWarning: 'OpenAPI 不能为空',
-      urlError: '请输入正确的url',
-      onlyHttp: 'openapi仅支持http和https协议',
-      withoutLocalhost: 'openapi不可以配置为localhost或127网段',
     },
     search: {
       commonly: '常用查询语法',

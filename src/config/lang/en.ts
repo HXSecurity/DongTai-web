@@ -32,13 +32,10 @@ export default {
     loading: 'Loading...',
     deploy: 'Add Agent',
     logout: 'Exit',
-    setOpenapi: 'Please configure openapi first',
-    helpOpenapi: 'Please contact the administrator to configure openapi',
     oldPassword: 'Please enter the old password',
     newPassword: 'Please enter a new password',
     rePassword: 'Please enter the password again',
     diffPassword: 'Password does Not match',
-    downloadError: 'Please check the OpenAPI configuration',
   },
   message: {
     notice: 'Notice',
@@ -77,7 +74,6 @@ export default {
     taintPool: 'Search',
     search: 'Stain search',
     poolDetail: 'Stain details',
-    serverRegister: 'Service Registration',
     language: 'Language',
     chinese: 'Chinese',
     englist: 'English',
@@ -205,16 +201,6 @@ export default {
         manualInstallationDesc3:
           'c. Through the terminal, enter PHP agent test, execute PHP run-tests.php test results, or enter the shooting range test. The shooting range address is: https://github.com/jinghao1/phpvul',
       },
-    },
-    serverRegister: {
-      openAPI: 'OpenAPI Service',
-      save: 'Save',
-      saveSuccess: 'Saved successfully',
-      saveWarning: 'OpenAPI cannot be empty',
-      urlError: 'Please enter the correct URL',
-      onlyHttp: 'OpenAPI only supports HTTP and HTTPS protocols',
-      withoutLocalhost:
-        'OpenAPI cannot be configured as localhost or 127 network segment',
     },
     search: {
       commonly: 'Common query syntax',

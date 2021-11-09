@@ -312,16 +312,6 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/setting/LogManage.vue'),
       },
       {
-        path: 'serverRegister',
-        name: 'serverRegister',
-        meta: {
-          disabled: true,
-          i18n: 'menu.serverRegister',
-          name: i18n.t('menu.serverRegister'),
-        },
-        component: () => import('@/views/setting/serverRegister.vue'),
-      },
-      {
         path: 'StatusMonitoring',
         name: 'StatusMonitoring',
         meta: {
@@ -638,16 +628,6 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.logManage'),
         },
         component: () => import('@/views/setting/LogManage.vue'),
-      },
-      {
-        path: 'serverRegister',
-        name: 'serverRegister',
-        meta: {
-          disabled: true,
-          i18n: 'menu.serverRegister',
-          name: i18n.t('menu.serverRegister'),
-        },
-        component: () => import('@/views/setting/serverRegister.vue'),
       },
       {
         path: 'StatusMonitoring',

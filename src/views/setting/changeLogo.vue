@@ -137,7 +137,7 @@ import { Component } from 'vue-property-decorator'
 import { getToken } from '@/utils/utils'
 import emitter from '../taint/Emitter'
 
-@Component({ name: 'ServerRegister' })
+@Component({ name: 'ChangeLog' })
 export default class StrategyManage extends VueBase {
   public beforeAvatarUploadLogo(file: any) {
     const isJPG = file.type === 'image/png'
@@ -203,52 +203,6 @@ export default class StrategyManage extends VueBase {
       this.logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
       this.favicon = '/upload/assets/img/favicon.ico?v=' + String(Math.random())
     })
-  }
-  public openapi = ''
-  public async getOpenapi() {
-    const res = await this.services.setting.openapi()
-    if (res.status === 202) {
-      return
-    }
-    if (res.status !== 201) {
-      this.$message({
-        type: 'error',
-        message: res.msg,
-        showClose: true,
-      })
-    } else {
-      this.openapi = res.data.url
-    }
-  }
-  public async setOpenapi() {
-    if (!this.openapi) {
-      this.$message.warning(
-        this.$t('views.serverRegister.saveWarning') as string
-      )
-      return
-    }
-    const res = await this.services.setting.setOpenapi({ value: this.openapi })
-    if (res.status !== 201) {
-      this.$message({
-        type: 'error',
-        message: res.msg,
-        showClose: true,
-      })
-    } else {
-      if (this.$route.query.needBack) {
-        this.$router.push('/deploy')
-      } else {
-        this.$message({
-          type: 'success',
-          message: this.$t('views.serverRegister.saveSuccess') as string,
-          showClose: true,
-        })
-      }
-    }
-  }
-  created() {
-    console.log(this.path)
-    this.getOpenapi()
   }
 }
 </script>

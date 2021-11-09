@@ -5,49 +5,6 @@
         {{ $t('menu.setting') }}
       </div>
       <div class="menu-warp">
-        <!-- <div
-          class="menu-item"
-          :class="curModule('/setting/agentManage') ? 'currentModule' : ''"
-          @click="$router.push('/setting/agentManage')"
-        >
-          {{ $t('menu.agentManage') }}
-        </div>
-        <div
-          class="menu-item"
-          :class="curModule('/setting/strategyManage') ? 'currentModule' : ''"
-          @click="$router.push('/setting/strategyManage')"
-        >
-          {{ $t('menu.strategyManage') }}
-        </div>
-        <div
-          class="menu-item"
-          :class="curModule('/setting/hookRule') ? 'currentModule' : ''"
-          @click="$router.push('/setting/hookRule')"
-        >
-          {{ $t('menu.hookRule') }}
-        </div>
-        <div
-          class="menu-item"
-          :class="curModule('/setting/changePassword') ? 'currentModule' : ''"
-          @click="$router.push('/setting/changePassword')"
-        >
-          {{ $t('menu.changePassword') }}
-        </div>
-        <div
-          class="menu-item"
-          :class="curModule('/setting/logManage') ? 'currentModule' : ''"
-          @click="$router.push('/setting/logManage')"
-        >
-          {{ $t('menu.logManage') }}
-        </div>
-        <div
-          v-if="userInfo.role === 1 || userInfo.role === 2"
-          class="menu-item"
-          :class="curModule('/setting/serverRegister') ? 'currentModule' : ''"
-          @click="$router.push('/setting/serverRegister')"
-        >
-          {{ $t('menu.serverRegister') }}
-        </div> -->
         <div
           v-for="i in Routers"
           :key="i.path"
