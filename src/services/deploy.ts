@@ -47,9 +47,6 @@ export default () =>
       return request.get('/agent/deploy/submit')
     }
 
-    getOpenApiUrl(): Promise<iResponse> {
-      return request.get('/openapi')
-    }
     getToken(): Promise<iResponse> {
       return request.get('/user/token')
     }

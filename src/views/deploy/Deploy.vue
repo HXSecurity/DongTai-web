@@ -312,7 +312,7 @@
               <p>{{ $t('views.deploy.java.p4') }}</p>
               <p class="indent">
                 {{ $t('views.deploy.java.p51') }}
-                {{ openapi }}
+                {{ uri }}
                 {{ $t('views.deploy.java.p52') }}
               </p>
             </div>
@@ -334,7 +334,7 @@
               <p>{{ $t('views.deploy.python.p6') }}</p>
               <p class="indent">
                 {{ $t('views.deploy.python.p71') }}
-                {{ openapi }}
+                {{ uri }}
                 {{ $t('views.deploy.python.p72') }}
               </p>
             </div>
@@ -393,7 +393,7 @@ export default class Deploy extends VueBase {
   private activeName = 'SpringBoot'
   private language = 'java'
   private token = ''
-  private openapi = 'http://wait.com'
+  private uri = window.location.origin + '/openapi'
   private documents = []
   private md = {}
 
@@ -458,31 +458,14 @@ export default class Deploy extends VueBase {
     this.getMd()
   }
 
-  fmtUrl() {
-    const url = new URL('/api/v1/agent/download', this.openapi)
-    return url.href
-  }
-
   get shell() {
     switch (this.language) {
       case 'java':
-        return `curl -X GET "${this.fmtUrl()}?url=${
-          this.openapi
-        }&language=java" -H 'Authorization: Token ${
-          this.token
-        }' -o agent.jar -k`
+        return `curl -X GET "${this.uri}?url=${this.uri}&language=java" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
       case 'python':
-        return `curl -X GET "${this.fmtUrl()}?url=${
-          this.openapi
-        }&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${
-          this.token
-        }' -o dongtai-agent-python.tar.gz -k`
+        return `curl -X GET "${this.uri}?url=${this.uri}&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-agent-python.tar.gz -k`
       case 'php':
-        return `curl -X GET "${this.fmtUrl()}?url=${
-          this.openapi
-        }&language=php" -H 'Authorization: Token ${
-          this.token
-        }' -o php-agent-test.tar.gz`
+        return `curl -X GET "${this.uri}?url=${this.uri}&language=php" -H 'Authorization: Token ${this.token}' -o php-agent-test.tar.gz`
     }
   }
   get pythonShell() {
@@ -521,16 +504,8 @@ export default class Deploy extends VueBase {
     }
   }
 
-  private async getOpenapi() {
-    const res = await this.services.setting.openapi()
-    if (res.status === 201) {
-      this.openapi = res.data.url
-    } else {
-      this.$message.error(res.msg)
-    }
-  }
   private async downloadAgent() {
-    await this.services.deploy.agentDownload(this.openapi, this.language)
+    await this.services.deploy.agentDownload(this.uri, this.language)
   }
   private async getDoc() {
     const docRes = await this.services.deploy.getDocuments({
@@ -545,7 +520,6 @@ export default class Deploy extends VueBase {
     if (res.status === 201) {
       this.token = res.data.token
     }
-    await this.getOpenapi()
     await this.getMd()
     await this.getDoc()
   }

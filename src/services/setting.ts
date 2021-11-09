@@ -189,12 +189,6 @@ export default () =>
     deleteManage(id: string): Promise<iResponse> {
       return request.delete(`/strategy/${id}/delete`)
     }
-    openapi(): Promise<iResponse> {
-      return request.get(`/openapi`)
-    }
-    setOpenapi(data: any): Promise<iResponse> {
-      return request.post(`/openapi`, data)
-    }
 
     searchProject(params: any): Promise<iResponse> {
       return request.get(`/project/search`, { params })
