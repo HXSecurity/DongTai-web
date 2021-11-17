@@ -49,5 +49,3 @@ $ npm run build
 ### 文档
 - [官方文档](https://hxsecurity.github.io/DongTai-Doc/#/)
 - [快速体验](http://aws.iast.huoxian.cn:8000/login)
-
-<img src="https://static.scarf.sh/a.png?x-pxid=f9b19108-458c-4e8b-be80-f6ff70241245" />
