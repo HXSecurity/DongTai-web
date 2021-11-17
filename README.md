@@ -57,3 +57,5 @@ $ npm run build
 
 - [official documents](https://hxsecurity.github.io/DongTai-Doc/#/)
 - [quick experience](http://aws.iast.huoxian.cn:8000/login)
+
+<img src="https://static.scarf.sh/a.png?x-pxid=f9b19108-458c-4e8b-be80-f6ff70241245" />
