@@ -90,7 +90,7 @@
       >
         <template slot-scope="{ row }">
           <div class="dot">
-            {{ row.system_load ? row.system_load.rate : '0' }}
+            {{ row.system_load ? row.system_load.rate : '' }}
           </div>
         </template>
       </el-table-column>
