@@ -133,6 +133,7 @@
         <el-pagination
           :current-page="page"
           background
+          page-size="20"
           layout=" prev, pager, next, jumper,total"
           :total="total"
           @current-change="handleCurrentChange"

@@ -40,8 +40,14 @@ export default () =>
       return request.get('/agent/' + params.id + '/delete')
     }
 
-    strategyList(): Promise<iResponse> {
-      return request.get('/strategys')
+    strategyList(all: boolean, params: any): Promise<iResponse> {
+      if (all) {
+        return request.get(`/strategys`)
+      } else {
+        return request.get(
+          `/strategys?page=${params.page}&page_size=${params.page_size}&name=${params.name}`
+        )
+      }
     }
 
     strategyEnable(id: number): Promise<iResponse> {

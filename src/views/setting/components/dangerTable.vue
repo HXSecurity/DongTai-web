@@ -33,9 +33,10 @@
           ></el-button>
         </el-input>
       </div>
-      <div style="visibility: hidden">
+      <div>
         <el-button
           size="small"
+          style="visibility: hidden"
           class="resetAllBtn"
           @click="hookTypeDialog = true"
           ><i class="el-icon-plus"></i>

@@ -156,7 +156,10 @@ export default class sensitiveManage extends VueBase {
   }
   private async getStrategyData() {
     this.loadingStart()
-    const { status, msg, data } = await this.services.setting.strategyList()
+    const { status, msg, data } = await this.services.setting.strategyList(
+      true,
+      {}
+    )
     this.loadingDone()
     if (status !== 201) {
       this.$message({

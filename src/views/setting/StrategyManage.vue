@@ -119,6 +119,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="pagination-box">
+      <el-pagination
+        :current-page="page"
+        background
+        page-size="20"
+        layout=" prev, pager, next, jumper,total"
+        :total="total"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
+    </div>
     <el-dialog
       :show-close="false"
       :visible="showDialog"
@@ -196,6 +207,8 @@ export default class StrategyManage extends VueBase {
   private searchValue = ''
   private vul_levels = []
   private vul_levels_map = {}
+  private page = 1
+  private total = 0
   private dialogForm: any = {
     vul_name: '',
     vul_type: '',
@@ -351,9 +364,23 @@ export default class StrategyManage extends VueBase {
     this.$set(item, 'isEdit', false)
   }
 
+  private async handleCurrentChange(page: number) {
+    this.page = page
+    await this.getTableData()
+  }
+
   private async getTableData() {
     this.loadingStart()
-    const { status, msg, data } = await this.services.setting.strategyList()
+    const {
+      status,
+      msg,
+      data,
+      page,
+    } = await this.services.setting.strategyList(false, {
+      page: this.page,
+      page_size: 20,
+      name: this.searchValue,
+    })
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -363,6 +390,7 @@ export default class StrategyManage extends VueBase {
       })
       return
     }
+    this.total = page.alltotal
     this.tableData = data
   }
 
@@ -434,5 +462,10 @@ export default class StrategyManage extends VueBase {
 .total-bar {
   display: flex;
   justify-content: space-between;
+}
+.pagination-box {
+  padding-top: 12px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
