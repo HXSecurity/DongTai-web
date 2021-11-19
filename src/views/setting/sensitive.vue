@@ -120,21 +120,21 @@ export default class sensitiveManage extends VueBase {
     strategy_id: [
       {
         required: true,
-        message: this.$t('views.pattern_type_id.nameR') as string,
+        message: this.$t('views.sensitiveManage.nameR') as string,
         trigger: 'blur',
       },
     ],
-    pattern_type: [
+    pattern_type_id: [
       {
         required: true,
-        message: this.$t('views.pattern_type_id.detailR') as string,
+        message: this.$t('views.sensitiveManage.detailR') as string,
         trigger: 'blur',
       },
     ],
     pattern: [
       {
         required: true,
-        message: this.$t('views.pattern_type_id.fixR') as string,
+        message: this.$t('views.sensitiveManage.fixR') as string,
         trigger: 'blur',
       },
     ],
