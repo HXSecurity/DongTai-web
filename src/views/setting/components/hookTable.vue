@@ -33,8 +33,9 @@
           ></el-button>
         </el-input>
       </div>
-      <div :style="{ visibility: ruleType === '3' ? 'hidden' : 'visible' }">
+      <div>
         <el-button
+          :style="{ visibility: ruleType === '3' ? 'hidden' : 'visible' }"
           size="small"
           class="resetAllBtn"
           @click="hookTypeDialog = true"
