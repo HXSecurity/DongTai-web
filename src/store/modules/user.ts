@@ -5,7 +5,7 @@ import Cookie from 'cookies-js'
 import route from '@/router/routes'
 import router from '@/router'
 import { i18n } from '@/config/lang'
-
+let flag = false
 const userServices = createUserServices()
 
 const state: any = {
@@ -29,8 +29,11 @@ const mutations: any = {
 
 const actions: any = {
   async getUserInfo(context: { commit: Commit }) {
+    if (flag) {
+      return
+    }
+    flag = true
     const { status, msg, data } = await userServices.getUserInfo()
-
     if (status !== 201) {
       Message.error(msg)
     }

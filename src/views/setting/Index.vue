@@ -5,15 +5,17 @@
         {{ $t('menu.setting') }}
       </div>
       <div class="menu-warp">
-        <div
-          v-for="i in Routers"
-          :key="i.path"
-          class="menu-item"
-          :class="curModule(i.path) ? 'currentModule' : ''"
-          @click="$router.push(i.path)"
-        >
-          {{ $t(i.meta.i18n) }}
-        </div>
+        <template v-for="i in Routers">
+          <div
+            v-if="i.name !== 'sensitive'"
+            :key="i.path"
+            class="menu-item"
+            :class="curModule(i.path) ? 'currentModule' : ''"
+            @click="$router.push(i.path)"
+          >
+            {{ $t(i.meta.i18n) }}
+          </div>
+        </template>
       </div>
     </div>
     <div class="route-warp">

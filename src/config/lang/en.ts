@@ -54,6 +54,7 @@ export default {
     projectManage: 'Applications',
     projectDetail: 'Project Details',
     vuln: 'Vulnerabilities',
+    sensitive: 'Sensitive',
     vulnList: 'Application Vulnerability List',
     vulnDetail: 'Application vulnerability details',
     sca: 'Libraries',
@@ -80,6 +81,7 @@ export default {
     statusMonitoring: 'Status Monitoring',
     userSetting: 'User Setting',
     roleSetting: 'Role Setting',
+    sensitiveManage: 'Sensitive',
   },
   views: {
     changeLogo: {
@@ -156,7 +158,7 @@ export default {
       },
       python: {
         ManualInstallation: 'Manual Installation',
-        term1: '1. Python Version: 3.3 and above',
+        term1: '1. Python Version: 3.6 and above',
         term2: '2. Interpreter: CPython',
         term3: '3. Middleware: uWSGI',
         term4: '4. Web Framework: ',
@@ -600,6 +602,49 @@ export default {
       tname: 'Department name',
       twname: 'Please enter department name',
       twnamep: 'Please enter department name to search',
+      searchValue: 'Search for vulnerability types',
+      level: 'Level',
+      editTitle: 'Edit Policy',
+      addTitle: 'Add Policy',
+    },
+    sensitiveManage: {
+      no: 'No',
+      edit: 'Edit',
+      enter: 'OK',
+      clear: 'Cancel',
+      del: 'Delete',
+      deleteWarning:
+        'This operation will permanently delete the data, do you want to continue?',
+      deletePop: 'Prompt',
+      name: 'Policy',
+      detail: 'Description',
+      status: 'Enabled',
+      operate: 'Operation',
+      settings: 'Settings',
+      fix: 'Recommendation',
+      add: 'add',
+      searchValue: 'Search for vulnerability types',
+      testData: 'Test Data',
+      test: 'Run',
+      res: 'Match Results',
+      nameR: 'Please select the policy name',
+      detailR: 'Please enter how to match',
+      fixR: 'Please enter a matching rule',
+      t: 'Sensitive data configuration',
+      p1:
+        'Sensitive information detection function officially opened public testing, in order to detect the security risk of sensitive information leakage, it is necessary to configure the matching rules of sensitive information and related policies and custom rules. ',
+      p2: 'Process (to increase mobile phone number leakage for example): ',
+      p3:
+        '1. Go to the Rules Management page, go to the "Dangerous Method Rules" tab',
+      p4:
+        '2. Click the "Add Rule Type" button to add a rule with the type name: "PhoneNumber" and the type is referred to simply as "Mobile Phone Number"',
+      p5:
+        "3. Go to the 'Policy Management' page, search for the policy 'mobile phone number', edit the policy, and modify the policy name to 'mobile phone number leak'",
+      p6:
+        '4. Click on the "New Match Rules" button on the current page to add matching rules, select the type "Mobile Phone Number Leak", match the way is "Regular Match", fill in the "Match Rules" and click Save. ',
+      tip:
+        'The data for the policy name comes from policy information in policy management',
+      search: 'Search',
     },
     upgradeOnline: {
       online: 'Online upgrade',
