@@ -33,7 +33,7 @@
           ></el-button>
         </el-input>
       </div>
-      <div>
+      <div style="visibility: hidden">
         <el-button
           size="small"
           class="resetAllBtn"

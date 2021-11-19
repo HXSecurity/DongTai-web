@@ -107,6 +107,22 @@ export default () =>
       return request.post('/strategy/user/add', params)
     }
 
+    updateManage(id: string, data: any): Promise<iResponse> {
+      return request.put(`/strategy/${id}/update`, data)
+    }
+
+    deleteManage(id: string): Promise<iResponse> {
+      return request.delete(`/strategy/${id}/delete`)
+    }
+
+    addManage(data: any): Promise<iResponse> {
+      return request.post(`/strategys`, data)
+    }
+
+    vul_levels(): Promise<iResponse> {
+      return request.get('/vul_levels')
+    }
+
     hookRuleSummary(params: { language_id: number }): Promise<iResponse> {
       return request.get('/engine/hook/rule/summary', { params })
     }
@@ -182,14 +198,6 @@ export default () =>
       return request.get('/engine/hook/rule/delete', { params })
     }
 
-    updateManage(id: string, data: any): Promise<iResponse> {
-      return request.put(`/strategy/${id}/update`, data)
-    }
-
-    deleteManage(id: string): Promise<iResponse> {
-      return request.delete(`/strategy/${id}/delete`)
-    }
-
     searchProject(params: any): Promise<iResponse> {
       return request.get(`/project/search`, { params })
     }
@@ -208,5 +216,34 @@ export default () =>
 
     profileModified(data: any): Promise<iResponse> {
       return request.post(`/profile/batch/modified`, data)
+    }
+
+    get_sensitive_info_rule(params: any): Promise<iResponse> {
+      return request.get(
+        `/sensitive_info_rule?page=${params.page}&page_size=${params.page_size}&name=${params.name}`
+      )
+    }
+
+    pattern_type(): Promise<iResponse> {
+      return request.get(`/sensitive_info_rule/pattern_type`)
+    }
+
+    create_sensitive_info_rule(data: any): Promise<iResponse> {
+      return request.post(`/sensitive_info_rule`, data)
+    }
+
+    update_sensitive_info_rule(data: any): Promise<iResponse> {
+      return request.put(`/sensitive_info_rule/${data.id}`, data)
+    }
+
+    get_sensitive_info_rule_one(data: any): Promise<iResponse> {
+      return request.get(`/sensitive_info_rule/${data.id}`)
+    }
+
+    delete_sensitive_info_rule_one(data: any): Promise<iResponse> {
+      return request.delete(`/sensitive_info_rule/${data.id}`)
+    }
+    regex_validation(data: any): Promise<iResponse> {
+      return request.post(`/sensitive_info_rule/${data.url}_validation`, data)
     }
   })()

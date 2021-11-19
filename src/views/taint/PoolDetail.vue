@@ -15,7 +15,7 @@
             v-if="graphData.nodes[0]"
             :pool-id="$route.params.id"
             :init-data="graphData"
-            :box-height="656"
+            :box-height="1200"
           ></Dagre>
         </div>
       </el-tab-pane>
@@ -132,7 +132,7 @@ export default class PoolDetail extends VueBase {
 }
 .dagre-box {
   margin-top: 24px;
-  height: 656px;
+  height: 1200px;
   background: #ffffff;
   border-radius: 2px;
   border: 1px solid #c8e0ff;

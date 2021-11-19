@@ -255,6 +255,26 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/setting/StrategyManage.vue'),
       },
       {
+        path: 'sensitiveManage',
+        name: 'sensitiveManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.sensitiveManage',
+          name: i18n.t('menu.sensitiveManage'),
+        },
+        component: () => import('@/views/setting/sensitiveManage.vue'),
+      },
+      {
+        path: 'sensitive',
+        name: 'sensitive',
+        meta: {
+          disabled: true,
+          i18n: 'menu.sensitive',
+          name: i18n.t('menu.sensitive'),
+        },
+        component: () => import('@/views/setting/sensitive.vue'),
+      },
+      {
         path: 'hookRule',
         name: 'hookRule',
         meta: {
@@ -572,6 +592,27 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/StrategyManage.vue'),
       },
+
+      {
+        path: 'sensitiveManage',
+        name: 'sensitiveManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.sensitiveManage',
+          name: i18n.t('menu.sensitiveManage'),
+        },
+        component: () => import('@/views/setting/sensitiveManage.vue'),
+      },
+      {
+        path: 'sensitive',
+        name: 'sensitive',
+        meta: {
+          disabled: true,
+          i18n: 'menu.sensitive',
+          name: i18n.t('menu.sensitive'),
+        },
+        component: () => import('@/views/setting/sensitive.vue'),
+      },
       {
         path: 'hookRule',
         name: 'hookRule',
@@ -860,6 +901,26 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.strategyManage'),
         },
         component: () => import('@/views/setting/StrategyManage.vue'),
+      },
+      {
+        path: 'sensitiveManage',
+        name: 'sensitiveManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.sensitiveManage',
+          name: i18n.t('menu.sensitiveManage'),
+        },
+        component: () => import('@/views/setting/sensitiveManage.vue'),
+      },
+      {
+        path: 'sensitive',
+        name: 'sensitive',
+        meta: {
+          disabled: true,
+          i18n: 'menu.sensitive',
+          name: i18n.t('menu.sensitive'),
+        },
+        component: () => import('@/views/setting/sensitive.vue'),
       },
       {
         path: 'hookRule',

@@ -13,7 +13,7 @@
 - `DongTai-openapi`用于与`agent`交互，处理agent上报的数据，向agent下发策略，控制agent的运行等
 - `DongTai-engine`用于对`DongTai-openapi`接收到的数据进行分析、处理，计算存在的漏洞和可用的污点调用链等
 - `DongTai-web`为“火线～洞态IAST”的前端项目，负责页面展示
-- `agent`为各语言的数据采集端，从安装探针的项目中采集相对应的数据，发送至`DongTai-openapi`服务
+- `agent`为各语言的数据采集端，从安装Agent的项目中采集相对应的数据，发送至`DongTai-openapi`服务
 
 ## 本地开发
 1.安装`npm`依赖

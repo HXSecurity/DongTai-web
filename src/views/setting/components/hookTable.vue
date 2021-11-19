@@ -33,7 +33,7 @@
           ></el-button>
         </el-input>
       </div>
-      <div>
+      <div :style="{ visibility: ruleType === '3' ? 'hidden' : 'visible' }">
         <el-button
           size="small"
           class="resetAllBtn"
