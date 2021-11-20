@@ -77,6 +77,8 @@
     </div>
     <el-table
       :data="tableData"
+      class="hookTable"
+      border
       :header-row-style="{
         color: '#000',
         fontWeight: 600,
@@ -908,5 +910,12 @@ export default class HookTable extends VueBase {
 }
 /deep/.el-table th {
   background: #f8f9fb;
+}
+.hookTable {
+  &.el-table {
+    /deep/th {
+      background: #f6f8fa;
+    }
+  }
 }
 </style>
