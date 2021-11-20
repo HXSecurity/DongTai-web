@@ -64,6 +64,7 @@ export default {
     agentManage: 'Agent 管理',
     sensitive: '敏感信息',
     strategyManage: '策略管理',
+    strategy: '策略',
     hookRule: '自定义规则',
     upgradeOnline: '系统升级',
     sysInfo: 'Agent 配置',
@@ -596,6 +597,9 @@ export default {
       level: '风险等级',
       editTitle: '编辑策略',
       addTitle: '新增策略',
+      viewTitle: '策略详情',
+      notnull: '该值不能为空',
+      view: '预览',
     },
     sensitiveManage: {
       no: '无',

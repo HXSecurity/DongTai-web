@@ -64,6 +64,7 @@ export default {
     setting: 'Settings',
     agentManage: 'Agent',
     strategyManage: 'Strategy',
+    strategy: 'Strategy',
     hookRule: 'Custom Rule',
     upgradeOnline: 'System upgrade',
     sysInfo: 'Agent Config',
@@ -606,6 +607,9 @@ export default {
       level: 'Level',
       editTitle: 'Edit Policy',
       addTitle: 'Add Policy',
+      viewTitle: 'Policy Detail',
+      notnull: 'The value cannot be empty',
+      view: 'Preview',
     },
     sensitiveManage: {
       no: 'No',

@@ -7,7 +7,7 @@
       <div class="menu-warp">
         <template v-for="i in Routers">
           <div
-            v-if="i.name !== 'sensitive'"
+            v-if="i.name !== 'sensitive' && i.name !== 'strategy'"
             :key="i.path"
             class="menu-item"
             :class="curModule(i.path) ? 'currentModule' : ''"

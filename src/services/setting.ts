@@ -50,6 +50,10 @@ export default () =>
       }
     }
 
+    getStrategy(id: any): Promise<iResponse> {
+      return request.get(`/strategy/${id}`)
+    }
+
     strategyEnable(id: number): Promise<iResponse> {
       return request.get(`/strategy/${id}/enable`)
     }
