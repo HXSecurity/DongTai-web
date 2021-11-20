@@ -18,12 +18,6 @@
           <p>
             {{ $t('views.sensitiveManage.p4') }}
           </p>
-          <p>
-            {{ $t('views.sensitiveManage.p5') }}
-          </p>
-          <p>
-            {{ $t('views.sensitiveManage.p6') }}
-          </p>
         </div>
       </el-card>
     </div>

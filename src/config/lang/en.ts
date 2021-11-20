@@ -636,18 +636,14 @@ export default {
       fixR: 'Please enter a matching rule',
       t: 'Sensitive data configuration',
       p1:
-        'Sensitive information detection function officially opened public testing, in order to detect the security risk of sensitive information leakage, it is necessary to configure the matching rules of sensitive information and related policies and custom rules. ',
+        'Sensitive information detection function officially opened public testing, in order to detect the security risk of sensitive information leakage, it is necessary to configure the matching rules of sensitive information and related policies.',
       p2: 'Process (to increase mobile phone number leakage for example): ',
       p3:
-        '1. Go to the Rules Management page, go to the "Dangerous Method Rules" tab',
+        '1. Go to the "Policy Management" page, add a new policy "Mobile Phone Number Leak", fill in the policy description, repair suggestions and choose to enable;',
       p4:
-        '2. Click the "Add Rule Type" button to add a rule with the type name: "PhoneNumber" and the type is referred to simply as "Mobile Phone Number"',
-      p5:
-        "3. Go to the 'Policy Management' page, search for the policy 'mobile phone number', edit the policy, and modify the policy name to 'mobile phone number leak'",
-      p6:
-        '4. Click on the "New Match Rules" button on the current page to add matching rules, select the type "Mobile Phone Number Leak", match the way is "Regular Match", fill in the "Match Rules" and click Save. ',
+        '2. Go back to the current page, click on the "New Matching Rules" button, select the policy name is "Mobile Phone Number Leak", match the way is "Regular Match", fill in "Match Rules" and click Save.',
       tip:
-        'The data for the policy name comes from policy information in policy management',
+        'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
       search: 'Search',
     },
     upgradeOnline: {
