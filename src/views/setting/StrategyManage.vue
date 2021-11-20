@@ -21,11 +21,11 @@
         </el-button>
       </div>
     </div>
-    <el-table :data="tableData" class="strategyManageTable">
+    <el-table :data="tableData" class="strategyManageTable" border>
       <el-table-column
         :label="$t('views.strategyManage.name')"
         prop="vul_name"
-        width="160px"
+        min-width="260px"
       >
         <template slot-scope="{ row }">
           <div class="two-line vul_name" @click="toPath(1, row.id)">
@@ -37,7 +37,7 @@
       <el-table-column
         :label="$t('views.strategyManage.level')"
         prop="level_id"
-        min-width="200px"
+        width="200px"
         align="center"
       >
         <template slot-scope="{ row }">
@@ -51,7 +51,8 @@
         v-if="userInfo.role === 1 || userInfo.role === 2"
         :label="$t('views.strategyManage.status')"
         prop="state"
-        width="100px"
+        width="140px"
+        align="center"
       >
         <template slot-scope="{ row }">
           <div @click="stateChange(row.id, row.state)">
@@ -68,18 +69,27 @@
         v-if="userInfo.role === 1 || userInfo.role === 2"
         :label="$t('views.strategyManage.settings')"
         width="160px"
+        align="center"
       >
         <template slot-scope="{ row }">
-          <el-button
-            v-if="!row.isEdit"
-            size="small"
-            class="btn"
-            @click="toPath(undefined, row.id)"
-            >{{ $t('views.strategyManage.edit') }}</el-button
-          >
-          <el-button size="small" class="btn" @click="deleteManage(row)">{{
-            $t('views.strategyManage.del')
-          }}</el-button>
+          <div class="table-btn-box">
+            <el-button
+              v-if="!row.isEdit"
+              type="text"
+              size="small"
+              style="color: #4a72ae"
+              @click="toPath(undefined, row.id)"
+              >{{ $t('views.strategyManage.edit') }}</el-button
+            >
+            <span class="l"> | </span>
+            <el-button
+              style="color: #f56262"
+              size="small"
+              type="text"
+              @click="deleteManage(row)"
+              >{{ $t('views.strategyManage.del') }}</el-button
+            >
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -408,5 +418,27 @@ export default class StrategyManage extends VueBase {
   border-radius: 2px;
   color: #4a72ae;
   border-color: #4a72ae;
+}
+.strategyManageTable {
+  margin-top: 16px;
+  &.el-table {
+    /deep/th {
+      background: #f6f8fa;
+    }
+  }
+}
+.table-btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .l {
+    color: #38435a;
+    line-height: 13px;
+    padding: 10px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
+  }
 }
 </style>

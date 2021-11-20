@@ -45,7 +45,7 @@
           </el-button>
         </div>
       </div>
-      <el-table :data="tableData" class="sensitiveManageTable">
+      <el-table :data="tableData" class="sensitiveManageTable" border>
         <el-table-column
           :label="$t('views.sensitiveManage.name')"
           prop="vul_name"
@@ -60,7 +60,7 @@
         <el-table-column
           :label="$t('views.sensitiveManage.detail')"
           prop="vul_desc"
-          min-width="300px"
+          min-width="140px"
         >
           <template slot-scope="{ row }">
             <div>
@@ -75,8 +75,7 @@
         <el-table-column
           :label="$t('views.sensitiveManage.fix')"
           prop="vul_fix"
-          min-width="200px"
-          align="center"
+          min-width="140px"
         >
           <template slot-scope="{ row }">
             <div>
@@ -88,7 +87,8 @@
         <el-table-column
           :label="$t('views.sensitiveManage.status')"
           prop="state"
-          width="100px"
+          width="140px"
+          align="center"
         >
           <template slot-scope="{ row }">
             <div style="cursor: pointer" @click="stateChange(row)">
@@ -106,21 +106,26 @@
           v-if="userInfo.role === 1 || userInfo.role === 2"
           :label="$t('views.sensitiveManage.settings')"
           width="160px"
+          align="center"
         >
           <template slot-scope="{ row }">
-            <el-button
-              size="small"
-              class="btn"
-              @click="sensitiveDialogEdit(row)"
-              >{{ $t('views.sensitiveManage.edit') }}</el-button
-            >
-
-            <el-button
-              size="small"
-              class="btn"
-              @click="sensitiveDialogDelete(row)"
-              >{{ $t('views.sensitiveManage.del') }}</el-button
-            >
+            <div class="table-btn-box">
+              <el-button
+                size="small"
+                style="color: #4a72ae"
+                type="text"
+                @click="sensitiveDialogEdit(row)"
+                >{{ $t('views.sensitiveManage.edit') }}</el-button
+              >
+              <span class="l"> | </span>
+              <el-button
+                size="small"
+                type="text"
+                style="color: #f56262"
+                @click="sensitiveDialogDelete(row)"
+                >{{ $t('views.sensitiveManage.del') }}</el-button
+              >
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -348,5 +353,26 @@ export default class sensitiveManage extends VueBase {
   padding-top: 12px;
   display: flex;
   justify-content: flex-end;
+}
+.sensitiveManageTable {
+  margin-top: 16px;
+  &.el-table {
+    /deep/th {
+      background: #f6f8fa;
+    }
+  }
+}
+.table-btn-box {
+  justify-content: center;
+  align-items: center;
+  .l {
+    color: #38435a;
+    line-height: 13px;
+    padding: 10px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
+  }
 }
 </style>

@@ -17,7 +17,7 @@
         </el-button>
       </div>
     </div>
-    <el-table class="logListTable" :data="tableData">
+    <el-table class="logListTable" :data="tableData" border>
       <el-table-column width="40px">
         <template slot-scope="{ row }">
           <div @click.prevent="selectIdChange(row.log_id)">
@@ -284,5 +284,13 @@ main {
   border-radius: 2px;
   border: 1px solid #4a72ae;
   color: #4a72ae;
+}
+
+.logListTable {
+  &.el-table {
+    /deep/th {
+      background: #f6f8fa;
+    }
+  }
 }
 </style>

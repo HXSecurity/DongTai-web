@@ -56,6 +56,7 @@
     <el-table
       :data="tableData"
       class="agentManageTable"
+      border
       header-align="center"
       @selection-change="handleSelectionChange"
     >
@@ -783,6 +784,14 @@ export default class AgentManage extends VueBase {
     border: none;
     padding: 0;
     padding-right: 60px;
+  }
+}
+
+.agentManageTable {
+  &.el-table {
+    /deep/th {
+      background: #f6f8fa;
+    }
   }
 }
 </style>
