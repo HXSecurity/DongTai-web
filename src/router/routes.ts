@@ -255,6 +255,15 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/setting/StrategyManage.vue'),
       },
       {
+        path: 'strategy',
+        name: 'strategy',
+        meta: {
+          i18n: 'menu.strategy',
+          name: i18n.t('menu.strategy'),
+        },
+        component: () => import('@/views/setting/Strategy.vue'),
+      },
+      {
         path: 'sensitiveManage',
         name: 'sensitiveManage',
         meta: {
@@ -592,7 +601,15 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/StrategyManage.vue'),
       },
-
+      {
+        path: 'strategy',
+        name: 'strategy',
+        meta: {
+          i18n: 'menu.strategy',
+          name: i18n.t('menu.strategy'),
+        },
+        component: () => import('@/views/setting/Strategy.vue'),
+      },
       {
         path: 'sensitiveManage',
         name: 'sensitiveManage',
@@ -901,6 +918,15 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.strategyManage'),
         },
         component: () => import('@/views/setting/StrategyManage.vue'),
+      },
+      {
+        path: 'strategy',
+        name: 'strategy',
+        meta: {
+          i18n: 'menu.strategy',
+          name: i18n.t('menu.strategy'),
+        },
+        component: () => import('@/views/setting/Strategy.vue'),
       },
       {
         path: 'sensitiveManage',

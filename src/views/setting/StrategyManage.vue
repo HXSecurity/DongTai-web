@@ -1,16 +1,24 @@
 <template>
   <div class="content-warp">
     <div class="total-bar">
-      <el-button size="small" class="btn" @click="addStrategy">{{
-        $t('views.strategyManage.addTitle')
-      }}</el-button>
-      <div class="search">
+      <el-button
+        v-if="userInfo.role === 1 || userInfo.role === 2"
+        size="small"
+        class="btn-border"
+        icon="el-icon-circle-plus-outline"
+        @click="toPath(undefined, undefined)"
+        >{{ $t('views.strategyManage.addTitle') }}</el-button
+      >
+      <div class="search-box">
         <el-input
           v-model="searchValue"
           size="small"
           :placeholder="$t('views.strategyManage.searchValue')"
           @keyup.enter.native="getTableData"
         ></el-input>
+        <el-button class="btn search" @click="getTableData">
+          {{ $t('views.sensitiveManage.search') }}
+        </el-button>
       </div>
     </div>
     <el-table :data="tableData" class="strategyManageTable">
@@ -20,65 +28,21 @@
         width="160px"
       >
         <template slot-scope="{ row }">
-          <div v-if="!row.isEdit" class="two-line">{{ row.vul_name }}</div>
-          <el-input
-            v-else
-            v-model="row.vul_name"
-            type="textarea"
-            autosize
-            resize="none"
-            size="mini"
-          ></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('views.strategyManage.detail')"
-        prop="vul_desc"
-        min-width="300px"
-      >
-        <template slot-scope="{ row }">
-          <div v-if="!row.isEdit">{{ row.vul_desc }}</div>
-          <el-input
-            v-else
-            v-model="row.vul_desc"
-            type="textarea"
-            autosize
-            resize="none"
-            size="mini"
-          ></el-input>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        :label="$t('views.strategyManage.fix')"
-        prop="vul_fix"
-        min-width="200px"
-        align="center"
-      >
-        <template slot-scope="{ row }">
-          <div v-if="!row.isEdit">
-            {{ row.vul_fix || $t('views.strategyManage.no') }}
+          <div class="two-line vul_name" @click="toPath(1, row.id)">
+            {{ row.vul_name }}
           </div>
-          <el-input
-            v-else
-            v-model="row.vul_fix"
-            type="textarea"
-            resize="none"
-            autosize
-            size="mini"
-          ></el-input>
         </template>
       </el-table-column>
 
       <el-table-column
         :label="$t('views.strategyManage.level')"
-        prop="level"
+        prop="level_id"
         min-width="200px"
         align="center"
       >
         <template slot-scope="{ row }">
           <div>
-            {{ vul_levels_map[row.level] }}
+            {{ vul_levels_map[row.level_id] }}
           </div>
         </template>
       </el-table-column>
@@ -110,7 +74,7 @@
             v-if="!row.isEdit"
             size="small"
             class="btn"
-            @click="editStart(row)"
+            @click="toPath(undefined, row.id)"
             >{{ $t('views.strategyManage.edit') }}</el-button
           >
           <el-button size="small" class="btn" @click="deleteManage(row)">{{
@@ -130,68 +94,6 @@
       >
       </el-pagination>
     </div>
-    <el-dialog
-      :show-close="false"
-      :visible="showDialog"
-      width="650px"
-      :title="
-        dialogForm.id
-          ? $t('views.strategyManage.editTitle')
-          : $t('views.strategyManage.addTitle')
-      "
-    >
-      <el-form
-        ref="ruleForm"
-        :model="dialogForm"
-        rules="rules"
-        :label-width="$i18n.locale === 'en' ? '120px' : '80px'"
-      >
-        <el-form-item :label="$t('views.strategyManage.name')">
-          <el-input v-model="dialogForm.vul_name"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('views.strategyManage.detail')">
-          <el-input
-            v-model="dialogForm.vul_desc"
-            type="textarea"
-            resize="none"
-            :autosize="{ minRows: 4, maxRows: 4 }"
-          ></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('views.strategyManage.fix')">
-          <el-input
-            v-model="dialogForm.vul_fix"
-            type="textarea"
-            resize="none"
-            :autosize="{ minRows: 4, maxRows: 4 }"
-          ></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('views.strategyManage.level')">
-          <el-select v-model="dialogForm.level_id">
-            <el-option
-              v-for="item in vul_levels"
-              :key="item.id"
-              :label="item.name_value"
-              :value="item.id"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('views.strategyManage.status')">
-          <el-switch
-            v-model="dialogForm.state"
-            active-value="enable"
-            inactive-value="disable"
-          ></el-switch>
-        </el-form-item>
-      </el-form>
-      <div slot="footer">
-        <el-button type="small" class="submit btn" @click="dialogEnter">
-          {{ $t('views.projectEdit.save') }}
-        </el-button>
-        <el-button type="text" class="cancel" @click="dialogClose">
-          {{ $t('views.projectEdit.clear') }}
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -216,6 +118,15 @@ export default class StrategyManage extends VueBase {
     vul_desc: '',
     level_id: undefined,
     vul_fix: '',
+  }
+  private toPath(view: any, id: any) {
+    this.$router.push({
+      name: 'strategy',
+      query: {
+        view,
+        id,
+      },
+    })
   }
   async getVulLevels() {
     this.loadingStart()
@@ -428,6 +339,10 @@ export default class StrategyManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
+.vul_name {
+  color: rgba(26, 128, 242, 1);
+  cursor: pointer;
+}
 .content-warp {
   padding: 38px 14px 40px 14px;
 }
@@ -435,6 +350,14 @@ export default class StrategyManage extends VueBase {
 .install {
   cursor: pointer;
   color: #a7afb9;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  /deep/.el-input__inner {
+    border-right: none;
+    border-radius: 0;
+  }
 }
 
 .uninstall {
@@ -448,6 +371,10 @@ export default class StrategyManage extends VueBase {
   background: #4a72ae;
   border-radius: 2px;
   color: #fff;
+  &.search {
+    height: 34px;
+    margin-left: -1px;
+  }
 }
 .two-line {
   letter-spacing: 0;
@@ -462,10 +389,16 @@ export default class StrategyManage extends VueBase {
 .total-bar {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 12px;
 }
 .pagination-box {
   padding-top: 12px;
   display: flex;
   justify-content: flex-end;
+}
+.btn-border {
+  border-radius: 2px;
+  color: #4a72ae;
+  border-color: #4a72ae;
 }
 </style>
