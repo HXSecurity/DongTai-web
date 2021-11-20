@@ -87,9 +87,11 @@
       <el-pagination
         :current-page="page"
         background
-        page-size="20"
-        layout=" prev, pager, next, jumper,total"
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="page_size"
+        layout=" prev, pager, next, jumper, sizes, total"
         :total="total"
+        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       >
       </el-pagination>
@@ -110,6 +112,7 @@ export default class StrategyManage extends VueBase {
   private vul_levels = []
   private vul_levels_map = {}
   private page = 1
+  private page_size = 20
   private total = 0
   private dialogForm: any = {
     vul_name: '',
@@ -280,6 +283,11 @@ export default class StrategyManage extends VueBase {
     await this.getTableData()
   }
 
+  private handleSizeChange(val: number) {
+    this.page_size = val
+    this.getTableData()
+  }
+
   private async getTableData() {
     this.loadingStart()
     const {
@@ -289,7 +297,7 @@ export default class StrategyManage extends VueBase {
       page,
     } = await this.services.setting.strategyList(false, {
       page: this.page,
-      page_size: 20,
+      page_size: this.page_size,
       name: this.searchValue,
     })
     this.loadingDone()

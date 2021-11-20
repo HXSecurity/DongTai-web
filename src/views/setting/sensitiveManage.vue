@@ -17,12 +17,6 @@
           <p>
             {{ $t('views.sensitiveManage.p4') }}
           </p>
-          <p>
-            {{ $t('views.sensitiveManage.p5') }}
-          </p>
-          <p>
-            {{ $t('views.sensitiveManage.p6') }}
-          </p>
         </div>
       </el-card>
     </div>
@@ -134,9 +128,11 @@
         <el-pagination
           :current-page="page"
           background
-          page-size="20"
-          layout=" prev, pager, next, jumper,total"
+          :page-sizes="[10, 20, 50, 100]"
+          :page-size="page_size"
+          layout=" prev, pager, next, jumper, sizes, total"
           :total="total"
+          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
         </el-pagination>
@@ -156,6 +152,7 @@ export default class sensitiveManage extends VueBase {
   private pattern_type = []
   private pattern_type_map = {}
   private page = 1
+  private page_size = 20
   private total = 0
   private name = ''
   private async stateChange(row: any) {
@@ -173,7 +170,12 @@ export default class sensitiveManage extends VueBase {
     }
   }
 
-  private handleCurrentChange(val: number) {
+  private handleSizeChange(val: number) {
+    this.page_size = val
+    this.getTableData()
+  }
+
+  private handles(val: number) {
     this.page = val
     this.getTableData()
   }
@@ -211,7 +213,7 @@ export default class sensitiveManage extends VueBase {
       page,
     } = await this.services.setting.get_sensitive_info_rule({
       page: this.page,
-      page_size: 20,
+      page_size: this.page_size,
       name: this.name,
     })
     this.loadingDone()
@@ -239,11 +241,11 @@ export default class sensitiveManage extends VueBase {
   }
   private async sensitiveDialogDelete(row: any) {
     this.$confirm(
-      this.$t('views.projectEdit.deleteWarning') as string,
-      this.$t('views.projectEdit.deletePop') as string,
+      this.$t('views.sensitiveManage.deleteWarning') as string,
+      this.$t('views.sensitiveManage.deletePop') as string,
       {
-        confirmButtonText: this.$t('views.projectEdit.enter') as string,
-        cancelButtonText: this.$t('views.projectEdit.clear') as string,
+        confirmButtonText: this.$t('views.sensitiveManage.enter') as string,
+        cancelButtonText: this.$t('views.sensitiveManage.clear') as string,
         type: 'warning',
       }
     ).then(async () => {
