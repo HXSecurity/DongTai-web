@@ -136,8 +136,9 @@
       class="main-warp"
       :style="{ marginLeft: projectId && '28px', width: projectId && '910px' }"
     >
-      <div class="selectForm">
-        <!-- <el-select
+      <div class="sca-list">
+        <div class="selectForm">
+          <!-- <el-select
           v-model="searchObj.order"
           style="width: 160px; font-size: 14px"
           class="commonSelect"
@@ -152,158 +153,171 @@
             :value="item.value"
           ></el-option>
         </el-select> -->
-        <el-select
-          v-model="searchObj.language"
-          :placeholder="$t('views.scaList.developLanguage')"
-          style="idth: 160px; font-size: 14px"
-          class="commonSelect"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option label="JAVA" value="JAVA"></el-option>
-          <el-option label="PYTHON" value="PYTHON"></el-option>
-        </el-select>
-        <div class="selectInput">
-          <el-input
-            v-model="searchObj.keyword"
-            style="width: 412px"
-            :placeholder="$t('views.scaList.searchExample')"
-            class="commonInput"
-            @keyup.enter.native="newSelectData"
+          <el-select
+            v-model="searchObj.language"
+            :placeholder="$t('views.scaList.developLanguage')"
+            style="idth: 160px; font-size: 14px"
+            class="commonSelect"
+            clearable
+            @change="newSelectData"
           >
-            <i
-              slot="suffix"
-              class="el-input__icon el-icon-search"
-              @click="newSelectData"
-            />
-          </el-input>
+            <el-option label="JAVA" value="JAVA"></el-option>
+            <el-option label="PYTHON" value="PYTHON"></el-option>
+          </el-select>
+          <div class="selectInput">
+            <el-input
+              v-model="searchObj.keyword"
+              style="width: 412px"
+              :placeholder="$t('views.scaList.searchExample')"
+              class="commonInput"
+              @keyup.enter.native="newSelectData"
+            >
+              <i
+                slot="suffix"
+                class="el-input__icon el-icon-search"
+                @click="newSelectData"
+              />
+            </el-input>
+          </div>
+        </div>
+        <el-table
+          class="sca-list-table"
+          border
+          :data="tableData"
+          style="width: 100%; margin-top: 18px; cursor: pointer"
+          @row-click="goDetail"
+          @sort-change="tableSort"
+        >
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.name')"
+            prop="package_name"
+            sortable="custom"
+          >
+            <template slot-scope="{ row }">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="row.package_name"
+                :disabled="row.package_name.length < 35"
+                placement="top-start"
+              >
+                <div class="dot" style="width: 240px">
+                  {{ row.package_name }}
+                </div>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.version')"
+            prop="version"
+            :width="'110px'"
+            sortable="custom"
+          >
+            <template slot-scope="{ row }">
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="row.version"
+                :disabled="row.version.length < 10"
+                placement="top-start"
+              >
+                <div class="dot" style="width: 80px">
+                  {{ row.version }}
+                </div>
+              </el-tooltip>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.application')"
+            prop="project_name"
+            width="130px"
+          >
+            <template slot-scope="{ row }">
+              <div>
+                {{ row.project_name }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.language')"
+            prop="language"
+            width="90px"
+          >
+            <template slot-scope="{ row }">
+              <div>
+                {{ row.language }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.level')"
+            prop="level"
+            width="110px"
+            sortable="custom"
+          >
+            <template slot-scope="{ row }">
+              <div
+                :style="
+                  row.level_type === 1
+                    ? { color: '#EA7171' }
+                    : row.level_type === 2
+                    ? { color: '#F39D0A' }
+                    : row.level_type === 3
+                    ? { color: '#2E8FE9' }
+                    : row.level_type === 4
+                    ? { color: '#7BC1AB' }
+                    : ''
+                "
+              >
+                {{ row.level }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.count')"
+            prop="vul_count"
+            width="110px"
+            sortable="custom"
+          >
+            <template slot-scope="{ row }">
+              <div>
+                {{ row.vul_count }}
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.time')"
+            prop="dt"
+            width="160px"
+            sortable="custom"
+          >
+            <template slot-scope="{ row }">
+              <div>
+                {{ formatTimestamp(row.dt) }}
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="pagination">
+          <el-pagination
+            :page-sizes="[10, 20, 40, 50]"
+            :page-size="pageSize"
+            :current-page="page"
+            layout=" prev, pager, next, jumper,sizes,total"
+            :total="total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
         </div>
       </div>
-      <el-table
-        class="sca-list"
-        :data="tableData"
-        style="width: 100%; margin-top: 18px; cursor: pointer"
-        @row-click="goDetail"
-        @sort-change="tableSort"
-      >
-        <el-table-column
-          :label="$t('views.scaList.tableHeaders.name')"
-          prop="package_name"
-          sortable="custom"
-          width="220px"
-        >
-          <template slot-scope="{ row }">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="row.package_name"
-              :disabled="row.package_name.length < 35"
-              placement="top-start"
-            >
-              <div class="dot" style="width: 240px">
-                {{ row.package_name }}
-              </div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.scaList.tableHeaders.version')"
-          prop="version"
-          :width="'100px'"
-          sortable="custom"
-        >
-          <template slot-scope="{ row }">
-            <el-tooltip
-              class="item"
-              effect="dark"
-              :content="row.version"
-              :disabled="row.version.length < 10"
-              placement="top-start"
-            >
-              <div class="dot" style="width: 80px">
-                {{ row.version }}
-              </div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.scaList.tableHeaders.application')"
-          prop="project_name"
-        >
-          <template slot-scope="{ row }">
-            <div>
-              {{ row.project_name }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.scaList.tableHeaders.language')"
-          prop="language"
-          width="110px"
-        >
-          <template slot-scope="{ row }">
-            <div>
-              {{ row.language }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.scaList.tableHeaders.level')"
-          prop="level"
-          width="100px"
-          sortable="custom"
-        >
-          <template slot-scope="{ row }">
-            <div
-              :style="
-                row.level_type === 1
-                  ? { color: '#EA7171' }
-                  : row.level_type === 2
-                  ? { color: '#F39D0A' }
-                  : row.level_type === 3
-                  ? { color: '#2E8FE9' }
-                  : row.level_type === 4
-                  ? { color: '#7BC1AB' }
-                  : ''
-              "
-            >
-              {{ row.level }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.scaList.tableHeaders.count')"
-          prop="vul_count"
-          width="100px"
-          sortable="custom"
-        >
-          <template slot-scope="{ row }">
-            <div>
-              {{ row.vul_count }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.scaList.tableHeaders.time')"
-          prop="dt"
-          width="160px"
-          sortable="custom"
-        >
-          <template slot-scope="{ row }">
-            <div>
-              {{ row.dt }}
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-      <ScrollToTop></ScrollToTop>
     </div>
   </main>
 </template>
 
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
-import { formatTimestamp, debounce } from '@/utils/utils'
+import { formatTimestamp } from '@/utils/utils'
 import VueBase from '@/VueBase'
 import { ScaListObj } from './types'
 import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
@@ -314,7 +328,8 @@ export default class ScaList extends VueBase {
   @Prop(String) projectId!: string
   private debounceMyScroll: any
   private page = 1
-  private pageSize = 20
+  private pageSize = 10
+  private total = 0
   private dataEnd = false
   private tableData: Array<ScaListObj> = []
   private searchOptionsObj = {
@@ -432,31 +447,21 @@ export default class ScaList extends VueBase {
   }
 
   mounted() {
-    this.pageSize = Math.ceil((document.body.clientHeight + 200) / 46)
     this.getTableData()
     this.scaSummary()
-    this.debounceMyScroll = debounce(this.myScroll, 400)
-    window.addEventListener('scroll', this.debounceMyScroll)
   }
 
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.debounceMyScroll)
+  handleSizeChange(val: number) {
+    this.pageSize = val
+    this.getTableData()
   }
-
-  private myScroll() {
-    const bottomWindow =
-      document.documentElement.scrollTop + window.innerHeight >
-      document.documentElement.offsetHeight - 1
-    if (bottomWindow) {
-      if (!this.dataEnd) {
-        this.page += 1
-        this.getTableData()
-        document.documentElement.scrollTop =
-          document.documentElement.scrollTop - 10
-      }
-    }
+  handleCurrentChange(val: number) {
+    this.page = val
+    this.getTableData()
   }
-
+  formatTimestamp(val: string) {
+    return formatTimestamp(val)
+  }
   public async getTableData(flag?: undefined | boolean) {
     const params = {
       page: this.page,
@@ -470,7 +475,7 @@ export default class ScaList extends VueBase {
       version_id: this.version,
     }
     this.loadingStart()
-    const { status, data, msg } = await this.services.sca.scaList(params)
+    const { status, data, msg, page } = await this.services.sca.scaList(params)
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -480,24 +485,8 @@ export default class ScaList extends VueBase {
       })
       return
     }
-    const tableData = data.reduce(
-      (list: Array<ScaListObj>, item: ScaListObj) => {
-        list.push({
-          ...item,
-          dt: formatTimestamp(item.dt),
-        })
-        return list
-      },
-      []
-    )
-    if (tableData.length < this.pageSize) {
-      this.dataEnd = true
-    }
-    if (flag === true) {
-      this.tableData = tableData
-    } else {
-      this.tableData.push(...tableData)
-    }
+    this.total = page.alltotal
+    this.tableData = data
   }
 
   public async scaSummary() {
@@ -631,5 +620,25 @@ export default class ScaList extends VueBase {
 }
 .search-box {
   text-align: center;
+}
+.sca-list {
+  background: #fff;
+  margin-bottom: 24px;
+  padding: 6px 12px;
+  .pagination {
+    padding: 8px 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+.sca-list-table {
+  margin-top: 16px;
+  &.el-table {
+    /deep/th {
+      line-height: 0;
+      padding: 6px 0;
+      background: #f6f8fa;
+    }
+  }
 }
 </style>
