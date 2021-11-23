@@ -33,7 +33,7 @@
             >{{ $t('views.projectEdit.mode2') }}</el-radio
           > -->
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.agent')">
+        <!-- <el-form-item :label="$t('views.projectEdit.agent')">
           <el-select
             v-model="submitForm.agentIdList"
             multiple
@@ -48,8 +48,8 @@
               :label="item.short_name"
             ></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.added')">
+        </el-form-item> -->
+        <!-- <el-form-item :label="$t('views.projectEdit.added')">
           <el-tag
             v-for="(tag, index) in engineSelectedList"
             :key="tag.id"
@@ -60,7 +60,7 @@
           >
             {{ tag.token }}
           </el-tag>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
           <el-select
             v-model="submitForm.scanId"
