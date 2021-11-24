@@ -23,7 +23,6 @@
     <div>
       <div class="total-bar">
         <el-button
-          v-if="userInfo.role === 1 || userInfo.role === 2"
           size="small"
           class="btn-border"
           icon="el-icon-circle-plus-outline"
