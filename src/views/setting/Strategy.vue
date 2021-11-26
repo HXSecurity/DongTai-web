@@ -94,7 +94,7 @@
           {{
             dialogForm.state === 'enable'
               ? $t('views.hookPage.on')
-              : $t('views.hookPage.on')
+              : $t('views.hookPage.off')
           }}
         </div>
         <el-switch
