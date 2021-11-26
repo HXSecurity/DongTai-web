@@ -638,6 +638,7 @@ export default {
       fixP: '输入正则表达式的规则，用于匹配当前策略',
       testP: '输入完内容后，点击运行按钮进行测试',
       search: '搜索',
+      noValidatio: '无匹配字符',
     },
     templateManage: {
       fid: '漏洞类型',
