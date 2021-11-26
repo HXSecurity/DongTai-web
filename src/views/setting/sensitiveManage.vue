@@ -179,7 +179,7 @@ export default class sensitiveManage extends VueBase {
     this.getTableData()
   }
 
-  private handles(val: number) {
+  private handleCurrentChange(val: number) {
     this.page = val
     this.getTableData()
   }
