@@ -55,6 +55,7 @@ export default {
     projectDetail: 'Project Details',
     vuln: 'Vulnerabilities',
     sensitive: 'Sensitive',
+    template: 'Template',
     vulnList: 'Application Vulnerability List',
     vulnDetail: 'Application vulnerability details',
     sca: 'Libraries',
@@ -83,6 +84,7 @@ export default {
     userSetting: 'User Setting',
     roleSetting: 'Role Setting',
     sensitiveManage: 'Sensitive',
+    templateManage: 'Template',
   },
   views: {
     changeLogo: {
@@ -611,7 +613,8 @@ export default {
       notnull: 'The value cannot be empty',
       view: 'Preview',
     },
-    sensitiveManage: {
+    templateManage: {
+      fid: 'Severity',
       no: 'No',
       edit: 'Edit',
       enter: 'OK',
@@ -620,28 +623,14 @@ export default {
       deleteWarning:
         'This operation will permanently delete the data, do you want to continue?',
       deletePop: 'Prompt',
-      name: 'Policy',
-      detail: 'Description',
+      name: 'Name',
+      selectAll: 'Select All',
       status: 'Enabled',
       operate: 'Operation',
       settings: 'Settings',
-      fix: 'Recommendation',
       add: 'add',
-      searchValue: 'Search for vulnerability types',
-      testData: 'Test Data',
-      test: 'Run',
-      res: 'Match Results',
-      nameR: 'Please select the policy name',
-      detailR: 'Please enter how to match',
-      fixR: 'Please enter a matching rule',
-      t: 'Sensitive data configuration',
-      p1:
-        'Sensitive information detection function officially opened public testing, in order to detect the security risk of sensitive information leakage, it is necessary to configure the matching rules of sensitive information and related policies.',
-      p2: 'Process (to increase mobile phone number leakage for example): ',
-      p3:
-        '1. Go to the "Policy Management" page, add a new policy "Mobile Phone Number Leak", fill in the policy description, repair suggestions and choose to enable;',
-      p4:
-        '2. Go back to the current page, click on the "New Matching Rules" button, select the policy name is "Mobile Phone Number Leak", match the way is "Regular Match", fill in "Match Rules" and click Save.',
+      searchValue: 'Search for Scan Strategy',
+      nameR: 'Please select the scan strategy name',
       tip:
         'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
       search: 'Search',

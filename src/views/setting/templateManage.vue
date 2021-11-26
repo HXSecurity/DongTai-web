@@ -1,90 +1,43 @@
 <template>
   <div class="content-warp">
     <div>
-      <el-card class="box-card">
-        <div slot="header" class="clearfix">
-          <span
-            >{{ $t('views.sensitiveManage.t')
-            }}<span class="beta">Beta</span></span
-          >
-        </div>
-        <div>
-          <p>
-            {{ $t('views.sensitiveManage.p1') }}
-          </p>
-          <p>{{ $t('views.sensitiveManage.p2') }}</p>
-          <p>{{ $t('views.sensitiveManage.p3') }}</p>
-          <p>
-            {{ $t('views.sensitiveManage.p4') }}
-          </p>
-        </div>
-      </el-card>
-    </div>
-    <div>
       <div class="total-bar">
         <el-button
           size="small"
           class="btn-border"
           icon="el-icon-circle-plus-outline"
-          @click="sensitiveDialogAdd"
-          >{{ $t('views.sensitiveManage.add') }}</el-button
+          @click="templateDialogAdd"
+          >{{ $t('views.templateManage.add') }}</el-button
         >
         <div class="search-box">
           <el-input
             v-model="name"
             size="small"
-            :placeholder="$t('views.sensitiveManage.searchValue')"
+            :placeholder="$t('views.templateManage.searchValue')"
             style="width: 200px; margin-left: 10px"
             class="search-input"
             @keydown.native.enter="getTableData"
           >
           </el-input>
           <el-button class="btn search" @click="getTableData">
-            {{ $t('views.sensitiveManage.search') }}
+            {{ $t('views.templateManage.search') }}
           </el-button>
         </div>
       </div>
-      <el-table :data="tableData" class="sensitiveManageTable" border>
+      <el-table :data="tableData" class="templateManageTable" border>
         <el-table-column
-          :label="$t('views.sensitiveManage.name')"
-          prop="vul_name"
-          width="160px"
+          :label="$t('views.templateManage.name')"
+          min-width="160px"
         >
           <template slot-scope="{ row }">
             <div class="two-line">
-              {{ row.strategy_name }}
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column
-          :label="$t('views.sensitiveManage.detail')"
-          prop="vul_desc"
-          min-width="140px"
-        >
-          <template slot-scope="{ row }">
-            <div>
-              {{
-                pattern_type_map[row.pattern_type_id] &&
-                pattern_type_map[row.pattern_type_id].name
-              }}
+              {{ row.name }}
             </div>
           </template>
         </el-table-column>
 
         <el-table-column
-          :label="$t('views.sensitiveManage.fix')"
-          prop="vul_fix"
-          min-width="140px"
-        >
-          <template slot-scope="{ row }">
-            <div>
-              {{ row.pattern }}
-            </div>
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          :label="$t('views.sensitiveManage.status')"
+          :label="$t('views.templateManage.status')"
           prop="state"
           width="140px"
           align="center"
@@ -103,7 +56,7 @@
         </el-table-column>
         <el-table-column
           v-if="userInfo.role === 1 || userInfo.role === 2"
-          :label="$t('views.sensitiveManage.settings')"
+          :label="$t('views.templateManage.settings')"
           width="160px"
           align="center"
         >
@@ -113,16 +66,16 @@
                 size="small"
                 style="color: #4a72ae"
                 type="text"
-                @click="sensitiveDialogEdit(row)"
-                >{{ $t('views.sensitiveManage.edit') }}</el-button
+                @click="templateDialogEdit(row)"
+                >{{ $t('views.templateManage.edit') }}</el-button
               >
               <span class="l"> | </span>
               <el-button
                 size="small"
                 type="text"
                 style="color: #f56262"
-                @click="sensitiveDialogDelete(row)"
-                >{{ $t('views.sensitiveManage.del') }}</el-button
+                @click="templateDialogDelete(row)"
+                >{{ $t('views.templateManage.del') }}</el-button
               >
             </div>
           </template>
@@ -150,18 +103,16 @@ import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
 import { StrategyListObj } from '@/views/setting/types'
 
-@Component({ name: 'sensitiveManage' })
-export default class sensitiveManage extends VueBase {
+@Component({ name: 'templateManage' })
+export default class templateManage extends VueBase {
   private tableData: Array<StrategyListObj> = []
-  private pattern_type = []
-  private pattern_type_map = {}
   private page = 1
   private page_size = 20
   private total = 0
   private name = ''
   private async stateChange(row: any) {
     this.loadingStart()
-    const res = await this.services.setting.update_sensitive_info_rule({
+    const res = await this.services.setting.update_scan_strategy({
       ...row,
       ...{ status: row.status === 0 ? 1 : 0 },
     })
@@ -186,7 +137,6 @@ export default class sensitiveManage extends VueBase {
 
   async created() {
     this.loadingStart()
-    await this.getPatternType()
     await this.getTableData()
     this.loadingDone()
   }
@@ -194,20 +144,6 @@ export default class sensitiveManage extends VueBase {
     return this.$store.getters.userInfo
   }
 
-  private async getPatternType() {
-    const res = await this.services.setting.pattern_type()
-    if (res.status === 201) {
-      this.pattern_type = res.data
-      this.pattern_type.forEach((item: any) => {
-        this.$set(this.pattern_type_map, item.id, {
-          name: item.name,
-          url: item.url,
-        })
-      })
-    } else {
-      this.$message.error(res.msg)
-    }
-  }
   private async getTableData() {
     this.loadingStart()
     const {
@@ -215,7 +151,7 @@ export default class sensitiveManage extends VueBase {
       msg,
       data,
       page,
-    } = await this.services.setting.get_sensitive_info_rule({
+    } = await this.services.setting.get_scan_strategy({
       page: this.page,
       page_size: this.page_size,
       name: this.name,
@@ -232,28 +168,28 @@ export default class sensitiveManage extends VueBase {
     this.tableData = data
     this.total = page.alltotal
   }
-  private sensitiveDialogAdd() {
-    this.$router.push({ name: 'sensitive' })
+  private templateDialogAdd() {
+    this.$router.push({ name: 'template' })
   }
-  private sensitiveDialogEdit(row: any) {
+  private templateDialogEdit(row: any) {
     this.$router.push({
-      name: 'sensitive',
+      name: 'template',
       query: {
         id: row.id,
       },
     })
   }
-  private async sensitiveDialogDelete(row: any) {
+  private async templateDialogDelete(row: any) {
     this.$confirm(
-      this.$t('views.sensitiveManage.deleteWarning') as string,
-      this.$t('views.sensitiveManage.deletePop') as string,
+      this.$t('views.templateManage.deleteWarning') as string,
+      this.$t('views.templateManage.deletePop') as string,
       {
-        confirmButtonText: this.$t('views.sensitiveManage.enter') as string,
-        cancelButtonText: this.$t('views.sensitiveManage.clear') as string,
+        confirmButtonText: this.$t('views.templateManage.enter') as string,
+        cancelButtonText: this.$t('views.templateManage.clear') as string,
         type: 'warning',
       }
     ).then(async () => {
-      const res = await this.services.setting.delete_sensitive_info_rule_one({
+      const res = await this.services.setting.delete_scan_strategy_one({
         id: row.id,
       })
       if (res.status === 201) {
@@ -353,7 +289,7 @@ export default class sensitiveManage extends VueBase {
   display: flex;
   justify-content: flex-end;
 }
-.sensitiveManageTable {
+.templateManageTable {
   margin-top: 16px;
   &.el-table {
     /deep/th {
