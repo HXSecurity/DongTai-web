@@ -9,11 +9,7 @@
     >
       <el-form-item :label="$t('views.templateManage.name')" prop="name">
         <div v-if="$route.query.view">
-          {{
-            dialogForm.state === 'enable'
-              ? $t('views.hookPage.on')
-              : $t('views.hookPage.on')
-          }}
+          {{ templateForm.name }}
         </div>
         <el-input v-else v-model="templateForm.name" filterable> </el-input>
       </el-form-item>
@@ -36,7 +32,7 @@
           </el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item style="margin-bottom: 0">
+      <el-form-item v-if="!$route.query.view" style="margin-bottom: 0">
         <div>
           <el-checkbox
             v-model="isSelectAll"
@@ -56,6 +52,7 @@
           @click.prevent="checkIdChange(item.strategy_id)"
         >
           <el-checkbox
+            :disabled="$route.query.view"
             :value="templateForm.content.some((id) => id === item.strategy_id)"
           ></el-checkbox>
           {{ item.vul_name }}
@@ -64,9 +61,9 @@
       <el-form-item :label="$t('views.templateManage.status')">
         <div v-if="$route.query.view">
           {{
-            dialogForm.state === 1
+            templateForm.status === 1
               ? $t('views.hookPage.on')
-              : $t('views.hookPage.on')
+              : $t('views.hookPage.off')
           }}
         </div>
         <el-switch
@@ -77,7 +74,7 @@
         ></el-switch>
       </el-form-item>
     </el-form>
-    <div slot="footer" style="text-align: center">
+    <div v-if="!$route.query.view" slot="footer" style="text-align: center">
       <el-button type="text" class="submit" @click="templateDialogEnter">
         {{ $t('views.projectEdit.save') }}
       </el-button>
@@ -107,6 +104,9 @@ export default class templateManage extends VueBase {
     }>
   }> = []
   private checkIdChange(id: number) {
+    if (this.$route.query.view) {
+      return
+    }
     const idSet = new Set([...this.templateForm.content])
     if (idSet.has(id)) {
       idSet.delete(id)

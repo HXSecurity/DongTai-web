@@ -30,7 +30,7 @@
           min-width="160px"
         >
           <template slot-scope="{ row }">
-            <div class="two-line">
+            <div class="two-line vul_name" @click="toPath(1, row.id)">
               {{ row.name }}
             </div>
           </template>
@@ -168,6 +168,17 @@ export default class templateManage extends VueBase {
     this.tableData = data
     this.total = page.alltotal
   }
+
+  toPath(view: any, id: any) {
+    this.$router.push({
+      name: 'template',
+      query: {
+        view,
+        id,
+      },
+    })
+  }
+
   private templateDialogAdd() {
     this.$router.push({ name: 'template' })
   }
@@ -309,5 +320,10 @@ export default class templateManage extends VueBase {
   .el-button + .el-button {
     margin-left: 0;
   }
+}
+
+.vul_name {
+  color: rgba(26, 128, 242, 1);
+  cursor: pointer;
 }
 </style>
