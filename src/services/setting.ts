@@ -256,4 +256,26 @@ export default () =>
     regex_validation(data: any): Promise<iResponse> {
       return request.post(`/sensitive_info_rule/${data.url}_validation`, data)
     }
+
+    get_scan_strategy(params: any): Promise<iResponse> {
+      return request.get(
+        `/scan_strategy?page=${params.page}&page_size=${params.page_size}&name=${params.name}`
+      )
+    }
+
+    create_scan_strategy(data: any): Promise<iResponse> {
+      return request.post(`/scan_strategy`, data)
+    }
+
+    update_scan_strategy(data: any): Promise<iResponse> {
+      return request.put(`/scan_strategy/${data.id}`, data)
+    }
+
+    get_scan_strategy_one(data: any): Promise<iResponse> {
+      return request.get(`/scan_strategy/${data.id}`)
+    }
+
+    delete_scan_strategy_one(data: any): Promise<iResponse> {
+      return request.delete(`/scan_strategy/${data.id}`)
+    }
   })()

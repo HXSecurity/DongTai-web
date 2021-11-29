@@ -143,6 +143,11 @@ export default class sensitiveManage extends VueBase {
     })
     this.loadingDone()
     if (res.status === 201) {
+      if (res.data.data === '') {
+        this.$message.warning(
+          this.$t('views.sensitiveManage.noValidatio') as string
+        )
+      }
       this.validatioData = res.data.data
     } else {
       this.$message.error(res.msg)

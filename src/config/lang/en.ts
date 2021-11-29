@@ -55,6 +55,7 @@ export default {
     projectDetail: 'Project Details',
     vuln: 'Vulnerabilities',
     sensitive: 'Sensitive',
+    template: 'Template',
     vulnList: 'Application Vulnerability List',
     vulnDetail: 'Application vulnerability details',
     sca: 'Libraries',
@@ -83,6 +84,7 @@ export default {
     userSetting: 'User Setting',
     roleSetting: 'Role Setting',
     sensitiveManage: 'Sensitive',
+    templateManage: 'Template',
   },
   views: {
     changeLogo: {
@@ -642,6 +644,29 @@ export default {
         '1. Go to the "Policy Management" page, add a new policy "Mobile Phone Number Leak", fill in the policy description, repair suggestions and choose to enable;',
       p4:
         '2. Go back to the current page, click on the "New Matching Rules" button, select the policy name is "Mobile Phone Number Leak", match the way is "Regular Match", fill in "Match Rules" and click Save.',
+      tip:
+        'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
+      search: 'Search',
+      noValidatio: 'No Validatio Data',
+    },
+    templateManage: {
+      fid: 'Severity',
+      no: 'No',
+      edit: 'Edit',
+      enter: 'OK',
+      clear: 'Cancel',
+      del: 'Delete',
+      deleteWarning:
+        'This operation will permanently delete the data, do you want to continue?',
+      deletePop: 'Prompt',
+      name: 'Name',
+      selectAll: 'Select All',
+      status: 'Enabled',
+      operate: 'Operation',
+      settings: 'Settings',
+      add: 'add',
+      searchValue: 'Search for Scan Strategy',
+      nameR: 'Please select the scan strategy name',
       tip:
         'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
       search: 'Search',

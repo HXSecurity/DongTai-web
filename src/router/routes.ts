@@ -631,6 +631,26 @@ const adminRoutes: Array<RouteConfig> = [
         component: () => import('@/views/setting/sensitive.vue'),
       },
       {
+        path: 'templateManage',
+        name: 'templateManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.templateManage',
+          name: i18n.t('menu.templateManage'),
+        },
+        component: () => import('@/views/setting/templateManage.vue'),
+      },
+      {
+        path: 'template',
+        name: 'template',
+        meta: {
+          disabled: true,
+          i18n: 'menu.template',
+          name: i18n.t('menu.template'),
+        },
+        component: () => import('@/views/setting/template.vue'),
+      },
+      {
         path: 'hookRule',
         name: 'hookRule',
         meta: {
