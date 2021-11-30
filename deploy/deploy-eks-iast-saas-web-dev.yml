@@ -31,19 +31,4 @@ spec:
               memory: 1000Mi
       imagePullSecrets:
         - name: aliyun-registry-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: dongtai-web
-  name: dongtai-web-pub-svc
-  namespace: iast-dev
-spec:
-  ports:
-  - port: 8081
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: dongtai-web
-  type: LoadBalancer
+
