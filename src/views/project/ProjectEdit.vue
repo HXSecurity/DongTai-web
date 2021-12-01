@@ -21,45 +21,17 @@
             :placeholder="$t('views.projectEdit.namePlaceholder')"
           ></el-input>
         </el-form-item>
-        <el-form-item :label="$t('views.projectEdit.mode')">
+        <!-- <el-form-item :label="$t('views.projectEdit.mode')">
           <el-radio
             v-model="submitForm.mode"
             :label="$t('views.projectEdit.mode1')"
             >{{ $t('views.projectEdit.mode1') }}</el-radio
           >
-          <!-- <el-radio
+          <el-radio
             v-model="submitForm.mode"
             :label="$t('views.projectEdit.mode2')"
             >{{ $t('views.projectEdit.mode2') }}</el-radio
-          > -->
-        </el-form-item>
-        <!-- <el-form-item :label="$t('views.projectEdit.agent')">
-          <el-select
-            v-model="submitForm.agentIdList"
-            multiple
-            style="width: 412px"
-            :placeholder="$t('views.projectEdit.agentPlaceholder')"
-            @change="agentChange"
           >
-            <el-option
-              v-for="item in engineList"
-              :key="item.id"
-              :value="item.id"
-              :label="item.short_name"
-            ></el-option>
-          </el-select>
-        </el-form-item> -->
-        <!-- <el-form-item :label="$t('views.projectEdit.added')">
-          <el-tag
-            v-for="(tag, index) in engineSelectedList"
-            :key="tag.id"
-            closable
-            type="info"
-            style="margin-right: 10px"
-            @close="idDelete(index)"
-          >
-            {{ tag.token }}
-          </el-tag>
         </el-form-item> -->
         <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
           <el-select
@@ -82,26 +54,63 @@
             {{ $t('views.projectEdit.scanAdd') }}
           </i>
         </el-form-item>
-        <el-form-item
-          :label="$t('views.projectEdit.version_name')"
-          prop="version_name"
-        >
-          <el-input
-            v-model="submitForm.version_name"
-            style="width: 412px"
-            :placeholder="$t('views.projectEdit.versionNamePlaceholder')"
-          ></el-input>
-        </el-form-item>
-        <el-form-item
-          :label="$t('views.projectEdit.description')"
-          prop="description"
-        >
-          <el-input
-            v-model="submitForm.description"
-            style="width: 412px"
-            :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
-          ></el-input>
-        </el-form-item>
+        <template v-if="!advanced">
+          <el-form-item>
+            <span class="advancedSetting" @click="advanced = true">
+              高级设置
+            </span>
+          </el-form-item>
+        </template>
+        <template v-if="advanced">
+          <el-form-item :label="$t('views.projectEdit.agent')">
+            <el-select
+              v-model="submitForm.agentIdList"
+              multiple
+              style="width: 412px"
+              :placeholder="$t('views.projectEdit.agentPlaceholder')"
+              @change="agentChange"
+            >
+              <el-option
+                v-for="item in engineList"
+                :key="item.id"
+                :value="item.id"
+                :label="item.short_name"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('views.projectEdit.added')">
+            <el-tag
+              v-for="(tag, index) in engineSelectedList"
+              :key="tag.id"
+              closable
+              type="info"
+              style="margin-right: 10px"
+              @close="idDelete(index)"
+            >
+              {{ tag.token }}
+            </el-tag>
+          </el-form-item>
+          <el-form-item
+            :label="$t('views.projectEdit.version_name')"
+            prop="version_name"
+          >
+            <el-input
+              v-model="submitForm.version_name"
+              style="width: 412px"
+              :placeholder="$t('views.projectEdit.versionNamePlaceholder')"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            :label="$t('views.projectEdit.description')"
+            prop="description"
+          >
+            <el-input
+              v-model="submitForm.description"
+              style="width: 412px"
+              :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
+            ></el-input>
+          </el-form-item>
+        </template>
         <el-form-item>
           <el-button
             type="text"
@@ -195,6 +204,7 @@ import { Form } from 'element-ui'
 
 @Component({ name: 'ProjectEdit' })
 export default class ProjectEdit extends VueBase {
+  private advanced = false
   private submitForm: {
     name: string
     mode: string
@@ -559,6 +569,11 @@ export default class ProjectEdit extends VueBase {
     font-size: 14px;
     cursor: pointer;
     margin-left: 10px;
+  }
+  .advancedSetting {
+    color: #1a80f2;
+    font-size: 14px;
+    cursor: pointer;
   }
 }
 

@@ -715,7 +715,7 @@ export default {
       mode: '扫描模式',
       mode1: '插桩模式',
       mode2: '流量模式',
-      agent: '手动选择Agent',
+      agent: '选择Agent',
       agentPlaceholder: '请根据Agent的名称选择要加入项目的Agent',
       scan: '扫描策略',
       settings: '设置',
