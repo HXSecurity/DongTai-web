@@ -677,12 +677,17 @@ export default {
       uploadInfo: '只能上传jar文件',
     },
     sysInfo: {
+      vul_verifiy: '主动验证',
       infoTitle: '授权信息',
       agentThreshold: 'Agent 停止阈值',
+      vul:
+        '主动验证功能用于验证存在污点调用链的漏洞是否真实有效。主动验证时， engine 自动识别攻击参数位置，并构造 payload，然后从 Agent 内部重放 HTTP/HTTPS 流量，进行验证。该功能非必须功能，关闭不会造成漏洞检测结果的变化，如不需要，可自行关闭。',
       open: '当CPU利用率满足阈值条件时，Agent自动停止。',
       close: '当CPU利用率低于阈值条件时，Agent自动启动。',
       cpu: 'CPU 利用率 ',
       enter: '确定',
+      on: '开启',
+      off: '关闭',
     },
     projectManage: {
       title: '项目列表',
@@ -710,7 +715,7 @@ export default {
       mode: '扫描模式',
       mode1: '插桩模式',
       mode2: '流量模式',
-      agent: '手动选择Agent',
+      agent: '选择Agent',
       agentPlaceholder: '请根据Agent的名称选择要加入项目的Agent',
       scan: '扫描策略',
       settings: '设置',

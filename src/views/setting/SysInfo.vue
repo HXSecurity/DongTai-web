@@ -22,6 +22,21 @@
         ></el-input-number>
         <span> %</span>
       </div>
+
+      <div class="cpu-box">
+        <div class="moudleTitle-th">
+          {{ $t('views.sysInfo.vul_verifiy') }}
+          <el-popover placement="top-start" width="340" trigger="hover">
+            <p>{{ $t('views.sysInfo.open') }}</p>
+            <span slot="reference"> <i class="el-icon-question"></i>： </span>
+          </el-popover>
+        </div>
+        <el-switch
+          v-model="form.vul_verifiy"
+          active-value="1"
+          inactive-value="0"
+        ></el-switch>
+      </div>
       <div class="btn-box">
         <el-button
           v-if="userInfo.role === 1 || userInfo.role === 2"
@@ -43,6 +58,7 @@ import { Component } from 'vue-property-decorator'
 export default class SysInfo extends VueBase {
   public form = {
     cpu_limit: '',
+    vul_verifiy: 0,
   }
   onSubmit() {
     console.log('确定')
@@ -134,6 +150,7 @@ main {
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  width: 470px;
   .num-input {
     /deep/.el-input__inner {
       border-radius: 2px;
@@ -147,5 +164,9 @@ main {
 
 .el-icon-question {
   cursor: pointer;
+}
+
+.cpu-box + .cpu-box {
+  margin-top: 20px;
 }
 </style>
