@@ -264,6 +264,16 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/setting/Strategy.vue'),
       },
       {
+        path: 'templateManage',
+        name: 'templateManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.templateManage',
+          name: i18n.t('menu.templateManage'),
+        },
+        component: () => import('@/views/setting/templateManage.vue'),
+      },
+      {
         path: 'sensitiveManage',
         name: 'sensitiveManage',
         meta: {
@@ -283,16 +293,7 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/sensitive.vue'),
       },
-      {
-        path: 'templateManage',
-        name: 'templateManage',
-        meta: {
-          disabled: true,
-          i18n: 'menu.templateManage',
-          name: i18n.t('menu.templateManage'),
-        },
-        component: () => import('@/views/setting/templateManage.vue'),
-      },
+
       {
         path: 'template',
         name: 'template',
@@ -641,6 +642,16 @@ const adminRoutes: Array<RouteConfig> = [
         component: () => import('@/views/setting/Strategy.vue'),
       },
       {
+        path: 'templateManage',
+        name: 'templateManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.templateManage',
+          name: i18n.t('menu.templateManage'),
+        },
+        component: () => import('@/views/setting/templateManage.vue'),
+      },
+      {
         path: 'sensitiveManage',
         name: 'sensitiveManage',
         meta: {
@@ -660,16 +671,7 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/sensitive.vue'),
       },
-      {
-        path: 'templateManage',
-        name: 'templateManage',
-        meta: {
-          disabled: true,
-          i18n: 'menu.templateManage',
-          name: i18n.t('menu.templateManage'),
-        },
-        component: () => import('@/views/setting/templateManage.vue'),
-      },
+
       {
         path: 'template',
         name: 'template',
@@ -989,6 +991,16 @@ const userRoutes: Array<RouteConfig> = [
         component: () => import('@/views/setting/Strategy.vue'),
       },
       {
+        path: 'templateManage',
+        name: 'templateManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.templateManage',
+          name: i18n.t('menu.templateManage'),
+        },
+        component: () => import('@/views/setting/templateManage.vue'),
+      },
+      {
         path: 'sensitiveManage',
         name: 'sensitiveManage',
         meta: {
@@ -1008,16 +1020,7 @@ const userRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/sensitive.vue'),
       },
-      {
-        path: 'templateManage',
-        name: 'templateManage',
-        meta: {
-          disabled: true,
-          i18n: 'menu.templateManage',
-          name: i18n.t('menu.templateManage'),
-        },
-        component: () => import('@/views/setting/templateManage.vue'),
-      },
+
       {
         path: 'template',
         name: 'template',
