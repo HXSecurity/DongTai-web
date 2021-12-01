@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import { iResponse } from '@/services/types'
+import axios from 'axios'
 
 interface agentListParams {
   page: number
@@ -277,5 +278,14 @@ export default () =>
 
     delete_scan_strategy_one(data: any): Promise<iResponse> {
       return request.delete(`/scan_strategy/${data.id}`)
+    }
+    version(): Promise<iResponse> {
+      return axios.get(
+        `https://api.github.com/repos/HXSecurity/DongTai/releases/latest`
+      )
+    }
+
+    nowVersion(): Promise<iResponse> {
+      return axios.get(`/version.txt`)
     }
   })()

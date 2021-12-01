@@ -33,6 +33,7 @@
         </div>
         <el-switch
           v-model="form.vul_verifiy"
+          :disabled="userInfo.role !== 1 && userInfo.role !== 2"
           active-value="1"
           inactive-value="0"
         ></el-switch>

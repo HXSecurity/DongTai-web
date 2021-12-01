@@ -47,6 +47,7 @@ export default {
     diffPassword: '两次输入密码不一致',
   },
   menu: {
+    about: '关于',
     projectEdit: '项目配置',
     home: '首页',
     login: '登录',
@@ -715,7 +716,7 @@ export default {
       mode: '扫描模式',
       mode1: '插桩模式',
       mode2: '流量模式',
-      agent: '选择Agent',
+      agent: '关联Agent',
       agentPlaceholder: '请根据Agent的名称选择要加入项目的Agent',
       scan: '扫描策略',
       settings: '设置',
@@ -723,10 +724,15 @@ export default {
       scanAdd: '新增策略模板',
       added: '已添加',
       submit: '保存',
-      version_name: '版本号',
+      version_name: '版本名称',
       versionNamePlaceholder: '请输入版本号，如：v1.0 或 xxxx年xx月第x次迭代',
       description: '版本描述',
       descriptionPlaceholder: '请输入版本描述，如：更新xxxx功能，优化xxxx等',
+      agent_popover:
+        '通过选择 Agent，将 Agent 绑定至当前项目；推荐在 Agent 端使用 project.name 参数进行 Agent 与项目的自动绑定',
+      version_name_popover:
+        '推荐在 Agent 端使用 project.version 参数指定项目版本',
+      vul_verifiy: '主动验证',
     },
     apiList: {
       methodPlaceHolder: '请选择请求方法',
@@ -859,6 +865,19 @@ export default {
         on: '启用',
         off: '禁用',
       },
+    },
+    about: {
+      nowVersion: '当前版本',
+      newVersion: '最新版本',
+      already: '已是最新版本',
+      update: '更新',
+      checking: '正在检查更新...',
+      help: '帮助文档',
+      issue: '反馈问题',
+      detail: '详细信息',
+      version: '版本',
+      copy: '复制',
+      close: '关闭',
     },
   },
 }

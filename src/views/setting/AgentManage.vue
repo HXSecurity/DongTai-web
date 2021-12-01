@@ -180,11 +180,7 @@
       >
         <template slot-scope="{ row }">
           <div>
-            {{
-              row.running_status == '未运行'
-                ? $t('views.agentManage.offline')
-                : $t('views.agentManage.normal')
-            }}
+            {{ row.running_status }}
           </div>
         </template>
       </el-table-column>

@@ -9,7 +9,7 @@
       <el-form
         ref="submitForm"
         :model="submitForm"
-        :label-width="$i18n.locale === 'en' ? '160px' : '100px'"
+        :label-width="$i18n.locale === 'en' ? '160px' : '120px'"
         style="margin-top: 32px"
         status-icon
         :rules="rules"
@@ -62,10 +62,21 @@
           </el-form-item>
         </template>
         <template v-if="advanced">
-          <el-form-item :label="$t('views.projectEdit.agent')">
+          <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
+            <el-switch v-model="submitForm.vul_validation"> </el-switch>
+          </el-form-item>
+          <el-form-item>
+            <template slot="label">
+              {{ $t('views.projectEdit.agent') }}
+              <el-popover placement="top-start" width="340" trigger="hover">
+                <p>{{ $t('views.projectEdit.agent_popover') }}</p>
+                <span slot="reference"> <i class="el-icon-question"></i> </span>
+              </el-popover>
+            </template>
             <el-select
               v-model="submitForm.agentIdList"
               multiple
+              filterable
               style="width: 412px"
               :placeholder="$t('views.projectEdit.agentPlaceholder')"
               @change="agentChange"
@@ -78,22 +89,14 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="$t('views.projectEdit.added')">
-            <el-tag
-              v-for="(tag, index) in engineSelectedList"
-              :key="tag.id"
-              closable
-              type="info"
-              style="margin-right: 10px"
-              @close="idDelete(index)"
-            >
-              {{ tag.token }}
-            </el-tag>
-          </el-form-item>
-          <el-form-item
-            :label="$t('views.projectEdit.version_name')"
-            prop="version_name"
-          >
+          <el-form-item prop="version_name">
+            <template slot="label">
+              {{ $t('views.projectEdit.version_name') }}
+              <el-popover placement="top-start" width="340" trigger="hover">
+                <p>{{ $t('views.projectEdit.version_name_popover') }}</p>
+                <span slot="reference"> <i class="el-icon-question"></i> </span>
+              </el-popover>
+            </template>
             <el-input
               v-model="submitForm.version_name"
               style="width: 412px"
@@ -212,6 +215,7 @@ export default class ProjectEdit extends VueBase {
     scanId: number | undefined
     version_name: string
     description: string
+    vul_validation: boolean
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
@@ -219,6 +223,7 @@ export default class ProjectEdit extends VueBase {
     scanId: undefined,
     version_name: '',
     description: '',
+    vul_validation: false,
   }
   private engineList: Array<{
     id: number
@@ -307,6 +312,7 @@ export default class ProjectEdit extends VueBase {
     this.submitForm.scanId = data.scan_id
     this.submitForm.version_name = data.versionData?.version_name
     this.submitForm.description = data.versionData?.description
+    this.submitForm.vul_validation = data.vul_validation
     this.agentChange()
   }
 
