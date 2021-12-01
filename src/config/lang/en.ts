@@ -497,6 +497,7 @@ export default {
         http_method: 'Request Method',
         req_header: 'Request Body',
         name: 'Component',
+        path: 'Path',
         version: 'Version',
         application: 'Application',
         language: 'Language',
@@ -526,6 +527,7 @@ export default {
       detail: 'Details',
       reload: 'Refresh',
       scaList: 'Libraries',
+      path: 'Path',
       vulDetail: {
         title: 'Vulnerability Details',
         num: 'Vulnerability Number',
