@@ -192,19 +192,11 @@
             :label="$t('views.scaList.tableHeaders.name')"
             prop="package_name"
             sortable="custom"
+            fixed="left"
+            show-overflow-tooltip
           >
             <template slot-scope="{ row }">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="row.package_name"
-                :disabled="row.package_name.length < 35"
-                placement="top-start"
-              >
-                <div class="dot" style="width: 240px">
-                  {{ row.package_name }}
-                </div>
-              </el-tooltip>
+              {{ row.package_name }}
             </template>
           </el-table-column>
           <el-table-column
@@ -212,19 +204,20 @@
             prop="version"
             :width="'110px'"
             sortable="custom"
+            show-overflow-tooltip
           >
             <template slot-scope="{ row }">
-              <el-tooltip
-                class="item"
-                effect="dark"
-                :content="row.version"
-                :disabled="row.version.length < 10"
-                placement="top-start"
-              >
-                <div class="dot" style="width: 80px">
-                  {{ row.version }}
-                </div>
-              </el-tooltip>
+              {{ row.version }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.tableHeaders.path')"
+            prop="package_path"
+            sortable="custom"
+            show-overflow-tooltip
+          >
+            <template slot-scope="{ row }">
+              {{ row.package_path }}
             </template>
           </el-table-column>
           <el-table-column

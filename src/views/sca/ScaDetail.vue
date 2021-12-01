@@ -150,6 +150,13 @@
         </div>
         <div class="info-line">
           <span>
+            <i class="el-icon-house"></i>
+            {{ $t('views.scaDetail.package_path') }}：
+          </span>
+          {{ scaObj.project_path }}
+        </div>
+        <div class="info-line">
+          <span>
             <i class="iconfont iconicon_details_banben"></i>
             {{ $t('views.scaDetail.version_now') }}：
           </span>

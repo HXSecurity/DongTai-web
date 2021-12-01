@@ -490,6 +490,7 @@ export default {
         http_method: '请求方法',
         req_header: '请求体',
         name: '组件名称',
+        path: '路径',
         version: '组件版本',
         application: '所属应用',
         language: '语言',
@@ -519,6 +520,7 @@ export default {
       detail: '详情',
       reload: '刷新',
       scaList: '组件列表',
+      path: '路径',
       vulDetail: {
         title: '漏洞详情',
         num: '漏洞编号',
