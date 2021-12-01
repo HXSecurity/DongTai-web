@@ -689,14 +689,19 @@ export default {
       uploadInfo: 'Select only JAR files',
     },
     sysInfo: {
+      vul_verifiy: 'Verification',
       infoTitle: 'Authorization Information',
       agentThreshold: 'Agent Threshold',
+      vul:
+        'The active verification function is used to verify whether the vulnerability of the tainted call chain is true and effective. During active verification, engine automatically identifies the location of attack parameters, constructs a payload, and then replays http / HTTPS traffic from within the agent for verification. This function is not necessary. Closing it will not change the vulnerability detection results. If it is not needed, it can be closed by itself.      ',
       open:
         'When the CPU utilization meets the threshold condition, the agent automatically stops.',
       close:
         'When the CPU utilization is lower than the threshold condition, the agent starts automatically.',
-      cpu: 'CPU Utilization      ',
+      cpu: 'Utilization      ',
       enter: 'Enter',
+      on: 'ON',
+      off: 'OFF',
     },
     projectManage: {
       title: 'APPLICATIONS',
