@@ -97,7 +97,7 @@ export default class StatusMonitoring extends VueBase {
   }
   private async getNowVersion() {
     const res = await this.services.setting.nowVersion()
-    const versionArr = res.data.split('\r\n')
+    const versionArr = res.data.split('\n')
     versionArr.pop()
     versionArr.forEach((item: any) => {
       const itemArr = item.split(',')
