@@ -47,6 +47,7 @@ export default {
     cancel: 'Cancel',
   },
   menu: {
+    about: 'About',
     projectEdit: 'ProjectEdit',
     home: 'Home',
     login: 'Login',
@@ -740,6 +741,11 @@ export default {
       versionNamePlaceholder: 'Please enter the version number',
       description: 'Version Description',
       descriptionPlaceholder: 'Please enter a version description',
+      agent_popover:
+        'Bind the agent to the current project by selecting the agent; It is recommended to use the project.name parameter on the agent side to automatically bind the agent to the project',
+      version_name_popover:
+        'It is recommended to use the project.version parameter on the agent side to specify the project version',
+      vul_verifiy: 'Verification',
     },
     apiList: {
       methodPlaceHolder: 'Method',
@@ -879,6 +885,19 @@ export default {
         on: 'Enable',
         off: 'Disable',
       },
+    },
+    about: {
+      nowVersion: 'Current Version',
+      newVersion: 'New Version',
+      already: 'Already',
+      update: 'Update',
+      checking: 'Checking',
+      help: 'Help',
+      issue: 'Issue',
+      detail: 'Detail',
+      version: 'Version',
+      copy: 'Copy',
+      close: 'Close',
     },
   },
 }

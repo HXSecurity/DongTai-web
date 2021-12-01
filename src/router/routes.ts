@@ -370,6 +370,16 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
+      {
+        path: 'about',
+        name: 'about',
+        meta: {
+          disabled: true,
+          i18n: 'menu.about',
+          name: i18n.t('menu.about'),
+        },
+        component: () => import('@/views/setting/about.vue'),
+      },
     ],
   },
   {
@@ -737,6 +747,16 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
+      {
+        path: 'about',
+        name: 'about',
+        meta: {
+          disabled: true,
+          i18n: 'menu.about',
+          name: i18n.t('menu.about'),
+        },
+        component: () => import('@/views/setting/about.vue'),
+      },
     ],
   },
   {
@@ -1074,6 +1094,16 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.statusMonitoring'),
         },
         component: () => import('@/views/setting/StatusMonitoring.vue'),
+      },
+      {
+        path: 'about',
+        name: 'about',
+        meta: {
+          disabled: true,
+          i18n: 'menu.about',
+          name: i18n.t('menu.about'),
+        },
+        component: () => import('@/views/setting/about.vue'),
       },
     ],
   },
