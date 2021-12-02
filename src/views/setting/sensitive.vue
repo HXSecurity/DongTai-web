@@ -135,23 +135,28 @@ export default class sensitiveManage extends VueBase {
   }
 
   private async regexValidation() {
-    this.loadingStart()
-    const res = await this.services.setting.regex_validation({
-      url: this.pattern_type_map[this.sensitiveForm.pattern_type_id].url,
-      pattern: this.sensitiveForm.pattern,
-      test_data: this.sensitiveForm.test_data,
-    })
-    this.loadingDone()
-    if (res.status === 201) {
-      if (res.data.data === '') {
-        this.$message.warning(
-          this.$t('views.sensitiveManage.noValidatio') as string
-        )
+    const form: any = this.$refs.ruleForm
+    form.validate(async (valid: boolean) => {
+      if (valid) {
+        this.loadingStart()
+        const res = await this.services.setting.regex_validation({
+          url: this.pattern_type_map[this.sensitiveForm.pattern_type_id].url,
+          pattern: this.sensitiveForm.pattern,
+          test_data: this.sensitiveForm.test_data,
+        })
+        this.loadingDone()
+        if (res.status === 201) {
+          if (res.data.data === '') {
+            this.$message.warning(
+              this.$t('views.sensitiveManage.noValidatio') as string
+            )
+          }
+          this.validatioData = res.data.data
+        } else {
+          this.$message.error(res.msg)
+        }
       }
-      this.validatioData = res.data.data
-    } else {
-      this.$message.error(res.msg)
-    }
+    })
   }
   private async getStrategyData() {
     this.loadingStart()
