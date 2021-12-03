@@ -60,8 +60,8 @@ jobs:
       - name: Generate version file
         run: |
           cd ${{ github.workspace }} && \
-          echo "${{ github.event.repository.name }},version,${{ steps.release.outputs.version }}" >> version.txt && \
-          echo "${{ github.event.repository.name }},commit_hash,${GITHUB_SHA}" >> version.txt \
+          echo "${{ github.event.repository.name }},version,${{ steps.release.outputs.version }}" >> dist/version.txt && \
+          echo "${{ github.event.repository.name }},commit_hash,${GITHUB_SHA}" >> dist/version.txt \
 
       - name: Upload version file
         uses: actions/upload-release-asset@v1.0.2
