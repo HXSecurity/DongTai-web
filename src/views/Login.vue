@@ -109,6 +109,7 @@ export default class Login extends VueBase {
     }
     this.captcha_url = data['image_url']
     this.captcha_hash_key = data['hash_key']
+    this.captcha = ''
   }
 
   private async login() {
