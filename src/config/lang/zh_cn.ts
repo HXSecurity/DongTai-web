@@ -202,11 +202,11 @@ export default {
         ManualInstallation: '手动安装',
         term1: 'PHP版本不低于8.0.9',
         manualInstallationDesc1:
-          'a. 手动解压缩php-agent-test.tar.gz，php-agent-test里面有三个文件，分别是：dongtai_php_agent.so& test.json & run-tests.php，复制dongtai_php_agent.so到php安装环境中的extension中，例如：/usr/local/lib/php/pecl/20200930',
+          'a. 手动解压缩php-agent.tar.gz，php-agent里面有三个文件，分别是：dongtai_php_agent.so& policy.json &dongtai-php-property.ini，复制dongtai_php_agent.so到php安装环境中的extension中，例如：/usr/local/lib/php/pecl/20200930',
         manualInstallationDesc2:
-          'b. 找到php.ini，使用命令：php -i | grep php.ini，在php.ini添加：extension_dir = " dongtai_php_agent.so在php内部的路径" , extension=dongtai_php_agent，之后执行php –v，正常显示PHP版本信息,php –m 查看会有dongtai_php_agent，即安装成功。',
+          'b. 找到php的配置文件目录，添加：dongtai-php-property.ini，之后执行php –m， 查看会有dongtai_php_agent，即安装成功。',
         manualInstallationDesc3:
-          'c. 通过终端，进入php-agent-test，执行 php run-tests.php测试结果，也可以进入靶场测试，靶场地址：https://github.com/jinghao1/phpvul',
+          'c. 通过终端，进入php-agent，执行 php run-tests.php测试结果，也可以进入靶场测试，靶场地址：https://github.com/jinghao1/phpvul',
       },
     },
     search: {
