@@ -75,13 +75,13 @@ jobs:
       - name: Merge all version file
         run: |
           echo "DongTai,version,${{ steps.release.outputs.version }}" > dist/version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-web/${{ steps.release.outputs.version }}/version.txt DongTai-web.version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-webapi/${{ steps.release.outputs.version }}/version.txt DongTai-webapi.version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-openapi/${{ steps.release.outputs.version }}/version.txt DongTai-openapi.version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-engine/${{ steps.release.outputs.version }}/version.txt DongTai-engine.version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-python/${{ steps.release.outputs.version }}/version.txt DongTai-agent-python.version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-java/${{ steps.release.outputs.version }}/version.txt DongTai-agent-java.version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-php/${{ steps.release.outputs.version }}/version.txt DongTai-agent-php.version.txt
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-web/${{ steps.release.outputs.version }}/version.txt DongTai-web.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-webapi/${{ steps.release.outputs.version }}/version.txt DongTai-webapi.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-openapi/${{ steps.release.outputs.version }}/version.txt DongTai-openapi.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-engine/${{ steps.release.outputs.version }}/version.txt DongTai-engine.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-python/${{ steps.release.outputs.version }}/version.txt DongTai-agent-python.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-java/${{ steps.release.outputs.version }}/version.txt DongTai-agent-java.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-php/${{ steps.release.outputs.version }}/version.txt DongTai-agent-php.version.txt || true
           cat *.version.txt >> dist/version.txt
           cat dist/version.txt
 
