@@ -51,26 +51,48 @@ jobs:
           VERSION=`echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'`
           echo "::set-output name=version::$VERSION"
 
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Generate version file
+        run: |
+          cd ${{ github.workspace }} && \
+          echo "${{ github.event.repository.name }},version,${{ steps.release.outputs.version }}" >> version.txt && \
+          echo "${{ github.event.repository.name }},commit_hash,${GITHUB_SHA}" >> version.txt \
+
+      - name: Upload version file
+        uses: actions/upload-release-asset@v1.0.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ steps.get_release.outputs.upload_url }}
+          asset_path: version.txt
+          asset_name: version.txt
+          asset_content_type: text/plain
+
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
-          tags: | 
+          tags: |
             dongtai/dongtai-web:${{ steps.release.outputs.version }}
             dongtai/dongtai-web:latest
 
-      - name: Deploy-To-Prod
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: |
-            find deploy/deploy-eks-iast-saas-web-prod.yml -type f -exec sed -i 's/VERSION/${{ steps.release.outputs.version }}/g' {} \;
-            ls deploy/deploy-eks-iast-saas-web-prod.yml | xargs -I {} kubectl apply -f {}
-
-      - name: finish build
-        uses: joelwmale/webhook-action@master
-        with:
-          url: ${{ secrets.WEBHOOK_URL }}
-          body: '{"msg_type": "interactive","card": {"config": {"wide_screen_mode": true,"enable_forward": true},"elements": [{"tag": "div","text": {"content": "状态：构建开始\n项目：${{github.repository}}\n分支：${{github.ref}}\n流程：${{github.workflow}}\n构建编号：${{github.run_number}}\n触发事件：${{github.event_name}}\n提交人：${{github.actor}}\nSHA-1：${{github.sha}}\n","tag": "lark_md"}}]}}'
+#      - name: Deploy-To-Prod
+#        uses: wahyd4/kubectl-helm-action@master
+#        env:
+#          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+#        with:
+#          args: |
+#            find deploy/deploy-eks-iast-saas-web-prod.yml -type f -exec sed -i 's/VERSION/${{ steps.release.outputs.version }}/g' {} \;
+#            ls deploy/deploy-eks-iast-saas-web-prod.yml | xargs -I {} kubectl apply -f {}
+#
+#      - name: finish build
+#        uses: joelwmale/webhook-action@master
+#        with:
+#          url: ${{ secrets.WEBHOOK_URL }}
+#          body: '{"msg_type": "interactive","card": {"config": {"wide_screen_mode": true,"enable_forward": true},"elements": [{"tag": "div","text": {"content": "状态：构建开始\n项目：${{github.repository}}\n分支：${{github.ref}}\n流程：${{github.workflow}}\n构建编号：${{github.run_number}}\n触发事件：${{github.event_name}}\n提交人：${{github.actor}}\nSHA-1：${{github.sha}}\n","tag": "lark_md"}}]}}'
