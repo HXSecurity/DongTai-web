@@ -62,9 +62,7 @@ jobs:
           echo "${{ github.event.repository.name }},commit_hash,${GITHUB_SHA}" >> dist/version.txt && \
           cat dist/version.txt \
 
-      - name: Package
-        run: |
-          python setup.py sdist
+      - name: Init ossutil
       - uses: manyuanrong/setup-ossutil@v2.0
         with:
           endpoint: "oss-cn-beijing.aliyuncs.com"
