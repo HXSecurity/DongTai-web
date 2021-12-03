@@ -63,7 +63,11 @@
         </template>
         <template v-if="advanced">
           <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
-            <el-switch v-model="submitForm.vul_validation"> </el-switch>
+            <el-switch
+              v-model="submitForm.vul_validation"
+              @change="vul_flag = true"
+            >
+            </el-switch>
           </el-form-item>
           <el-form-item>
             <template slot="label">
@@ -208,6 +212,7 @@ import { Form } from 'element-ui'
 @Component({ name: 'ProjectEdit' })
 export default class ProjectEdit extends VueBase {
   private advanced = false
+  private vul_flag = false
   private submitForm: {
     name: string
     mode: string
@@ -513,7 +518,9 @@ export default class ProjectEdit extends VueBase {
           description: this.submitForm.description
             ? this.submitForm.description
             : undefined,
-          vul_validation: this.submitForm.vul_validation,
+          vul_validation: this.vul_flag
+            ? this.submitForm.vul_validation
+            : undefined,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid
