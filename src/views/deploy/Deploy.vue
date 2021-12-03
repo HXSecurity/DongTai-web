@@ -465,7 +465,7 @@ export default class Deploy extends VueBase {
       case 'python':
         return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-agent-python.tar.gz -k`
       case 'php':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H 'Authorization: Token ${this.token}' -o php-agent-test.tar.gz`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H 'Authorization: Token ${this.token}' -o php-agent.tar.gz`
     }
   }
   get pythonShell() {

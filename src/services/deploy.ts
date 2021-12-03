@@ -33,6 +33,8 @@ export default () =>
           link.href = window.URL.createObjectURL(blob)
           if (language === 'java') {
             link.download = 'agent.jar'
+          } else if (language === 'php') {
+            link.download = 'php-agent.tar.gz'
           } else {
             link.download = 'dongtai-agent-python.tar.gz'
           }
