@@ -246,6 +246,15 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/setting/AgentManage.vue'),
       },
       {
+        path: 'sysInfo',
+        name: 'sysInfo',
+        meta: {
+          i18n: 'menu.sysInfo',
+          name: i18n.t('menu.sysInfo'),
+        },
+        component: () => import('@/views/setting/SysInfo.vue'),
+      },
+      {
         path: 'strategyManage',
         name: 'strategyManage',
         meta: {
@@ -314,32 +323,15 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/hookRule.vue'),
       },
-      // {
-      //   path: 'upgradeOnline',
-      //   name: 'upgradeOnline',
-      //   meta: {
-      //     name: i18n.t('menu.upgradeOnline'),
-      //   },
-      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
-      // },
       {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          i18n: 'menu.sysInfo',
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
-      {
-        path: 'changePassword',
-        name: 'changePassword',
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
         meta: {
           disabled: true,
-          i18n: 'menu.changePassword',
-          name: i18n.t('menu.changePassword'),
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
         },
-        component: () => import('@/views/setting/ChangePassword.vue'),
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
       {
         path: 'changeLogo',
@@ -351,6 +343,26 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/changeLogo.vue'),
       },
+      // {
+      //   path: 'upgradeOnline',
+      //   name: 'upgradeOnline',
+      //   meta: {
+      //     name: i18n.t('menu.upgradeOnline'),
+      //   },
+      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
+      // },
+
+      {
+        path: 'changePassword',
+        name: 'changePassword',
+        meta: {
+          disabled: true,
+          i18n: 'menu.changePassword',
+          name: i18n.t('menu.changePassword'),
+        },
+        component: () => import('@/views/setting/ChangePassword.vue'),
+      },
+
       {
         path: 'logManage',
         name: 'logManage',
@@ -361,16 +373,7 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/LogManage.vue'),
       },
-      {
-        path: 'StatusMonitoring',
-        name: 'StatusMonitoring',
-        meta: {
-          disabled: true,
-          i18n: 'menu.statusMonitoring',
-          name: i18n.t('menu.statusMonitoring'),
-        },
-        component: () => import('@/views/setting/StatusMonitoring.vue'),
-      },
+
       {
         path: 'about',
         name: 'about',
@@ -624,6 +627,15 @@ const adminRoutes: Array<RouteConfig> = [
         component: () => import('@/views/setting/AgentManage.vue'),
       },
       {
+        path: 'sysInfo',
+        name: 'sysInfo',
+        meta: {
+          i18n: 'menu.sysInfo',
+          name: i18n.t('menu.sysInfo'),
+        },
+        component: () => import('@/views/setting/SysInfo.vue'),
+      },
+      {
         path: 'strategyManage',
         name: 'strategyManage',
         meta: {
@@ -692,32 +704,15 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/hookRule.vue'),
       },
-      // {
-      //   path: 'upgradeOnline',
-      //   name: 'upgradeOnline',
-      //   meta: {
-      //     name: i18n.t('menu.upgradeOnline'),
-      //   },
-      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
-      // },
       {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          i18n: 'menu.sysInfo',
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
-      {
-        path: 'changePassword',
-        name: 'changePassword',
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
         meta: {
           disabled: true,
-          i18n: 'menu.changePassword',
-          name: i18n.t('menu.changePassword'),
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
         },
-        component: () => import('@/views/setting/ChangePassword.vue'),
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
       {
         path: 'changeLogo',
@@ -729,6 +724,26 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/changeLogo.vue'),
       },
+      // {
+      //   path: 'upgradeOnline',
+      //   name: 'upgradeOnline',
+      //   meta: {
+      //     name: i18n.t('menu.upgradeOnline'),
+      //   },
+      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
+      // },
+
+      {
+        path: 'changePassword',
+        name: 'changePassword',
+        meta: {
+          disabled: true,
+          i18n: 'menu.changePassword',
+          name: i18n.t('menu.changePassword'),
+        },
+        component: () => import('@/views/setting/ChangePassword.vue'),
+      },
+
       {
         path: 'logManage',
         name: 'logManage',
@@ -739,16 +754,7 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/LogManage.vue'),
       },
-      {
-        path: 'StatusMonitoring',
-        name: 'StatusMonitoring',
-        meta: {
-          disabled: true,
-          i18n: 'menu.statusMonitoring',
-          name: i18n.t('menu.statusMonitoring'),
-        },
-        component: () => import('@/views/setting/StatusMonitoring.vue'),
-      },
+
       {
         path: 'about',
         name: 'about',
@@ -973,6 +979,15 @@ const userRoutes: Array<RouteConfig> = [
         component: () => import('@/views/setting/AgentManage.vue'),
       },
       {
+        path: 'sysInfo',
+        name: 'sysInfo',
+        meta: {
+          i18n: 'menu.sysInfo',
+          name: i18n.t('menu.sysInfo'),
+        },
+        component: () => import('@/views/setting/SysInfo.vue'),
+      },
+      {
         path: 'strategyManage',
         name: 'strategyManage',
         meta: {
@@ -1041,32 +1056,15 @@ const userRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/hookRule.vue'),
       },
-      // {
-      //   path: 'upgradeOnline',
-      //   name: 'upgradeOnline',
-      //   meta: {
-      //     name: i18n.t('menu.upgradeOnline'),
-      //   },
-      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
-      // },
       {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          i18n: 'menu.sysInfo',
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
-      {
-        path: 'changePassword',
-        name: 'changePassword',
+        path: 'StatusMonitoring',
+        name: 'StatusMonitoring',
         meta: {
           disabled: true,
-          i18n: 'menu.changePassword',
-          name: i18n.t('menu.changePassword'),
+          i18n: 'menu.statusMonitoring',
+          name: i18n.t('menu.statusMonitoring'),
         },
-        component: () => import('@/views/setting/ChangePassword.vue'),
+        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
       // {
       //   path: 'changeLogo',
@@ -1078,6 +1076,26 @@ const userRoutes: Array<RouteConfig> = [
       //   },
       //   component: () => import('@/views/setting/changeLogo.vue'),
       // },
+      // {
+      //   path: 'upgradeOnline',
+      //   name: 'upgradeOnline',
+      //   meta: {
+      //     name: i18n.t('menu.upgradeOnline'),
+      //   },
+      //   component: () => import('@/views/setting/UpgradeOnline.vue'),
+      // },
+
+      {
+        path: 'changePassword',
+        name: 'changePassword',
+        meta: {
+          disabled: true,
+          i18n: 'menu.changePassword',
+          name: i18n.t('menu.changePassword'),
+        },
+        component: () => import('@/views/setting/ChangePassword.vue'),
+      },
+
       {
         path: 'logManage',
         name: 'logManage',
@@ -1087,16 +1105,6 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.logManage'),
         },
         component: () => import('@/views/setting/LogManage.vue'),
-      },
-      {
-        path: 'StatusMonitoring',
-        name: 'StatusMonitoring',
-        meta: {
-          disabled: true,
-          i18n: 'menu.statusMonitoring',
-          name: i18n.t('menu.statusMonitoring'),
-        },
-        component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
       {
         path: 'about',
