@@ -65,7 +65,7 @@
         <el-table-column
           :label="$t('views.sensitiveManage.name')"
           prop="vul_name"
-          width="160px"
+          min-width="160px"
           show-overflow-tooltip
         >
           <template slot-scope="{ row }">
@@ -104,7 +104,7 @@
         <el-table-column
           :label="$t('views.sensitiveManage.status')"
           prop="state"
-          width="140px"
+          min-width="140px"
           align="center"
         >
           <template slot-scope="{ row }">
@@ -120,7 +120,7 @@
         </el-table-column>
         <el-table-column
           :label="$t('views.sensitiveManage.settings')"
-          width="160px"
+          min-width="160px"
           align="center"
         >
           <template slot-scope="{ row }">
@@ -387,12 +387,16 @@ export default class sensitiveManage extends VueBase {
   }
 }
 .table-btn-box {
+  display: flex;
   justify-content: center;
   align-items: center;
+  .el-button {
+    font-size: 14px;
+  }
   .l {
     color: #38435a;
-    line-height: 13px;
-    padding: 10px 4px;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
     display: inline-block;
   }
   .el-button + .el-button {

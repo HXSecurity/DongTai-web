@@ -57,17 +57,21 @@
         <template v-if="!advanced">
           <el-form-item>
             <span class="advancedSetting" @click="advanced = true">
-              高级设置
+              {{ $t('views.projectEdit.advanced') }}
             </span>
           </el-form-item>
         </template>
         <template v-if="advanced">
           <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
-            <el-switch
-              v-model="submitForm.vul_validation"
-              @change="vul_flag = true"
-            >
-            </el-switch>
+            <el-radio v-model="submitForm.vul_validation" :label="0">
+              {{ $t('views.projectEdit.followAll') }}
+            </el-radio>
+            <el-radio v-model="submitForm.vul_validation" :label="1">
+              {{ $t('views.projectEdit.off') }}
+            </el-radio>
+            <el-radio v-model="submitForm.vul_validation" :label="2">
+              {{ $t('views.projectEdit.on') }}
+            </el-radio>
           </el-form-item>
           <el-form-item>
             <template slot="label">
@@ -212,7 +216,6 @@ import { Form } from 'element-ui'
 @Component({ name: 'ProjectEdit' })
 export default class ProjectEdit extends VueBase {
   private advanced = false
-  private vul_flag = false
   private submitForm: {
     name: string
     mode: string
@@ -220,7 +223,7 @@ export default class ProjectEdit extends VueBase {
     scanId: number | undefined
     version_name: string
     description: string
-    vul_validation: undefined | boolean
+    vul_validation: number
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
@@ -228,7 +231,7 @@ export default class ProjectEdit extends VueBase {
     scanId: undefined,
     version_name: '',
     description: '',
-    vul_validation: undefined,
+    vul_validation: 0,
   }
   private engineList: Array<{
     id: number
@@ -506,7 +509,7 @@ export default class ProjectEdit extends VueBase {
           pid?: string
           version_name: string | undefined
           description: string | undefined
-          vul_validation: boolean | undefined
+          vul_validation: number
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
@@ -518,9 +521,7 @@ export default class ProjectEdit extends VueBase {
           description: this.submitForm.description
             ? this.submitForm.description
             : undefined,
-          vul_validation: this.vul_flag
-            ? this.submitForm.vul_validation
-            : undefined,
+          vul_validation: this.submitForm.vul_validation,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid

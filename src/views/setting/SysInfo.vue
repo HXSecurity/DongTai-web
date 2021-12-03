@@ -13,6 +13,7 @@
         </div>
         <span style="margin-right: 16px">{{ $t('views.sysInfo.cpu') }} ≥ </span>
         <el-input-number
+          v-if="userInfo.role == 1 || userInfo.role == 2"
           v-model="form.cpu_limit"
           :max="100"
           :min="0"
@@ -20,6 +21,7 @@
           style="margin-right: 12px"
           class="num-input"
         ></el-input-number>
+        <span v-else>{{ form.cpu_limit }}</span>
         <span> %</span>
       </div>
 
@@ -153,6 +155,7 @@ main {
   align-items: center;
   width: 470px;
   .num-input {
+    width: 120px;
     /deep/.el-input__inner {
       border-radius: 2px;
     }
