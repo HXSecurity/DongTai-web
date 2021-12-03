@@ -202,7 +202,7 @@ export default {
         ManualInstallation: '手动安装',
         term1: 'PHP版本不低于8.0.9',
         manualInstallationDesc1:
-          'a. 手动解压缩php-agent.tar.gz，php-agent里面有三个文件，分别是：dongtai_php_agent.so& policy.json &dongtai-php-property.ini，复制dongtai_php_agent.so到php安装环境中的extension中，例如：/usr/local/lib/php/pecl/20200930',
+          'a. 手动解压缩php-agent.tar.gz，php-agent里面有三个文件，分别是：dongtai_php_agent.so& policy.json &dongtai-php-property.ini，复制dongtai_php_agent.so和policy.json到php安装环境中的extension中，例如：/usr/local/lib/php/pecl/20200930',
         manualInstallationDesc2:
           'b. 找到php的配置文件目录，添加：dongtai-php-property.ini，之后执行php –m， 查看会有dongtai_php_agent，即安装成功。',
         manualInstallationDesc3:

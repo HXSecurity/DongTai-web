@@ -201,7 +201,7 @@ export default {
         Manualinstallation: 'manual installation',
         term1: 'PHP version no less than 8.0.9',
         manualInstallationDesc1:
-          'A. manually decompress php-agent.tar.gz. There are three files in PHP agent: dongtai_php_agent.so & policy.json & dongtai-php-property.ini. Copy dongtai_php_agent.so to the extension in the PHP installation environment, for example: / usr / local / lib / PHP / PECL / 20200930',
+          'A. manually decompress php-agent.tar.gz. There are three files in PHP agent: dongtai_php_agent.so & policy.json & dongtai-php-property.ini. Copy dongtai_php_agent.so and policy.json to the extension in the PHP installation environment, for example:/usr/local/lib/PHP/PECL/20200930',
         manualInstallationDesc2:
           'B. find the configuration file directory of PHP, add: dongtai-php-property.ini, then execute PHP – m, and check that there will be dongtai_php_agent, that is, the installation is successful.',
         manualInstallationDesc3:
