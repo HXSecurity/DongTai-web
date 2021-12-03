@@ -44,9 +44,13 @@ jobs:
           npm test
           npm run build --if-present
 
+      - name: test
+        run: |
+          echo ${GITHUB_REF##*/}
+
       - id: release
         run: |
-          VERSION=`echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'`
+          VERSION=`echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'` \
           echo "::set-output name=version::$VERSION"
 
       - name: Get release
