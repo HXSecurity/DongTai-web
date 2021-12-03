@@ -17,7 +17,7 @@
         <el-form-item :label="$t('views.projectEdit.name')" prop="name">
           <el-input
             v-model="submitForm.name"
-            style="width: 412px"
+            style="width: 672px"
             :placeholder="$t('views.projectEdit.namePlaceholder')"
           ></el-input>
         </el-form-item>
@@ -36,7 +36,7 @@
         <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
           <el-select
             v-model="submitForm.scanId"
-            style="width: 412px"
+            style="width: 550px"
             :placeholder="$t('views.projectEdit.scanPlaceholder')"
             @change="agentChange"
           >
@@ -77,7 +77,7 @@
               v-model="submitForm.agentIdList"
               multiple
               filterable
-              style="width: 412px"
+              style="width: 550px"
               :placeholder="$t('views.projectEdit.agentPlaceholder')"
               @change="agentChange"
             >
@@ -99,7 +99,7 @@
             </template>
             <el-input
               v-model="submitForm.version_name"
-              style="width: 412px"
+              style="width: 550px"
               :placeholder="$t('views.projectEdit.versionNamePlaceholder')"
             ></el-input>
           </el-form-item>
@@ -109,7 +109,7 @@
           >
             <el-input
               v-model="submitForm.description"
-              style="width: 412px"
+              style="width: 550px"
               :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
             ></el-input>
           </el-form-item>
@@ -215,7 +215,7 @@ export default class ProjectEdit extends VueBase {
     scanId: number | undefined
     version_name: string
     description: string
-    vul_validation: boolean
+    vul_validation: undefined | boolean
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
@@ -223,7 +223,7 @@ export default class ProjectEdit extends VueBase {
     scanId: undefined,
     version_name: '',
     description: '',
-    vul_validation: false,
+    vul_validation: undefined,
   }
   private engineList: Array<{
     id: number
@@ -501,6 +501,7 @@ export default class ProjectEdit extends VueBase {
           pid?: string
           version_name: string | undefined
           description: string | undefined
+          vul_validation: boolean | undefined
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
@@ -512,6 +513,7 @@ export default class ProjectEdit extends VueBase {
           description: this.submitForm.description
             ? this.submitForm.description
             : undefined,
+          vul_validation: this.submitForm.vul_validation,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid
@@ -564,10 +566,14 @@ export default class ProjectEdit extends VueBase {
   }
 
   .submit-btn {
-    width: 114px;
+    border: 1px solid #4a72ae;
+    border-color: #4a72ae;
+    background: #4a72ae;
+    color: #ffffff;
+    height: 32px;
+    width: 92px;
     border-radius: 2px;
-    border: 1px solid #1a80f2;
-    color: #1a80f2;
+    padding: 6px, 32px, 6px, 32px;
   }
 
   .addStrategyIcon {

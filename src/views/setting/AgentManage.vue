@@ -338,9 +338,9 @@ export default class AgentManage extends VueBase {
   private multipleSelection = []
   created() {
     this.getTableData()
-    this.timer = setInterval(() => {
-      this.reflashTable()
-    }, 5000)
+    // this.timer = setInterval(() => {
+    //   this.reflashTable()
+    // }, 5000)
   }
   private timer: any
   private timeOuter: any

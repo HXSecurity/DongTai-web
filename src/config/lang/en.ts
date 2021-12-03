@@ -47,7 +47,7 @@ export default {
     cancel: 'Cancel',
   },
   menu: {
-    about: 'About',
+    about: 'About DongTai',
     projectEdit: 'ProjectEdit',
     home: 'Home',
     login: 'Login',
@@ -642,6 +642,10 @@ export default {
       t: 'Sensitive data configuration',
       p1:
         'Sensitive information detection function officially opened public testing, in order to detect the security risk of sensitive information leakage, it is necessary to configure the matching rules of sensitive information and related policies.',
+      'p1-1': 'Detection location:',
+      'p1-2': '1. HTTP Request Param',
+      'p1-3': '2. HTTP Request Post Data',
+      'p1-4': '3. HTTP Response Data',
       p2: 'Process (to increase mobile phone number leakage for example): ',
       p3:
         '1. Go to the "Policy Management" page, add a new policy "Mobile Phone Number Leak", fill in the policy description, repair suggestions and choose to enable;',
