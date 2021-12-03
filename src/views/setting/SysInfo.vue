@@ -29,7 +29,7 @@
         <div class="moudleTitle-th">
           {{ $t('views.sysInfo.vul_verifiy') }}
           <el-popover placement="top-start" width="340" trigger="hover">
-            <p>{{ $t('views.sysInfo.open') }}</p>
+            <p>{{ $t('views.sysInfo.vul') }}</p>
             <span slot="reference"> <i class="el-icon-question"></i>： </span>
           </el-popover>
         </div>
