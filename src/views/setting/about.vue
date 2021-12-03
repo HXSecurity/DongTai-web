@@ -86,14 +86,14 @@ import { Component } from 'vue-property-decorator'
 export default class StatusMonitoring extends VueBase {
   private logo = '/upload/assets/img/logo.png?v=' + String(Math.random())
   private logo_en = '/upload/assets/img/logo_en.png?v=' + String(Math.random())
-  private now_version = 'v1.1.2'
+  private now_version = ''
   private new_version = ''
   private versionVisible = false
-  private versionMap = {}
+  private versionMap: any = {}
   private versionString = ''
   private async getVersion() {
     const res = await this.services.setting.version()
-    this.new_version = res.data.tag_name
+    this.new_version = res.data.tag_name.substr(1)
   }
   private async getNowVersion() {
     const res = await this.services.setting.nowVersion()
@@ -112,6 +112,7 @@ export default class StatusMonitoring extends VueBase {
         }
       }
     })
+    this.now_version = this.versionMap.DongTai.version
     this.versionString = JSON.stringify(this.versionMap)
   }
   private onError() {
