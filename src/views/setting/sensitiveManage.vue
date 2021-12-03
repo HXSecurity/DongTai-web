@@ -1,7 +1,7 @@
 <template>
   <div class="content-warp">
     <div>
-      <el-card class="box-card">
+      <el-card class="box-card" shadow="never">
         <div slot="header" class="clearfix">
           <span
             >{{ $t('views.sensitiveManage.t')
@@ -12,9 +12,21 @@
           <p>
             {{ $t('views.sensitiveManage.p1') }}
           </p>
-          <p>{{ $t('views.sensitiveManage.p2') }}</p>
-          <p>{{ $t('views.sensitiveManage.p3') }}</p>
-          <p>
+          <p class="mgt-10">
+            {{ $t('views.sensitiveManage.p1-1') }}
+          </p>
+          <p class="text-indent">
+            {{ $t('views.sensitiveManage.p1-2') }}
+          </p>
+          <p class="text-indent">
+            {{ $t('views.sensitiveManage.p1-3') }}
+          </p>
+          <p class="text-indent">
+            {{ $t('views.sensitiveManage.p1-4') }}
+          </p>
+          <p class="mgt-10">{{ $t('views.sensitiveManage.p2') }}</p>
+          <p class="text-indent">{{ $t('views.sensitiveManage.p3') }}</p>
+          <p class="text-indent">
             {{ $t('views.sensitiveManage.p4') }}
           </p>
         </div>
@@ -44,14 +56,20 @@
           </el-button>
         </div>
       </div>
-      <el-table :data="tableData" class="sensitiveManageTable" border>
+      <el-table
+        :data="tableData"
+        class="sensitiveManageTable"
+        border
+        row-key="id"
+      >
         <el-table-column
           :label="$t('views.sensitiveManage.name')"
           prop="vul_name"
           width="160px"
+          show-overflow-tooltip
         >
           <template slot-scope="{ row }">
-            <div class="two-line">
+            <div>
               {{ row.strategy_name }}
             </div>
           </template>
@@ -92,7 +110,6 @@
           <template slot-scope="{ row }">
             <div style="cursor: pointer" @click="stateChange(row)">
               <el-switch
-                :disabled="userInfo.role !== 1 && userInfo.role !== 2"
                 :value="row.status === 1"
                 active-color="#1A80F2"
                 inactive-color="#C1C9D3"
@@ -102,7 +119,6 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="userInfo.role === 1 || userInfo.role === 2"
           :label="$t('views.sensitiveManage.settings')"
           width="160px"
           align="center"
@@ -160,6 +176,9 @@ export default class sensitiveManage extends VueBase {
   private total = 0
   private name = ''
   private async stateChange(row: any) {
+    // if (this.userInfo.role !== 1 && this.userInfo.role !== 2) {
+    //   return
+    // }
     this.loadingStart()
     const res = await this.services.setting.update_sensitive_info_rule({
       ...row,
@@ -190,7 +209,7 @@ export default class sensitiveManage extends VueBase {
     await this.getTableData()
     this.loadingDone()
   }
-  get userInfo(): { username: string } {
+  get userInfo(): { username: string; role: number } {
     return this.$store.getters.userInfo
   }
 
@@ -317,9 +336,15 @@ export default class sensitiveManage extends VueBase {
   border-radius: 2px;
   color: #fff;
   &.search {
-    height: 34px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 32px;
     margin-left: -1px;
   }
+}
+.box-card {
+  color: #38435a;
+  border: none;
 }
 .btn-border {
   border-radius: 2px;
@@ -373,5 +398,11 @@ export default class sensitiveManage extends VueBase {
   .el-button + .el-button {
     margin-left: 0;
   }
+}
+.text-indent {
+  text-indent: 2em;
+}
+.mgt-10 {
+  margin-top: 10px;
 }
 </style>

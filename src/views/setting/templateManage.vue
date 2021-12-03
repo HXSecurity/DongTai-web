@@ -30,7 +30,7 @@
           min-width="160px"
         >
           <template slot-scope="{ row }">
-            <div class="two-line vul_name" @click="toPath(1, row.id)">
+            <div class="vul_name" @click="toPath(1, row.id)">
               {{ row.name }}
             </div>
           </template>

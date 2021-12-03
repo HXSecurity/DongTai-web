@@ -47,7 +47,7 @@ export default {
     diffPassword: '两次输入密码不一致',
   },
   menu: {
-    about: '关于',
+    about: '关于洞态',
     projectEdit: '项目配置',
     home: '首页',
     login: '登录',
@@ -631,6 +631,10 @@ export default {
       t: '敏感数据配置',
       p1:
         '敏感信息检测功能正式开启公测，为了检测敏感信息泄漏的安全风险，需要配置敏感信息的匹配规则及相关的策略。',
+      'p1-1': '检测位置：',
+      'p1-2': '1. HTTP Request Param 参数',
+      'p1-3': '2. HTTP Request Post Data',
+      'p1-4': '3. HTTP Response Data',
       p2: '流程（以增加 手机号码泄漏 为例）：',
       p3:
         '1. 进入 “策略管理” 页面，新增策略 “手机号码泄漏”，填写策略描述、修复建议并选择启用；',
