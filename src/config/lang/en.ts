@@ -695,7 +695,7 @@ export default {
     },
     sysInfo: {
       vul_verifiy: 'Verification',
-      infoTitle: 'Authorization Information',
+      infoTitle: 'Agent Settings',
       agentThreshold: 'Agent Threshold',
       vul:
         'The active verification function is used to verify whether the vulnerability of the tainted call chain is true and effective. During active verification, engine automatically identifies the location of attack parameters, constructs a payload, and then replays http / HTTPS traffic from within the agent for verification. This function is not necessary. Closing it will not change the vulnerability detection results. If it is not needed, it can be closed by itself.      ',
@@ -720,6 +720,10 @@ export default {
       searchName: 'Enter the application name in the search field',
     },
     projectEdit: {
+      on: 'ON',
+      off: 'OFF',
+      followAll: 'Follow',
+      advanced: 'Advanced',
       save: 'Save',
       clear: 'Cancel',
       addScan: 'Add Custom Template',
@@ -739,7 +743,7 @@ export default {
       scan: 'Custom Template',
       scanPlaceholder: 'Please select an custom template',
       scanAdd: 'New Rule Template',
-      added: 'Advanced Settings',
+      added: 'Added',
       submit: 'Save',
       version_name: 'Application Version',
       versionNamePlaceholder: 'Please enter the version number',

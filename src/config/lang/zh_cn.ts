@@ -683,7 +683,7 @@ export default {
     },
     sysInfo: {
       vul_verifiy: '主动验证',
-      infoTitle: '授权信息',
+      infoTitle: 'Agent 配置',
       agentThreshold: 'Agent 停止阈值',
       vul:
         '主动验证功能用于验证存在污点调用链的漏洞是否真实有效。主动验证时， engine 自动识别攻击参数位置，并构造 payload，然后从 Agent 内部重放 HTTP/HTTPS 流量，进行验证。该功能非必须功能，关闭不会造成漏洞检测结果的变化，如不需要，可自行关闭。',
@@ -706,6 +706,10 @@ export default {
       searchName: '请输入项目名称，然后回车或点击搜索图标进行搜索',
     },
     projectEdit: {
+      on: '开启',
+      off: '关闭',
+      followAll: '跟随全局',
+      advanced: '高级设置',
       save: '保存',
       clear: '取消',
       addScan: '创建策略',
