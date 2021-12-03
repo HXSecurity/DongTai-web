@@ -49,6 +49,7 @@ jobs:
       - name: test
         run: |
           echo ${GITHUB_REF##*/}
+          echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'
 
       - id: release
         run: |
@@ -59,7 +60,8 @@ jobs:
         run: |
           cd ${{ github.workspace }} && \
           echo "${{ github.event.repository.name }},version,${{ steps.release.outputs.version }}" >> dist/version.txt && \
-          echo "${{ github.event.repository.name }},commit_hash,${GITHUB_SHA}" >> dist/version.txt \
+          echo "${{ github.event.repository.name }},commit_hash,${GITHUB_SHA}" >> dist/version.txt && \
+          cat dist/version.txt \
 
       - name: Upload version file to oss
         id: upload_version_file_to_oss
