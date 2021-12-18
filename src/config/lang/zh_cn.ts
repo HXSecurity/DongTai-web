@@ -382,7 +382,7 @@ export default {
       has: '存在',
       vule: '漏洞',
       is: '的',
-      reqHas: '请求出现',
+      reqHas: '出现',
       position: '位置',
       orderOptions: {
         type: '漏洞类型',
@@ -436,7 +436,7 @@ export default {
       has: '存在',
       vule: '漏洞',
       is: '的',
-      reqHas: '请求出现',
+      reqHas: ' 出现',
       position: '位置',
       untreated: '未处理',
       replay: '请求重放',

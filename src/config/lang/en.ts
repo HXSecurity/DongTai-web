@@ -388,7 +388,7 @@ export default {
       has: 'exist',
       vule: 'vulnerability',
       is: 'of',
-      reqHas: 'Request appears',
+      reqHas: ' appears',
       position: 'Position',
       orderOptions: {
         type: 'Vulnerability Category',
@@ -442,7 +442,7 @@ export default {
       has: 'exist',
       vule: 'vulnerability',
       is: 'of',
-      reqHas: 'Request appears',
+      reqHas: ' appears',
       position: 'Position',
       untreated: 'Untreated',
       replay: 'Request Replay',
