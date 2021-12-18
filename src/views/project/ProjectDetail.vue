@@ -58,7 +58,7 @@
             <el-button
               type="text"
               class="operateBtn"
-              @click="$router.push(`/project/projectEdit/${projectObj.id}`)"
+              @click="$router.push(`/project/projectEdit/${$route.params.pid}`)"
             >
               <i class="iconfont iconshezhi-2"></i>
               {{ $t('views.projectDetail.setting') }}
@@ -420,7 +420,7 @@ export default class ProjectDetail extends VueBase {
   private async versionCurrent(item: any) {
     const res: any = await this.services.project.versionCurrent({
       version_id: item.version_id,
-      project_id: this.projectObj.id,
+      project_id: this.$route.params.pid,
     })
     if (res.status !== 201) {
       this.$message({
@@ -477,7 +477,7 @@ export default class ProjectDetail extends VueBase {
     if (!item.version_id) {
       const res: any = await this.services.project.versionAdd({
         ...item,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       if (res.status !== 201) {
         this.$message({
@@ -498,7 +498,7 @@ export default class ProjectDetail extends VueBase {
     } else {
       const res: any = await this.services.project.versionEdit({
         ...item,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       console.log(res)
       if (res.status !== 201) {
@@ -543,7 +543,7 @@ export default class ProjectDetail extends VueBase {
     ).then(async () => {
       const res: any = await this.services.project.versionDelete({
         version_id: item.version_id,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       if (res.status != 201) {
         this.$message({
@@ -783,17 +783,19 @@ export default class ProjectDetail extends VueBase {
     this.versionFlag = true
   }
   getVersionList() {
-    this.services.project.versionList(this.projectObj.id).then((res: any) => {
-      if (res.status === 201) {
-        this.versionList = res.data
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg,
-          showClose: true,
-        })
-      }
-    })
+    this.services.project
+      .versionList(this.$route.params.pid)
+      .then((res: any) => {
+        if (res.status === 201) {
+          this.versionList = res.data
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg,
+            showClose: true,
+          })
+        }
+      })
   }
   async deleteExport(id: number) {
     this.$confirm(
