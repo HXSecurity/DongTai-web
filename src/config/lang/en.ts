@@ -201,11 +201,11 @@ export default {
         Manualinstallation: 'manual installation',
         term1: 'PHP version no less than 8.0.9',
         manualInstallationDesc1:
-          'A. manually decompress php-agent.tar.gz. There are three files in PHP agent: dongtai_php_agent.so & policy.json & dongtai-php-property.ini. Copy dongtai_php_agent.so and policy.json to the extension in the PHP installation environment, for example:/usr/local/lib/PHP/PECL/20200930',
+          'a. Manually unzip php-agent.tar.gz, there are three files in PHP agent: Dongtai_php_agent.so& policy.json &dongtai-php-property.ini, put Dongtai_php_agent. Put so into the extension in the PHP installation environment, policy The path of JSON can be found in Dongtai PHP property Modify hook. Ini json. The path corresponding to path. The default is "/var/www/PHPagent/policy.JSON".',
         manualInstallationDesc2:
-          'B. find the configuration file directory of PHP, add: dongtai-php-property.ini, then execute PHP – m, and check that there will be dongtai_php_agent, that is, the installation is successful.',
+          'b.dongtai-php-property .ini placed in the php configuration folder, such as conf.d, php –m to see if the installation is successful, if there is no dongtai_php_agent, remove the dongtai-php-property.ini in the extension=dongtai_php_agent comments, re-view.',
         manualInstallationDesc3:
-          'C. through the terminal, enter PHP agent and execute PHP run-tests.php test results. You can also enter the shooting range for test. The shooting range address is: https://github.com/jinghao1/phpvul ',
+          'c. Through the terminal, you can call the local PHP file test results, you can also enter the range test, the range address: https://github.com/jinghao1/phpvul',
       },
     },
     search: {
