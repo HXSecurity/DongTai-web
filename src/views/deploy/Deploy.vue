@@ -417,9 +417,15 @@ export default class Deploy extends VueBase {
       key: 'PYTHON',
       name: 'Python',
       term: [
+        this.$t('views.deploy.python.os'),
         this.$t('views.deploy.python.term1'),
         this.$t('views.deploy.python.term2'),
         this.$t('views.deploy.python.term3'),
+        this.$t('views.deploy.python.termA'),
+        this.$t('views.deploy.python.termAa'),
+        this.$t('views.deploy.python.termAb'),
+        this.$t('views.deploy.python.termAc'),
+        this.$t('views.deploy.python.termAd'),
         this.$t('views.deploy.python.term4'),
         this.$t('views.deploy.python.term4-1'),
         this.$t('views.deploy.python.term4-2'),
@@ -461,11 +467,11 @@ export default class Deploy extends VueBase {
   get shell() {
     switch (this.language) {
       case 'java':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=java" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=java" -H "Authorization: Token ${this.token}" -o agent.jar -k`
       case 'python':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-agent-python.tar.gz -k`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H "Authorization: Token ${this.token}" -o dongtai-agent-python.tar.gz -k`
       case 'php':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H 'Authorization: Token ${this.token}' -o php-agent.tar.gz`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H "Authorization: Token ${this.token}" -o php-agent.tar.gz`
     }
   }
   get pythonShell() {
