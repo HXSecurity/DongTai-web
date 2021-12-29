@@ -280,8 +280,10 @@
       :total="total"
       :current-page="page"
       :page-size="pageSize"
-      layout="total, prev, pager, next, jumper"
+      layout="total,sizes, prev, pager, next, jumper"
+      :page-sizes="[10, 20, 30, 40, 50]"
       @current-change="currentChange"
+      @size-change="sizeChange"
     ></el-pagination>
     <el-dialog
       :visible.sync="deleteDialogOpen"
@@ -403,6 +405,11 @@ export default class AgentManage extends VueBase {
   }
   private currentChange(val: number | string) {
     this.page = parseInt(`${val}`)
+    this.getTableData()
+  }
+
+  private sizeChange(val: number | string) {
+    this.pageSize = parseInt(`${val}`)
     this.getTableData()
   }
 

@@ -59,19 +59,22 @@
           size="small"
           class="resetAllBtn open"
           @click="changeStatusBatch('enable')"
-          >{{ $t('views.hookPage.on') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.on') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn stop"
           @click="changeStatusBatch('disable')"
-          >{{ $t('views.hookPage.off') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.off') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn delete"
           @click="changeStatusBatch('delete')"
-          >{{ $t('views.hookPage.del') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.del') }}</el-button
         >
       </div>
     </div>
@@ -648,11 +651,7 @@ export default class HookTable extends VueBase {
       }
     ).then(async () => {
       if (this.multipleSelection.length === 0) {
-        this.$message({
-          type: 'warning',
-          message: this.$t('views.hookPage.changeWarning') as string,
-          showClose: true,
-        })
+        this.changeStatusAll(op)
         return
       }
       const ids = this.multipleSelection.map((item: any) => item.id)
@@ -675,6 +674,26 @@ export default class HookTable extends VueBase {
       })
       await this.getTable()
     })
+  }
+
+  async changeStatusAll(status: string) {
+    this.loadingStart()
+    const obj = await this.services.setting.changeStatus({
+      scope: 'all',
+      op: status,
+      language_id: this.activeLanguage,
+      hook_rule_type: this.ruleType,
+    })
+    this.loadingDone()
+    if (obj.status !== 201) {
+      this.$message({
+        showClose: true,
+        message: obj.msg,
+        type: 'error',
+      })
+      return
+    }
+    await this.getTable()
   }
 
   async changeStatus(row: any, status = '') {
