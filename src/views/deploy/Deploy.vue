@@ -26,6 +26,15 @@
             <img src="../../assets/img/deploy/php.png" />
             <span class="beta">beta</span>
           </div>
+
+          <div
+            class="language"
+            :class="language === 'go' && 'active'"
+            @click="changeLanguage('go')"
+          >
+            <img src="../../assets/img/deploy/go.png" />
+            <span class="beta">beta</span>
+          </div>
         </div>
         <div class="title">
           {{ $t('views.deploy.installing') }} {{ obj[language].key }}
@@ -139,6 +148,23 @@
                   class="el-icon-document-copy icon"
                 ></span>
               </el-tooltip>
+            </div>
+          </template>
+          <template v-if="language === 'go'">
+            <div class="title-3 margin-t-16">
+              1. {{ $t('views.deploy.go.ManualInstallation') }}
+            </div>
+            <div class="install-desc margin-t-8">
+              {{ $t('views.deploy.go.manualInstallationDesc1') }}
+            </div>
+            <div class="install-desc margin-t-8">
+              {{ $t('views.deploy.go.manualInstallationDesc2') }}
+            </div>
+            <div class="install-desc margin-t-8">
+              {{ $t('views.deploy.go.manualInstallationDesc3') }}
+            </div>
+            <div class="install-desc margin-t-8">
+              {{ $t('views.deploy.go.manualInstallationDesc4') }}
             </div>
           </template>
 
@@ -446,6 +472,14 @@ export default class Deploy extends VueBase {
       video:
         'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
     },
+    go: {
+      key: 'GO',
+      name: 'GO',
+      term: [this.$t('views.deploy.go.term1')],
+      download: '',
+      video:
+        'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
+    },
   }
   changeLanguage(language: string) {
     this.language = language
@@ -456,6 +490,11 @@ export default class Deploy extends VueBase {
       this.activeName = 'Django'
     }
     if (language === 'php') {
+      this.activeName = ''
+      this.getDoc()
+      return
+    }
+    if (language === 'go') {
       this.activeName = ''
       this.getDoc()
       return
@@ -472,6 +511,8 @@ export default class Deploy extends VueBase {
         return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H "Authorization: Token ${this.token}" -o dongtai-agent-python.tar.gz -k`
       case 'php':
         return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H "Authorization: Token ${this.token}" -o php-agent.tar.gz`
+      case 'go':
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=go" -H "Authorization: Token ${this.token}" -o dongtai-go-agent-config.yaml`
     }
   }
   get pythonShell() {

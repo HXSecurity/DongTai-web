@@ -138,21 +138,6 @@
     >
       <div class="sca-list">
         <div class="selectForm">
-          <!-- <el-select
-          v-model="searchObj.order"
-          style="width: 160px; font-size: 14px"
-          class="commonSelect"
-          :placeholder="$t('views.scaList.sort')"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option
-            v-for="item in searchOptionsObj.orderOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select> -->
           <el-select
             v-model="searchObj.language"
             :placeholder="$t('views.scaList.developLanguage')"
@@ -178,6 +163,13 @@
                 @click="newSelectData"
               />
             </el-input>
+            <el-button
+              v-if="projectId"
+              style="margin-left: 12px"
+              class="btn"
+              @click="scaExport"
+              >导出</el-button
+            >
           </div>
         </div>
         <el-table
@@ -362,6 +354,12 @@ export default class ScaList extends VueBase {
     project_id: '',
   }
 
+  private scaExport = async () => {
+    this.loadingStart()
+    await this.services.sca.scaExport(this.projectId)
+    this.loadingDone()
+  }
+
   created() {
     if (this.projectId) {
       this.searchObj.project_id = this.projectId
@@ -525,6 +523,14 @@ export default class ScaList extends VueBase {
   position: fixed;
   top: 0;
   bottom: 0;
+}
+
+.btn {
+  width: 72px;
+  height: 38px;
+  line-height: 0;
+  background: #4a72ae;
+  color: #fff;
 }
 
 .slider-warp {
