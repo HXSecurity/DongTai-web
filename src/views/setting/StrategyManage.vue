@@ -320,6 +320,11 @@ export default class StrategyManage extends VueBase {
       })
       return
     }
+    if (data.length === 0 && this.page > 1) {
+      this.page--
+      await this.getTableData()
+      return
+    }
     this.total = page.alltotal
     this.tableData = data
   }

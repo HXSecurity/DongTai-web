@@ -649,6 +649,7 @@ export default class HookTable extends VueBase {
       message: obj.msg,
       type: 'success',
     })
+    this.currentPage = 1
     await this.getTable()
   }
 
@@ -816,6 +817,11 @@ export default class HookTable extends VueBase {
       return
     }
     this.total = page.alltotal
+    if (data.length === 0 && this.currentPage > 1) {
+      this.currentPage--
+      await this.getTable()
+      return
+    }
     this.tableData = data
   }
   handleSizeChange(val: number) {
