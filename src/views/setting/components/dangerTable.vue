@@ -472,31 +472,35 @@ export default class HookTable extends VueBase {
         cancelButtonText: this.$t('views.hookPage.clear') as string,
         type: 'warning',
       }
-    ).then(async () => {
-      if (this.multipleSelection.length === 0) {
-        this.changeStatusAll(op)
-        return
-      }
-      const ids = this.multipleSelection.map((item: any) => item.id)
-      const { status, msg } = await this.services.setting.changeStatusBatch({
-        ids: String(ids),
-        op,
-      })
-      if (status !== 201) {
+    )
+      .then(async () => {
+        if (this.multipleSelection.length === 0) {
+          this.changeStatusAll(op)
+          return
+        }
+        const ids = this.multipleSelection.map((item: any) => item.id)
+        const { status, msg } = await this.services.setting.changeStatusBatch({
+          ids: String(ids),
+          op,
+        })
+        if (status !== 201) {
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
+          return
+        }
         this.$message({
-          type: 'error',
+          type: 'success',
           message: msg,
           showClose: true,
         })
-        return
-      }
-      this.$message({
-        type: 'success',
-        message: msg,
-        showClose: true,
+        await this.getTable()
       })
-      await this.getTable()
-    })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   splitAndIn(str: string, key: string) {
@@ -640,6 +644,11 @@ export default class HookTable extends VueBase {
       })
       return
     }
+    this.$message({
+      showClose: true,
+      message: obj.msg,
+      type: 'success',
+    })
     await this.getTable()
   }
 
