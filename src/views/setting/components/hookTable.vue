@@ -59,19 +59,22 @@
           size="small"
           class="resetAllBtn open"
           @click="changeStatusBatch('enable')"
-          >{{ $t('views.hookPage.on') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.on') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn stop"
           @click="changeStatusBatch('disable')"
-          >{{ $t('views.hookPage.off') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.off') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn delete"
           @click="changeStatusBatch('delete')"
-          >{{ $t('views.hookPage.del') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.del') }}</el-button
         >
       </div>
     </div>
@@ -646,35 +649,61 @@ export default class HookTable extends VueBase {
         cancelButtonText: this.$t('views.hookPage.clear') as string,
         type: 'warning',
       }
-    ).then(async () => {
-      if (this.multipleSelection.length === 0) {
-        this.$message({
-          type: 'warning',
-          message: this.$t('views.hookPage.changeWarning') as string,
-          showClose: true,
+    )
+      .then(async () => {
+        if (this.multipleSelection.length === 0) {
+          this.changeStatusAll(op)
+          return
+        }
+        const ids = this.multipleSelection.map((item: any) => item.id)
+        const { status, msg } = await this.services.setting.changeStatusBatch({
+          ids: String(ids),
+          op,
         })
-        return
-      }
-      const ids = this.multipleSelection.map((item: any) => item.id)
-      const { status, msg } = await this.services.setting.changeStatusBatch({
-        ids: String(ids),
-        op,
-      })
-      if (status !== 201) {
+        if (status !== 201) {
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
+          return
+        }
         this.$message({
-          type: 'error',
+          type: 'success',
           message: msg,
           showClose: true,
         })
-        return
-      }
-      this.$message({
-        type: 'success',
-        message: msg,
-        showClose: true,
+        await this.getTable()
       })
-      await this.getTable()
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+
+  async changeStatusAll(status: string) {
+    this.loadingStart()
+    const obj = await this.services.setting.changeStatus({
+      scope: 'all',
+      op: status,
+      language_id: this.activeLanguage,
+      hook_rule_type: this.ruleType,
     })
+    this.loadingDone()
+    if (obj.status !== 201) {
+      this.$message({
+        showClose: true,
+        message: obj.msg,
+        type: 'error',
+      })
+      return
+    }
+    this.$message({
+      showClose: true,
+      message: obj.msg,
+      type: 'success',
+    })
+    this.currentPage = 1
+    await this.getTable()
   }
 
   async changeStatus(row: any, status = '') {
@@ -839,6 +868,11 @@ export default class HookTable extends VueBase {
       return
     }
     this.total = page.alltotal
+    if (data.length === 0 && this.currentPage > 1) {
+      this.currentPage--
+      await this.getTable()
+      return
+    }
     this.tableData = data
   }
   handleSizeChange(val: number) {

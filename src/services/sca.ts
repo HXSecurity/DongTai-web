@@ -1,6 +1,7 @@
 import request from '@/utils/request'
 import { iResponse } from '@/services/types'
-
+import { Message } from 'element-ui'
+import { i18n } from '@/config/lang'
 interface scaListParams {
   page?: number
   pageSize?: number
@@ -27,5 +28,12 @@ export default () =>
     // getScaDetail
     getScaDetail(id: number): Promise<iResponse> {
       return request.get(`/sca/${id}`)
+    }
+
+    // scaExport
+    scaExport(project_id: string) {
+      window.open(
+        `${process.env.VUE_APP_BASE_API}/sca_export?project_id=` + project_id
+      )
     }
   })()

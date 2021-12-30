@@ -51,6 +51,10 @@
             ></i>
           </div>
           <div class="operate">
+            <el-button type="text" class="operateBtn" @click="scaExport">
+              <i class="iconfont icondaochu-5"></i>
+              {{ $t('views.projectDetail.scaExport') }}</el-button
+            >
             <el-button type="text" class="operateBtn" @click="openExport()">
               <i class="iconfont icondaochu-5"></i>
               {{ $t('views.projectDetail.export') }}
@@ -417,6 +421,11 @@ export default class ProjectDetail extends VueBase {
     this.getExportList()
     this.exportDialog = true
   }
+
+  private scaExport = async () => {
+    await this.services.sca.scaExport(this.$route.params.pid)
+  }
+
   private async versionCurrent(item: any) {
     const res: any = await this.services.project.versionCurrent({
       version_id: item.version_id,

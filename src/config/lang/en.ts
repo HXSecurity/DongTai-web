@@ -213,6 +213,18 @@ export default {
         manualInstallationDesc3:
           'c. Through the terminal, you can call the local PHP file test results, you can also enter the range test, the range address: https://github.com/jinghao1/phpvul',
       },
+      go: {
+        term1: 'Go version no less than 1.11',
+        Manualinstallation: 'manual installation',
+        manualInstallationDesc1:
+          'a.Download dongtai-go-agent-config.yaml is placed in the project root directory',
+        manualInstallationDesc2:
+          'b.Import the basic package in the project entry file_ "github.com/HXSecurity/DongTai-agent-go/run/base"',
+        manualInstallationDesc3:
+          'c.Example of introducing a framework package into the project entry file:_ "github.com/HXSecurity/DongTai-agent-go/run/gin"          ',
+        manualInstallationDesc4:
+          'd. Currently: "gin, Gorm, httprouter, http" are supported',
+      },
     },
     search: {
       commonly: 'Common query syntax',
@@ -276,6 +288,7 @@ export default {
       '1Hour': '1 Hour',
     },
     hookPage: {
+      all: 'All',
       sourceRule: 'Source Rules',
       propRule: 'Propagation Rules',
       filterRule: 'Filter Rules',
@@ -808,6 +821,7 @@ export default {
         'This operation will permanently delete this version, do you want to continue?',
       setting: 'Settings',
       export: 'Reports',
+      scaExport: 'Sca',
       recheck: 'Vulnerability Verification',
       search_version_name: 'Enter version name, e.g.,v1',
       search_description:

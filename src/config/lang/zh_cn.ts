@@ -214,6 +214,17 @@ export default {
         manualInstallationDesc3:
           'c. 通过终端，可以调用本地php文件测试结果，也可以进入靶场测试，靶场地址：https://github.com/jinghao1/phpvul',
       },
+      go: {
+        term1: 'Go版本不低于1.11',
+        ManualInstallation: '手动安装',
+        manualInstallationDesc1:
+          'a.将下载的dongtai-go-agent-config.yaml放置到项目根目录',
+        manualInstallationDesc2:
+          'b.在项目入口文件引入基础包 _ "github.com/HXSecurity/DongTai-agent-go/run/base"',
+        manualInstallationDesc3:
+          'c.在项目入口文件引入框架包 例：_ "github.com/HXSecurity/DongTai-agent-go/run/gin"',
+        manualInstallationDesc4: 'd.目前支持：gin、gorm、httpRouter、http',
+      },
     },
     search: {
       commonly: '常用查询语法',
@@ -271,6 +282,7 @@ export default {
       '1Hour': '1小时',
     },
     hookPage: {
+      all: '全部',
       sourceRule: '污点源方法规则',
       propRule: '传播方法规则',
       filterRule: '过滤方法规则',
@@ -527,7 +539,7 @@ export default {
       detail: '详情',
       reload: '刷新',
       scaList: '组件列表',
-      path: '路径',
+      path: '组件路径',
       vulDetail: {
         title: '漏洞详情',
         num: '漏洞编号',
@@ -793,7 +805,8 @@ export default {
       warning: '提示',
       warningInfo: '此操作将永久删除该版本, 是否继续?',
       setting: '设置',
-      export: '报告导出',
+      export: '漏洞报告',
+      scaExport: '组件报告',
       recheck: '漏洞验证',
       search_version_name: '版本名称，如：v1',
       search_description: '版本描述，如：xxx业务第x次迭代',
