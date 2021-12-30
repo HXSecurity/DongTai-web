@@ -32,23 +32,8 @@ export default () =>
 
     // scaExport
     scaExport(project_id: string) {
-      return request
-        .get(`/sca_export?project_id=` + project_id, {
-          responseType: 'blob',
-        })
-        .then((res: any) => {
-          if (Object.prototype.toString.call(res) !== '[object Blob]') {
-            Message.error(i18n.t('base.downloadError') as string)
-            return
-          }
-          const blob = new Blob([res], {
-            type: 'application/octet-stream',
-          })
-          // const objectUrl = URL.createObjectURL(blob);
-          const link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = 'sca.csv'
-          link.click()
-        })
+      window.open(
+        `${process.env.VUE_APP_BASE_API}/sca_export?project_id=` + project_id
+      )
     }
   })()
