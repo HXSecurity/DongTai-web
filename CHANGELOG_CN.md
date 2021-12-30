@@ -1,5 +1,11 @@
 # Change log
 
+## [1.2.0](https://github.com/HXSecurity/DongTai-web/releases/tag/v1.2.0)-2021-12-31
+
+* 功能
+  * 自定义规则支持批量启用、批量禁用、批量删除
+  * 增加组件导出的功能
+
 ## [1.1.4](https://github.com/HXSecurity/DongTai-web/releases/tag/v1.1.4)-2021-12-18
 
 * 修复
