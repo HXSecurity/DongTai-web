@@ -153,7 +153,7 @@
             <i class="el-icon-house"></i>
             {{ $t('views.scaDetail.path') }}：
           </span>
-          {{ scaObj.project_path }}
+          {{ scaObj.package_path }}
         </div>
         <div class="info-line">
           <span>

@@ -539,7 +539,7 @@ export default {
       detail: '详情',
       reload: '刷新',
       scaList: '组件列表',
-      path: '路径',
+      path: '组件路径',
       vulDetail: {
         title: '漏洞详情',
         num: '漏洞编号',

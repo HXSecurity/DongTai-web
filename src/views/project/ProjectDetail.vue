@@ -423,9 +423,7 @@ export default class ProjectDetail extends VueBase {
   }
 
   private scaExport = async () => {
-    this.loadingStart()
     await this.services.sca.scaExport(this.$route.params.pid)
-    this.loadingDone()
   }
 
   private async versionCurrent(item: any) {
