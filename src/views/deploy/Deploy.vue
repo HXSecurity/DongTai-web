@@ -154,16 +154,16 @@
             <div class="title-3 margin-t-16">
               1. {{ $t('views.deploy.go.ManualInstallation') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.go.manualInstallationDesc1') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.go.manualInstallationDesc2') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.go.manualInstallationDesc3') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.go.manualInstallationDesc4') }}
             </div>
           </template>
@@ -172,13 +172,13 @@
             <div class="title-3 margin-t-16">
               1. {{ $t('views.deploy.php.ManualInstallation') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.php.manualInstallationDesc1') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.php.manualInstallationDesc2') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.php.manualInstallationDesc3') }}
             </div>
           </template>
