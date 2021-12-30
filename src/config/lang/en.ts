@@ -223,7 +223,17 @@ export default {
         manualInstallationDesc3:
           'c.Example of introducing a framework package into the project entry file:_ "github.com/HXSecurity/DongTai-agent-go/run/gin"          ',
         manualInstallationDesc4:
-          'd. Currently: "gin, Gorm, httprouter, http" are supported',
+          'd.Framework packages are currently supported:',
+        manualInstallationDesc5:
+          'gorm: _ "github.com/HXSecurity/DongTai-agent-go/run/gorm"',
+        manualInstallationDesc6:
+          'http: _ "github.com/HXSecurity/DongTai-agent-go/run/http"',
+        manualInstallationDesc7:
+          'httprouter： _ "github.com/HXSecurity/DongTai-agent-go/run/httpRouter"',
+        manualInstallationDesc8:
+          'e.run: go mod tidy Waiting for synchronization',
+        manualInstallationDesc9:
+          'f.Add command line parameters： -gcflags "all=-N -l" Run the project, for example： go run main.go -gcflags "all=-N -l"',
       },
     },
     search: {
