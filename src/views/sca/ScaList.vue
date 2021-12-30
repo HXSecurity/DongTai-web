@@ -275,7 +275,11 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="License" prop="license" width="160px">
+          <el-table-column
+            :label="$t('views.scaList.license')"
+            prop="license"
+            width="160px"
+          >
           </el-table-column>
         </el-table>
         <div class="pagination">
