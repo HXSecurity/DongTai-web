@@ -1,7 +1,6 @@
 # DongTai-web
-[![django-project](https://img.shields.io/badge/django%20versions-3.0.3-blue)](https://www.djangoproject.com/)
-[![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/huoxianclub/DongTai)
-[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.0.0-lightgrey)](https://github.com/huoxianclub/DongTai-web)
+[![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/HXSecurity/DongTai)
+[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.0.0-lightgrey)](https://github.com/HXSecurity/DongTai-web)
 
 [English](README.md)
 
@@ -47,5 +46,5 @@ $ npm run build
 4.修改nginx配置，设置前端接口对应的后端服务，nginx的配置可参考`nginx.conf`
 
 ### 文档
-- [官方文档](https://hxsecurity.github.io/DongTai-Doc/#/)
-- [快速体验](http://aws.iast.huoxian.cn:8000/login)
+- [官方文档](https://dongtai.io)
+- [快速体验](https://iast.io)
