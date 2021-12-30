@@ -487,6 +487,7 @@ export default {
       vuln: 'vulnerability',
     },
     scaList: {
+      license: 'License',
       filter: 'Filter',
       language: 'Language',
       level: 'Severity',

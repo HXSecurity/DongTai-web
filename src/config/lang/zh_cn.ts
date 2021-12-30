@@ -479,6 +479,7 @@ export default {
       vuln: '漏洞',
     },
     scaList: {
+      license: '开源协议',
       filter: '过滤器',
       language: '语言',
       level: '等级',
