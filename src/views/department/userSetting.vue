@@ -58,7 +58,10 @@
           >
             <template slot-scope="{ row }">
               <i
-                v-if="$store.getters.userInfo.role === 1"
+                v-if="
+                  $store.getters.userInfo.role === 1 ||
+                  $store.getters.userInfo.role === 2
+                "
                 class="iconfont iconzhongzhimima pIcon"
                 @click="resetPwd(row)"
               ></i>
