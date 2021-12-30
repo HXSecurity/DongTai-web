@@ -821,6 +821,7 @@ export default {
         'This operation will permanently delete this version, do you want to continue?',
       setting: 'Settings',
       export: 'Reports',
+      scaExport: 'Sca',
       recheck: 'Vulnerability Verification',
       search_version_name: 'Enter version name, e.g.,v1',
       search_description:

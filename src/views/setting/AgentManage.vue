@@ -468,6 +468,11 @@ export default class AgentManage extends VueBase {
       })
       return
     }
+    if (data.length === 0 && this.page > 1) {
+      this.page--
+      await this.getTableData()
+      return
+    }
     this.tableData = data
     this.tableData.forEach((item: any) => {
       this.$set(item, 'isEdit', false)
@@ -480,7 +485,6 @@ export default class AgentManage extends VueBase {
     })
     this.currentPageSize = data.length
     this.total = page.alltotal
-    console.log(this.total)
     this.currentPageDelete = 0
   }
 

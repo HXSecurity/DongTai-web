@@ -248,6 +248,11 @@ export default class sensitiveManage extends VueBase {
       })
       return
     }
+    if (data.length === 0 && this.page > 1) {
+      this.page--
+      await this.getTableData()
+      return
+    }
     this.tableData = data
     this.total = page.alltotal
   }

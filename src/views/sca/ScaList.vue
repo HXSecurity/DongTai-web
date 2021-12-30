@@ -163,13 +163,6 @@
                 @click="newSelectData"
               />
             </el-input>
-            <el-button
-              v-if="projectId"
-              style="margin-left: 12px"
-              class="btn"
-              @click="scaExport"
-              >导出</el-button
-            >
           </div>
         </div>
         <el-table
@@ -352,12 +345,6 @@ export default class ScaList extends VueBase {
     keyword: '',
     order: '',
     project_id: '',
-  }
-
-  private scaExport = async () => {
-    this.loadingStart()
-    await this.services.sca.scaExport(this.projectId)
-    this.loadingDone()
   }
 
   created() {
