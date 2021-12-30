@@ -1,5 +1,11 @@
 # Change log
 
+## [1.2.0](https://github.com/HXSecurity/DongTai-web/releases/tag/v1.2.0)-2021-12-31
+
+* Function
+  * User defined rules support batch enabling, batch disabling, and batch deleting
+  * Add the function of component export
+
 ## [1.1.4](https://github.com/HXSecurity/DongTai-web/releases/tag/v1.1.4)-2021-12-18
 
 * Fix
