@@ -166,6 +166,21 @@
             <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.go.manualInstallationDesc4') }}
             </div>
+            <div class="install-desc margin-t-8" style="margin-left: 24px">
+              {{ $t('views.deploy.go.manualInstallationDesc5') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 24px">
+              {{ $t('views.deploy.go.manualInstallationDesc6') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 24px">
+              {{ $t('views.deploy.go.manualInstallationDesc7') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc8') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc9') }}
+            </div>
           </template>
 
           <template v-if="language === 'php'">
