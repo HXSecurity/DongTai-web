@@ -223,7 +223,16 @@ export default {
           'b.在项目入口文件引入基础包 _ "github.com/HXSecurity/DongTai-agent-go/run/base"',
         manualInstallationDesc3:
           'c.在项目入口文件引入框架包 例：_ "github.com/HXSecurity/DongTai-agent-go/run/gin"',
-        manualInstallationDesc4: 'd.目前支持：gin、gorm、httpRouter、http',
+        manualInstallationDesc4: 'd.目前支持框架包：',
+        manualInstallationDesc5:
+          'gorm: _ "github.com/HXSecurity/DongTai-agent-go/run/gorm"',
+        manualInstallationDesc6:
+          'http: _ "github.com/HXSecurity/DongTai-agent-go/run/http"',
+        manualInstallationDesc7:
+          'httprouter： _ "github.com/HXSecurity/DongTai-agent-go/run/httpRouter"',
+        manualInstallationDesc8: 'e.执行: go mod tidy 等待同步包',
+        manualInstallationDesc9:
+          'f.添加命令行参数 -gcflags "all=-N -l" 运行项目,例如： go run main.go -gcflags "all=-N -l"',
       },
     },
     search: {
@@ -479,6 +488,7 @@ export default {
       vuln: '漏洞',
     },
     scaList: {
+      license: '开源协议',
       filter: '过滤器',
       language: '语言',
       level: '等级',

@@ -58,7 +58,10 @@
           >
             <template slot-scope="{ row }">
               <i
-                v-if="$store.getters.userInfo.role === 1"
+                v-if="
+                  $store.getters.userInfo.role === 1 ||
+                  $store.getters.userInfo.role === 2
+                "
                 class="iconfont iconzhongzhimima pIcon"
                 @click="resetPwd(row)"
               ></i>
@@ -292,6 +295,35 @@ export default class DepartmentList extends VueBase {
       }
       callback()
     }
+  }
+
+  private async resetPwd(item: any) {
+    this.$confirm(
+      this.$t('views.userList.deleteConfirm') as string,
+      this.$t('views.userList.deleteConfirmPop') as string,
+      {
+        confirmButtonText: this.$t('views.userList.submit') as string,
+        cancelButtonText: this.$t('views.userList.cancel') as string,
+        type: 'warning',
+      }
+    ).then(async () => {
+      const { status, msg } = await this.services.user.reset({
+        userId: item.id as number,
+      })
+      if (status === 201) {
+        this.$message({
+          type: 'success',
+          message: msg,
+          showClose: true,
+        })
+      } else {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+      }
+    })
   }
 
   private async userDelete(uid: number) {
