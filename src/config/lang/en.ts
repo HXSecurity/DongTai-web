@@ -233,7 +233,7 @@ export default {
         manualInstallationDesc8:
           'e.run: go mod tidy Waiting for synchronization',
         manualInstallationDesc9:
-          'f.Add command line parameters： -gcflags "all=-N -l" Run the project, for example： go run main.go -gcflags "all=-N -l"',
+          'f.Add command line parameters： -gcflags "all=-N -l" Run the project, for example： go run -gcflags "all=-N -l" main.go',
       },
     },
     search: {
