@@ -1,10 +1,8 @@
 name: Deploy DongTai-Web to Release
 
 on:
-  push:
-    branches: [ "release-*" ]
-  pull_request:
-    branches: [ "release-*" ]
+  release:
+    types: [ created, edited ]
 
 jobs:
   build:
@@ -52,19 +50,20 @@ jobs:
           npm test
           npm run build --if-present
 
-      - name: test
-        run: |
-          echo ${GITHUB_REF##*/}
-          echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'
-
       - id: release
         run: |
-          VERSION=`echo ${GITHUB_REF##*/} | awk -F'-' '{print $2}'` && echo "::set-output name=version::$VERSION"
+          TAG_NAME=${{ github.event.release.tag_name }}
+          ID=`echo ${TAG_NAME##v}`
+          echo "::set-output name=VERSION::$ID"
+
+      - name: Release DongTai-WEB
+        run: |
+          bash .github/workflows/scripts/release_version.sh "${{ steps.release.outputs.VERSION }}"
 
       - name: Generate version file
         run: |
           cd ${{ github.workspace }} && \
-          echo "${{ github.event.repository.name }},version,${{ steps.release.outputs.version }}" >> dist/version.txt && \
+          echo "${{ github.event.repository.name }},version,${{ steps.release.outputs.VERSION }}" >> dist/version.txt && \
           echo "${{ github.event.repository.name }},commit_hash,${GITHUB_SHA}" >> dist/version.txt && \
           cat dist/version.txt \
 
@@ -76,18 +75,18 @@ jobs:
 
       - name: Upload version file to oss
         run: |
-          ossutil cp -rf dist/version.txt oss://huoqi-public/iast/release-version/${{ github.event.repository.name }}/${{ steps.release.outputs.version }}/version.txt
+          ossutil cp -rf dist/version.txt oss://huoqi-public/iast/release-version/${{ github.event.repository.name }}/${{ steps.release.outputs.VERSION }}/version.txt
 
       - name: Merge all version file
         run: |
-          echo "DongTai,version,${{ steps.release.outputs.version }}" > dist/version.txt
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-web/${{ steps.release.outputs.version }}/version.txt DongTai-web.version.txt || true
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-webapi/${{ steps.release.outputs.version }}/version.txt DongTai-webapi.version.txt || true
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-openapi/${{ steps.release.outputs.version }}/version.txt DongTai-openapi.version.txt || true
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-engine/${{ steps.release.outputs.version }}/version.txt DongTai-engine.version.txt || true
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-python/${{ steps.release.outputs.version }}/version.txt DongTai-agent-python.version.txt || true
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-java/${{ steps.release.outputs.version }}/version.txt DongTai-agent-java.version.txt || true
-          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-php/${{ steps.release.outputs.version }}/version.txt DongTai-agent-php.version.txt || true
+          echo "DongTai,version,${{ steps.release.outputs.VERSION }}" > dist/version.txt
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-web/${{ steps.release.outputs.VERSION }}/version.txt DongTai-web.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-webapi/${{ steps.release.outputs.VERSION }}/version.txt DongTai-webapi.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-openapi/${{ steps.release.outputs.VERSION }}/version.txt DongTai-openapi.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-engine/${{ steps.release.outputs.VERSION }}/version.txt DongTai-engine.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-python/${{ steps.release.outputs.VERSION }}/version.txt DongTai-agent-python.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-java/${{ steps.release.outputs.VERSION }}/version.txt DongTai-agent-java.version.txt || true
+          ossutil cp oss://huoqi-public/iast/release-version/DongTai-agent-php/${{ steps.release.outputs.VERSION }}/version.txt DongTai-agent-php.version.txt || true
           cat *.version.txt >> dist/version.txt
           cat dist/version.txt
 
@@ -97,10 +96,19 @@ jobs:
           context: .
           push: true
           tags: |
-            dongtai/dongtai-web:${{ steps.release.outputs.version }}
+            dongtai/dongtai-web:${{ steps.release.outputs.VERSION }}
             dongtai/dongtai-web:latest
-            registry.cn-beijing.aliyuncs.com/huoxian_pub/dongtai-web:${{ steps.release.outputs.version }}
-            registry.cn-beijing.aliyuncs.com/huoxian_pub/dongtai-web:latest
+
+
+      - name: Deploy-To-Prod
+        uses: wahyd4/kubectl-helm-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: |
+            find deploy/deploy-eks-iast-saas-web-prod.yml -type f -exec sed -i 's/VERSION/${{ steps.release.outputs.VERSION }}/g' {} \;
+            ls deploy/deploy-eks-iast-saas-web-prod.yml | xargs -I {} kubectl apply -f {}
+
 
       - name: finish build
         uses: joelwmale/webhook-action@master

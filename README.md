@@ -1,6 +1,6 @@
 # DongTai-web
 [![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/HXSecurity/DongTai)
-[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.1.0-lightgrey)](https://github.com/HXSecurity/DongTai-web)
+[![Github Version](https://img.shields.io/github/v/release/HXSecurity/DongTai-web?display_name=tag&include_prereleases&sort=semver)](https://github.com/HXSecurity/DongTai-web/releases)
 
 [中文版本(Chinese version)](README.ZH_CN.md)
 
