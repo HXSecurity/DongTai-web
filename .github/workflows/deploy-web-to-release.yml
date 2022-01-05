@@ -37,6 +37,12 @@ jobs:
           username: ${{ secrets.DONGTAI_DOCKERHUB_USERNAME }}
           password: ${{ secrets.DONGTAI_DOCKERHUB_TOKEN }}
 
+      - name: Login to AliyunRegistry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.ALIYUN_REGISTRY }}
+          username: ${{ secrets.ALIYUN_DOCKERHUB_USER }}
+          password: ${{ secrets.ALIYUN_DOCKERHUB_PASSWORD }}
 
       - name: test and build
         run: |
@@ -93,6 +99,7 @@ jobs:
             dongtai/dongtai-web:${{ steps.release.outputs.VERSION }}
             dongtai/dongtai-web:latest
 
+
       - name: Deploy-To-Prod
         uses: wahyd4/kubectl-helm-action@master
         env:
@@ -101,6 +108,7 @@ jobs:
           args: |
             find deploy/deploy-eks-iast-saas-web-prod.yml -type f -exec sed -i 's/VERSION/${{ steps.release.outputs.VERSION }}/g' {} \;
             ls deploy/deploy-eks-iast-saas-web-prod.yml | xargs -I {} kubectl apply -f {}
+
 
       - name: finish build
         uses: joelwmale/webhook-action@master
