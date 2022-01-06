@@ -869,9 +869,12 @@ export default class VulnDetail extends VueBase {
   exportVul() {
     var projectName = this.vulnObj.vul.project_name
     request
-      .get(`project/export?pname=${projectName}&vid=${this.selectedId}`, {
-        responseType: 'blob',
-      })
+      .get(
+        `project/export?vid=${this.selectedId}&pid=${this.vulnObj.vul.project_id}`,
+        {
+          responseType: 'blob',
+        }
+      )
       .then((res: any) => {
         if (res.type === 'application/json') {
           this.$message.error({

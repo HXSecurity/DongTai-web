@@ -232,7 +232,7 @@ export default {
           'httprouter： _ "github.com/HXSecurity/DongTai-agent-go/run/httpRouter"',
         manualInstallationDesc8: 'e.执行: go mod tidy 等待同步包',
         manualInstallationDesc9:
-          'f.添加命令行参数 -gcflags "all=-N -l" 运行项目,例如： go run main.go -gcflags "all=-N -l"',
+          'f.添加命令行参数 -gcflags "all=-N -l" 运行项目,例如： go run -gcflags "all=-N -l" main.go',
       },
     },
     search: {
