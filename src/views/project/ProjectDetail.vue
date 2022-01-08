@@ -276,11 +276,10 @@
       width="80%"
     >
       <div style="padding: 20px 60px">
-        <el-form :model="form">
+        <el-form>
           <el-form-item
             style="font-weight: 500"
             :label="$t('views.projectDetail.exportType')"
-            :label-width="formLabelWidth"
           >
             <div class="dialog-top">
               <el-radio-group v-model="type" class="exp_radio">
@@ -357,7 +356,7 @@
             style="display: flex; justify-content: flex-end; padding-top: 16px"
           >
             <el-pagination
-              :current-page.sync="currentPage1"
+              :current-page.sync="exp_page"
               layout="total, prev, pager, next,jumper"
               :total="exp_total"
               @current-change="handleCurrentChange"
