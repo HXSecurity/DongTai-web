@@ -41,17 +41,17 @@
           prop="create_time"
         >
           <template slot-scope="{ row }">
-            {{
-              row.is_superuser
-                ? $t('views.talent.table.superAdmin')
-                : $t('views.talent.table.user')
-            }}
+            {{ fmtStr(row.create_time) }}
           </template>
         </el-table-column>
         <el-table-column
           :label="$t('views.talent.table.update')"
           prop="update_time"
-        ></el-table-column>
+        >
+          <template slot-scope="{ row }">
+            {{ fmtStr(row.update_time) }}
+          </template>
+        </el-table-column>
         <el-table-column
           :label="$t('views.talent.table.modifyBy')"
           prop="created"
@@ -123,8 +123,14 @@
             clearable
             style="width: 400px"
           >
-            <el-option :label="$t('views.talent.add.on')" :value="true"></el-option>
-            <el-option :label="$t('views.talent.add.off')" :value="false"></el-option>
+            <el-option
+              :label="$t('views.talent.add.on')"
+              :value="true"
+            ></el-option>
+            <el-option
+              :label="$t('views.talent.add.off')"
+              :value="false"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -145,7 +151,7 @@ import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
 import { TalentListObj, TalentAddParams } from './types'
 import { Form } from 'element-ui'
-
+import { formatTimestamp } from '@/utils/utils'
 @Component({ name: 'TalentList' })
 export default class TalentList extends VueBase {
   private page = 1
@@ -164,6 +170,9 @@ export default class TalentList extends VueBase {
     this.getTableData()
   }
 
+  private fmtStr(timestamp: number | any) {
+    return formatTimestamp(timestamp)
+  }
   private addDialogShow() {
     this.talentForm = {
       talent_name: '',
