@@ -241,7 +241,6 @@ import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
 import { UserListObj, UserAddParams, Department } from './types'
 import { Form } from 'element-ui'
-import { formatTimestamp } from '@/utils/utils'
 
 @Component({ name: 'DepartmentList' })
 export default class DepartmentList extends VueBase {
