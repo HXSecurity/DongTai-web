@@ -32,8 +32,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
       await store.dispatch('user/logOut')
     }
   }
-
-  if (getToken() && to.fullPath === '/login') {
+  if (getToken() && to.path === '/login') {
     next({ path: '/project' })
     return
   }
@@ -48,13 +47,13 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     return
   }
 
-  if (!getToken() && !isWhiteList(to.fullPath)) {
+  if (!getToken() && !isWhiteList(to.path)) {
     store.dispatch('user/clearInfo')
     next('/login')
     return
   }
 
-  if (!getToken() && isWhiteList(to.fullPath)) {
+  if (!getToken() && isWhiteList(to.path)) {
     next()
     return
   }
