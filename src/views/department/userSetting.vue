@@ -104,6 +104,7 @@
           <el-input
             v-model="userForm.username"
             :placeholder="$t('views.userList.namePlaceholder')"
+            :disabled="!isAdd"
             clearable
             class="addUserInput"
             size="small"
