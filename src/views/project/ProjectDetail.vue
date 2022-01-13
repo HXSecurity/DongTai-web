@@ -2,17 +2,42 @@
   <main class="container">
     <div v-if="projectObj" class="project-warp">
       <div class="title-warp">
-        <div class="name">
-          {{ projectObj.name }}
-          <el-tag
-            v-for="item in projectObj.agent_language"
-            :key="item"
-            size="small"
-            :type="getTagColoe(item)"
-            style="margin-left: 12px"
-            >{{ item }}</el-tag
-          >
+        <div class="title-top flex-row-space-between">
+          <div class="name">
+            {{ projectObj.name }}
+            <el-tag
+              v-for="item in projectObj.agent_language"
+              :key="item"
+              size="small"
+              :type="getTagColoe(item)"
+              style="margin-left: 12px"
+              >{{ item }}</el-tag
+            >
+          </div>
+          <div class="operate">
+            <el-button type="text" class="operateBtn" @click="scaExport">
+              <i class="iconfont icondaochu-5"></i>
+              {{ $t('views.projectDetail.scaExport') }}</el-button
+            >
+            <el-button type="text" class="operateBtn" @click="openExport()">
+              <i class="iconfont icondaochu-5"></i>
+              {{ $t('views.projectDetail.export') }}
+            </el-button>
+            <el-button type="text" class="operateBtn" @click="autoTest()">
+              <i class="iconfont icondaochu-5"></i>
+              自动测试
+            </el-button>
+            <el-button
+              type="text"
+              class="operateBtn"
+              @click="$router.push(`/project/projectEdit/${$route.params.pid}`)"
+            >
+              <i class="iconfont iconshezhi-2"></i>
+              {{ $t('views.projectDetail.setting') }}
+            </el-button>
+          </div>
         </div>
+
         <div class="info-line flex-row-space-between">
           <div class="info">
             <i class="iconfont iconjiance-copy"></i>
@@ -49,28 +74,6 @@
               style="margin-left: 12px; cursor: pointer; color: #4fb794"
               @click="showVersion"
             ></i>
-          </div>
-          <div class="operate">
-            <el-button type="text" class="operateBtn" @click="scaExport">
-              <i class="iconfont icondaochu-5"></i>
-              {{ $t('views.projectDetail.scaExport') }}</el-button
-            >
-            <el-button type="text" class="operateBtn" @click="openExport()">
-              <i class="iconfont icondaochu-5"></i>
-              {{ $t('views.projectDetail.export') }}
-            </el-button>
-            <el-button type="text" class="operateBtn" @click="autoTest()">
-              <i class="iconfont icondaochu-5"></i>
-              自动测试
-            </el-button>
-            <el-button
-              type="text"
-              class="operateBtn"
-              @click="$router.push(`/project/projectEdit/${$route.params.pid}`)"
-            >
-              <i class="iconfont iconshezhi-2"></i>
-              {{ $t('views.projectDetail.setting') }}
-            </el-button>
           </div>
         </div>
       </div>
@@ -969,29 +972,27 @@ export default class ProjectDetail extends VueBase {
           font-style: inherit;
         }
       }
-
-      .operate {
-        // color: #b1b9c4;
-
-        .operateBtn {
-          width: 90px;
-          height: 32px;
-          line-height: 0;
-          border-radius: 2px;
-          font-size: 14px;
-          border: 1px solid #4a72ae;
-          color: #4a72ae;
-        }
-
-        // i {
-        //   cursor: pointer;
-        //   margin-left: 24px;
-
-        //   &:first-child {
-        //     margin-left: 0;
-        //   }
-        // }
+    }
+    .operate {
+      // color: #b1b9c4;
+      .operateBtn {
+        width: 90px;
+        height: 32px;
+        line-height: 0;
+        border-radius: 2px;
+        font-size: 14px;
+        border: 1px solid #4a72ae;
+        color: #4a72ae;
       }
+
+      // i {
+      //   cursor: pointer;
+      //   margin-left: 24px;
+
+      //   &:first-child {
+      //     margin-left: 0;
+      //   }
+      // }
     }
   }
 
