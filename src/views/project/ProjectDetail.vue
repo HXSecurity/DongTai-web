@@ -59,6 +59,10 @@
               <i class="iconfont icondaochu-5"></i>
               {{ $t('views.projectDetail.export') }}
             </el-button>
+            <el-button type="text" class="operateBtn" @click="autoTest()">
+              <i class="iconfont icondaochu-5"></i>
+              自动测试
+            </el-button>
             <el-button
               type="text"
               class="operateBtn"
@@ -917,6 +921,17 @@ export default class ProjectDetail extends VueBase {
         message: msg,
         showClose: true,
       })
+    }
+  }
+
+  private async autoTest() {
+    const res = await this.services.project.api_test({
+      id: this.$route.params.pid,
+    })
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+    } else {
+      this.$message.error(res.msg)
     }
   }
 }
