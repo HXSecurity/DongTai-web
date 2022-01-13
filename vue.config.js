@@ -15,7 +15,7 @@ module.exports = {
         hot: true,
         // Only hot replacements are allowed
         hotOnly: true,
-        https: true,
+        https: false,
         port: 1024,
         open: true,
         proxy: {

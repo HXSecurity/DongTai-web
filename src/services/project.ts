@@ -103,4 +103,12 @@ export default () =>
     exportDelete(params: any): Promise<iResponse> {
       return request.post(`/project/report/delete`, params)
     }
+
+    req_headers(params: any): Promise<iResponse> {
+      return request.get(`/project/${params.id}/api_test/req_headers`)
+    }
+
+    api_test(params: any): Promise<iResponse> {
+      return request.get(`/project/${params.id}/api_test`)
+    }
   })()

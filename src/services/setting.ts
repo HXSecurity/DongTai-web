@@ -288,4 +288,35 @@ export default () =>
     nowVersion(): Promise<iResponse> {
       return axios.get(`/version.txt`)
     }
+
+    get_sca_strategy(params: any): Promise<iResponse> {
+      return request.get(
+        `/scadb/maven/bulk?page=${params.page}&page_size=${params.page_size}&name=${params.name}`
+      )
+    }
+
+    edit_sca(data: any): Promise<iResponse> {
+      return request.put(`/scadb/maven/${data.id}`, data)
+    }
+
+    add_sca(data: any): Promise<iResponse> {
+      delete data.id
+      return request.post(`/scadb/maven`, data)
+    }
+
+    delete_sca(params: any): Promise<iResponse> {
+      return request.delete(`/scadb/maven/${params.id}`)
+    }
+
+    delete_sca_bulk(data: any): Promise<iResponse> {
+      return request.post(`/scadb/maven/bulk/delete`, data)
+    }
+
+    sca_stat(): Promise<iResponse> {
+      return request.get(`/scadb/maven/stat`)
+    }
+
+    get_license_list(): Promise<iResponse> {
+      return request.get(`/scadb/license_list`)
+    }
   })()

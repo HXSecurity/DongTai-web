@@ -302,7 +302,6 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/sensitive.vue'),
       },
-
       {
         path: 'template',
         name: 'template',
@@ -312,6 +311,16 @@ const routes: Array<RouteConfig> = [
           name: i18n.t('menu.template'),
         },
         component: () => import('@/views/setting/template.vue'),
+      },
+      {
+        path: 'scaManage',
+        name: 'scaManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scaManage',
+          name: i18n.t('menu.scaManage'),
+        },
+        component: () => import('@/views/setting/scaManage.vue'),
       },
       {
         path: 'hookRule',
@@ -695,6 +704,16 @@ const adminRoutes: Array<RouteConfig> = [
         component: () => import('@/views/setting/template.vue'),
       },
       {
+        path: 'scaManage',
+        name: 'scaManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scaManage',
+          name: i18n.t('menu.scaManage'),
+        },
+        component: () => import('@/views/setting/scaManage.vue'),
+      },
+      {
         path: 'hookRule',
         name: 'hookRule',
         meta: {
@@ -1045,6 +1064,16 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.template'),
         },
         component: () => import('@/views/setting/template.vue'),
+      },
+      {
+        path: 'scaManage',
+        name: 'scaManage',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scaManage',
+          name: i18n.t('menu.scaManage'),
+        },
+        component: () => import('@/views/setting/scaManage.vue'),
       },
       {
         path: 'hookRule',
