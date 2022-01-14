@@ -45,7 +45,6 @@
           <template slot-scope="{ row }">
             <div style="cursor: pointer" @click="stateChange(row)">
               <el-switch
-                :disabled="userInfo.role !== 1 && userInfo.role !== 2"
                 :value="row.status === 1"
                 active-color="#1A80F2"
                 inactive-color="#C1C9D3"
@@ -55,9 +54,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="userInfo.role === 1 || userInfo.role === 2"
           :label="$t('views.templateManage.settings')"
-          width="160px"
           align="center"
         >
           <template slot-scope="{ row }">
@@ -163,6 +160,11 @@ export default class templateManage extends VueBase {
         message: msg,
         showClose: true,
       })
+      return
+    }
+    if (data.length === 0 && this.page > 1) {
+      this.page--
+      await this.getTableData()
       return
     }
     this.tableData = data
@@ -309,12 +311,16 @@ export default class templateManage extends VueBase {
   }
 }
 .table-btn-box {
+  display: flex;
   justify-content: center;
   align-items: center;
+  .el-button {
+    font-size: 14px;
+  }
   .l {
     color: #38435a;
-    line-height: 13px;
-    padding: 10px 4px;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
     display: inline-block;
   }
   .el-button + .el-button {

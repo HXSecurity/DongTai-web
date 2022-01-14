@@ -280,8 +280,10 @@
       :total="total"
       :current-page="page"
       :page-size="pageSize"
-      layout="total, prev, pager, next, jumper"
+      layout="total,sizes, prev, pager, next, jumper"
+      :page-sizes="[10, 20, 30, 40, 50]"
       @current-change="currentChange"
+      @size-change="sizeChange"
     ></el-pagination>
     <el-dialog
       :visible.sync="deleteDialogOpen"
@@ -406,6 +408,11 @@ export default class AgentManage extends VueBase {
     this.getTableData()
   }
 
+  private sizeChange(val: number | string) {
+    this.pageSize = parseInt(`${val}`)
+    this.getTableData()
+  }
+
   private async reflashTable() {
     if (this.tableData.some((item: any) => item.isEdit)) {
       return
@@ -461,6 +468,11 @@ export default class AgentManage extends VueBase {
       })
       return
     }
+    if (data.length === 0 && this.page > 1) {
+      this.page--
+      await this.getTableData()
+      return
+    }
     this.tableData = data
     this.tableData.forEach((item: any) => {
       this.$set(item, 'isEdit', false)
@@ -473,7 +485,6 @@ export default class AgentManage extends VueBase {
     })
     this.currentPageSize = data.length
     this.total = page.alltotal
-    console.log(this.total)
     this.currentPageDelete = 0
   }
 

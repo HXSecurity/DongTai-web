@@ -2,17 +2,42 @@
   <main class="container">
     <div v-if="projectObj" class="project-warp">
       <div class="title-warp">
-        <div class="name">
-          {{ projectObj.name }}
-          <el-tag
-            v-for="item in projectObj.agent_language"
-            :key="item"
-            size="small"
-            :type="getTagColoe(item)"
-            style="margin-left: 12px"
-            >{{ item }}</el-tag
-          >
+        <div class="title-top flex-row-space-between">
+          <div class="name">
+            {{ projectObj.name }}
+            <el-tag
+              v-for="item in projectObj.agent_language"
+              :key="item"
+              size="small"
+              :type="getTagColoe(item)"
+              style="margin-left: 12px"
+              >{{ item }}</el-tag
+            >
+          </div>
+          <div class="operate">
+            <el-button type="text" class="operateBtn" @click="scaExport">
+              <i class="iconfont icondaochu-5"></i>
+              {{ $t('views.projectDetail.scaExport') }}</el-button
+            >
+            <el-button type="text" class="operateBtn" @click="openExport()">
+              <i class="iconfont icondaochu-5"></i>
+              {{ $t('views.projectDetail.export') }}
+            </el-button>
+            <el-button type="text" class="operateBtn" @click="autoTest()">
+              <i class="iconfont icondaochu-5"></i>
+              自动测试
+            </el-button>
+            <el-button
+              type="text"
+              class="operateBtn"
+              @click="$router.push(`/project/projectEdit/${$route.params.pid}`)"
+            >
+              <i class="iconfont iconshezhi-2"></i>
+              {{ $t('views.projectDetail.setting') }}
+            </el-button>
+          </div>
         </div>
+
         <div class="info-line flex-row-space-between">
           <div class="info">
             <i class="iconfont iconjiance-copy"></i>
@@ -49,20 +74,6 @@
               style="margin-left: 12px; cursor: pointer; color: #4fb794"
               @click="showVersion"
             ></i>
-          </div>
-          <div class="operate">
-            <el-button type="text" class="operateBtn" @click="openExport()">
-              <i class="iconfont icondaochu-5"></i>
-              {{ $t('views.projectDetail.export') }}
-            </el-button>
-            <el-button
-              type="text"
-              class="operateBtn"
-              @click="$router.push(`/project/projectEdit/${projectObj.id}`)"
-            >
-              <i class="iconfont iconshezhi-2"></i>
-              {{ $t('views.projectDetail.setting') }}
-            </el-button>
           </div>
         </div>
       </div>
@@ -272,11 +283,10 @@
       width="80%"
     >
       <div style="padding: 20px 60px">
-        <el-form :model="form">
+        <el-form>
           <el-form-item
             style="font-weight: 500"
             :label="$t('views.projectDetail.exportType')"
-            :label-width="formLabelWidth"
           >
             <div class="dialog-top">
               <el-radio-group v-model="type" class="exp_radio">
@@ -353,7 +363,7 @@
             style="display: flex; justify-content: flex-end; padding-top: 16px"
           >
             <el-pagination
-              :current-page.sync="currentPage1"
+              :current-page.sync="exp_page"
               layout="total, prev, pager, next,jumper"
               :total="exp_total"
               @current-change="handleCurrentChange"
@@ -417,10 +427,15 @@ export default class ProjectDetail extends VueBase {
     this.getExportList()
     this.exportDialog = true
   }
+
+  private scaExport = async () => {
+    await this.services.sca.scaExport(this.$route.params.pid)
+  }
+
   private async versionCurrent(item: any) {
     const res: any = await this.services.project.versionCurrent({
       version_id: item.version_id,
-      project_id: this.projectObj.id,
+      project_id: this.$route.params.pid,
     })
     if (res.status !== 201) {
       this.$message({
@@ -477,7 +492,7 @@ export default class ProjectDetail extends VueBase {
     if (!item.version_id) {
       const res: any = await this.services.project.versionAdd({
         ...item,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       if (res.status !== 201) {
         this.$message({
@@ -498,7 +513,7 @@ export default class ProjectDetail extends VueBase {
     } else {
       const res: any = await this.services.project.versionEdit({
         ...item,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       console.log(res)
       if (res.status !== 201) {
@@ -543,7 +558,7 @@ export default class ProjectDetail extends VueBase {
     ).then(async () => {
       const res: any = await this.services.project.versionDelete({
         version_id: item.version_id,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       if (res.status != 201) {
         this.$message({
@@ -783,17 +798,19 @@ export default class ProjectDetail extends VueBase {
     this.versionFlag = true
   }
   getVersionList() {
-    this.services.project.versionList(this.projectObj.id).then((res: any) => {
-      if (res.status === 201) {
-        this.versionList = res.data
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg,
-          showClose: true,
-        })
-      }
-    })
+    this.services.project
+      .versionList(this.$route.params.pid)
+      .then((res: any) => {
+        if (res.status === 201) {
+          this.versionList = res.data
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.msg,
+            showClose: true,
+          })
+        }
+      })
   }
   async deleteExport(id: number) {
     this.$confirm(
@@ -909,6 +926,17 @@ export default class ProjectDetail extends VueBase {
       })
     }
   }
+
+  private async autoTest() {
+    const res = await this.services.project.api_test({
+      id: this.$route.params.pid,
+    })
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
 }
 </script>
 
@@ -944,29 +972,27 @@ export default class ProjectDetail extends VueBase {
           font-style: inherit;
         }
       }
-
-      .operate {
-        // color: #b1b9c4;
-
-        .operateBtn {
-          width: 90px;
-          height: 32px;
-          line-height: 0;
-          border-radius: 2px;
-          font-size: 14px;
-          border: 1px solid #4a72ae;
-          color: #4a72ae;
-        }
-
-        // i {
-        //   cursor: pointer;
-        //   margin-left: 24px;
-
-        //   &:first-child {
-        //     margin-left: 0;
-        //   }
-        // }
+    }
+    .operate {
+      // color: #b1b9c4;
+      .operateBtn {
+        width: 90px;
+        height: 32px;
+        line-height: 0;
+        border-radius: 2px;
+        font-size: 14px;
+        border: 1px solid #4a72ae;
+        color: #4a72ae;
       }
+
+      // i {
+      //   cursor: pointer;
+      //   margin-left: 24px;
+
+      //   &:first-child {
+      //     margin-left: 0;
+      //   }
+      // }
     }
   }
 

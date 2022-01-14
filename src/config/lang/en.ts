@@ -50,6 +50,7 @@ export default {
     about: 'About DongTai',
     projectEdit: 'ProjectEdit',
     home: 'Home',
+    scaManage: 'SCA',
     login: 'Login',
     project: 'APPLICATIONS',
     projectManage: 'Applications',
@@ -88,6 +89,45 @@ export default {
     templateManage: 'Template',
   },
   views: {
+    scaManage: {
+      component: 'Component',
+      vuln: 'Vulnerability',
+      uploadBtn: 'Upload',
+      download: 'Download Template',
+      upload: 'Upload',
+      addSca: 'Add Component',
+      all: 'All',
+      selected: 'Selected',
+      race: 'kind',
+      strip: 'item(s)',
+      on: 'Enable',
+      off: 'Disable',
+      del: 'Delete',
+      empty: 'No data temporarily',
+      yes: 'Yes',
+      no: 'No',
+      updateTime: 'Modified Date',
+      user: 'Creator',
+      status: 'Status',
+      address: 'Settings',
+      edit: 'Edit',
+      delpop: 'Are you sure you want to delete it? ',
+      typeName: 'Type Name',
+      GroupID: 'Enter the GroupID',
+      AtrifactID: 'Enter the AtrifactID',
+      Version: 'Enter the Version',
+      Sha1: 'Enter the Sha1',
+      PackageName: 'Enter the PackageName',
+      License: 'Enter the License',
+      openOrNot: 'Enabled',
+      clear: 'Cancel',
+      enter: 'OK',
+      add: 'Add',
+      changeOne: 'This operation will batch delete',
+      changeTwo: 'data, are you sure you want to continue?',
+      pop: 'Prompt',
+      searchDesc: 'Find Package Name',
+    },
     changeLogo: {
       settingTitle: 'Customize Site Logo',
       settingInfo:
@@ -162,9 +202,15 @@ export default {
       },
       python: {
         ManualInstallation: 'Manual Installation',
+        os: 'Operating system: Windows/Linux/macOS',
         term1: '1. Python Version: 3.6 and above',
         term2: '2. Interpreter: CPython',
         term3: '3. Middleware: uWSGI',
+        termA: 'Compiling Dependencies',
+        termAa: 'gcc (Linux/macOS)',
+        termAb: 'make (Linux/macOS)',
+        termAc: 'cmake',
+        termAd: 'Visual Studio (Windows)',
         term4: '4. Web Framework: ',
         'term4-1': ' - Django：3.0-3.2',
         'term4-2': ' - Flask：1.0-1.2',
@@ -198,14 +244,36 @@ export default {
           'Note: If you cannot configure the system environment variables, you can change the agent configuration file, modify the project name, and find the path address of the python installation agent extension package, for example: /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site -packages/dongtai_agent_python modify project.name in dongtai_agent_python/config.json, the priority of system environment variable projectName is higher than project.name in configuration file;',
       },
       php: {
-        ManualInstallation: 'Manual Installation',
-        term1: 'Python Version: 8.0.9 and above',
+        Manualinstallation: 'manual installation',
+        term1: 'PHP version no less than 8.0.9',
         manualInstallationDesc1:
-          'a. Manually unzip php-agent-test.tar.gz. There are three files in PHP agent test: Dongtai_ php_ Agent.so & test.json & run-tests.php, copy Dongtai_ php_ Agent.so to the extension in the PHP installation environment, for example:/usr/local/lib/php/pecl/20200930.',
+          'a. Manually unzip php-agent.tar.gz, there are three files in PHP agent: Dongtai_php_agent.so& policy.json &dongtai-php-property.ini, put Dongtai_php_agent. Put so into the extension in the PHP installation environment, policy The path of JSON can be found in Dongtai PHP property Modify hook. Ini json. The path corresponding to path. The default is "/var/www/PHPagent/policy.JSON".',
         manualInstallationDesc2:
-          'b. Find php.ini, use the command: PHP - I | grep php.ini, and add: extension in php.ini_ Dir = "path of dongtai_php_agent.so inside PHP", extension = Dongtai_ php_ Agent, then execute PHP – V, the PHP version information is displayed normally, and there will be Dongtai in PHP – M_ php_ Agent, that is, the installation is successful.',
+          'b.dongtai-php-property .ini placed in the php configuration folder, such as conf.d, php –m to see if the installation is successful, if there is no dongtai_php_agent, remove the dongtai-php-property.ini in the extension=dongtai_php_agent comments, re-view.',
         manualInstallationDesc3:
-          'c. Through the terminal, enter PHP agent test, execute PHP run-tests.php test results, or enter the shooting range test. The shooting range address is: https://github.com/jinghao1/phpvul',
+          'c. Through the terminal, you can call the local PHP file test results, you can also enter the range test, the range address: https://github.com/jinghao1/phpvul',
+      },
+      go: {
+        term1: 'Go version no less than 1.11',
+        Manualinstallation: 'manual installation',
+        manualInstallationDesc1:
+          'a.Download dongtai-go-agent-config.yaml is placed in the project root directory',
+        manualInstallationDesc2:
+          'b.Import the basic package in the project entry file_ "github.com/HXSecurity/DongTai-agent-go/run/base"',
+        manualInstallationDesc3:
+          'c.Example of introducing a framework package into the project entry file:_ "github.com/HXSecurity/DongTai-agent-go/run/gin"          ',
+        manualInstallationDesc4:
+          'd.Framework packages are currently supported:',
+        manualInstallationDesc5:
+          'gorm: _ "github.com/HXSecurity/DongTai-agent-go/run/gorm"',
+        manualInstallationDesc6:
+          'http: _ "github.com/HXSecurity/DongTai-agent-go/run/http"',
+        manualInstallationDesc7:
+          'httprouter： _ "github.com/HXSecurity/DongTai-agent-go/run/httpRouter"',
+        manualInstallationDesc8:
+          'e.run: go mod tidy Waiting for synchronization',
+        manualInstallationDesc9:
+          'f.Add command line parameters： -gcflags "all=-N -l" Run the project, for example： go run -gcflags "all=-N -l" main.go',
       },
     },
     search: {
@@ -270,6 +338,7 @@ export default {
       '1Hour': '1 Hour',
     },
     hookPage: {
+      all: 'All',
       sourceRule: 'Source Rules',
       propRule: 'Propagation Rules',
       filterRule: 'Filter Rules',
@@ -388,7 +457,7 @@ export default {
       has: 'exist',
       vule: 'vulnerability',
       is: 'of',
-      reqHas: 'Request appears',
+      reqHas: ' appears',
       position: 'Position',
       orderOptions: {
         type: 'Vulnerability Category',
@@ -442,7 +511,7 @@ export default {
       has: 'exist',
       vule: 'vulnerability',
       is: 'of',
-      reqHas: 'Request appears',
+      reqHas: ' appears',
       position: 'Position',
       untreated: 'Untreated',
       replay: 'Request Replay',
@@ -468,6 +537,7 @@ export default {
       vuln: 'vulnerability',
     },
     scaList: {
+      license: 'License',
       filter: 'Filter',
       language: 'Language',
       level: 'Severity',
@@ -695,7 +765,7 @@ export default {
     },
     sysInfo: {
       vul_verifiy: 'Verification',
-      infoTitle: 'Authorization Information',
+      infoTitle: 'Agent Settings',
       agentThreshold: 'Agent Threshold',
       vul:
         'The active verification function is used to verify whether the vulnerability of the tainted call chain is true and effective. During active verification, engine automatically identifies the location of attack parameters, constructs a payload, and then replays http / HTTPS traffic from within the agent for verification. This function is not necessary. Closing it will not change the vulnerability detection results. If it is not needed, it can be closed by itself.      ',
@@ -720,6 +790,18 @@ export default {
       searchName: 'Enter the application name in the search field',
     },
     projectEdit: {
+      token: 'Access Token',
+      tokenDesc:
+        'Configure the access credentials of the current project for permission processing in the automatic scanning function',
+      tokenPlaceholder: 'Place enter the access token',
+      appAddress: 'Application Address',
+      appAddressDesc:
+        'Configure the external access address of the current project for automatic scanning',
+      appAddressPlaceholder: 'Place enter the application address',
+      on: 'ON',
+      off: 'OFF',
+      followAll: 'Follow',
+      advanced: 'Advanced',
       save: 'Save',
       clear: 'Cancel',
       addScan: 'Add Custom Template',
@@ -739,7 +821,7 @@ export default {
       scan: 'Custom Template',
       scanPlaceholder: 'Please select an custom template',
       scanAdd: 'New Rule Template',
-      added: 'Advanced Settings',
+      added: 'Added',
       submit: 'Save',
       version_name: 'Application Version',
       versionNamePlaceholder: 'Please enter the version number',
@@ -798,6 +880,7 @@ export default {
         'This operation will permanently delete this version, do you want to continue?',
       setting: 'Settings',
       export: 'Reports',
+      scaExport: 'Sca',
       recheck: 'Vulnerability Verification',
       search_version_name: 'Enter version name, e.g.,v1',
       search_description:

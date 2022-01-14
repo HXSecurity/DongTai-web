@@ -26,6 +26,15 @@
             <img src="../../assets/img/deploy/php.png" />
             <span class="beta">beta</span>
           </div>
+
+          <div
+            class="language"
+            :class="language === 'go' && 'active'"
+            @click="changeLanguage('go')"
+          >
+            <img src="../../assets/img/deploy/go.png" />
+            <span class="beta">beta</span>
+          </div>
         </div>
         <div class="title">
           {{ $t('views.deploy.installing') }} {{ obj[language].key }}
@@ -141,18 +150,50 @@
               </el-tooltip>
             </div>
           </template>
+          <template v-if="language === 'go'">
+            <div class="title-3 margin-t-16">
+              1. {{ $t('views.deploy.go.ManualInstallation') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc1') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc2') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc3') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc4') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 24px">
+              {{ $t('views.deploy.go.manualInstallationDesc5') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 24px">
+              {{ $t('views.deploy.go.manualInstallationDesc6') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 24px">
+              {{ $t('views.deploy.go.manualInstallationDesc7') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc8') }}
+            </div>
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
+              {{ $t('views.deploy.go.manualInstallationDesc9') }}
+            </div>
+          </template>
 
           <template v-if="language === 'php'">
             <div class="title-3 margin-t-16">
               1. {{ $t('views.deploy.php.ManualInstallation') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.php.manualInstallationDesc1') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.php.manualInstallationDesc2') }}
             </div>
-            <div class="install-desc margin-t-8">
+            <div class="install-desc margin-t-8" style="margin-left: 12px">
               {{ $t('views.deploy.php.manualInstallationDesc3') }}
             </div>
           </template>
@@ -417,9 +458,15 @@ export default class Deploy extends VueBase {
       key: 'PYTHON',
       name: 'Python',
       term: [
+        this.$t('views.deploy.python.os'),
         this.$t('views.deploy.python.term1'),
         this.$t('views.deploy.python.term2'),
         this.$t('views.deploy.python.term3'),
+        this.$t('views.deploy.python.termA'),
+        this.$t('views.deploy.python.termAa'),
+        this.$t('views.deploy.python.termAb'),
+        this.$t('views.deploy.python.termAc'),
+        this.$t('views.deploy.python.termAd'),
         this.$t('views.deploy.python.term4'),
         this.$t('views.deploy.python.term4-1'),
         this.$t('views.deploy.python.term4-2'),
@@ -440,6 +487,14 @@ export default class Deploy extends VueBase {
       video:
         'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
     },
+    go: {
+      key: 'GO',
+      name: 'GO',
+      term: [this.$t('views.deploy.go.term1')],
+      download: '',
+      video:
+        'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/instatll_python_agent.mp4',
+    },
   }
   changeLanguage(language: string) {
     this.language = language
@@ -454,6 +509,11 @@ export default class Deploy extends VueBase {
       this.getDoc()
       return
     }
+    if (language === 'go') {
+      this.activeName = ''
+      this.getDoc()
+      return
+    }
     this.getDoc()
     this.getMd()
   }
@@ -461,11 +521,13 @@ export default class Deploy extends VueBase {
   get shell() {
     switch (this.language) {
       case 'java':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=java" -H 'Authorization: Token ${this.token}' -o agent.jar -k`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=java" -H "Authorization: Token ${this.token}" -o agent.jar -k`
       case 'python':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H 'Authorization: Token ${this.token}' -o dongtai-agent-python.tar.gz -k`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H "Authorization: Token ${this.token}" -o dongtai-agent-python.tar.gz -k`
       case 'php':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H 'Authorization: Token ${this.token}' -o php-agent-test.tar.gz`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H "Authorization: Token ${this.token}" -o php-agent.tar.gz`
+      case 'go':
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=go" -H "Authorization: Token ${this.token}" -o dongtai-go-agent-config.yaml`
     }
   }
   get pythonShell() {

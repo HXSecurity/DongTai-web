@@ -1,7 +1,6 @@
 # DongTai-web
-[![django-project](https://img.shields.io/badge/django%20versions-3.0.3-blue)](https://www.djangoproject.com/)
-[![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/huoxianclub/DongTai)
-[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.1.0-lightgrey)](https://github.com/huoxianclub/DongTai-web)
+[![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/HXSecurity/DongTai)
+[![Github Version](https://img.shields.io/github/v/release/HXSecurity/DongTai-web?display_name=tag&include_prereleases&sort=semver)](https://github.com/HXSecurity/DongTai-web/releases)
 
 [中文版本(Chinese version)](README.ZH_CN.md)
 
@@ -55,7 +54,7 @@ $ npm run build
 
 ### Documentation
 
-- [official documents](https://hxsecurity.github.io/DongTai-Doc/#/)
-- [quick experience](http://aws.iast.huoxian.cn:8000/login)
+- [official documents](https://dongtai.io)
+- [quick experience](https://iast.io)
 
 <img src="https://static.scarf.sh/a.png?x-pxid=f9b19108-458c-4e8b-be80-f6ff70241245" />

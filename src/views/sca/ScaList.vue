@@ -138,21 +138,6 @@
     >
       <div class="sca-list">
         <div class="selectForm">
-          <!-- <el-select
-          v-model="searchObj.order"
-          style="width: 160px; font-size: 14px"
-          class="commonSelect"
-          :placeholder="$t('views.scaList.sort')"
-          clearable
-          @change="newSelectData"
-        >
-          <el-option
-            v-for="item in searchOptionsObj.orderOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          ></el-option>
-        </el-select> -->
           <el-select
             v-model="searchObj.language"
             :placeholder="$t('views.scaList.developLanguage')"
@@ -289,6 +274,12 @@
                 {{ formatTimestamp(row.dt) }}
               </div>
             </template>
+          </el-table-column>
+          <el-table-column
+            :label="$t('views.scaList.license')"
+            prop="license"
+            width="160px"
+          >
           </el-table-column>
         </el-table>
         <div class="pagination">
@@ -525,6 +516,14 @@ export default class ScaList extends VueBase {
   position: fixed;
   top: 0;
   bottom: 0;
+}
+
+.btn {
+  width: 72px;
+  height: 38px;
+  line-height: 0;
+  background: #4a72ae;
+  color: #fff;
 }
 
 .slider-warp {

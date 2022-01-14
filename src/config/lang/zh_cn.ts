@@ -50,6 +50,7 @@ export default {
     about: '关于洞态',
     projectEdit: '项目配置',
     home: '首页',
+    scaManage: '组件库',
     login: '登录',
     project: '项目配置',
     projectManage: '项目配置',
@@ -88,6 +89,45 @@ export default {
     templateManage: '策略模板管理',
   },
   views: {
+    scaManage: {
+      component: '组件库',
+      vuln: '组件漏洞',
+      uploadBtn: '上传',
+      download: '下载模板',
+      upload: '批量上传',
+      addSca: '添加组件',
+      all: '全部',
+      selected: '已选中',
+      race: '种',
+      strip: '条',
+      on: '启用',
+      off: '禁用',
+      del: '删除',
+      empty: '暂无数据',
+      yes: '是',
+      no: '否',
+      updateTime: '修改时间',
+      user: '创建者',
+      status: '状态',
+      address: '操作',
+      edit: '编辑',
+      delpop: '确定删除吗？',
+      typeName: '类型名称',
+      GroupID: '请输入GroupID',
+      AtrifactID: '请输入AtrifactID',
+      Version: '请输入Version',
+      Sha1: '请输入Sha1',
+      PackageName: '请输入PackageName',
+      License: '请输入License',
+      openOrNot: '是否启用',
+      clear: '取消',
+      enter: '确定',
+      add: '增加',
+      changeOne: '此操作将批量删除',
+      changeTwo: '数据, 是否继续?',
+      pop: '提示',
+      searchDesc: '查找PackageName',
+    },
     changeLogo: {
       settingTitle: '品牌显示配置',
       settingInfo:
@@ -165,9 +205,15 @@ export default {
       },
       python: {
         ManualInstallation: '手动安装',
+        os: '操作系统: Windows/Linux/macOS',
         term1: 'Python 版本：3.6及以上',
         term2: '解释器：CPython',
         term3: '中间件：uWSGI',
+        termA: '编译依赖',
+        termAa: 'gcc (Linux/macOS)',
+        termAb: 'make (Linux/macOS)',
+        termAc: 'cmake',
+        termAd: 'Visual Studio (Windows)',
         term4: 'Web框架：',
         'term4-1': '- Django：3.0-3.2',
         'term4-2': '- Flask：1.0-1.2',
@@ -202,11 +248,31 @@ export default {
         ManualInstallation: '手动安装',
         term1: 'PHP版本不低于8.0.9',
         manualInstallationDesc1:
-          'a. 手动解压缩php-agent-test.tar.gz，php-agent-test里面有三个文件，分别是：dongtai_php_agent.so& test.json & run-tests.php，复制dongtai_php_agent.so到php安装环境中的extension中，例如：/usr/local/lib/php/pecl/20200930',
+          'a.手动解压缩php-agent.tar.gz，php-agent里面有三个文件，分别是：dongtai_php_agent.so& policy.json &dongtai-php-property.ini，把dongtai_php_agent.so放到php安装环境中的extension中，policy.json的路径可以在dongtai-php-property.ini中修改hook.json.path对应的路径，默认为:"/var/www/php-agent/policy.json"。',
         manualInstallationDesc2:
-          'b. 找到php.ini，使用命令：php -i | grep php.ini，在php.ini添加：extension_dir = " dongtai_php_agent.so在php内部的路径" , extension=dongtai_php_agent，之后执行php –v，正常显示PHP版本信息,php –m 查看会有dongtai_php_agent，即安装成功。',
+          'b.dongtai-php-property.ini放在php的配置文件夹中，如conf.d,php –m查看是否安装成功，如果没有dongtai_php_agent,去掉dongtai-php-property.ini中extension=dongtai_php_agent的注释，重新查看。',
         manualInstallationDesc3:
-          'c. 通过终端，进入php-agent-test，执行 php run-tests.php测试结果，也可以进入靶场测试，靶场地址：https://github.com/jinghao1/phpvul',
+          'c. 通过终端，可以调用本地php文件测试结果，也可以进入靶场测试，靶场地址：https://github.com/jinghao1/phpvul',
+      },
+      go: {
+        term1: 'Go版本不低于1.11',
+        ManualInstallation: '手动安装',
+        manualInstallationDesc1:
+          'a.将下载的dongtai-go-agent-config.yaml放置到项目根目录',
+        manualInstallationDesc2:
+          'b.在项目入口文件引入基础包 _ "github.com/HXSecurity/DongTai-agent-go/run/base"',
+        manualInstallationDesc3:
+          'c.在项目入口文件引入框架包 例：_ "github.com/HXSecurity/DongTai-agent-go/run/gin"',
+        manualInstallationDesc4: 'd.目前支持框架包：',
+        manualInstallationDesc5:
+          'gorm: _ "github.com/HXSecurity/DongTai-agent-go/run/gorm"',
+        manualInstallationDesc6:
+          'http: _ "github.com/HXSecurity/DongTai-agent-go/run/http"',
+        manualInstallationDesc7:
+          'httprouter： _ "github.com/HXSecurity/DongTai-agent-go/run/httpRouter"',
+        manualInstallationDesc8: 'e.执行: go mod tidy 等待同步包',
+        manualInstallationDesc9:
+          'f.添加命令行参数 -gcflags "all=-N -l" 运行项目,例如： go run -gcflags "all=-N -l" main.go',
       },
     },
     search: {
@@ -265,6 +331,7 @@ export default {
       '1Hour': '1小时',
     },
     hookPage: {
+      all: '全部',
       sourceRule: '污点源方法规则',
       propRule: '传播方法规则',
       filterRule: '过滤方法规则',
@@ -382,7 +449,7 @@ export default {
       has: '存在',
       vule: '漏洞',
       is: '的',
-      reqHas: '请求出现',
+      reqHas: '出现',
       position: '位置',
       orderOptions: {
         type: '漏洞类型',
@@ -436,7 +503,7 @@ export default {
       has: '存在',
       vule: '漏洞',
       is: '的',
-      reqHas: '请求出现',
+      reqHas: ' 出现',
       position: '位置',
       untreated: '未处理',
       replay: '请求重放',
@@ -461,6 +528,7 @@ export default {
       vuln: '漏洞',
     },
     scaList: {
+      license: '开源协议',
       filter: '过滤器',
       language: '语言',
       level: '等级',
@@ -521,7 +589,7 @@ export default {
       detail: '详情',
       reload: '刷新',
       scaList: '组件列表',
-      path: '路径',
+      path: '组件路径',
       vulDetail: {
         title: '漏洞详情',
         num: '漏洞编号',
@@ -683,7 +751,7 @@ export default {
     },
     sysInfo: {
       vul_verifiy: '主动验证',
-      infoTitle: '授权信息',
+      infoTitle: 'Agent 配置',
       agentThreshold: 'Agent 停止阈值',
       vul:
         '主动验证功能用于验证存在污点调用链的漏洞是否真实有效。主动验证时， engine 自动识别攻击参数位置，并构造 payload，然后从 Agent 内部重放 HTTP/HTTPS 流量，进行验证。该功能非必须功能，关闭不会造成漏洞检测结果的变化，如不需要，可自行关闭。',
@@ -706,6 +774,16 @@ export default {
       searchName: '请输入项目名称，然后回车或点击搜索图标进行搜索',
     },
     projectEdit: {
+      token: '访问凭证',
+      tokenDesc: '配置当前项目的访问凭证，用于自动扫描功能中的权限处理',
+      tokenPlaceholder: '请输入访问凭证',
+      appAddress: '项目地址',
+      appAddressDesc: '配置当前项目的外部访问地址，用于自动扫描功能',
+      appAddressPlaceholder: '请输入项目地址',
+      on: '开启',
+      off: '关闭',
+      followAll: '跟随全局',
+      advanced: '高级设置',
       save: '保存',
       clear: '取消',
       addScan: '创建策略',
@@ -783,7 +861,8 @@ export default {
       warning: '提示',
       warningInfo: '此操作将永久删除该版本, 是否继续?',
       setting: '设置',
-      export: '报告导出',
+      export: '漏洞报告',
+      scaExport: '组件报告',
       recheck: '漏洞验证',
       search_version_name: '版本名称，如：v1',
       search_description: '版本描述，如：xxx业务第x次迭代',

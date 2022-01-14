@@ -118,7 +118,7 @@
       <div class="vuln-title flex-row-space-between">
         <div style="flex: 1; max-width: 700px; word-break: break-all">
           {{
-            `${vulnObj.vul.url}${$t('views.vulnDetail.is')}${
+            `${vulnObj.vul.url} ${$t('views.vulnDetail.is')}${
               vulnObj.vul.http_method
             }${$t('views.vulnDetail.reqHas')}${vulnObj.vul.type}${$t(
               'views.vulnDetail.vuln'
@@ -294,43 +294,45 @@
       <div class="vulnDesc">
         {{ vulnObj.strategy.desc }}
       </div>
-
-      <div class="module-title">
-        {{ $t('views.vulnDetail.httpRequest') }}
-        <el-button
-          style="
-            margin-left: 8px;
-            padding: 6px;
-            background: #4a72ae;
-            color: #fff;
-          "
-          size="mini"
-          @click="goToPoolDetail"
-          ><i
-            class="iconfont icongears"
-            style="margin-right: 6px; font-size: 12px"
-          ></i
-          >{{ $t('views.vulnDetail.replay') }}</el-button
-        >
-      </div>
-      <div class="selectForm">
-        <div class="select-item"></div>
-        <div
-          v-for="item in httpOptions"
-          :key="item.value"
-          class="select-item"
-          :class="item.value === state && 'active'"
-          @click="state = item.value"
-        >
-          {{ item.label }}
+      <template v-if="vulnObj.vul.is_need_http_detail">
+        <div class="module-title">
+          {{ $t('views.vulnDetail.httpRequest') }}
+          <el-button
+            style="
+              margin-left: 8px;
+              padding: 6px;
+              background: #4a72ae;
+              color: #fff;
+            "
+            size="mini"
+            @click="goToPoolDetail"
+            ><i
+              class="iconfont icongears"
+              style="margin-right: 6px; font-size: 12px"
+            ></i
+            >{{ $t('views.vulnDetail.replay') }}</el-button
+          >
         </div>
-      </div>
-      <div v-show="state === 1" class="markdownContent httpRequest">
-        <MyMarkdownIt :content="req_md" style="color: #747c8c"></MyMarkdownIt>
-      </div>
-      <div v-show="state === 0" class="markdownContent httpRequest">
-        <MyMarkdownIt :content="res_md" style="color: #747c8c"></MyMarkdownIt>
-      </div>
+        <div class="selectForm">
+          <div class="select-item"></div>
+          <div
+            v-for="item in httpOptions"
+            :key="item.value"
+            class="select-item"
+            :class="item.value === state && 'active'"
+            @click="state = item.value"
+          >
+            {{ item.label }}
+          </div>
+        </div>
+        <div v-show="state === 1" class="markdownContent httpRequest">
+          <MyMarkdownIt :content="req_md" style="color: #747c8c"></MyMarkdownIt>
+        </div>
+        <div v-show="state === 0" class="markdownContent httpRequest">
+          <MyMarkdownIt :content="res_md" style="color: #747c8c"></MyMarkdownIt>
+        </div>
+      </template>
+
       <!-- Stain flow vul-->
       <div
         v-if="vulnObj.vul.graph && vulnObj.vul.graph.length > 0"
@@ -867,9 +869,12 @@ export default class VulnDetail extends VueBase {
   exportVul() {
     var projectName = this.vulnObj.vul.project_name
     request
-      .get(`project/export?pname=${projectName}&vid=${this.selectedId}`, {
-        responseType: 'blob',
-      })
+      .get(
+        `project/export?vid=${this.selectedId}&pid=${this.vulnObj.vul.project_id}`,
+        {
+          responseType: 'blob',
+        }
+      )
       .then((res: any) => {
         if (res.type === 'application/json') {
           this.$message.error({

@@ -320,6 +320,11 @@ export default class StrategyManage extends VueBase {
       })
       return
     }
+    if (data.length === 0 && this.page > 1) {
+      this.page--
+      await this.getTableData()
+      return
+    }
     this.total = page.alltotal
     this.tableData = data
   }
@@ -428,10 +433,13 @@ export default class StrategyManage extends VueBase {
   display: flex;
   justify-content: center;
   align-items: center;
+  .el-button {
+    font-size: 14px;
+  }
   .l {
     color: #38435a;
-    line-height: 13px;
-    padding: 10px 4px;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
     display: inline-block;
   }
   .el-button + .el-button {

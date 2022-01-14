@@ -57,13 +57,21 @@
         <template v-if="!advanced">
           <el-form-item>
             <span class="advancedSetting" @click="advanced = true">
-              高级设置
+              {{ $t('views.projectEdit.advanced') }}
             </span>
           </el-form-item>
         </template>
         <template v-if="advanced">
           <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
-            <el-switch v-model="submitForm.vul_validation"> </el-switch>
+            <el-radio v-model="submitForm.vul_validation" :label="0">
+              {{ $t('views.projectEdit.followAll') }}
+            </el-radio>
+            <el-radio v-model="submitForm.vul_validation" :label="1">
+              {{ $t('views.projectEdit.off') }}
+            </el-radio>
+            <el-radio v-model="submitForm.vul_validation" :label="2">
+              {{ $t('views.projectEdit.on') }}
+            </el-radio>
           </el-form-item>
           <el-form-item>
             <template slot="label">
@@ -111,6 +119,45 @@
               v-model="submitForm.description"
               style="width: 550px"
               :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item prop="base_url">
+            <template slot="label">
+              {{ $t('views.projectEdit.appAddress') }}
+              <el-popover placement="top-start" width="340" trigger="hover">
+                <p>{{ $t('views.projectEdit.appAddressDesc') }}</p>
+                <span slot="reference"> <i class="el-icon-question"></i> </span>
+              </el-popover>
+            </template>
+            <el-input
+              v-model="submitForm.base_url"
+              style="width: 550px"
+              :placeholder="$t('views.projectEdit.appAddressPlaceholder')"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="header_value">
+            <template slot="label">
+              {{ $t('views.projectEdit.token') }}
+              <el-popover placement="top-start" width="340" trigger="hover">
+                <p>{{ $t('views.projectEdit.tokenDesc') }}</p>
+                <span slot="reference"> <i class="el-icon-question"></i> </span>
+              </el-popover>
+            </template>
+            <el-select
+              v-model="submitForm.test_req_header_key"
+              allow-create
+              filterable
+              style="width: 100px"
+            >
+              <el-option v-for="item in header_id" :key="item" :value="item">{{
+                item
+              }}</el-option>
+            </el-select>
+            <el-input
+              v-model="submitForm.test_req_header_value"
+              style="width: 430px; margin-left: 20px"
+              :placeholder="$t('views.projectEdit.tokenPlaceholder')"
             ></el-input>
           </el-form-item>
         </template>
@@ -215,7 +262,10 @@ export default class ProjectEdit extends VueBase {
     scanId: number | undefined
     version_name: string
     description: string
-    vul_validation: undefined | boolean
+    vul_validation: number
+    base_url: string
+    test_req_header_key: string
+    test_req_header_value: string
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
@@ -223,7 +273,10 @@ export default class ProjectEdit extends VueBase {
     scanId: undefined,
     version_name: '',
     description: '',
-    vul_validation: undefined,
+    vul_validation: 0,
+    base_url: '',
+    test_req_header_key: '',
+    test_req_header_value: '',
   }
   private engineList: Array<{
     id: number
@@ -279,6 +332,7 @@ export default class ProjectEdit extends VueBase {
     await this.strategyUserList()
     if (this.$route.params.pid) {
       await this.projectDetail()
+      await this.getHeaderId()
     }
   }
 
@@ -318,6 +372,10 @@ export default class ProjectEdit extends VueBase {
     this.submitForm.version_name = data.versionData?.version_name
     this.submitForm.description = data.versionData?.description
     this.submitForm.vul_validation = data.vul_validation
+    this.submitForm.base_url = data.base_url
+    this.submitForm.test_req_header_key = data.test_req_header_key
+    this.submitForm.test_req_header_value = data.test_req_header_value
+
     this.agentChange()
   }
 
@@ -506,7 +564,10 @@ export default class ProjectEdit extends VueBase {
           pid?: string
           version_name: string | undefined
           description: string | undefined
-          vul_validation: boolean | undefined
+          vul_validation: number
+          base_url: string
+          test_req_header_key: string
+          test_req_header_value: string
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
@@ -519,6 +580,9 @@ export default class ProjectEdit extends VueBase {
             ? this.submitForm.description
             : undefined,
           vul_validation: this.submitForm.vul_validation,
+          base_url: this.submitForm.base_url,
+          test_req_header_key: this.submitForm.test_req_header_key,
+          test_req_header_value: this.submitForm.test_req_header_value,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid
@@ -543,6 +607,16 @@ export default class ProjectEdit extends VueBase {
         return false
       }
     })
+  }
+
+  private header_id = []
+  private async getHeaderId() {
+    const res = await this.services.project.req_headers({
+      id: this.$route.params.pid,
+    })
+    if (res.status === 201) {
+      this.header_id = res.data
+    }
   }
 }
 </script>
