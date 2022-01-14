@@ -304,6 +304,11 @@ export default class ProjectEdit extends VueBase {
       })
       return
     }
+
+    if (!this.strategyList.some((item) => data.scan_id === item.id)) {
+      this.strategyList.push({ id: data.scan_id, name: data.scan_name })
+    }
+
     this.submitForm.name = data.name
     this.submitForm.mode = data.mode
     this.submitForm.agentIdList = data.agents.map((item: { id: any }) => {
@@ -532,7 +537,7 @@ export default class ProjectEdit extends VueBase {
           message: msg,
           showClose: true,
         })
-        await this.$router.push('/project')
+        await this.$router.go(-1)
       } else {
         console.log('error submit!!')
         return false
