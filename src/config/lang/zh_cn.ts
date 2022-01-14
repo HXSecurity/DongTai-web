@@ -90,6 +90,7 @@ export default {
   },
   views: {
     scaManage: {
+      selectWarning: '请选择要删除的组件',
       component: '组件库',
       vuln: '组件漏洞',
       uploadBtn: '上传',

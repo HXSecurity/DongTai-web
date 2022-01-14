@@ -78,14 +78,43 @@
             <span>{{ $t('views.scaManage.empty') }}</span>
           </div>
         </template>
-        <el-table-column label="GroupID" prop="group_id"> </el-table-column>
-        <el-table-column label="AtrifactID" prop="atrifact_id">
+        <el-table-column
+          label="GroupID"
+          prop="group_id"
+          width="160px"
+          show-overflow-tooltip
+        >
         </el-table-column>
-        <el-table-column label="Version" prop="version"> </el-table-column>
-        <el-table-column label="Sha1" prop="sha_1"> </el-table-column>
-        <el-table-column label="PackageName" prop="package_name">
+        <el-table-column
+          label="AtrifactID"
+          prop="atrifact_id"
+          width="160px"
+          show-overflow-tooltip
+        >
         </el-table-column>
-        <el-table-column label="License" prop="license"> </el-table-column>
+        <el-table-column label="Version" prop="version" show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+          label="Sha1"
+          prop="sha_1"
+          width="300px"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          label="PackageName"
+          prop="package_name"
+          width="120px"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          label="License"
+          prop="license"
+          show-overflow-tooltip
+          width="100px"
+        >
+        </el-table-column>
         <el-table-column
           prop="address"
           :label="$t('views.scaManage.address')"
@@ -94,26 +123,29 @@
           :fixed="tableData.length ? 'right' : false"
         >
           <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              style="color: #4a72ae"
-              @click="editRow(scope.row)"
-            >
-              {{ $t('views.scaManage.edit') }}
-            </el-button>
-            <el-popconfirm
-              :title="$t('views.scaManage.delpop')"
-              @confirm="deleteRow(scope.row)"
-            >
+            <div class="table-btn-box">
               <el-button
-                slot="reference"
-                style="margin-left: 6px; color: #f56262"
-                size="small"
                 type="text"
-                >{{ $t('views.scaManage.del') }}</el-button
+                size="small"
+                style="color: #4a72ae"
+                @click="editRow(scope.row)"
               >
-            </el-popconfirm>
+                {{ $t('views.scaManage.edit') }}
+              </el-button>
+              <span class="l"> | </span>
+              <el-popconfirm
+                :title="$t('views.scaManage.delpop')"
+                @confirm="deleteRow(scope.row)"
+              >
+                <el-button
+                  slot="reference"
+                  style="margin-left: -2px; color: #f56262"
+                  size="small"
+                  type="text"
+                  >{{ $t('views.scaManage.del') }}</el-button
+                >
+              </el-popconfirm>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -336,6 +368,10 @@ export default class LogManage extends VueBase {
   scaEditDialog = false
 
   multipleDelete() {
+    if (this.multipleSelection.length === 0) {
+      this.$message.error(this.$t('views.scaManage.selectWarning') as string)
+      return
+    }
     this.$confirm(
       `${this.$t('views.scaManage.changeOne')}${this.$t(
         'views.scaManage.changeTwo'
@@ -481,11 +517,13 @@ export default class LogManage extends VueBase {
   }
 
   async getTableData() {
+    this.loadingStart()
     const res = await this.services.setting.get_sca_strategy({
       page: this.currentPage,
       page_size: this.pageSize,
       name: this.keyword,
     })
+    this.loadingDone()
     if (res.status === 201) {
       this.tableData = res.data
       this.total = res.page.alltotal
@@ -578,6 +616,7 @@ export default class LogManage extends VueBase {
 }
 /deep/.el-table th {
   background: #f8f9fb;
+  color: #959fb4;
 }
 .hookTable {
   margin-top: 16px;
@@ -585,6 +624,24 @@ export default class LogManage extends VueBase {
     /deep/th {
       background: #f6f8fa;
     }
+  }
+}
+
+.table-btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .el-button {
+    font-size: 14px;
+  }
+  .l {
+    color: #38435a;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
   }
 }
 </style>

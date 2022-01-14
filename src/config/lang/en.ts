@@ -90,6 +90,7 @@ export default {
   },
   views: {
     scaManage: {
+      selectWarning: 'Please select a library',
       component: 'Component',
       vuln: 'Vulnerability',
       uploadBtn: 'Upload',
