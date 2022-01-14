@@ -679,7 +679,7 @@ export default {
       tname: 'Department name',
       twname: 'Please enter department name',
       twnamep: 'Please enter department name to search',
-      searchValue: 'Search for vulnerability types',
+      searchValue: 'Please enter search name',
       level: 'Level',
       editTitle: 'Edit Policy',
       addTitle: 'Add Policy',

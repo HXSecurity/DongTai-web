@@ -667,7 +667,7 @@ export default {
       tname: '部门名称',
       twname: '请输入部门名称',
       twnamep: '请输入部门名称进行搜索',
-      searchValue: '搜索漏洞类型',
+      searchValue: '搜索策略名称',
       level: '风险等级',
       editTitle: '编辑策略',
       addTitle: '新增策略',
