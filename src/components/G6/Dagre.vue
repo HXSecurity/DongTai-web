@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="dagre-com">
+    <div id="minimap"></div>
     <div style="position: relative" ref="container" :id="'container'+poolId"></div>
   </div>
 </template>
@@ -94,10 +95,16 @@ export default class Dagre extends Vue {
       } as ShapeOptions,
       'single-node'
     )
+    const Minimap = new G6.Minimap({
+      container: 'minimap',
+      size: [200,200],
+    });
+
     const graph = new G6.Graph({
       container: 'container'+this.poolId,
       width: this.width || 1150,
       height: this.boxHeight || 290,
+      plugins: [Minimap],
       layout: {
         type: 'dagre',
         nodesepFunc: (d: { id: string; }) => {
@@ -198,5 +205,16 @@ export default class Dagre extends Vue {
   color: #fff;
   background-color: #000;
   padding: 2px 8px;
+}
+.dagre-com{
+  position: relative;
+}
+#minimap{
+  position: absolute;
+  z-index: 9;
+  right:12px;
+  top:12px;
+  background: #fff;
+  border: 1px solid #D3DBE6;
 }
 </style>

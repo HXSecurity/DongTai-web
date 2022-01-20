@@ -289,6 +289,10 @@ export default () =>
       return axios.get(`/version.txt`)
     }
 
+    versionlist(): Promise<iResponse> {
+      return request.get(`/version_control/versionlist`)
+    }
+
     get_sca_strategy(params: any): Promise<iResponse> {
       return request.get(
         `/scadb/maven/bulk?page=${params.page}&page_size=${params.page_size}&name=${params.name}`

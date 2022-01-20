@@ -112,6 +112,11 @@ export default class StatusMonitoring extends VueBase {
         }
       }
     })
+
+    const res2 = await this.services.setting.versionlist()
+    if (res2.status === 201) {
+      this.versionMap = { ...res2.data, ...this.versionMap }
+    }
     this.now_version = this.versionMap.DongTai.version
     this.versionString = JSON.stringify(this.versionMap)
   }
