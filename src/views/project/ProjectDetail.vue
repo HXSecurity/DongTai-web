@@ -451,6 +451,9 @@ export default class ProjectDetail extends VueBase {
       })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
+      await this.showApiList()
+      await this.projectsSummary()
+      await this.getVersionList()
     }
   }
 
