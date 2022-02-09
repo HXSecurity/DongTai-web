@@ -159,10 +159,11 @@ export default class LogManage extends VueBase {
       page: this.page,
       pageSize: this.pageSize,
     }
-
+    this.loadingStart()
     const { status, msg, data, total } = await this.services.setting.logList(
       params
     )
+    this.loadingDone()
     if (status !== 201) {
       this.$message({
         type: 'error',
