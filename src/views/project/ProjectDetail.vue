@@ -667,7 +667,7 @@ export default class ProjectDetail extends VueBase {
     if (!type_summary || !level_count || !type_summary_level_count) {
       return false
     }
-    const height = Math.ceil(data.type_summary.length / 5) * 30
+    const height = Math.ceil(data.type_summary.length / 5) * 30 + 40
     const domHeight = type_summary.offsetHeight
     type_summary.style.height = domHeight + height + 'px'
     level_count.style.height = domHeight + height + 'px'

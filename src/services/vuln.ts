@@ -25,6 +25,16 @@ export default () =>
       return request.get('/vuln/summary', { params })
     }
 
+    // 漏洞概要project
+    vulnSummary_project(params: vulnListParams): Promise<iResponse> {
+      return request.get('/vuln/summary_project', { params })
+    }
+
+    // 漏洞概要type
+    vulnSummary_type(params: vulnListParams): Promise<iResponse> {
+      return request.get('/vuln/summary_type', { params })
+    }
+
     // 漏洞详情
     getVulnDetail(id: number): Promise<iResponse> {
       return request.get(`/vuln/${id}`)
@@ -40,11 +50,16 @@ export default () =>
     }
 
     vulRecheck(data: any): Promise<iResponse> {
-      return request.post(`/vul/recheck`, data)
+      return request.post(`/vul/recheck`, data, {
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
     }
 
     vulRecheckAll(data: any): Promise<iResponse> {
-      return request.get(`/vul/recheck`, { params: data })
+      return request.get(`/vul/recheck`, {
+        params: data,
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
     }
 
     vulStatus(): Promise<iResponse> {
