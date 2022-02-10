@@ -490,7 +490,9 @@ export default class VulListComponent extends VueBase {
           message: res.msg,
           showClose: true,
         })
-        await this.newSelectData()
+        if (type !== 'all') {
+          await this.newSelectData()
+        }
       }
     })
   }
@@ -625,20 +627,30 @@ export default class VulListComponent extends VueBase {
       project_id: this.projectId,
     }
     this.loadingStart()
-    const { status, data, msg } = await this.services.vuln.vulnSummary(params)
+    // const { status, data, msg } = await this.services.vuln.vulnSummary(params)
+    const res1 = await this.services.vuln.vulnSummary_project(params)
+    const res2 = await this.services.vuln.vulnSummary_type(params)
     this.loadingDone()
-    if (status !== 201) {
+    if (res1.status !== 201) {
       this.$message({
         type: 'error',
-        message: msg,
+        message: res1.msg,
         showClose: true,
       })
       return
     }
-    this.searchOptionsObj.language = data.language
-    this.searchOptionsObj.level = data.level
-    this.searchOptionsObj.type = data.type
-    this.searchOptionsObj.projects = data.projects
+    if (res2.status !== 201) {
+      this.$message({
+        type: 'error',
+        message: res2.msg,
+        showClose: true,
+      })
+      return
+    }
+    this.searchOptionsObj.language = res1.data.language
+    this.searchOptionsObj.level = res2.data.level
+    this.searchOptionsObj.type = res2.data.type
+    this.searchOptionsObj.projects = res1.data.projects
   }
 
   private goDetail(id: number) {

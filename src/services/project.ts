@@ -87,7 +87,9 @@ export default () =>
 
     //项目详情 - 漏洞验证
     projectsRecheck(id: string): Promise<iResponse> {
-      return request.get(`/vul/recheck?projectId=${id}`)
+      return request.get(`/vul/recheck?projectId=${id}`, {
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
     }
 
     async_add(params: any): Promise<iResponse> {

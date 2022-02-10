@@ -23,6 +23,10 @@ module.exports = {
                 target: process.env.VUE_TARGET_HOST,
                 changeOrigin: true
             },
+            [process.env.VUE_APP_BASE_API_V2]: {
+                target: process.env.VUE_TARGET_HOST,
+                changeOrigin: true
+            },
             [process.env.VUE_APP_UPLOAD]: {
                 target: process.env.VUE_TARGET_HOST,
                 changeOrigin: true
