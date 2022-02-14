@@ -389,7 +389,7 @@ export default class ScaDetail extends VueBase {
   width: 234px;
   margin-top: 78px;
   overflow: auto;
-  height: calc(100vh - 103px);
+  height: calc(100vh - 83px);
   padding-bottom: 40px;
 
   .titleForm {
