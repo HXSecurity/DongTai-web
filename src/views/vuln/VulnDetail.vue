@@ -109,7 +109,6 @@
       </div>
     </div>
     <div
-      v-if="vulnObj.vul.url"
       class="vuln-warp"
       :class="
         sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'
