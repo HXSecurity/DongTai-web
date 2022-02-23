@@ -567,7 +567,11 @@ export default class Deploy extends VueBase {
   }
 
   private async downloadAgent() {
-    await this.services.deploy.agentDownload(this.uri, this.language)
+    const url =
+      window.location.origin +
+      '/api/v1/agent/download?url=https://iast-test.huoxian.cn/openapi&language' +
+      this.language
+    window.open(url)
   }
   private async getDoc() {
     const docRes = await this.services.deploy.getDocuments({
