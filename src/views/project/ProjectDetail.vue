@@ -639,6 +639,7 @@ export default class ProjectDetail extends VueBase {
     await this.projectsSummary()
     await this.getVersionList()
   }
+  private offsetHeight = 0
   private async projectsSummary(id?: string) {
     const { status, msg, data } = await this.services.project.projectsSummary(
       this.$route.params.pid,
@@ -668,7 +669,10 @@ export default class ProjectDetail extends VueBase {
       return false
     }
     const height = Math.ceil(data.type_summary.length / 5) * 30 + 40
-    const domHeight = type_summary.offsetHeight
+    if (!this.offsetHeight) {
+      this.offsetHeight = type_summary.offsetHeight
+    }
+    const domHeight = this.offsetHeight
     type_summary.style.height = domHeight + height + 'px'
     level_count.style.height = domHeight + height + 'px'
     type_summary_level_count.style.height = domHeight + 40 + height + 'px'
