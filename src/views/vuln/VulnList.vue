@@ -604,6 +604,7 @@ export default class VulnList extends VueBase {
     this.searchObj.status = ''
     this.searchObj.project_id = ''
     this.searchObj.url = ''
+    this.searchObj.order = ''
     this.kw = ''
     this.newSelectData()
   }

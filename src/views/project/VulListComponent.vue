@@ -424,6 +424,8 @@ export default class VulListComponent extends VueBase {
     this.searchObj.type = ''
     this.searchObj.project_name = ''
     this.searchObj.status = ''
+    this.searchObj.order = ''
+    this.searchObj.url = ''
     this.newSelectData()
   }
 
