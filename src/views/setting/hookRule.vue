@@ -41,6 +41,7 @@
         >
           <HookTable
             v-if="type === '2'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
@@ -52,6 +53,7 @@
         >
           <HookTable
             v-if="type === '1'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
@@ -63,6 +65,7 @@
         >
           <HookTable
             v-if="type === '3'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
@@ -74,6 +77,7 @@
         >
           <DangerTable
             v-if="type === '4'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
