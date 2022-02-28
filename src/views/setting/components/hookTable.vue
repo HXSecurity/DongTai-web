@@ -450,6 +450,13 @@ export default class HookTable extends VueBase {
   @Prop({ default: '0', type: String }) ruleType!: string
   @Prop({ default: 1, type: Number }) activeLanguage!: number
   @Prop({ default: '', type: String }) activeLanguageName!: string
+  @Prop({
+    default: function () {
+      return true
+    },
+    type: Function,
+  })
+  getBase!: any
   keyword = ''
   rule_type = ''
   hookTypeDialog = false
@@ -673,6 +680,7 @@ export default class HookTable extends VueBase {
           message: msg,
           showClose: true,
         })
+        await this.getBase()
         await this.getTable()
       })
       .catch((err) => {
@@ -703,6 +711,7 @@ export default class HookTable extends VueBase {
       type: 'success',
     })
     this.currentPage = 1
+    await this.getBase()
     await this.getTable()
   }
 
@@ -721,6 +730,7 @@ export default class HookTable extends VueBase {
       })
       return
     }
+    await this.getBase()
     await this.getTable()
   }
 
@@ -839,6 +849,7 @@ export default class HookTable extends VueBase {
         })
         return
       }
+      await this.getBase()
       await this.getTable()
       this.clearHook()
     }
