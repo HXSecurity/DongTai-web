@@ -29,6 +29,22 @@ export default class Dagre extends Vue {
 
 
   graphInit() {
+    const nodeMap = {}
+    for(let i=0;i<this.initData.nodes.length;i++){
+        const item = this.initData.nodes[i]
+       item.id = "node"+item.id
+       if(nodeMap[item.id]){
+         this.initData.nodes.splice(i,1)
+         i--
+       }else{
+         nodeMap[item.id] = true
+       }
+    }
+     this.initData.edges.forEach((item: any) => {
+      item.id = "edge"+item.id
+      item.source = "node"+item.source
+      item.target = "node"+item.target
+      })
     const fittingString = (str: string, maxWidth: number, fontSize: number) => {
       let currentWidth = 0
       let res = str
