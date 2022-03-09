@@ -10,7 +10,7 @@
           class="dapart-item"
           @click="$router.push({ name: item.name })"
         >
-          {{ item.meta.name }}
+          {{ $t(item.meta.i18n) }}
         </div>
       </div>
     </div>
