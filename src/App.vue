@@ -14,13 +14,11 @@ import { Vue, Component } from 'vue-property-decorator'
 })
 export default class App extends Vue {
   toService() {
-    console.log(this)
     const userId = this.$store.getters.userInfo
       ? this.$store.getters.userInfo.userid
       : ''
     const pageName = this.$t(this.$route.meta.i18n)
     const customerInfo = pageName + ',' + userId
-    console.log(this.$store.getters.userInfo, this.$route.path)
     window.open(
       'https://support.qq.com/product/371942?customInfo=' + customerInfo
     )
