@@ -764,6 +764,10 @@ export default {
       off: '关闭',
     },
     projectManage: {
+      deleteConfirm: '确定删除该项目？',
+      delete: '删除',
+      cancel: '取消',
+      deleteSuccess: '删除成功',
       title: '项目列表',
       name: '项目名称',
       vul: '已确认漏洞',
