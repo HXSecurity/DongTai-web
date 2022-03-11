@@ -659,6 +659,9 @@ export default {
       startupTime: 'Startup Time（ms）',
     },
     strategyManage: {
+      confirmDel: 'Confirm to delete',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
       no: 'No',
       edit: 'Edit',
       enter: 'OK',

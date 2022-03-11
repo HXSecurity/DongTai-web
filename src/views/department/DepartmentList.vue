@@ -107,13 +107,19 @@ export default class DepartmentList extends VueBase {
     const params = { talent: 0, id: 0 }
     params.talent = row.departmentId
     params.id = row.id
-    const res = await this.services.department.departmentDel(row.id, params)
-    if (res.status === 201) {
-      this.$message.success(res.msg)
-      this.departmentList()
-    } else {
-      this.$message.error(res.msg)
-    }
+    this.$confirm(this.$t('views.strategyManage.confirmDel') as string, '', {
+      confirmButtonText: this.$t('views.strategyManage.confirm') as string,
+      cancelButtonText: this.$t('views.strategyManage.cancel') as string,
+      type: 'warning',
+    }).then(async () => {
+      const res = await this.services.department.departmentDel(row.id, params)
+      if (res.status === 201) {
+        this.$message.success(res.msg)
+        this.departmentList()
+      } else {
+        this.$message.error(res.msg)
+      }
+    })
   }
   private newSelectData() {
     this.departmentList()

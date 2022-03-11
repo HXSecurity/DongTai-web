@@ -648,6 +648,9 @@ export default {
       startupTime: '启动时间（毫秒）',
     },
     strategyManage: {
+      confirmDel: '确认删除',
+      confirm: '确认',
+      cancel: '取消',
       no: '无',
       edit: '编辑',
       enter: '确 定',
