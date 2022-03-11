@@ -188,18 +188,30 @@ export default class ProjectManage extends VueBase {
     )
     this.total = page.alltotal
   }
-
   private async projectDelete(id: number) {
-    const { status, msg } = await this.services.project.projectDelete({ id })
-    if (status !== 201) {
+    this.$confirm(this.$t('views.projectManage.deleteConfirm') as string, '', {
+      confirmButtonText: this.$t('views.projectManage.delete') as string,
+      cancelButtonText: this.$t('views.projectManage.cancel') as string,
+      type: 'warning',
+    }).then(async () => {
+      this.loadingStart()
+      const { status, msg } = await this.services.project.projectDelete({ id })
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
+      }
       this.$message({
-        type: 'error',
-        message: msg,
+        type: 'success',
+        message: this.$t('views.projectManage.deleteSuccess') as string,
         showClose: true,
       })
-      return
-    }
-    await this.getTableData()
+      this.getTableData()
+    })
   }
 }
 </script>

@@ -648,6 +648,9 @@ export default {
       startupTime: '启动时间（毫秒）',
     },
     strategyManage: {
+      confirmDel: '确认删除',
+      confirm: '确认',
+      cancel: '取消',
       no: '无',
       edit: '编辑',
       enter: '确 定',
@@ -764,6 +767,10 @@ export default {
       off: '关闭',
     },
     projectManage: {
+      deleteConfirm: '确定删除该项目？',
+      delete: '删除',
+      cancel: '取消',
+      deleteSuccess: '删除成功',
       title: '项目列表',
       name: '项目名称',
       vul: '已确认漏洞',

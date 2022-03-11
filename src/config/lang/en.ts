@@ -659,6 +659,9 @@ export default {
       startupTime: 'Startup Time（ms）',
     },
     strategyManage: {
+      confirmDel: 'Confirm to delete',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
       no: 'No',
       edit: 'Edit',
       enter: 'OK',
@@ -780,6 +783,11 @@ export default {
       off: 'OFF',
     },
     projectManage: {
+      deleteConfirm:
+        'Are you sure you want to delete the selected application?',
+      delete: 'Delete',
+      cancel: 'Cancel',
+      deleteSuccess: 'Delete Success',
       title: 'APPLICATIONS',
       name: 'Application',
       vul: 'Confirmed Vulnerabilities',
