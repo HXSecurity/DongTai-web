@@ -17,7 +17,8 @@ export default class App extends Vue {
     const userId = this.$store.getters.userInfo
       ? this.$store.getters.userInfo.userid
       : ''
-    const pageName = this.$t(this.$route.meta.i18n)
+    const route: any = this.$route
+    const pageName = this.$t(route.meta.i18n)
     const customerInfo = pageName + ',' + userId
     window.open(
       'https://support.qq.com/product/371942?customInfo=' + customerInfo

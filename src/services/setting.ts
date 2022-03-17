@@ -286,7 +286,7 @@ export default () =>
     }
 
     nowVersion(): Promise<iResponse> {
-      return axios.get(`/version.txt`)
+      return axios.get(`/version.txt?v=` + Math.random())
     }
 
     versionlist(): Promise<iResponse> {
@@ -322,5 +322,29 @@ export default () =>
 
     get_license_list(): Promise<iResponse> {
       return request.get(`/scadb/license_list`)
+    }
+    get_threshold(): Promise<iResponse> {
+      return request.get(`/threshold/settings/get`)
+    }
+
+    save_threshold(data: any): Promise<iResponse> {
+      return request.post(`/threshold/settings`, data)
+    }
+
+    webhook_type(): Promise<iResponse> {
+      return request.get(`/webhook/type/list`)
+    }
+
+    webhook_get(): Promise<iResponse> {
+      return request.get(`/webhook/settings/get`)
+    }
+    webhook_set(data: any): Promise<iResponse> {
+      return request.post(`/webhook/settings`, data)
+    }
+    webhook_delete(data: any): Promise<iResponse> {
+      return request.post(`/webhook/type/del`, data)
+    }
+    update_core(data: any): Promise<iResponse> {
+      return request.post(`/agent/core/update`, data)
     }
   })()

@@ -43,7 +43,6 @@ const actions: any = {
       }
       context.commit('clearInfo')
       window.localStorage.clear()
-      router.push({ path: '/login' })
       window.location.reload()
       return
     }
@@ -68,10 +67,10 @@ const actions: any = {
     }
     context.commit('clearInfo')
     window.localStorage.clear()
-    router.push({ path: '/login' })
     window.location.reload()
   },
   clearInfo(context: { commit: Commit }) {
+    flag = false
     Cookie.expire('sessionid')
     Cookie.expire('DTCsrfToken')
     context.commit('UPDATE_USER_INFO', null)

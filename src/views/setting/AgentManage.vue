@@ -244,7 +244,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.manage')"
-        width="140px"
+        width="180px"
         fixed="right"
       >
         <template slot-scope="{ row }">
@@ -271,6 +271,9 @@
             </template>
 
             <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
+            <span class="icon" @click="update(row.id, 5)">卸</span>
+            <span class="icon" @click="update(row.id, 6)">降</span>
+            <span class="icon" @click="update(row.id, 7)">恢</span>
           </div>
         </template>
       </el-table-column>
@@ -338,6 +341,18 @@ export default class AgentManage extends VueBase {
   ]
   private searchValue = ''
   private multipleSelection = []
+  private async update(id: any, type: any) {
+    const res = await this.services.setting.update_core({
+      id: id,
+      core_status: type,
+    })
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+      this.getTableData()
+      return
+    }
+    this.$message.error(res.msg)
+  }
   created() {
     this.getTableData()
     // this.timer = setInterval(() => {

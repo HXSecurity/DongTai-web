@@ -47,6 +47,9 @@ export default {
     cancel: 'Cancel',
   },
   menu: {
+    webhook: 'Webhook',
+    agentConfig: 'Agent Config',
+    agentRank: 'Agent Config',
     about: 'About DongTai',
     projectEdit: 'ProjectEdit',
     home: 'Home',
@@ -89,6 +92,10 @@ export default {
     templateManage: 'Template',
   },
   views: {
+    webhook: {
+      deleteConfirm: 'Are you sure you want to delete the webhook?',
+      deleteConfirmPop: 'Delete',
+    },
     scaManage: {
       selectWarning: 'Please select a library',
       component: 'Component',
