@@ -179,7 +179,7 @@ export default class Header extends VueBase {
         this.$i18n.locale = 'zh_cn'
         break
     }
-    if (this.$router && this.$route.meta) {
+    if (this.$route && this.$route.meta) {
       document.title = this.$t(this.$route.meta.i18n) as string
     }
     this.$emit('reload')

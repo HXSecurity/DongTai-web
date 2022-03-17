@@ -47,6 +47,9 @@ export default {
     diffPassword: '两次输入密码不一致',
   },
   menu: {
+    webhook: 'Webhook',
+    agentConfig: '探针配置',
+    agentRank: '降级配置',
     about: '关于洞态',
     projectEdit: '项目配置',
     home: '首页',
@@ -89,6 +92,10 @@ export default {
     templateManage: '策略模板管理',
   },
   views: {
+    webhook: {
+      deleteConfirm: '你确定要删除此webhook吗',
+      deleteConfirmPop: '确认删除',
+    },
     scaManage: {
       selectWarning: '请选择要删除的组件',
       component: '组件库',

@@ -236,6 +236,36 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/setting/Index.vue'),
     children: [
       {
+        path: 'agentConfig',
+        name: 'agentConfig',
+        meta: {
+          disabled: true,
+          i18n: 'menu.agentConfig',
+          name: i18n.t('menu.agentConfig'),
+        },
+        component: () => import('@/views/setting/agentConfig.vue'),
+      },
+      // {
+      //   path: 'agentRank',
+      //   name: 'agentRank',
+      //   meta: {
+      //     disabled: true,
+      //     i18n: 'menu.agentRank',
+      //     name: i18n.t('menu.agentRank'),
+      //   },
+      //   component: () => import('@/views/setting/agentRank.vue'),
+      // },
+      {
+        path: 'webhook',
+        name: 'webhook',
+        meta: {
+          disabled: true,
+          i18n: 'menu.webhook',
+          name: i18n.t('menu.webhook'),
+        },
+        component: () => import('@/views/setting/webhook.vue'),
+      },
+      {
         path: 'agentManage',
         name: 'agentManage',
         meta: {
@@ -625,6 +655,36 @@ const adminRoutes: Array<RouteConfig> = [
     },
     component: () => import('@/views/setting/Index.vue'),
     children: [
+      {
+        path: 'agentConfig',
+        name: 'agentConfig',
+        meta: {
+          disabled: true,
+          i18n: 'menu.agentConfig',
+          name: i18n.t('menu.agentConfig'),
+        },
+        component: () => import('@/views/setting/agentConfig.vue'),
+      },
+      // {
+      //   path: 'agentRank',
+      //   name: 'agentRank',
+      //   meta: {
+      //     disabled: true,
+      //     i18n: 'menu.agentRank',
+      //     name: i18n.t('menu.agentRank'),
+      //   },
+      //   component: () => import('@/views/setting/agentRank.vue'),
+      // },
+      {
+        path: 'webhook',
+        name: 'webhook',
+        meta: {
+          disabled: true,
+          i18n: 'menu.webhook',
+          name: i18n.t('menu.webhook'),
+        },
+        component: () => import('@/views/setting/webhook.vue'),
+      },
       {
         path: 'agentManage',
         name: 'agentManage',
