@@ -1,13 +1,20 @@
 <template>
   <main>
     <VueJsonEditor
-      v-model="json"
-      style="height: calc(100vh - 200px)"
+      v-for="(item, index) in jsons"
+      :key="index"
+      v-model="item.json"
+      style="height: calc(100vh - 200px); margin-top: 20px"
       :mode="'code'"
     ></VueJsonEditor>
-    <el-button size="mini" type="primary" class="btn" @click="save">
-      保存
-    </el-button>
+    <div class="agent-btn-box">
+      <el-button size="mini" type="primary" class="btn" @click="save">
+        保存
+      </el-button>
+      <el-button size="mini" type="primary" class="btn" @click="add">
+        新增
+      </el-button>
+    </div>
   </main>
 </template>
 
@@ -19,11 +26,15 @@ import { Component } from 'vue-property-decorator'
 @Component({ name: 'AgentConfig', components: { VueJsonEditor } })
 export default class AgentConfig extends VueBase {
   private json = {}
+  private jsons: any = []
   private async get_threshold() {
     const res = await this.services.setting.get_threshold()
     if (res.status === 201) {
-      this.json = res.data
+      this.jsons.push({ json: res.data })
     }
+  }
+  private add() {
+    this.jsons.push({ json: {} })
   }
   private async save() {
     const res = await this.services.setting.save_threshold(this.json)
@@ -41,6 +52,11 @@ export default class AgentConfig extends VueBase {
 
 <style lang="scss">
 main {
+  .agent-btn-box {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
   padding: 10px;
   .jsoneditor-vue {
     height: 100%;
