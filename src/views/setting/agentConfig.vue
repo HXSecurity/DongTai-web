@@ -10,6 +10,15 @@
         保存
       </el-button>
 
+      <el-button
+        size="mini"
+        type="primary"
+        class="btn del-btn"
+        @click="del(item.json)"
+      >
+        删除
+      </el-button>
+
       <VueJsonEditor
         v-model="item.json"
         style="height: calc(100vh - 200px); margin-top: 20px"
@@ -52,6 +61,22 @@ export default class AgentConfig extends VueBase {
     }
     this.$message.error(res.msg)
   }
+
+  private async del(json: any) {
+    this.$confirm(this.$t('views.agentConfig.confirmDel') as string, '', {
+      confirmButtonText: this.$t('views.agentConfig.confirm') as string,
+      cancelButtonText: this.$t('views.agentConfig.cancel') as string,
+      type: 'warning',
+    }).then(async () => {
+      const res = await this.services.setting.del_threshold({ id: json.id })
+      if (res.status === 201) {
+        this.$message.success(res.msg)
+        return
+      }
+      this.$message.error(res.msg)
+    })
+  }
+
   async created() {
     const res = await this.get_threshold()
   }
@@ -95,6 +120,12 @@ main {
   .json-box {
     position: relative;
     .save-btn {
+      right: 82px;
+      top: 4px;
+      position: absolute;
+      z-index: 4;
+    }
+    .del-btn {
       right: 12px;
       top: 4px;
       position: absolute;

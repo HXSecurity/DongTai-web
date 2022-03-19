@@ -96,6 +96,11 @@ export default {
       deleteConfirm: '你确定要删除此webhook吗',
       deleteConfirmPop: '确认删除',
     },
+    agentConfig: {
+      confirmDel: '确定要删除此配置吗',
+      confirm: '确定',
+      cancel: '取消',
+    },
     scaManage: {
       selectWarning: '请选择要删除的组件',
       component: '组件库',
