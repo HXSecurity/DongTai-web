@@ -96,6 +96,11 @@ export default {
       deleteConfirm: 'Are you sure you want to delete the webhook?',
       deleteConfirmPop: 'Delete',
     },
+    agentConfig: {
+      confirmDel: 'Are you sure you want to delete this configuration',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
+    },
     scaManage: {
       selectWarning: 'Please select a library',
       component: 'Component',

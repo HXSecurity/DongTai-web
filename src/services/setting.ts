@@ -331,6 +331,10 @@ export default () =>
       return request.post(`/threshold/settings`, data)
     }
 
+    del_threshold(data: any): Promise<iResponse> {
+      return request.post(`/threshold/settings/del`, data)
+    }
+
     webhook_type(): Promise<iResponse> {
       return request.get(`/webhook/type/list`)
     }
