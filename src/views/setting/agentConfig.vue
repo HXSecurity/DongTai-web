@@ -1,13 +1,27 @@
 <template>
   <main>
-    <VueJsonEditor
-      v-model="json"
-      style="height: calc(100vh - 200px)"
-      :mode="'code'"
-    ></VueJsonEditor>
-    <el-button size="mini" type="primary" class="btn" @click="save">
-      保存
-    </el-button>
+    <div v-for="(item, index) in jsons" :key="index" class="json-box">
+      <el-button
+        size="mini"
+        type="primary"
+        class="btn save-btn"
+        @click="save(item.json)"
+      >
+        保存
+      </el-button>
+
+      <VueJsonEditor
+        v-model="item.json"
+        style="height: calc(100vh - 200px); margin-top: 20px"
+        :mode="'code'"
+      ></VueJsonEditor>
+    </div>
+
+    <div class="agent-btn-box">
+      <el-button size="mini" type="primary" class="btn" @click="add">
+        新增
+      </el-button>
+    </div>
   </main>
 </template>
 
@@ -18,15 +32,20 @@ import { Component } from 'vue-property-decorator'
 
 @Component({ name: 'AgentConfig', components: { VueJsonEditor } })
 export default class AgentConfig extends VueBase {
-  private json = {}
+  private jsons: any = []
   private async get_threshold() {
     const res = await this.services.setting.get_threshold()
     if (res.status === 201) {
-      this.json = res.data
+      res.data.result.forEach((item: any) => {
+        this.jsons.push({ json: item })
+      })
     }
   }
-  private async save() {
-    const res = await this.services.setting.save_threshold(this.json)
+  private add() {
+    this.jsons.push({ json: {} })
+  }
+  private async save(json: any) {
+    const res = await this.services.setting.save_threshold(json)
     if (res.status === 201) {
       this.$message.success(res.msg)
       return
@@ -41,6 +60,11 @@ export default class AgentConfig extends VueBase {
 
 <style lang="scss">
 main {
+  .agent-btn-box {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
   padding: 10px;
   .jsoneditor-vue {
     height: 100%;
@@ -67,6 +91,15 @@ main {
   }
   .jsoneditor-poweredBy {
     display: none;
+  }
+  .json-box {
+    position: relative;
+    .save-btn {
+      right: 12px;
+      top: 4px;
+      position: absolute;
+      z-index: 4;
+    }
   }
 }
 </style>

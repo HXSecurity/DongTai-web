@@ -271,6 +271,7 @@
             </template>
 
             <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
+            <span class="icon" @click="update(row.id, 2)">注</span>
             <span class="icon" @click="update(row.id, 5)">卸</span>
             <span class="icon" @click="update(row.id, 6)">降</span>
             <span class="icon" @click="update(row.id, 7)">恢</span>
