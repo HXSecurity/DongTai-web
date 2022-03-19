@@ -25,19 +25,22 @@ import { Component } from 'vue-property-decorator'
 
 @Component({ name: 'AgentConfig', components: { VueJsonEditor } })
 export default class AgentConfig extends VueBase {
-  private json = {}
   private jsons: any = []
   private async get_threshold() {
     const res = await this.services.setting.get_threshold()
     if (res.status === 201) {
-      this.jsons.push({ json: res.data })
+      this.jsons = res.data
     }
   }
   private add() {
     this.jsons.push({ json: {} })
   }
   private async save() {
-    const res = await this.services.setting.save_threshold(this.json)
+    const req = []
+    this.jsons.forEach((element: any) => {
+      req.push(element.json)
+    })
+    const res = await this.services.setting.save_threshold(req)
     if (res.status === 201) {
       this.$message.success(res.msg)
       return
