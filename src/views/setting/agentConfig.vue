@@ -14,7 +14,7 @@
         size="mini"
         type="primary"
         class="btn del-btn"
-        @click="del(item.json)"
+        @click="del(item.json, index)"
       >
         删除
       </el-button>
@@ -62,7 +62,7 @@ export default class AgentConfig extends VueBase {
     this.$message.error(res.msg)
   }
 
-  private async del(json: any) {
+  private async del(json: any, index: any) {
     this.$confirm(this.$t('views.agentConfig.confirmDel') as string, '', {
       confirmButtonText: this.$t('views.agentConfig.confirm') as string,
       cancelButtonText: this.$t('views.agentConfig.cancel') as string,
@@ -71,6 +71,7 @@ export default class AgentConfig extends VueBase {
       const res = await this.services.setting.del_threshold({ id: json.id })
       if (res.status === 201) {
         this.$message.success(res.msg)
+        this.jsons.slice(index, 1)
         return
       }
       this.$message.error(res.msg)
