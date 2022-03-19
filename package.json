@@ -8,7 +8,7 @@
     "lint": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
-    "@antv/g6": "^4.1.11",
+    "@antv/g6": "4.1.11",
     "@innologica/vue-dropdown-menu": "^0.1.4",
     "axios": "^0.21.0",
     "cookies-js": "^1.2.3",
