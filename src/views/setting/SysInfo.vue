@@ -1,7 +1,51 @@
 <template>
   <main>
     <div class="moudleTitle">{{ $t('views.sysInfo.infoTitle') }}</div>
-    <div class="form-box">
+
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="全局配置" name="global"></el-tab-pane>
+      <el-tab-pane label="熔断降级" name="agent"></el-tab-pane>
+    </el-tabs>
+    <div v-if="activeName === 'agent'">
+      <div class="agent-btn-box">
+        <el-button size="mini" type="primary" class="btn" @click="add">
+          新增
+        </el-button>
+      </div>
+      <el-table :data="jsons">
+        <el-table-column prop="id" label="ID" width="60"> </el-table-column>
+        <el-table-column prop="ip" label="ip" width="120"> </el-table-column>
+        <el-table-column prop="port" label="端口"> </el-table-column>
+        <el-table-column prop="hostname" label="主机名"> </el-table-column>
+        <el-table-column prop="priority" label="优先级"> </el-table-column>
+        <el-table-column prop="cluster_name" width="200" label="集群名称">
+        </el-table-column>
+        <el-table-column prop="cluster_version" label="集群版本">
+        </el-table-column>
+        <el-table-column width="200">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              class="btn del-btn"
+              @click="edit(scope.row)"
+            >
+              编辑
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              class="btn del-btn"
+              @click="del(scope.row)"
+            >
+              删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+    <div v-if="activeName === 'global'" class="form-box">
       <div class="cpu-box">
         <div class="moudleTitle-th">
           {{ $t('views.sysInfo.agentThreshold') }}
@@ -56,9 +100,9 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
-
 @Component({ name: 'SysInfo' })
 export default class SysInfo extends VueBase {
+  public activeName = 'global'
   public form = {
     cpu_limit: '',
     vul_verifiy: 0,
@@ -102,7 +146,39 @@ export default class SysInfo extends VueBase {
       this.$message.error(res.msg)
     }
   }
-  created() {
+
+  private jsons: any = []
+  private async get_threshold() {
+    const res = await this.services.setting.get_threshold()
+    if (res.status === 201) {
+      this.jsons = res.data.result
+    }
+  }
+
+  private async edit(row: any) {
+    this.$router.push({ name: 'agentConfig', query: { id: row.id } })
+  }
+
+  private async del(row: any) {
+    this.$confirm(this.$t('views.agentConfig.confirmDel') as string, '', {
+      confirmButtonText: this.$t('views.agentConfig.confirm') as string,
+      cancelButtonText: this.$t('views.agentConfig.cancel') as string,
+      type: 'warning',
+    }).then(async () => {
+      const res = await this.services.setting.del_threshold({ id: row.id })
+      if (res.status === 201) {
+        this.$message.success(res.msg)
+        this.get_threshold()
+        return
+      }
+      this.$message.error(res.msg)
+    })
+  }
+  add() {
+    this.$router.push({ name: 'agentConfig' })
+  }
+  async created() {
+    this.get_threshold()
     this.getInfo()
   }
 }

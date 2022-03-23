@@ -871,6 +871,7 @@ export default {
       uncovered: 'Uncovered',
     },
     projectDetail: {
+      beforeClose: 'Please save the version you are editing first',
       mode: 'Mode: ',
       latest_time: 'Created Time:',
       projectDesc: 'Overview',
@@ -954,13 +955,22 @@ export default {
       off: 'Disable',
       notLogin: 'Not logged in',
       deleteConfirm:
-        "User's password will reset immediately, are you sure you want to continue?",
+        'This operation will delete the user. Do you want to continue?',
       deleteConfirmPop: 'Prompt',
+      resetConfirm:
+        "User's password will reset immediately, are you sure you want to continue?",
+      resetConfirmPop: 'Prompt',
       edit: 'Modify',
       del: 'Delete',
       talent: 'Talent',
     },
     talent: {
+      delete: {
+        confirm:
+          'This operation will permanently delete the tenant. Do you want to continue?',
+        cancelBtn: 'Cancel',
+        confirmBtn: 'Confirm',
+      },
       title: {
         add: 'Add Tenant',
         modify: 'Modify tenant information',

@@ -299,8 +299,8 @@ export default class DepartmentList extends VueBase {
 
   private async resetPwd(item: any) {
     this.$confirm(
-      this.$t('views.userList.deleteConfirm') as string,
-      this.$t('views.userList.deleteConfirmPop') as string,
+      this.$t('views.userList.resetConfirm') as string,
+      this.$t('views.userList.resetConfirmPop') as string,
       {
         confirmButtonText: this.$t('views.userList.submit') as string,
         cancelButtonText: this.$t('views.userList.cancel') as string,
@@ -327,20 +327,35 @@ export default class DepartmentList extends VueBase {
   }
 
   private async userDelete(uid: number) {
-    this.loadingStart()
-    const { status, msg } = await this.services.user.userDelete({
-      uid,
-    })
-    this.loadingDone()
-    if (status !== 201) {
+    this.$confirm(
+      this.$t('views.userList.deleteConfirm') as string,
+      this.$t('views.userList.deleteConfirmPop') as string,
+      {
+        confirmButtonText: this.$t('views.userList.submit') as string,
+        cancelButtonText: this.$t('views.userList.cancel') as string,
+        type: 'warning',
+      }
+    ).then(async () => {
+      this.loadingStart()
+      const { status, msg } = await this.services.user.userDelete({
+        uid,
+      })
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
+      }
       this.$message({
-        type: 'error',
+        type: 'success',
         message: msg,
         showClose: true,
       })
-      return
-    }
-    await this.getTableData()
+      await this.getTableData()
+    })
   }
   private validateCheckPass(rule: any, value: any, callback: any) {
     if (value === '') {

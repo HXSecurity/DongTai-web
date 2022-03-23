@@ -270,18 +270,30 @@ export default class TalentList extends VueBase {
   }
 
   private async talentDelete(id: number) {
-    this.loadingStart()
-    const { status, msg } = await this.services.talent.talentDelete(id)
-    this.loadingDone()
-    if (status !== 201) {
+    this.$confirm(this.$t('views.talent.delete.confirm') as string, {
+      confirmButtonText: this.$t('views.talent.delete.confirmBtn') as string,
+      cancelButtonText: this.$t('views.talent.delete.cancelBtn') as string,
+      type: 'warning',
+      center: true,
+    }).then(async () => {
+      this.loadingStart()
+      const { status, msg } = await this.services.talent.talentDelete(id)
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
+      }
       this.$message({
-        type: 'error',
+        type: 'success',
         message: msg,
         showClose: true,
       })
-      return
-    }
-    await this.getTableData()
+      this.getTableData()
+    })
   }
 }
 </script>

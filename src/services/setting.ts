@@ -330,6 +330,9 @@ export default () =>
     save_threshold(data: any): Promise<iResponse> {
       return request.post(`/threshold/settings`, data)
     }
+    get_threshold_byid(id: any): Promise<iResponse> {
+      return request.get(`/threshold/settings/get/` + id)
+    }
 
     del_threshold(data: any): Promise<iResponse> {
       return request.post(`/threshold/settings/del`, data)
