@@ -34,6 +34,8 @@ export default class SettingIndex extends VueBase {
     sensitive: true,
     strategy: true,
     template: true,
+    agentConfig: true,
+    webhook: true,
   }
   private curModule(path: string) {
     return this.$route.name === path

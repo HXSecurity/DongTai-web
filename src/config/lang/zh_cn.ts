@@ -853,6 +853,7 @@ export default {
       uncovered: '未覆盖',
     },
     projectDetail: {
+      beforeClose: '请先保存正在编辑的版本',
       mode: '扫描模式',
       latest_time: '最新时间',
       projectDesc: '项目概况',
@@ -932,13 +933,20 @@ export default {
       on: '启用',
       off: '禁用',
       notLogin: '未登录',
-      deleteConfirm: '此操作将重置用户密码, 是否继续?',
+      deleteConfirm: '此操作将删除用户, 是否继续?',
       deleteConfirmPop: '提示',
+      resetConfirm: '此操作将重置用户密码, 是否继续?',
+      resetConfirmPop: '提示',
       edit: '修改',
       del: '删除',
       talent: '部门名称',
     },
     talent: {
+      delete: {
+        confirm: '此操作将永久删除该租户, 是否继续?',
+        cancelBtn: '取消',
+        confirmBtn: '确认',
+      },
       title: {
         add: '新增租户',
         modify: '修改租户信息',

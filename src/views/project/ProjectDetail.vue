@@ -204,6 +204,7 @@
             <el-input
               v-else
               v-model="scope.row.version_name"
+              maxlength="20"
               size="small"
               :placeholder="$t('views.projectDetail.search_version_name')"
             />
@@ -421,6 +422,10 @@ export default class ProjectDetail extends VueBase {
   private versionList: any[] = []
   private versionFlag = false
   private enterVersionDialog() {
+    if (this.versionList.some((item) => item.isEdit)) {
+      this.$message.error(this.$t('views.projectDetail.beforeClose') as string)
+      return
+    }
     this.versionFlag = false
   }
   private openExport() {
@@ -571,7 +576,7 @@ export default class ProjectDetail extends VueBase {
         })
       } else {
         this.$message({
-          type: 'error',
+          type: 'success',
           message: res.msg,
           showClose: true,
         })
