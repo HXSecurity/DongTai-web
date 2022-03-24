@@ -1,18 +1,21 @@
 <template>
   <main>
-    <div class="moudleTitle">{{ $t('views.sysInfo.infoTitle') }}</div>
-
     <el-tabs v-model="activeName">
       <el-tab-pane label="全局配置" name="global"></el-tab-pane>
       <el-tab-pane label="熔断降级" name="agent"></el-tab-pane>
     </el-tabs>
     <div v-if="activeName === 'agent'">
       <div class="agent-btn-box">
-        <el-button size="mini" type="primary" class="btn" @click="add">
+        <el-button
+          class="btn-border"
+          icon="el-icon-circle-plus-outline"
+          size="mini"
+          @click="add"
+        >
           新增
         </el-button>
       </div>
-      <el-table :data="jsons">
+      <el-table :data="jsons" class="info-table">
         <el-table-column prop="id" label="ID" width="60"> </el-table-column>
         <el-table-column prop="ip" label="ip" width="120"> </el-table-column>
         <el-table-column prop="port" label="端口"> </el-table-column>
@@ -22,24 +25,27 @@
         </el-table-column>
         <el-table-column prop="cluster_version" label="集群版本">
         </el-table-column>
-        <el-table-column width="200">
+        <el-table-column width="200" label="操作">
           <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="primary"
-              class="btn del-btn"
-              @click="edit(scope.row)"
-            >
-              编辑
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              class="btn del-btn"
-              @click="del(scope.row)"
-            >
-              删除
-            </el-button>
+            <div class="table-btn-box">
+              <el-button
+                type="text"
+                size="small"
+                style="color: #4a72ae"
+                @click="edit(scope.row)"
+              >
+                编辑
+              </el-button>
+              <span class="l"> | </span>
+              <el-button
+                style="color: #f56262"
+                size="small"
+                type="text"
+                @click="del(scope.row)"
+              >
+                删除
+              </el-button>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -188,6 +194,11 @@ export default class SysInfo extends VueBase {
 main {
   padding: 10px;
 }
+.btn-border {
+  border-radius: 2px;
+  color: #4a72ae;
+  border-color: #4a72ae;
+}
 .form-box {
   display: flex;
   flex-direction: column;
@@ -248,5 +259,32 @@ main {
 
 .cpu-box + .cpu-box {
   margin-top: 20px;
+}
+
+.table-btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .el-button {
+    font-size: 14px;
+  }
+  .l {
+    color: #38435a;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
+  }
+}
+
+.info-table {
+  margin-top: 16px;
+  &.el-table {
+    /deep/th {
+      background: #f6f8fa;
+    }
+  }
 }
 </style>

@@ -244,37 +244,88 @@
       </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.manage')"
-        width="180px"
+        width="320px"
         fixed="right"
       >
         <template slot-scope="{ row }">
-          <div class="icon-box">
+          <div class="table-btn-box">
             <template v-if="row.is_control === 1">
-              <i
-                class="icon el-icon-loading"
+              <el-button
+                style="color: #4a72ae"
+                size="small"
+                type="text"
                 :class="!state && 'icon-disabled'"
-              ></i>
+              >
+                <span class="el-text"> 暂停中 </span>
+              </el-button>
             </template>
             <template v-else>
-              <i
+              <el-button
                 v-if="row.is_core_running == 0"
-                class="icon el-icon-video-play"
+                type="text"
+                size="small"
+                style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
                 @click="agentStart(row.id)"
-              ></i>
-              <i
+                ><span class="el-text">启动</span></el-button
+              >
+              <el-button
                 v-else
-                class="icon el-icon-video-pause"
+                type="text"
+                size="small"
+                style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
                 @click="agentStop(row.id)"
-              ></i>
+                ><span class="el-text">暂停</span></el-button
+              >
             </template>
 
-            <i class="icon el-icon-delete" @click="doDelete(row.id)"></i>
-            <span class="icon" @click="update(row.id, 2)">注</span>
-            <span class="icon" @click="update(row.id, 5)">卸</span>
-            <span class="icon" @click="update(row.id, 6)">降</span>
-            <span class="icon" @click="update(row.id, 7)">恢</span>
+            <span class="l"> | </span>
+
+            <el-button
+              v-if="row.is_core_running === 2"
+              type="text"
+              size="small"
+              style="color: #4a72ae"
+              @click="update(row.id, 2)"
+            >
+              <span class="el-text">注册</span></el-button
+            >
+
+            <el-button
+              v-if="row.is_core_running !== 2"
+              type="text"
+              size="small"
+              style="color: #4a72ae"
+              @click="update(row.id, 5)"
+              ><span class="el-text">卸载</span></el-button
+            >
+            <span class="l"> | </span>
+
+            <el-button
+              type="text"
+              size="small"
+              style="color: #4a72ae"
+              @click="update(row.id, 6)"
+              ><span class="el-text">降级</span></el-button
+            >
+            <span class="l"> | </span>
+            <el-button
+              type="text"
+              size="small"
+              style="color: #4a72ae"
+              @click="update(row.id, 7)"
+              ><span class="el-text">恢复</span></el-button
+            >
+            <span class="l"> | </span>
+            <el-button
+              type="text"
+              size="small"
+              style="color: #4a72ae"
+              @click="doDelete(row.id)"
+            >
+              <span class="el-text">删除</span>
+            </el-button>
           </div>
         </template>
       </el-table-column>
@@ -732,19 +783,6 @@ export default class AgentManage extends VueBase {
     background: aliceblue;
   }
 }
-.icon-box {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  .icon {
-    font-size: 18px;
-    line-height: 100%;
-    color: #888;
-    + .icon {
-      margin-left: 12px;
-    }
-  }
-}
 
 .content-warp {
   padding: 38px 14px 40px 14px;
@@ -815,6 +853,29 @@ export default class AgentManage extends VueBase {
     /deep/th {
       background: #f6f8fa;
     }
+  }
+}
+
+.table-btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .el-button {
+    .el-text {
+      width: 42px;
+      display: inline-block;
+    }
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .l {
+    color: #38435a;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
   }
 }
 </style>

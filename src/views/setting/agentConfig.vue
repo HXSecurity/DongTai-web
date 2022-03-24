@@ -263,16 +263,18 @@
               "
             ></el-input>
           </el-form-item>
-          <div class="title">
+          <div class="title title-btn">
             垃圾回收最大阈值:
             <el-button
+              class="add-btn"
+              size="small"
               @click="
                 add(
                   json.details.performanceLimitMaxThreshold.garbageInfo
                     .collectionInfoList
                 )
               "
-              >+</el-button
+              >增 加</el-button
             >
           </div>
           <div
@@ -283,6 +285,7 @@
           >
             <el-button
               class="form-box-cut"
+              size="small"
               @click="
                 cut(
                   json.details.performanceLimitMaxThreshold.garbageInfo
@@ -290,8 +293,9 @@
                   index
                 )
               "
-              >X</el-button
             >
+              <span class="el-icon-close"></span>
+            </el-button>
             <el-form-item label="收集器名称:">
               <el-input v-model="item.collectionName"></el-input>
             </el-form-item>
@@ -306,16 +310,18 @@
               <el-radio v-model="item.tenured" :label="false">否</el-radio>
             </el-form-item>
           </div>
-          <div class="title">
+          <div class="title title-btn">
             垃圾回收风险阈值:
             <el-button
+              class="add-btn"
+              size="small"
               @click="
                 add(
                   json.details.performanceLimitRiskThreshold.garbageInfo
                     .collectionInfoList
                 )
               "
-              >+</el-button
+              >增加</el-button
             >
           </div>
           <div
@@ -326,6 +332,7 @@
           >
             <el-button
               class="form-box-cut"
+              size="small"
               @click="
                 cut(
                   json.details.performanceLimitRiskThreshold.garbageInfo
@@ -333,8 +340,9 @@
                   index
                 )
               "
-              >X</el-button
             >
+              <span class="el-icon-close"></span
+            ></el-button>
             <el-form-item label="收集器名称:">
               <el-input v-model="item.collectionName"></el-input>
             </el-form-item>
@@ -452,8 +460,10 @@
           </el-form-item>
         </template>
       </el-form>
-      <div>
-        <el-button @click="save"> 确定 </el-button>
+      <div class="btn-box">
+        <el-button class="submit btn" size="mini" @click="save">
+          确定
+        </el-button>
       </div>
     </div>
   </main>
@@ -613,7 +623,38 @@ main {
     font-weight: 600;
     margin-bottom: 12px;
   }
+  .title-btn {
+    display: flex;
+    justify-content: space-between;
+  }
+  .btn-box {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .submit {
+    width: 124px;
+    height: 38px;
+    line-height: 0;
+    background: #4a72ae;
+    border-radius: 2px;
+    color: #fff;
+  }
+
+  .submit:hover {
+    width: 124px;
+    height: 38px;
+    line-height: 0;
+    background: #4a72ae;
+    border-radius: 2px;
+    color: #fff;
+  }
+
   .form-box {
+    & + .form-box {
+      border-top: 1px solid #ccc;
+      padding-top: 12px;
+    }
     position: relative;
     &-cut {
       right: 0;
