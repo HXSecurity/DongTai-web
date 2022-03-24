@@ -785,7 +785,7 @@ export default {
       deleteSuccess: '删除成功',
       title: '项目列表',
       name: '项目名称',
-      vul: '已确认漏洞',
+      vul: '漏洞',
       agent: '存活Agent数量(个)',
       owner: '负责人',
       time: '最近更新时间',
