@@ -12,33 +12,52 @@
         <el-button
           class="btn-border"
           icon="el-icon-circle-plus-outline"
-          size="mini"
+          size="small"
           @click="add"
         >
           {{ $t('views.sysInfo.add') }}
         </el-button>
       </div>
-      <el-table :data="jsons" class="info-table">
+      <el-table :data="jsons" class="info-table" border>
         <el-table-column prop="id" label="ID" width="60"> </el-table-column>
-        <el-table-column prop="ip" label="IP" width="120"> </el-table-column>
-        <el-table-column prop="port" :label="$t('views.sysInfo.port')">
-        </el-table-column>
-        <el-table-column prop="hostname" :label="$t('views.sysInfo.hostname')">
-        </el-table-column>
-        <el-table-column prop="priority" :label="$t('views.sysInfo.priority')">
+        <el-table-column prop="ip" label="IP" width="120" align="center">
         </el-table-column>
         <el-table-column
+          prop="port"
+          :label="$t('views.sysInfo.port')"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="hostname"
+          :label="$t('views.sysInfo.hostname')"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="priority"
+          :label="$t('views.sysInfo.priority')"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          align="center"
           prop="cluster_name"
           width="200"
           :label="$t('views.sysInfo.cluster_name')"
         >
         </el-table-column>
         <el-table-column
+          align="center"
           prop="cluster_version"
           :label="$t('views.sysInfo.cluster_version')"
         >
         </el-table-column>
-        <el-table-column width="200" :label="$t('views.sysInfo.operation')">
+        <el-table-column
+          width="200"
+          :label="$t('views.sysInfo.operation')"
+          align="center"
+        >
           <template slot-scope="scope">
             <div class="table-btn-box">
               <el-button
