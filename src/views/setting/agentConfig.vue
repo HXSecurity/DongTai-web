@@ -143,7 +143,7 @@
               v-model="json.details.heavyTrafficLimitInitBurstSeconds"
             ></el-input>
           </el-form-item>
-          <el-form-item :label="$t('views.agentConfigEdit.RestoreTime')">
+          <el-form-item :label="$t('views.agentConfigEdit.restoreTime')">
             <el-input
               v-model="json.details.heavyTrafficBreakerWaitDuration"
             ></el-input>
