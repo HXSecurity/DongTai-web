@@ -3,21 +3,21 @@
     <el-page-header class="header" @back="goBack"></el-page-header>
     <div>
       <el-form :model="json" inline label-width="160px">
-        <el-form-item label="高级模式:">
+        <el-form-item :label="$t('views.agentConfigEdit.pattern')">
           <el-switch v-model="senior"></el-switch>
         </el-form-item>
-        <el-form-item label="开启自动降级:">
+        <el-form-item :label="$t('views.agentConfigEdit.open')">
           <el-switch v-model="json.details.enableAutoFallback"></el-switch>
         </el-form-item>
         <template v-if="!senior">
-          <div class="title">筛选标签:</div>
-          <el-form-item label="集群名称:">
+          <div class="title">{{ $t('views.agentConfigEdit.tag') }}</div>
+          <el-form-item :label="$t('views.agentConfigEdit.cluster_name')">
             <el-input v-model="json.cluster_name"></el-input>
           </el-form-item>
-          <el-form-item label="集群版本:">
+          <el-form-item :label="$t('views.agentConfigEdit.cluster_version')">
             <el-input v-model="json.cluster_version"></el-input>
           </el-form-item>
-          <el-form-item label="权重:">
+          <el-form-item :label="$t('views.agentConfigEdit.priority')">
             <el-input v-model="json.priority"></el-input>
           </el-form-item>
           <el-form-item label="hostname:">
@@ -29,18 +29,18 @@
           <el-form-item label="port:">
             <el-input v-model="json.port"></el-input>
           </el-form-item>
-          <div class="title">单请求hook限流:</div>
-          <el-form-item label="QPS(每秒令牌数):">
+          <div class="title">{{ $t('views.agentConfigEdit.hook_one') }}</div>
+          <el-form-item :label="`QPS(${$t('views.agentConfigEdit.secTag')}):`">
             <el-input v-model="json.details.hookLimitTokenPerSecond"></el-input>
           </el-form-item>
-          <div class="title">高频流量限流:</div>
-          <el-form-item label="QPS(每秒令牌数):">
+          <div class="title">{{ $t('views.agentConfigEdit.flow') }}</div>
+          <el-form-item :label="`QPS(${$t('views.agentConfigEdit.secTag')}):`">
             <el-input
               v-model="json.details.heavyTrafficLimitTokenPerSecond"
             ></el-input>
           </el-form-item>
-          <div class="title">JVM CPU 最大阈值:</div>
-          <el-form-item label="CPU使用率最大阈值:">
+          <div class="title">{{ $t('views.agentConfigEdit.maxCpu') }}</div>
+          <el-form-item :label="$t('views.agentConfigEdit.maxCpuLabel')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.cpuUsage
@@ -48,8 +48,8 @@
               "
             ></el-input>
           </el-form-item>
-          <div class="title">JVM CPU 风险阈值:</div>
-          <el-form-item label="CPU使用率风险阈值:">
+          <div class="title">{{ $t('views.agentConfigEdit.limitCpu') }}</div>
+          <el-form-item :label="$t('views.agentConfigEdit.limitCpuLable')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.cpuUsage
@@ -57,8 +57,10 @@
               "
             ></el-input>
           </el-form-item>
-          <div class="title">JVM 内存最大阈值:</div>
-          <el-form-item label="内存使用率阈值:">
+          <div class="title">
+            {{ $t('views.agentConfigEdit.maxMemoryJVM') }}
+          </div>
+          <el-form-item :label="$t('views.agentConfigEdit.maxMemoryLabel')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryUsage
@@ -66,8 +68,10 @@
               "
             ></el-input>
           </el-form-item>
-          <div class="title">JVM 内存风险阈值:</div>
-          <el-form-item label="内存使用率阈值:">
+          <div class="title">
+            {{ $t('views.agentConfigEdit.limitMemory') }}
+          </div>
+          <el-form-item :label="$t('views.agentConfigEdit.maxMemoryLabel')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryUsage
@@ -77,14 +81,14 @@
           </el-form-item>
         </template>
         <template v-if="senior">
-          <div class="title">筛选标签:</div>
-          <el-form-item label="集群名称:">
+          <div class="title">{{ $t('views.agentConfigEdit.tag') }}</div>
+          <el-form-item :label="$t('views.agentConfigEdit.cluster_name')">
             <el-input v-model="json.cluster_name"></el-input>
           </el-form-item>
-          <el-form-item label="集群版本:">
+          <el-form-item :label="$t('views.agentConfigEdit.cluster_version')">
             <el-input v-model="json.cluster_version"></el-input>
           </el-form-item>
-          <el-form-item label="权重:">
+          <el-form-item :label="$t('views.agentConfigEdit.priority')">
             <el-input v-model="json.priority"></el-input>
           </el-form-item>
           <el-form-item label="hostname:">
@@ -97,11 +101,11 @@
             <el-input v-model="json.port"></el-input>
           </el-form-item>
           <div class="title">
-            单请求hook限流:
+            {{ $t('views.agentConfigEdit.hook_one') }}
             <el-tooltip
               class="item"
               effect="dark"
-              content="限制单个请求内每秒hook数量，初始令牌数 = QPS * 初始预放置令牌时间。"
+              :content="$t('views.agentConfigEdit.hook_one_desc')"
               placement="right"
             >
               <span class="el-icon-question"></span>
@@ -110,26 +114,22 @@
           <el-form-item label="QPS:">
             <el-input v-model="json.details.hookLimitTokenPerSecond"></el-input>
           </el-form-item>
-          <el-form-item label="初始预放置令牌时间:">
+          <el-form-item :label="$t('views.agentConfigEdit.tagTime')">
             <el-input
               v-model="json.details.hookLimitInitBurstSeconds"
             ></el-input>
           </el-form-item>
           <div class="title">
-            高频流量限流:<el-tooltip
-              class="item"
-              effect="dark"
-              placement="right"
-            >
+            {{ $t('views.agentConfigEdit.flow') }}
+            <el-tooltip class="item" effect="dark" placement="right">
               <span class="el-icon-question"></span>
               <div slot="content">
-                <div>每秒限制处理请求数量</div>
-                <div>QPS：每秒获得令牌数，每秒允许处理的请求数</div>
+                <div>{{ $t('views.agentConfigEdit.flow_sec') }}</div>
+                <div>{{ $t('views.agentConfigEdit.qpsDesc1') }}</div>
                 <div>
-                  初始预放置令牌时间：首次启动时，按“初始预放置令牌时间” *
-                  QPS准备令牌数。
+                  {{ $t('views.agentConfigEdit.qpsDesc2') }}
                 </div>
-                <div>自动恢复时间：被限流后，重新恢复正常检测的时间`</div>
+                <div>{{ $t('views.agentConfigEdit.qpsDesc3') }}</div>
               </div>
             </el-tooltip>
           </div>
@@ -138,12 +138,12 @@
               v-model="json.details.heavyTrafficLimitTokenPerSecond"
             ></el-input>
           </el-form-item>
-          <el-form-item label="初始预放置令牌时间:">
+          <el-form-item :label="$t('views.agentConfigEdit.tagTime')">
             <el-input
               v-model="json.details.heavyTrafficLimitInitBurstSeconds"
             ></el-input>
           </el-form-item>
-          <el-form-item label="自动恢复时间:">
+          <el-form-item :label="$t('views.agentConfigEdit.RestoreTime')">
             <el-input
               v-model="json.details.heavyTrafficBreakerWaitDuration"
             ></el-input>
@@ -152,13 +152,13 @@
             JVM CPU最大阈值:<el-tooltip
               class="item"
               effect="dark"
-              content="JVM CPU使用率到达指定条件后开始降级"
+              :content="$t('views.agentConfigEdit.maxCpuDesc')"
               placement="right"
             >
               <span class="el-icon-question"></span>
             </el-tooltip>
           </div>
-          <el-form-item label="CPU使用率阈值:">
+          <el-form-item :label="$t('views.agentConfigEdit.cpuRate')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.cpuUsage
@@ -166,8 +166,10 @@
               "
             ></el-input>
           </el-form-item>
-          <div class="title">JVM CPU风险阈值:</div>
-          <el-form-item label="CPU使用率阈值:">
+          <div class="title">
+            {{ $t('views.agentConfigEdit.limitCpu') }}
+          </div>
+          <el-form-item :label="$t('views.agentConfigEdit.cpuRate')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.cpuUsage
@@ -176,16 +178,17 @@
             ></el-input>
           </el-form-item>
           <div class="title">
-            JVM 内存最大阈值:<el-tooltip
+            {{ $t('views.agentConfigEdit.maxMemoryJVM')
+            }}<el-tooltip
               class="item"
               effect="dark"
-              content="JVM 内存使用到达指定条件后开始降级"
+              :content="$t('views.agentConfigEdit.maxMemoryDesc')"
               placement="right"
             >
               <span class="el-icon-question"></span>
             </el-tooltip>
           </div>
-          <el-form-item label="内存使用率阈值:">
+          <el-form-item :label="$t('views.agentConfigEdit.maxMemoryLabel')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryUsage
@@ -193,15 +196,17 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="已用内存（MB）:">
+          <el-form-item
+            :label="`${$t('views.agentConfigEdit.userMemory')}（MB）`"
+          >
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryUsage.used
               "
             ></el-input>
           </el-form-item>
-          <div class="title">JVM 内存风险阈值:</div>
-          <el-form-item label="内存使用率阈值:">
+          <div class="title">{{ $t('views.agentConfigEdit.limitMemory') }}</div>
+          <el-form-item :label="$t('views.agentConfigEdit.limitMemoryLabel')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryUsage
@@ -209,15 +214,19 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="已用内存（MB）:">
+          <el-form-item
+            :label="`${$t('views.agentConfigEdit.userMemory')}（MB）`"
+          >
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryUsage.used
               "
             ></el-input>
           </el-form-item>
-          <div class="title">JVM 堆外内存最大阈值:</div>
-          <el-form-item label="内存使用率百分比:">
+          <div class="title">
+            {{ $t('views.agentConfigEdit.limitMemoryMaxOut') }}
+          </div>
+          <el-form-item :label="$t('views.agentConfigEdit.memoryRate')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryNoHeapUsage
@@ -225,22 +234,24 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="已用内存:">
+          <el-form-item :label="$t('views.agentConfigEdit.userMemory')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryNoHeapUsage.used
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="最大内存:">
+          <el-form-item :label="$t('views.agentConfigEdit.maxMemory')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryNoHeapUsage.max
               "
             ></el-input>
           </el-form-item>
-          <div class="title">JVM 堆外内存风险阈值:</div>
-          <el-form-item label="内存使用率百分比:">
+          <div class="title">
+            {{ $t('views.agentConfigEdit.limitMemoryLimitOut') }}
+          </div>
+          <el-form-item :label="$t('views.agentConfigEdit.memoryRate')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryNoHeapUsage
@@ -248,7 +259,7 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="已用内存:">
+          <el-form-item :label="$t('views.agentConfigEdit.userMemory')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryNoHeapUsage
@@ -256,7 +267,7 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="最大内存:">
+          <el-form-item :label="$t('views.agentConfigEdit.maxMemory')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryNoHeapUsage.max
@@ -264,7 +275,7 @@
             ></el-input>
           </el-form-item>
           <div class="title title-btn">
-            垃圾回收最大阈值:
+            {{ $t('views.agentConfigEdit.gcMax') }}
             <el-button
               class="add-btn"
               size="small"
@@ -274,7 +285,8 @@
                     .collectionInfoList
                 )
               "
-              >增 加</el-button
+            >
+              {{ $t('views.agentConfigEdit.add') }}</el-button
             >
           </div>
           <div
@@ -296,22 +308,28 @@
             >
               <span class="el-icon-close"></span>
             </el-button>
-            <el-form-item label="收集器名称:">
+            <el-form-item :label="$t('views.agentConfigEdit.collectorName')">
               <el-input v-model="item.collectionName"></el-input>
             </el-form-item>
-            <el-form-item label="收集次数:">
+            <el-form-item
+              :label="$t('views.agentConfigEdit.collectorFrequency')"
+            >
               <el-input v-model="item.collectionCount"></el-input>
             </el-form-item>
-            <el-form-item label="收集时间:">
+            <el-form-item :label="$t('views.agentConfigEdit.collectorTime')">
               <el-input v-model="item.collectionTime"></el-input>
             </el-form-item>
-            <el-form-item label="是否是老年代收集器:">
-              <el-radio v-model="item.tenured" :label="true">是</el-radio>
-              <el-radio v-model="item.tenured" :label="false">否</el-radio>
+            <el-form-item :label="$t('views.agentConfigEdit.collectorIsOld')">
+              <el-radio v-model="item.tenured" :label="true">
+                {{ $t('views.agentConfigEdit.yes') }}
+              </el-radio>
+              <el-radio v-model="item.tenured" :label="false">
+                {{ $t('views.agentConfigEdit.no') }}
+              </el-radio>
             </el-form-item>
           </div>
           <div class="title title-btn">
-            垃圾回收风险阈值:
+            {{ $t('views.agentConfigEdit.gcLimit') }}
             <el-button
               class="add-btn"
               size="small"
@@ -321,7 +339,7 @@
                     .collectionInfoList
                 )
               "
-              >增加</el-button
+              >{{ $t('views.agentConfigEdit.add') }}</el-button
             >
           </div>
           <div
@@ -343,29 +361,35 @@
             >
               <span class="el-icon-close"></span
             ></el-button>
-            <el-form-item label="收集器名称:">
+            <el-form-item :label="$t('views.agentConfigEdit.collectorName')">
               <el-input v-model="item.collectionName"></el-input>
             </el-form-item>
-            <el-form-item label="收集次数:">
+            <el-form-item
+              :label="$t('views.agentConfigEdit.collectorFrequency')"
+            >
               <el-input v-model="item.collectionCount"></el-input>
             </el-form-item>
-            <el-form-item label="收集时间:">
+            <el-form-item :label="$t('views.agentConfigEdit.collectorTime')">
               <el-input v-model="item.collectionTime"></el-input>
             </el-form-item>
-            <el-form-item label="是否是老年代收集器:">
-              <el-radio v-model="item.tenured" :label="true">是</el-radio>
-              <el-radio v-model="item.tenured" :label="false">否</el-radio>
+            <el-form-item :label="$t('views.agentConfigEdit.collectorIsOld')">
+              <el-radio v-model="item.tenured" :label="true">{{
+                $t('views.agentConfigEdit.yes')
+              }}</el-radio>
+              <el-radio v-model="item.tenured" :label="false">{{
+                $t('views.agentConfigEdit.no')
+              }}</el-radio>
             </el-form-item>
           </div>
-          <div class="title">线程信息最大阈值配置:</div>
-          <el-form-item label="当前线程数:">
+          <div class="title">{{ $t('views.agentConfigEdit.threadMax') }}</div>
+          <el-form-item :label="$t('views.agentConfigEdit.nowThread')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.threadInfo.threadCount
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="峰值线程数:">
+          <el-form-item :label="$t('views.agentConfigEdit.maxThread')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.threadInfo
@@ -373,7 +397,7 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="守护线程数:">
+          <el-form-item :label="$t('views.agentConfigEdit.daemonThread')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.threadInfo
@@ -381,7 +405,7 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="洞态IAST线程数:">
+          <el-form-item :label="$t('views.agentConfigEdit.IASTThread')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.threadInfo
@@ -389,8 +413,8 @@
               "
             ></el-input>
           </el-form-item>
-          <div class="title">线程信息风险阈值配置:</div>
-          <el-form-item label="当前线程数:">
+          <div class="title">{{ $t('views.agentConfigEdit.threadLimit') }}</div>
+          <el-form-item :label="$t('views.agentConfigEdit.nowThread')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.threadInfo
@@ -398,7 +422,7 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="峰值线程数:">
+          <el-form-item :label="$t('views.agentConfigEdit.maxThread')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.threadInfo
@@ -406,7 +430,7 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="守护线程数:">
+          <el-form-item :label="$t('views.agentConfigEdit.daemonThread')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.threadInfo
@@ -414,7 +438,7 @@
               "
             ></el-input>
           </el-form-item>
-          <el-form-item label="洞态IAST线程数:">
+          <el-form-item :label="$t('views.agentConfigEdit.IASTThread')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.threadInfo
@@ -422,38 +446,42 @@
               "
             ></el-input>
           </el-form-item>
-          <div class="title">二次降级:</div>
-          <el-form-item label="每秒获得令牌数:">
+          <div class="title">
+            {{ $t('views.agentConfigEdit.secondaryDeg') }}
+          </div>
+          <el-form-item :label="$t('views.agentConfigEdit.tokenSec')">
             <el-input
               v-model="json.details.secondFallbackFrequencyTokenPerSecond"
             ></el-input>
           </el-form-item>
-          <el-form-item label="初始预放置令牌时间:">
+          <el-form-item :label="$t('views.agentConfigEdit.tokenInitTime')">
             <el-input
               v-model="json.details.secondFallbackFrequencyInitBurstSeconds"
             ></el-input>
           </el-form-item>
-          <el-form-item label="打开状态持续最大时间:">
+          <el-form-item :label="$t('views.agentConfigEdit.openStatusMaxTime')">
             <el-input v-model="json.details.secondFallbackDuration"></el-input>
           </el-form-item>
-          <div class="title">性能熔断:</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.performanceFusing') }}
+          </div>
 
-          <el-form-item label="失败率阈值:">
+          <el-form-item :label="$t('views.agentConfigEdit.failureRate')">
             <el-input
               v-model="json.details.performanceBreakerFailureRate"
             ></el-input>
           </el-form-item>
-          <el-form-item label="不允许超过风险阈值的指标数量:">
+          <el-form-item :label="$t('views.agentConfigEdit.notAllow')">
             <el-input
               v-model="json.details.performanceLimitRiskMaxMetricsCount"
             ></el-input>
           </el-form-item>
-          <el-form-item label="自动恢复时间:">
+          <el-form-item :label="$t('views.agentConfigEdit.restoreTime')">
             <el-input
               v-model="json.details.performanceBreakerWaitDuration"
             ></el-input>
           </el-form-item>
-          <el-form-item label="统计窗口大小:">
+          <el-form-item :label="$t('views.agentConfigEdit.windowsSize')">
             <el-input
               v-model="json.details.performanceBreakerWindowSize"
             ></el-input>
@@ -462,7 +490,7 @@
       </el-form>
       <div class="btn-box">
         <el-button class="submit btn" size="mini" @click="save">
-          确定
+          {{ $t('views.agentConfigEdit.enter') }}
         </el-button>
       </div>
     </div>
@@ -578,7 +606,7 @@ export default class AgentConfig extends VueBase {
   }
   private cut(arr: any, index: any) {
     if (arr.length === 1) {
-      this.$message.error('至少保留一个')
+      this.$message.error(this.$t('views.agentConfigEdit.onleOne') as string)
       return
     }
     return arr.splice(index, 1)

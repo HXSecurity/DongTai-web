@@ -244,7 +244,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.manage')"
-        width="320px"
+        width="360px"
         fixed="right"
       >
         <template slot-scope="{ row }">
@@ -256,7 +256,9 @@
                 type="text"
                 :class="!state && 'icon-disabled'"
               >
-                <span class="el-text"> 暂停中 </span>
+                <span class="el-text">
+                  {{ $t('views.agentManage.Suspended') }}
+                </span>
               </el-button>
             </template>
             <template v-else>
@@ -267,7 +269,9 @@
                 style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
                 @click="agentStart(row.id)"
-                ><span class="el-text">启动</span></el-button
+                ><span class="el-text">{{
+                  $t('views.agentManage.startUp')
+                }}</span></el-button
               >
               <el-button
                 v-else
@@ -276,7 +280,9 @@
                 style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
                 @click="agentStop(row.id)"
-                ><span class="el-text">暂停</span></el-button
+                ><span class="el-text">{{
+                  $t('views.agentManage.suspend')
+                }}</span></el-button
               >
             </template>
 
@@ -289,7 +295,9 @@
               style="color: #4a72ae"
               @click="update(row.id, 2)"
             >
-              <span class="el-text">注册</span></el-button
+              <span class="el-text">{{
+                $t('views.agentManage.register')
+              }}</span></el-button
             >
 
             <el-button
@@ -298,7 +306,9 @@
               size="small"
               style="color: #4a72ae"
               @click="update(row.id, 5)"
-              ><span class="el-text">卸载</span></el-button
+              ><span class="el-text">{{
+                $t('views.agentManage.uninstall')
+              }}</span></el-button
             >
             <span class="l"> | </span>
 
@@ -307,7 +317,9 @@
               size="small"
               style="color: #4a72ae"
               @click="update(row.id, 6)"
-              ><span class="el-text">降级</span></el-button
+              ><span class="el-text">{{
+                $t('views.agentManage.Demotion')
+              }}</span></el-button
             >
             <span class="l"> | </span>
             <el-button
@@ -315,7 +327,9 @@
               size="small"
               style="color: #4a72ae"
               @click="update(row.id, 7)"
-              ><span class="el-text">恢复</span></el-button
+              ><span class="el-text">{{
+                $t('views.agentManage.recovery')
+              }}</span></el-button
             >
             <span class="l"> | </span>
             <el-button
@@ -324,7 +338,7 @@
               style="color: #4a72ae"
               @click="doDelete(row.id)"
             >
-              <span class="el-text">删除</span>
+              <span class="el-text">{{ $t('views.agentManage.delete') }}</span>
             </el-button>
           </div>
         </template>
@@ -862,7 +876,7 @@ export default class AgentManage extends VueBase {
   align-items: center;
   .el-button {
     .el-text {
-      width: 42px;
+      min-width: 42px;
       display: inline-block;
     }
     box-sizing: border-box;
