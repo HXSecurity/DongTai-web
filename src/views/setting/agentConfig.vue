@@ -507,7 +507,7 @@ export default class AgentConfig extends VueBase {
   async goBack() {
     this.$router.push({ name: 'sysInfo' })
   }
-  private senior = true
+  private senior = false
   private json: any = {
     cluster_name: '',
     cluster_version: '',
@@ -519,69 +519,36 @@ export default class AgentConfig extends VueBase {
     user: 0,
     details: {
       enableAutoFallback: true,
-      heavyTrafficBreakerWaitDuration: 0,
-      heavyTrafficLimitInitBurstSeconds: 0,
-      heavyTrafficLimitTokenPerSecond: 0,
-      hookLimitInitBurstSeconds: 0,
-      hookLimitTokenPerSecond: 0,
-      performanceBreakerFailureRate: 0,
-      performanceBreakerWaitDuration: 0,
-      performanceBreakerWindowSize: 0,
-      performanceLimitRiskMaxMetricsCount: 0,
+      heavyTrafficBreakerWaitDuration: 30,
+      heavyTrafficLimitInitBurstSeconds: 2.0,
+      heavyTrafficLimitTokenPerSecond: 4.0,
+      hookLimitInitBurstSeconds: 10,
+      hookLimitTokenPerSecond: 5000,
+      performanceBreakerFailureRate: 51.0,
+      performanceBreakerWaitDuration: 40,
+      performanceBreakerWindowSize: 2,
+      performanceLimitRiskMaxMetricsCount: 3,
       secondFallbackDuration: 0,
       secondFallbackFrequencyInitBurstSeconds: 0,
       secondFallbackFrequencyTokenPerSecond: 0,
       performanceLimitMaxThreshold: {
         cpuUsage: {
-          cpuUsagePercentage: 0,
+          cpuUsagePercentage: 100,
         },
-        garbageInfo: {
-          collectionInfoList: [
-            {
-              collectionCount: 0,
-              collectionName: '',
-              collectionTime: 0,
-              tenured: null,
-            },
-          ],
-        },
-        memoryNoHeapUsage: {
-          max: null,
-          init: null,
-          used: 0,
-          committed: null,
-          memUsagePercentage: null,
-        },
-        memoryUsage: {
-          max: null,
-          init: null,
-          used: null,
-          committed: null,
-          memUsagePercentage: 0,
-        },
-        threadInfo: {
-          threadCount: null,
-          peakThreadCount: null,
-          daemonThreadCount: null,
-          dongTaiThreadCount: 0,
-        },
-      },
-      performanceLimitRiskThreshold: {
-        cpuUsage: { cpuUsagePercentage: 0 },
         garbageInfo: {
           collectionInfoList: [
             {
               tenured: true,
-              collectionName: null,
-              collectionTime: 0,
-              collectionCount: 0,
+              collectionName: 'G1 Old Generation',
+              collectionTime: 500,
+              collectionCount: 5,
             },
           ],
         },
         memoryNoHeapUsage: {
           max: null,
           init: null,
-          used: 0,
+          used: 1000000000,
           committed: null,
           memUsagePercentage: null,
         },
@@ -590,17 +557,50 @@ export default class AgentConfig extends VueBase {
           init: null,
           used: null,
           committed: null,
-          memUsagePercentage: 0,
+          memUsagePercentage: 100,
+        },
+        threadInfo: {
+          threadCount: 10000,
+          peakThreadCount: null,
+          daemonThreadCount: 1000,
+          dongTaiThreadCount: 0,
+        },
+      },
+      performanceLimitRiskThreshold: {
+        cpuUsage: { cpuUsagePercentage: 100 },
+        garbageInfo: {
+          collectionInfoList: [
+            {
+              tenured: true,
+              collectionName: 'G1 Old Generation',
+              collectionTime: 1000,
+              collectionCount: 10,
+            },
+          ],
+        },
+        memoryNoHeapUsage: {
+          max: null,
+          init: null,
+          used: 500000000,
+          committed: null,
+          memUsagePercentage: null,
+        },
+        memoryUsage: {
+          max: null,
+          init: null,
+          used: null,
+          committed: null,
+          memUsagePercentage: 500,
         },
         threadInfo: {
           threadCount: null,
           peakThreadCount: null,
-          daemonThreadCount: null,
+          daemonThreadCount: 500,
           dongTaiThreadCount: 0,
         },
-        secondFallbackDuration: 0,
-        secondFallbackFrequencyInitBurstSeconds: 0,
-        secondFallbackFrequencyTokenPerSecond: 0,
+        secondFallbackDuration: 12000,
+        secondFallbackFrequencyInitBurstSeconds: 200.0,
+        secondFallbackFrequencyTokenPerSecond: 0.01,
       },
     },
   }
@@ -614,9 +614,9 @@ export default class AgentConfig extends VueBase {
   private add(arr: any) {
     arr.push({
       tenured: true,
-      collectionName: null,
-      collectionTime: 0,
-      collectionCount: 0,
+      collectionName: 'G1 Old Generation',
+      collectionTime: 1000,
+      collectionCount: 10,
     })
   }
   private async save() {
