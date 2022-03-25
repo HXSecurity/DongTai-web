@@ -1,8 +1,11 @@
 <template>
   <main>
     <el-tabs v-model="activeName">
-      <el-tab-pane label="全局配置" name="global"></el-tab-pane>
-      <el-tab-pane label="熔断降级" name="agent"></el-tab-pane>
+      <el-tab-pane
+        :label="$t('views.sysInfo.global')"
+        name="global"
+      ></el-tab-pane>
+      <el-tab-pane :label="$t('views.sysInfo.fuse')" name="agent"></el-tab-pane>
     </el-tabs>
     <div v-if="activeName === 'agent'">
       <div class="agent-btn-box">
@@ -12,20 +15,30 @@
           size="mini"
           @click="add"
         >
-          新增
+          {{ $t('views.sysInfo.add') }}
         </el-button>
       </div>
       <el-table :data="jsons" class="info-table">
         <el-table-column prop="id" label="ID" width="60"> </el-table-column>
-        <el-table-column prop="ip" label="ip" width="120"> </el-table-column>
-        <el-table-column prop="port" label="端口"> </el-table-column>
-        <el-table-column prop="hostname" label="主机名"> </el-table-column>
-        <el-table-column prop="priority" label="优先级"> </el-table-column>
-        <el-table-column prop="cluster_name" width="200" label="集群名称">
+        <el-table-column prop="ip" label="IP" width="120"> </el-table-column>
+        <el-table-column prop="port" :label="$t('views.sysInfo.port')">
         </el-table-column>
-        <el-table-column prop="cluster_version" label="集群版本">
+        <el-table-column prop="hostname" :label="$t('views.sysInfo.hostname')">
         </el-table-column>
-        <el-table-column width="200" label="操作">
+        <el-table-column prop="priority" :label="$t('views.sysInfo.priority')">
+        </el-table-column>
+        <el-table-column
+          prop="cluster_name"
+          width="200"
+          :label="$t('views.sysInfo.cluster_name')"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="cluster_version"
+          :label="$t('views.sysInfo.cluster_version')"
+        >
+        </el-table-column>
+        <el-table-column width="200" :label="$t('views.sysInfo.operation')">
           <template slot-scope="scope">
             <div class="table-btn-box">
               <el-button
@@ -34,7 +47,7 @@
                 style="color: #4a72ae"
                 @click="edit(scope.row)"
               >
-                编辑
+                {{ $t('views.sysInfo.edit') }}
               </el-button>
               <span class="l"> | </span>
               <el-button
@@ -43,7 +56,7 @@
                 type="text"
                 @click="del(scope.row)"
               >
-                删除
+                {{ $t('views.sysInfo.del') }}
               </el-button>
             </div>
           </template>
@@ -183,7 +196,7 @@ export default class SysInfo extends VueBase {
   add() {
     this.$router.push({ name: 'agentConfig' })
   }
-  async created() {
+  async activated() {
     this.get_threshold()
     this.getInfo()
   }

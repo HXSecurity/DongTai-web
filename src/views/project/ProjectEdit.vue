@@ -2,8 +2,10 @@
   <main class="container">
     <div style="height: 28px"></div>
     <div class="content-warp">
-      <div class="back" @click="$router.push('/project')">
-        <i class="el-icon-back"></i>{{ $t('views.projectEdit.back') }}
+      <div class="back">
+        <span @click="$router.push('/project')">
+          <i class="el-icon-back"></i>{{ $t('views.projectEdit.back') }}
+        </span>
       </div>
       <div class="title">{{ $t('views.projectEdit.title') }}</div>
       <el-form

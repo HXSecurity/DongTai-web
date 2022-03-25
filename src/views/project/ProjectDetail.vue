@@ -25,7 +25,7 @@
             </el-button>
             <el-button type="text" class="operateBtn" @click="autoTest()">
               <i class="iconfont icondaochu-5"></i>
-              自动测试
+              {{ $t('views.projectDetail.autoTest') }}
             </el-button>
             <el-button
               type="text"

@@ -207,6 +207,7 @@ export default class LogManage extends VueBase {
       showClose: true,
     })
     this.deleteDialogOpen = false
+    this.selectAllPage = false
     await this.getTableData()
   }
   private async logClear() {
