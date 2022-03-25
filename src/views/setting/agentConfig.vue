@@ -623,6 +623,7 @@ export default class AgentConfig extends VueBase {
     const res = await this.services.setting.save_threshold(this.json)
     if (res.status === 201) {
       this.$message.success(res.msg)
+      this.goBack()
       return
     }
     this.$message.error(res.msg)

@@ -933,6 +933,7 @@ export default {
       uncovered: '未覆盖',
     },
     projectDetail: {
+      autoTest: '自动测试',
       beforeClose: '请先保存正在编辑的版本',
       mode: '扫描模式',
       latest_time: '最新时间',

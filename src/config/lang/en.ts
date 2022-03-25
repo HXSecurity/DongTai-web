@@ -956,6 +956,7 @@ export default {
       uncovered: 'Uncovered',
     },
     projectDetail: {
+      autoTest: 'AutoTest',
       beforeClose: 'Please save the version you are editing first',
       mode: 'Mode: ',
       latest_time: 'Created Time:',

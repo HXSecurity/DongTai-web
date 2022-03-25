@@ -196,7 +196,7 @@ export default class SysInfo extends VueBase {
   add() {
     this.$router.push({ name: 'agentConfig' })
   }
-  async created() {
+  async activated() {
     this.get_threshold()
     this.getInfo()
   }

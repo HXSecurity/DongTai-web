@@ -279,6 +279,7 @@ const routes: Array<RouteConfig> = [
         path: 'sysInfo',
         name: 'sysInfo',
         meta: {
+          keepAlive: true,
           i18n: 'menu.sysInfo',
           name: i18n.t('menu.sysInfo'),
         },
@@ -699,6 +700,7 @@ const adminRoutes: Array<RouteConfig> = [
         path: 'sysInfo',
         name: 'sysInfo',
         meta: {
+          keepAlive: true,
           i18n: 'menu.sysInfo',
           name: i18n.t('menu.sysInfo'),
         },
@@ -1061,6 +1063,7 @@ const userRoutes: Array<RouteConfig> = [
         path: 'sysInfo',
         name: 'sysInfo',
         meta: {
+          keepAlive: true,
           i18n: 'menu.sysInfo',
           name: i18n.t('menu.sysInfo'),
         },
