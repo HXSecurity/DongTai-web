@@ -340,7 +340,7 @@
             <el-button
               type="text"
               size="small"
-              style="color: #4a72ae"
+              style="color: #f56262"
               @click="doDelete(row.id)"
             >
               <span class="el-text">{{ $t('views.agentManage.delete') }}</span>
@@ -359,26 +359,6 @@
       @current-change="currentChange"
       @size-change="sizeChange"
     ></el-pagination>
-    <el-dialog
-      :visible.sync="deleteDialogOpen"
-      :title="$t('views.agentManage.delAgent')"
-      width="25%"
-    >
-      <div style="text-align: center">
-        <p style="color: #959fb4">{{ $t('views.agentManage.agentDelInfo') }}</p>
-        <p style="color: #959fb4; margin-top: 14px">
-          {{ $t('views.agentManage.agentDelPop') }}
-        </p>
-      </div>
-      <div slot="footer" style="text-align: center">
-        <el-button class="confirmDel" @click="agentDelete">
-          {{ $t('views.agentManage.enterDel') }}
-        </el-button>
-        <el-button class="cancelDel" @click="deleteDialogOpen = false">
-          {{ $t('views.agentManage.clear') }}
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -736,12 +716,39 @@ export default class AgentManage extends VueBase {
   }
 
   private async doDelete(id: string | number) {
-    this.deleteDialogOpen = true
-    this.deleteSelectId = parseInt(`${id}`)
+    this.$confirm(
+      this.$t('views.strategyManage.deleteWarning') as string,
+      this.$t('views.strategyManage.deletePop') as string,
+      {
+        confirmButtonText: this.$t('views.strategyManage.enter') as string,
+        cancelButtonText: this.$t('views.strategyManage.clear') as string,
+        type: 'warning',
+      }
+    ).then(async () => {
+      debugger
+      const { status, msg } = await this.services.setting.agentDelete({
+        id: Number(id),
+      })
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
+      }
+      this.$message({ type: 'success', message: msg, showClose: true })
+
+      this.currentPageDelete = this.currentPageDelete + 1
+      if (this.currentPageDelete === this.currentPageSize) {
+        this.page = this.page - 1
+      }
+      await this.getTableData()
+      this.deleteSelectId = 0
+    })
   }
 
   private async agentDelete() {
-    this.deleteDialogOpen = false
     this.loadingStart()
     const { status, msg } = await this.services.setting.agentDelete({
       id: this.deleteSelectId,
@@ -755,12 +762,6 @@ export default class AgentManage extends VueBase {
       })
       return
     }
-    this.currentPageDelete = this.currentPageDelete + 1
-    if (this.currentPageDelete === this.currentPageSize) {
-      this.page = this.page - 1
-    }
-    await this.getTableData()
-    this.deleteSelectId = 0
   }
 }
 </script>
@@ -881,10 +882,6 @@ export default class AgentManage extends VueBase {
   align-items: center;
   position: relative;
   .el-button {
-    .el-text {
-      min-width: 42px;
-      display: inline-block;
-    }
     box-sizing: border-box;
     font-size: 14px;
   }
