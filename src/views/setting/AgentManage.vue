@@ -268,7 +268,7 @@
                 size="small"
                 style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
-                @click="agentStart(row.id)"
+                @click="update(row.id, 3)"
                 ><span class="el-text">{{
                   $t('views.agentManage.startUp')
                 }}</span></el-button
@@ -279,7 +279,7 @@
                 size="small"
                 style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
-                @click="agentStop(row.id)"
+                @click="update(row.id, 4)"
                 ><span class="el-text">{{
                   $t('views.agentManage.suspend')
                 }}</span></el-button

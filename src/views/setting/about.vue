@@ -135,9 +135,7 @@ export default class StatusMonitoring extends VueBase {
     })
   }
   private toUpdate() {
-    window.open(
-      `https://doc.dongtai.io/10_log/index.html?from=${this.now_version}&to=${this.new_version}`
-    )
+    window.open(`https://docs.dongtai.io/docs/changelog/release-note`)
   }
   private toHelp() {
     window.open('https://doc.dongtai.io/')
