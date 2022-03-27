@@ -251,21 +251,20 @@
           <div class="table-btn-box">
             <template v-if="row.is_control === 1">
               <el-button
-                style="color: #4a72ae"
+                style="color: #4a72ae; position: absolute; left: 0"
                 size="small"
                 type="text"
                 :class="!state && 'icon-disabled'"
               >
-                <span class="el-text">
-                  {{ $t('views.agentManage.Suspended') }}
-                </span>
+                <span class="el-text el-icon-loading"> </span>
               </el-button>
             </template>
-            <template v-else>
+            <template>
               <el-button
                 v-if="row.is_core_running == 0"
                 type="text"
                 size="small"
+                :disabled="row.is_control === 1"
                 style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
                 @click="update(row.id, 3)"
@@ -277,6 +276,7 @@
                 v-else
                 type="text"
                 size="small"
+                :disabled="row.is_control === 1"
                 style="color: #4a72ae"
                 :class="!state && 'icon-disabled'"
                 @click="update(row.id, 4)"
@@ -293,6 +293,7 @@
               type="text"
               size="small"
               style="color: #4a72ae"
+              :disabled="row.is_control === 1"
               @click="update(row.id, 2)"
             >
               <span class="el-text">{{
@@ -304,17 +305,19 @@
               v-if="row.is_core_running !== 2"
               type="text"
               size="small"
+              :disabled="row.is_control === 1"
               style="color: #4a72ae"
               @click="update(row.id, 5)"
               ><span class="el-text">{{
                 $t('views.agentManage.uninstall')
               }}</span></el-button
             >
-            <span class="l"> | </span>
 
             <el-button
+              v-if="row.is_core_running !== 0"
               type="text"
               size="small"
+              :disabled="row.is_control === 1"
               style="color: #4a72ae"
               @click="update(row.id, 6)"
               ><span class="el-text">{{
@@ -323,8 +326,10 @@
             >
             <span class="l"> | </span>
             <el-button
+              v-if="row.is_core_running === 0"
               type="text"
               size="small"
+              :disabled="row.is_control === 1"
               style="color: #4a72ae"
               @click="update(row.id, 7)"
               ><span class="el-text">{{
@@ -421,9 +426,9 @@ export default class AgentManage extends VueBase {
   }
   created() {
     this.getTableData()
-    // this.timer = setInterval(() => {
-    //   this.reflashTable()
-    // }, 5000)
+    this.timer = setInterval(() => {
+      this.reflashTable()
+    }, 5000)
   }
   private timer: any
   private timeOuter: any
@@ -874,6 +879,7 @@ export default class AgentManage extends VueBase {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   .el-button {
     .el-text {
       min-width: 42px;
