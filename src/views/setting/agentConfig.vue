@@ -2,7 +2,7 @@
   <main>
     <el-page-header class="header" @back="goBack"></el-page-header>
     <div>
-      <el-form :model="json" inline label-width="160px">
+      <el-form :model="json" inline label-width="160px" class="config-form">
         <el-form-item :label="$t('views.agentConfigEdit.pattern')">
           <el-switch v-model="senior"></el-switch>
         </el-form-item>
@@ -29,36 +29,86 @@
           <el-form-item label="port:">
             <el-input v-model="json.port"></el-input>
           </el-form-item>
-          <div class="title">{{ $t('views.agentConfigEdit.hook_one') }}</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.hook_one') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.hook_one_desc_small')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
+          </div>
           <el-form-item :label="`QPS(${$t('views.agentConfigEdit.secTag')}):`">
-            <el-input v-model="json.details.hookLimitTokenPerSecond"></el-input>
+            <el-input v-model="json.details.hookLimitTokenPerSecond"></el-input
+            >{{ $t('views.agentConfigEdit.times') }}
           </el-form-item>
-          <div class="title">{{ $t('views.agentConfigEdit.flow') }}</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.flow') }}
+            <el-tooltip class="item" effect="dark" placement="right">
+              <span class="el-icon-question"></span>
+              <div slot="content">
+                <div>{{ $t('views.agentConfigEdit.flow_sec') }}</div>
+              </div>
+            </el-tooltip>
+          </div>
           <el-form-item :label="`QPS(${$t('views.agentConfigEdit.secTag')}):`">
             <el-input
               v-model="json.details.heavyTrafficLimitTokenPerSecond"
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
-          <div class="title">{{ $t('views.agentConfigEdit.maxCpu') }}</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.maxCpu') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.maxCpuDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
+          </div>
           <el-form-item :label="$t('views.agentConfigEdit.maxCpuLabel')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.cpuUsage
                   .cpuUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
-          <div class="title">{{ $t('views.agentConfigEdit.limitCpu') }}</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.limitCpu') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.limitCpuDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
+          </div>
           <el-form-item :label="$t('views.agentConfigEdit.limitCpuLable')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.cpuUsage
                   .cpuUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.maxMemoryJVM') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.maxMemoryJVMDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
           </div>
           <el-form-item :label="$t('views.agentConfigEdit.maxMemoryLabel')">
             <el-input
@@ -66,10 +116,19 @@
                 json.details.performanceLimitMaxThreshold.memoryUsage
                   .memUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.limitMemory') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.limitMemoryDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
           </div>
           <el-form-item :label="$t('views.agentConfigEdit.maxMemoryLabel')">
             <el-input
@@ -77,7 +136,8 @@
                 json.details.performanceLimitRiskThreshold.memoryUsage
                   .memUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
         </template>
         <template v-if="senior">
@@ -112,12 +172,14 @@
             </el-tooltip>
           </div>
           <el-form-item label="QPS:">
-            <el-input v-model="json.details.hookLimitTokenPerSecond"></el-input>
+            <el-input v-model="json.details.hookLimitTokenPerSecond"></el-input
+            >{{ $t('views.agentConfigEdit.times') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.tagTime')">
             <el-input
               v-model="json.details.hookLimitInitBurstSeconds"
             ></el-input>
+            {{ $t('views.agentConfigEdit.second') }}
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.flow') }}
@@ -136,20 +198,24 @@
           <el-form-item label="QPS:">
             <el-input
               v-model="json.details.heavyTrafficLimitTokenPerSecond"
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.tagTime')">
             <el-input
               v-model="json.details.heavyTrafficLimitInitBurstSeconds"
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.second') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.restoreTime')">
             <el-input
               v-model="json.details.heavyTrafficBreakerWaitDuration"
             ></el-input>
+            {{ $t('views.agentConfigEdit.second') }}
           </el-form-item>
           <div class="title">
-            JVM CPU最大阈值:<el-tooltip
+            {{ $t('views.agentConfigEdit.maxCpu')
+            }}<el-tooltip
               class="item"
               effect="dark"
               :content="$t('views.agentConfigEdit.maxCpuDesc')"
@@ -164,10 +230,19 @@
                 json.details.performanceLimitMaxThreshold.cpuUsage
                   .cpuUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.limitCpu') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.limitCpuDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
           </div>
           <el-form-item :label="$t('views.agentConfigEdit.cpuRate')">
             <el-input
@@ -175,14 +250,15 @@
                 json.details.performanceLimitRiskThreshold.cpuUsage
                   .cpuUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.maxMemoryJVM')
             }}<el-tooltip
               class="item"
               effect="dark"
-              :content="$t('views.agentConfigEdit.maxMemoryDesc')"
+              :content="$t('views.agentConfigEdit.maxMemoryJVMDesc')"
               placement="right"
             >
               <span class="el-icon-question"></span>
@@ -194,7 +270,8 @@
                 json.details.performanceLimitMaxThreshold.memoryUsage
                   .memUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <el-form-item
             :label="`${$t('views.agentConfigEdit.userMemory')}（MB）`"
@@ -203,16 +280,28 @@
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryUsage.used
               "
-            ></el-input>
+            ></el-input
+            >MB
           </el-form-item>
-          <div class="title">{{ $t('views.agentConfigEdit.limitMemory') }}</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.limitMemory') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.limitMemoryDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
+          </div>
           <el-form-item :label="$t('views.agentConfigEdit.limitMemoryLabel')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryUsage
                   .memUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <el-form-item
             :label="`${$t('views.agentConfigEdit.userMemory')}（MB）`"
@@ -221,10 +310,19 @@
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryUsage.used
               "
-            ></el-input>
+            ></el-input
+            >MB
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.limitMemoryMaxOut') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.limitMemoryMaxOutDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
           </div>
           <el-form-item :label="$t('views.agentConfigEdit.memoryRate')">
             <el-input
@@ -232,24 +330,35 @@
                 json.details.performanceLimitMaxThreshold.memoryNoHeapUsage
                   .memUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.userMemory')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryNoHeapUsage.used
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.byte') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.maxMemory')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.memoryNoHeapUsage.max
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.byte') }}
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.limitMemoryLimitOut') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.limitMemoryLimitOutDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
           </div>
           <el-form-item :label="$t('views.agentConfigEdit.memoryRate')">
             <el-input
@@ -257,7 +366,8 @@
                 json.details.performanceLimitRiskThreshold.memoryNoHeapUsage
                   .memUsagePercentage
               "
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.userMemory')">
             <el-input
@@ -265,17 +375,29 @@
                 json.details.performanceLimitRiskThreshold.memoryNoHeapUsage
                   .used
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.byte') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.maxMemory')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.memoryNoHeapUsage.max
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.byte') }}
           </el-form-item>
           <div class="title title-btn">
-            {{ $t('views.agentConfigEdit.gcMax') }}
+            <span>
+              {{ $t('views.agentConfigEdit.gcMax') }}
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="$t('views.agentConfigEdit.gcMaxDesc')"
+                placement="right"
+              >
+                <span class="el-icon-question"></span>
+              </el-tooltip>
+            </span>
             <el-button
               class="add-btn"
               size="small"
@@ -314,10 +436,12 @@
             <el-form-item
               :label="$t('views.agentConfigEdit.collectorFrequency')"
             >
-              <el-input v-model="item.collectionCount"></el-input>
+              <el-input v-model="item.collectionCount"></el-input
+              >{{ $t('views.agentConfigEdit.pcs') }}
             </el-form-item>
             <el-form-item :label="$t('views.agentConfigEdit.collectorTime')">
-              <el-input v-model="item.collectionTime"></el-input>
+              <el-input v-model="item.collectionTime"></el-input
+              >{{ $t('views.agentConfigEdit.second') }}
             </el-form-item>
             <el-form-item :label="$t('views.agentConfigEdit.collectorIsOld')">
               <el-radio v-model="item.tenured" :label="true">
@@ -329,7 +453,17 @@
             </el-form-item>
           </div>
           <div class="title title-btn">
-            {{ $t('views.agentConfigEdit.gcLimit') }}
+            <span>
+              {{ $t('views.agentConfigEdit.gcLimit') }}
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="$t('views.agentConfigEdit.gcLimitDesc')"
+                placement="right"
+              >
+                <span class="el-icon-question"></span>
+              </el-tooltip>
+            </span>
             <el-button
               class="add-btn"
               size="small"
@@ -367,10 +501,12 @@
             <el-form-item
               :label="$t('views.agentConfigEdit.collectorFrequency')"
             >
-              <el-input v-model="item.collectionCount"></el-input>
+              <el-input v-model="item.collectionCount"></el-input
+              >{{ $t('views.agentConfigEdit.pcs') }}
             </el-form-item>
             <el-form-item :label="$t('views.agentConfigEdit.collectorTime')">
-              <el-input v-model="item.collectionTime"></el-input>
+              <el-input v-model="item.collectionTime"></el-input
+              >{{ $t('views.agentConfigEdit.second') }}
             </el-form-item>
             <el-form-item :label="$t('views.agentConfigEdit.collectorIsOld')">
               <el-radio v-model="item.tenured" :label="true">{{
@@ -381,13 +517,24 @@
               }}</el-radio>
             </el-form-item>
           </div>
-          <div class="title">{{ $t('views.agentConfigEdit.threadMax') }}</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.threadMax') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.threadMaxDesc')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
+          </div>
           <el-form-item :label="$t('views.agentConfigEdit.nowThread')">
             <el-input
               v-model="
                 json.details.performanceLimitMaxThreshold.threadInfo.threadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.maxThread')">
             <el-input
@@ -395,7 +542,8 @@
                 json.details.performanceLimitMaxThreshold.threadInfo
                   .peakThreadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.daemonThread')">
             <el-input
@@ -403,7 +551,8 @@
                 json.details.performanceLimitMaxThreshold.threadInfo
                   .daemonThreadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.IASTThread')">
             <el-input
@@ -411,16 +560,28 @@
                 json.details.performanceLimitMaxThreshold.threadInfo
                   .dongTaiThreadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
-          <div class="title">{{ $t('views.agentConfigEdit.threadLimit') }}</div>
+          <div class="title">
+            {{ $t('views.agentConfigEdit.threadLimit') }}
+            <el-tooltip
+              class="item"
+              effect="dark"
+              :content="$t('views.agentConfigEdit.threadLimit')"
+              placement="right"
+            >
+              <span class="el-icon-question"></span>
+            </el-tooltip>
+          </div>
           <el-form-item :label="$t('views.agentConfigEdit.nowThread')">
             <el-input
               v-model="
                 json.details.performanceLimitRiskThreshold.threadInfo
                   .threadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.maxThread')">
             <el-input
@@ -428,7 +589,8 @@
                 json.details.performanceLimitRiskThreshold.threadInfo
                   .peakThreadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.daemonThread')">
             <el-input
@@ -436,7 +598,8 @@
                 json.details.performanceLimitRiskThreshold.threadInfo
                   .daemonThreadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.IASTThread')">
             <el-input
@@ -444,7 +607,8 @@
                 json.details.performanceLimitRiskThreshold.threadInfo
                   .dongTaiThreadCount
               "
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.secondaryDeg') }}
@@ -452,15 +616,18 @@
           <el-form-item :label="$t('views.agentConfigEdit.tokenSec')">
             <el-input
               v-model="json.details.secondFallbackFrequencyTokenPerSecond"
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.tokenInitTime')">
             <el-input
               v-model="json.details.secondFallbackFrequencyInitBurstSeconds"
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.second') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.openStatusMaxTime')">
-            <el-input v-model="json.details.secondFallbackDuration"></el-input>
+            <el-input v-model="json.details.secondFallbackDuration"></el-input
+            >{{ $t('views.agentConfigEdit.second') }}
           </el-form-item>
           <div class="title">
             {{ $t('views.agentConfigEdit.performanceFusing') }}
@@ -469,17 +636,20 @@
           <el-form-item :label="$t('views.agentConfigEdit.failureRate')">
             <el-input
               v-model="json.details.performanceBreakerFailureRate"
-            ></el-input>
+            ></el-input
+            >%
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.notAllow')">
             <el-input
               v-model="json.details.performanceLimitRiskMaxMetricsCount"
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.pcs') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.restoreTime')">
             <el-input
               v-model="json.details.performanceBreakerWaitDuration"
-            ></el-input>
+            ></el-input
+            >{{ $t('views.agentConfigEdit.second') }}
           </el-form-item>
           <el-form-item :label="$t('views.agentConfigEdit.windowsSize')">
             <el-input
@@ -524,13 +694,13 @@ export default class AgentConfig extends VueBase {
       heavyTrafficLimitTokenPerSecond: 4.0,
       hookLimitInitBurstSeconds: 10,
       hookLimitTokenPerSecond: 5000,
-      performanceBreakerFailureRate: 51.0,
+      performanceBreakerFailureRate: 100,
       performanceBreakerWaitDuration: 40,
       performanceBreakerWindowSize: 2,
       performanceLimitRiskMaxMetricsCount: 3,
-      secondFallbackDuration: 0,
-      secondFallbackFrequencyInitBurstSeconds: 0,
-      secondFallbackFrequencyTokenPerSecond: 0,
+      secondFallbackDuration: 100000000,
+      secondFallbackFrequencyInitBurstSeconds: 100000000,
+      secondFallbackFrequencyTokenPerSecond: 10,
       performanceLimitMaxThreshold: {
         cpuUsage: {
           cpuUsagePercentage: 100,
@@ -546,24 +716,24 @@ export default class AgentConfig extends VueBase {
           ],
         },
         memoryNoHeapUsage: {
-          max: null,
+          max: 100000000,
           init: null,
-          used: 1000000000,
+          used: 1,
           committed: null,
-          memUsagePercentage: null,
+          memUsagePercentage: 100,
         },
         memoryUsage: {
-          max: null,
+          max: 100000000,
           init: null,
-          used: null,
+          used: 1,
           committed: null,
           memUsagePercentage: 100,
         },
         threadInfo: {
           threadCount: 10000,
-          peakThreadCount: null,
+          peakThreadCount: 10000,
           daemonThreadCount: 1000,
-          dongTaiThreadCount: 0,
+          dongTaiThreadCount: 10000,
         },
       },
       performanceLimitRiskThreshold: {
@@ -579,24 +749,24 @@ export default class AgentConfig extends VueBase {
           ],
         },
         memoryNoHeapUsage: {
-          max: null,
+          max: 100000000,
           init: null,
-          used: 500000000,
+          used: 1,
           committed: null,
-          memUsagePercentage: null,
+          memUsagePercentage: 100,
         },
         memoryUsage: {
-          max: null,
+          max: 100000000,
           init: null,
-          used: null,
+          used: 1,
           committed: null,
-          memUsagePercentage: 500,
+          memUsagePercentage: 100,
         },
         threadInfo: {
-          threadCount: null,
-          peakThreadCount: null,
-          daemonThreadCount: 500,
-          dongTaiThreadCount: 0,
+          threadCount: 10000,
+          peakThreadCount: 10000,
+          daemonThreadCount: 1000,
+          dongTaiThreadCount: 10000,
         },
         secondFallbackDuration: 12000,
         secondFallbackFrequencyInitBurstSeconds: 200.0,
@@ -689,6 +859,12 @@ main {
       right: 0;
       position: absolute;
     }
+  }
+}
+.config-form {
+  .el-input {
+    width: calc(100% - 34px);
+    margin-right: 6px;
   }
 }
 </style>

@@ -20,25 +20,10 @@
       </div>
       <el-table :data="jsons" class="info-table" border>
         <el-table-column prop="id" label="ID" width="60"> </el-table-column>
-        <el-table-column prop="ip" label="IP" width="120" align="center">
-        </el-table-column>
-        <el-table-column
-          prop="port"
-          :label="$t('views.sysInfo.port')"
-          align="center"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="hostname"
-          :label="$t('views.sysInfo.hostname')"
-          align="center"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="priority"
-          :label="$t('views.sysInfo.priority')"
-          align="center"
-        >
+        <el-table-column label="自动降级" width="120" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.enableAutoFallback ? '是' : '否' }}
+          </template>
         </el-table-column>
         <el-table-column
           align="center"
@@ -53,6 +38,38 @@
           :label="$t('views.sysInfo.cluster_version')"
         >
         </el-table-column>
+        <el-table-column
+          prop="priority"
+          :label="$t('views.sysInfo.priority')"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column label="高频hook限流" width="120" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.hookLimitTokenPerSecond }}/秒
+          </template>
+        </el-table-column>
+        <el-table-column label="高频流量限流" width="120" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.heavyTrafficLimitTokenPerSecond }}/秒
+          </template>
+        </el-table-column>
+        <el-table-column label="CPU阈值" width="120" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.cpuUsagePercentage }}%
+          </template>
+        </el-table-column>
+        <el-table-column label="内存阈值" width="120" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.memUsagePercentage }}%
+          </template>
+        </el-table-column>
+        <el-table-column label="Agent数量" width="120" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.memUsagePercentage }}
+          </template>
+        </el-table-column>
+
         <el-table-column
           width="200"
           :label="$t('views.sysInfo.operation')"
