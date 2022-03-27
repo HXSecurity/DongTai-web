@@ -266,7 +266,6 @@
                 size="small"
                 :disabled="row.is_control === 1"
                 style="color: #4a72ae"
-                :class="!state && 'icon-disabled'"
                 @click="update(row.id, 3)"
                 ><span class="el-text">{{
                   $t('views.agentManage.startUp')
@@ -278,7 +277,6 @@
                 size="small"
                 :disabled="row.is_control === 1"
                 style="color: #4a72ae"
-                :class="!state && 'icon-disabled'"
                 @click="update(row.id, 4)"
                 ><span class="el-text">{{
                   $t('views.agentManage.suspend')
@@ -312,6 +310,7 @@
                 $t('views.agentManage.uninstall')
               }}</span></el-button
             >
+            <span v-if="row.is_core_running !== 0" class="l"> | </span>
 
             <el-button
               v-if="row.is_core_running !== 0"
@@ -324,7 +323,8 @@
                 $t('views.agentManage.Demotion')
               }}</span></el-button
             >
-            <span class="l"> | </span>
+            <span v-if="row.is_core_running === 0" class="l"> | </span>
+
             <el-button
               v-if="row.is_core_running === 0"
               type="text"
