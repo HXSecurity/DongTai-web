@@ -244,7 +244,7 @@
       </el-table-column>
       <el-table-column
         :label="$t('views.agentManage.manage')"
-        width="360px"
+        width="280px"
         fixed="right"
       >
         <template slot-scope="{ row }">

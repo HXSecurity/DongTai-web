@@ -56,6 +56,7 @@
         <el-table-column
           :label="$t('views.templateManage.settings')"
           align="center"
+          width="200px"
         >
           <template slot-scope="{ row }">
             <div class="table-btn-box">

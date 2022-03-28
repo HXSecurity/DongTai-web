@@ -119,7 +119,7 @@
           prop="address"
           :label="$t('views.scaManage.address')"
           align="center"
-          width="100"
+          width="200"
           :fixed="tableData.length ? 'right' : false"
         >
           <template slot-scope="scope">
