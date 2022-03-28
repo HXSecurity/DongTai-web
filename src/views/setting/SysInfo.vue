@@ -74,6 +74,7 @@
           width="200"
           :label="$t('views.sysInfo.operation')"
           align="center"
+          fixed="right"
         >
           <template slot-scope="scope">
             <div class="table-btn-box">

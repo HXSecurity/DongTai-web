@@ -181,30 +181,33 @@
         prop="address"
         :label="$t('views.hookPage.address')"
         align="center"
-        width="100"
+        width="200"
         :fixed="tableData.length ? 'right' : false"
       >
         <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            style="color: #4a72ae"
-            @click="editRow(scope.row)"
-          >
-            {{ $t('views.hookPage.edit') }}
-          </el-button>
-          <el-popconfirm
-            :title="$t('views.hookPage.delpop')"
-            @confirm="changeStatus(scope.row, 'delete')"
-          >
+          <div class="table-btn-box">
             <el-button
-              slot="reference"
-              style="margin-left: 6px; color: #f56262"
-              size="small"
               type="text"
-              >{{ $t('views.hookPage.del') }}</el-button
+              size="small"
+              style="color: #4a72ae"
+              @click="editRow(scope.row)"
             >
-          </el-popconfirm>
+              {{ $t('views.hookPage.edit') }}
+            </el-button>
+            <span class="l"> | </span>
+            <el-popconfirm
+              :title="$t('views.hookPage.delpop')"
+              @confirm="changeStatus(scope.row, 'delete')"
+            >
+              <el-button
+                slot="reference"
+                style="color: #f56262"
+                size="small"
+                type="text"
+                >{{ $t('views.hookPage.del') }}</el-button
+              >
+            </el-popconfirm>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -961,6 +964,25 @@ export default class HookTable extends VueBase {
     /deep/th {
       background: #f6f8fa;
     }
+  }
+}
+.table-btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .el-button {
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .l {
+    color: #38435a;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
   }
 }
 </style>
