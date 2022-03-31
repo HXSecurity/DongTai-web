@@ -21,11 +21,10 @@ spec:
         - name: dongtai-web-container
           image: dongtai/dongtai-web:VERSION
           imagePullPolicy: Always
-          env:
-          - name: aliyun_logs_iast_server_project
-            value: k8s-log-c541e7d8ffff2434a8b7b4fd7d8645d2a
-          - name: aliyun_logs_iast_server
-            value: stdout
+          volumeMounts:
+            - name: configfile
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
           resources:
             limits:
               cpu: "500m"
@@ -33,3 +32,7 @@ spec:
             requests:
               cpu: "500m"
               memory: 1000Mi
+      volumes:
+        - name: configfile
+          configMap:
+            name: dongtai-web-nginx-conf
