@@ -6,7 +6,7 @@
         name="global"
       ></el-tab-pane>
       <el-tab-pane
-        v-if="userInfo.role === 1 && userInfo.role === 2"
+        v-if="userInfo.role === 1 || userInfo.role === 2"
         :label="$t('views.sysInfo.fuse')"
         name="agent"
       ></el-tab-pane>
