@@ -437,7 +437,7 @@ export default class ScaDetail extends VueBase {
 
 .operateCol {
   position: fixed;
-  overflow: auto;
+  overflow: hidden;
   height: calc(100vh - 64px);
   .operateIcon {
     font-size: 26px;
