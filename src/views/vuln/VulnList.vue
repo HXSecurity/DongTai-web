@@ -635,6 +635,9 @@ export default class VulnList extends VueBase {
     if (stop) {
       return
     }
+    if (!val) {
+      this.kw = val
+    }
     this.searchObj.project_id = val
     this.newSelectData()
   }
