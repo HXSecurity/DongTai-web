@@ -125,20 +125,33 @@
             <div class="module-title">
               {{ $t('views.projectDetail.vulNum') }}
             </div>
-            <div id="level_count" class="module-card"></div>
+
+            <div>
+              <Distribution
+                v-if="projectObj.level_count"
+                :height="312"
+                :data="projectObj.level_count"
+              />
+            </div>
           </div>
           <div class="module-content">
             <div class="module-title">
               {{ $t('views.projectDetail.type') }}
             </div>
-            <div id="type_summary" class="module-card"></div>
+
+            <Type
+              v-if="projectObj.type_summary"
+              :height="312"
+              :data="projectObj.type_summary"
+            />
           </div>
         </div>
         <div class="module">
           <div class="module-title">
             {{ $t('views.projectDetail.trend') }}
           </div>
-          <div id="day_num" class="module-card"></div>
+
+          <Trend v-if="projectObj.day_num" :data="projectObj.day_num" />
         </div>
       </div>
       <div v-if="selectTab === 'vul'">
@@ -390,12 +403,19 @@ import ApiList from './apiList.vue'
 import ScaList from '../sca/ScaList.vue'
 import merge from 'webpack-merge'
 
+import Distribution from './components/distribution.vue'
+import Trend from './components/trend.vue'
+import Type from './components/type.vue'
+
 @Component({
   name: 'ProjectDetail',
   components: {
     VulListComponent,
     ScaList,
     ApiList,
+    Distribution,
+    Trend,
+    Type,
   },
 })
 export default class ProjectDetail extends VueBase {
@@ -664,147 +684,6 @@ export default class ProjectDetail extends VueBase {
       name: data.name,
       latest_time: formatTimestamp(data.latest_time),
     }
-
-    const type_summary = document.getElementById('type_summary') as HTMLElement
-    const level_count = document.getElementById('level_count') as HTMLElement
-    const type_summary_level_count = document.getElementById(
-      'type_summary_level_count'
-    ) as HTMLElement
-    if (!type_summary || !level_count || !type_summary_level_count) {
-      return false
-    }
-    const height = Math.ceil(data.type_summary.length / 5) * 30 + 40
-    if (!this.offsetHeight) {
-      this.offsetHeight = type_summary.offsetHeight
-    }
-    const domHeight = this.offsetHeight
-    type_summary.style.height = domHeight + height + 'px'
-    level_count.style.height = domHeight + height + 'px'
-    type_summary_level_count.style.height = domHeight + 40 + height + 'px'
-
-    if (this.selectTab !== 'desc') {
-      return
-    }
-
-    const levelCountChart = echarts.init(
-      document.getElementById('level_count') as HTMLElement
-    )
-    const levelCountOption: EChartsOption = {
-      tooltip: {
-        trigger: 'axis',
-      },
-      grid: {
-        height: domHeight + height - 100,
-        left: '3%',
-        right: '4%',
-        containLabel: true,
-      },
-      xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01],
-      },
-      yAxis: {
-        type: 'category',
-        data: data.level_count
-          .map((item: { level_name: string }) => {
-            return item.level_name
-          })
-          .reverse(),
-      },
-      series: [
-        {
-          type: 'bar',
-          barWidth: 10,
-          data: data.level_count
-            .map((item: { num: number }) => {
-              return item.num
-            })
-            .reverse(),
-        },
-      ],
-    }
-    levelCountChart.setOption(levelCountOption)
-    const typeSummaryChart = echarts.init(type_summary as HTMLElement)
-    const typeSummaryOption: EChartsOption = {
-      tooltip: {
-        trigger: 'item',
-      },
-      legend: {
-        orient: 'horizontal',
-        bottom: 10,
-        data: data.type_summary.map((item: { type_name: string }) => {
-          return item.type_name
-        }),
-      },
-      series: [
-        {
-          type: 'pie',
-          width: 580,
-          height: 300,
-          data: data.type_summary.reduce(
-            (
-              list: { name: any; value: any; tooltip: { formatter: string } }[],
-              item: { type_name: any; type_count: any }
-            ) => {
-              list.push({
-                name: item.type_name,
-                value: item.type_count,
-                tooltip: {
-                  formatter:
-                    this.$t('views.projectDetail.pieType') +
-                    '<br />{b0}: {c0} ({d}%)<br />',
-                },
-              })
-              return list
-            },
-            []
-          ),
-        },
-      ],
-    }
-    typeSummaryChart.setOption(typeSummaryOption)
-
-    const dayNumChart = echarts.init(
-      document.getElementById('day_num') as HTMLElement
-    )
-    const dayNumOption: EChartsOption = {
-      tooltip: {
-        trigger: 'axis',
-      },
-      xAxis: {
-        type: 'category',
-        data: data.day_num.map((item: { day_label: any }) => {
-          return item.day_label
-        }),
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
-        {
-          data: data.day_num.map((item: { day_num: any }) => {
-            return item.day_num
-          }),
-          itemStyle: {
-            color: 'rgba(99, 161, 242,1)',
-          },
-          type: 'line',
-          areaStyle: {
-            color: new (echarts as any).graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(99, 161, 242,1)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(99, 161, 242,0.3)',
-              },
-            ]),
-          },
-        },
-      ],
-    }
-    dayNumChart.setOption(dayNumOption)
   }
   showVersion() {
     this.versionFlag = true

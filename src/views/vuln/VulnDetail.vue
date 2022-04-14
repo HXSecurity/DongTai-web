@@ -334,11 +334,16 @@
 
       <!-- Stain flow vul-->
       <div
-        v-if="vulnObj.vul.graph && vulnObj.vul.graph.length > 0"
-        class="module-title"
+        v-if="vulnObj.graphs && vulnObj.graphs.length > 0"
+        class="graphModule flex-row-space-between"
       >
         {{ $t('views.vulnDetail.graph') }}
       </div>
+
+      <div v-if="vulnObj.graphs && vulnObj.graphs.length > 0">
+        <LinkList :tree="vulnObj.graphs"></LinkList>
+      </div>
+      <!-- 
       <div
         v-if="vulnObj.vul.graph && vulnObj.vul.graph.length > 0"
         class="graphModule flex-row-space-between"
@@ -405,7 +410,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
       <div v-if="vulnObj.strategy.repair_suggestion" class="module-title">
         {{ $t('views.vulnDetail.suggest') }}
       </div>
@@ -494,8 +499,14 @@ import VueBase from '@/VueBase'
 import request from '@/utils/request'
 import { VulnListObj, VulnObj } from './types'
 import qs from 'qs'
+import LinkList from './components/linkList.vue'
 
-@Component({ name: 'VulnDetail' })
+@Component({
+  name: 'VulnDetail',
+  components: {
+    LinkList,
+  },
+})
 export default class VulnDetail extends VueBase {
   private sliderWarpContract = false
   private deleteDialogOpen = false
@@ -539,6 +550,7 @@ export default class VulnDetail extends VueBase {
   ]
 
   private vulnObj: VulnObj = {
+    graphs: [],
     vul: {
       url: '',
       uri: '',
@@ -812,7 +824,17 @@ export default class VulnDetail extends VueBase {
       this.req_md = strArr.join('<br/>')
       this.res_md = data.vul.response.split(`\n`).join('<br/>')
 
+      const graphs: any = []
+      data.graphs.forEach((item: any) => {
+        graphs.push({
+          url: item.meta.url,
+          level_type: data.vul.level_type,
+          open: true,
+          vulnInfo: { ...item.meta, graph: item.graph },
+        })
+      })
       this.vulnObj = {
+        graphs: graphs,
         vul: {
           ...data.vul,
           first_time: formatTimestamp(data.vul.first_time),
