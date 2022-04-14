@@ -40,7 +40,11 @@
         <span class="value" style="width: 305px">{{ vuln.agent_name }}</span>
       </div>
     </div>
-    <div class="flow" :style="`border-color:${levelColor(vuln.level_type)}`">
+    <div
+      v-if="vuln.graph && vuln.graph.length"
+      class="flow"
+      :style="`border-color:${levelColor(vuln.level_type)}`"
+    >
       <div
         class="title"
         :style="`background-color:${bgColor(vuln.level_type)}`"
