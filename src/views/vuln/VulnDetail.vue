@@ -830,7 +830,11 @@ export default class VulnDetail extends VueBase {
           url: item.meta.url,
           level_type: data.vul.level_type,
           open: true,
-          vulnInfo: { ...item.meta, graph: item.graph },
+          vulnInfo: {
+            ...item.meta,
+            graph: item.graph,
+            level_type: data.vul.level_type,
+          },
         })
       })
       this.vulnObj = {
