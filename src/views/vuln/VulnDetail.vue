@@ -335,7 +335,7 @@
       <!-- Stain flow vul-->
       <div
         v-if="vulnObj.graphs && vulnObj.graphs.length > 0"
-        class="graphModule flex-row-space-between"
+        class="module-title"
       >
         {{ $t('views.vulnDetail.graph') }}
       </div>
