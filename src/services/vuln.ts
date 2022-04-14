@@ -11,6 +11,7 @@ interface vulnListParams {
   app?: string
   url?: string
   order?: string
+  agent_id?: string
 }
 
 export default () =>
@@ -37,7 +38,9 @@ export default () =>
 
     // 漏洞详情
     getVulnDetail(id: number): Promise<iResponse> {
-      return request.get(`/vuln/${id}`)
+      return request.get(`/vuln/${id}`, {
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
     }
 
     // 漏洞删除

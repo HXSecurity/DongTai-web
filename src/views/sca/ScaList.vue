@@ -423,6 +423,9 @@ export default class ScaList extends VueBase {
       return
     }
     this.searchObj.project_id = val
+    if (!val) {
+      this.kw = val
+    }
     this.newSelectData()
   }
 

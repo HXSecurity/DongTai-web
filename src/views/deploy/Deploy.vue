@@ -203,7 +203,10 @@
             </div>
             <div class="install-tabs">
               <el-tabs v-model="activeName" @tab-click="getMd">
-                <el-tab-pane label="SpringBoot" name="SpringBoot">
+                <el-tab-pane
+                  label="SpringBoot"
+                  name="Spring-boot/Netty/Jetty/Sofa"
+                >
                   <div class="install-tab-info margin-t-8">
                     <MyMarkdownIt
                       :content="md[activeName]"
@@ -219,14 +222,14 @@
                     ></MyMarkdownIt>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="JBoss" name="JBoss">
+                <!-- <el-tab-pane label="JBoss" name="JBoss">
                   <div class="install-tab-info margin-t-8">
                     <MyMarkdownIt
                       :content="md[activeName]"
                       style="color: #747c8c"
                     ></MyMarkdownIt>
                   </div>
-                </el-tab-pane>
+                </el-tab-pane> -->
                 <el-tab-pane label="Jetty" name="Jetty">
                   <div class="install-tab-info margin-t-8">
                     <MyMarkdownIt
@@ -243,15 +246,23 @@
                     ></MyMarkdownIt>
                   </div>
                 </el-tab-pane>
-                <el-tab-pane label="WebLogic" name="WebLogic">
+                <!-- <el-tab-pane label="WebLogic" name="WebLogic">
                   <div class="install-tab-info margin-t-8">
                     <MyMarkdownIt
                       :content="md[activeName]"
                       style="color: #747c8c"
                     ></MyMarkdownIt>
                   </div>
-                </el-tab-pane>
-                <el-tab-pane label="WebSphere" name="WebSphere">
+                </el-tab-pane> -->
+                <!-- <el-tab-pane label="WebSphere" name="WebSphere">
+                  <div class="install-tab-info margin-t-8">
+                    <MyMarkdownIt
+                      :content="md[activeName]"
+                      style="color: #747c8c"
+                    ></MyMarkdownIt>
+                  </div>
+                </el-tab-pane> -->
+                <el-tab-pane label="东方通" name="东方通">
                   <div class="install-tab-info margin-t-8">
                     <MyMarkdownIt
                       :content="md[activeName]"
@@ -431,7 +442,7 @@ import { Component } from 'vue-property-decorator'
 
 @Component({ name: 'Deploy' })
 export default class Deploy extends VueBase {
-  private activeName = 'SpringBoot'
+  private activeName = 'Spring-boot/Netty/Jetty/Sofa'
   private language = 'java'
   private token = ''
   private uri = window.location.origin + '/openapi'
