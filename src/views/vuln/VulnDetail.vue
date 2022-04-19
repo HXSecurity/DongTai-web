@@ -311,7 +311,21 @@
             ></i
             >{{ $t('views.vulnDetail.replay') }}</el-button
           >
+          <el-select
+            v-model="requsetIndex"
+            class="request-select"
+            size="small"
+            @change="changeRequest"
+          >
+            <el-option
+              v-for="(request, key) in vulnObj.headers"
+              :key="key"
+              :value="key"
+              :label="request.agent_name"
+            ></el-option>
+          </el-select>
         </div>
+
         <div class="selectForm">
           <div class="select-item"></div>
           <div
@@ -586,6 +600,7 @@ export default class VulnDetail extends VueBase {
       sample_code: '',
       repair_suggestion: '',
     },
+    headers: {},
   }
   private tableData: Array<VulnListObj> = []
   private page = 1
@@ -677,6 +692,13 @@ export default class VulnDetail extends VueBase {
       })
     }
   }
+
+  private requsetIndex = '0'
+  private changeRequest(e: any) {
+    this.requsetIndex = e
+    this.req_md = this.vulnObj.headers[e].req_header
+    this.res_md = this.vulnObj.headers[e].response
+  }
   private req_md = ''
   private res_md = ''
   private async getTableData() {
@@ -753,76 +775,87 @@ export default class VulnDetail extends VueBase {
           return "<tt style='color:red'>" + match + '</tt>'
         })
       }
-      const str = data.vul.req_header
-        .split('<')
-        .join('&lt;')
-        .split(`*`)
-        .join('\\*')
-      const strArr = str.split(`\n`)
-      try {
-        for (const key in data.vul.param_name) {
-          switch (key) {
-            case 'GET':
-              const strArrNoSpace = strArr[0].split(' ')
-              const strG = strArrNoSpace[1].split('?')
-              const getObj = qs.parse(strG[1])
-              const getRedStr = toRed(strG[1], getObj[data.vul.param_name[key]])
-              strG[1] = getRedStr
-              strArrNoSpace[1] = strG.join('?')
-              strArr[0] = strArrNoSpace.join(' ')
-              break
-            case 'POST':
-              if (!this.isJSON(strArr[strArr.length - 1])) {
-                const postObj = qs.parse(strArr[strArr.length - 1])
-                const postRedStr = toRed(
-                  strArr[strArr.length - 1],
-                  postObj[data.vul.param_name[key]]
+      for (let key in data.headers) {
+        const str = data.headers[key].req_header
+          .split('<')
+          .join('&lt;')
+          .split(`*`)
+          .join('\\*')
+        const strArr = str.split(`\n`)
+        try {
+          for (const key in data.vul.param_name) {
+            switch (key) {
+              case 'GET':
+                const strArrNoSpace = strArr[0].split(' ')
+                const strG = strArrNoSpace[1].split('?')
+                const getObj = qs.parse(strG[1])
+                const getRedStr = toRed(
+                  strG[1],
+                  getObj[data.vul.param_name[key]]
                 )
-                strArr[strArr.length - 1] = postRedStr
-              } else {
-                const obj = JSON.parse(strArr[strArr.length - 1])
-                const postRedStr = toRed(
-                  strArr[strArr.length - 1],
-                  obj[data.vul.param_name[key]]
-                )
-                strArr[strArr.length - 1] = postRedStr
-              }
-
-              break
-            case 'COOKIE':
-              strArr.forEach((item: any, index: number) => {
-                if (item.indexOf('cookie:') > -1) {
-                  const cookieG = item.split(':')
-                  const cookieObj = qs.parse(cookieG[1])
-                  const cookieRedStr = toRed(
-                    cookieG[1],
-                    cookieObj[data.vul.param_name[key]]
+                strG[1] = getRedStr
+                strArrNoSpace[1] = strG.join('?')
+                strArr[0] = strArrNoSpace.join(' ')
+                break
+              case 'POST':
+                if (!this.isJSON(strArr[strArr.length - 1])) {
+                  const postObj = qs.parse(strArr[strArr.length - 1])
+                  const postRedStr = toRed(
+                    strArr[strArr.length - 1],
+                    postObj[data.vul.param_name[key]]
                   )
-                  cookieG[1] = cookieRedStr
-                  strArr[index] = cookieG.join(':')
+                  strArr[strArr.length - 1] = postRedStr
+                } else {
+                  const obj = JSON.parse(strArr[strArr.length - 1])
+                  const postRedStr = toRed(
+                    strArr[strArr.length - 1],
+                    obj[data.vul.param_name[key]]
+                  )
+                  strArr[strArr.length - 1] = postRedStr
                 }
-              })
-              break
-            case 'PATH':
-              const strP = strArr[0].split('?')
-              const pathRedStr = toRed(strP[0], data.vul.param_name[key])
-              strP[0] = pathRedStr
-              strArr[0] = strP.join('?')
-              break
-            case 'HEADER':
-              strArr.forEach((item: any, index: number) => {
-                if (item.indexOf(data.vul.param_name[key]) > -1) {
-                  strArr[index] = toRed(item, item.split(':')[1])
-                }
-              })
-              break
+
+                break
+              case 'COOKIE':
+                strArr.forEach((item: any, index: number) => {
+                  if (item.indexOf('cookie:') > -1) {
+                    const cookieG = item.split(':')
+                    const cookieObj = qs.parse(cookieG[1])
+                    const cookieRedStr = toRed(
+                      cookieG[1],
+                      cookieObj[data.vul.param_name[key]]
+                    )
+                    cookieG[1] = cookieRedStr
+                    strArr[index] = cookieG.join(':')
+                  }
+                })
+                break
+              case 'PATH':
+                const strP = strArr[0].split('?')
+                const pathRedStr = toRed(strP[0], data.vul.param_name[key])
+                strP[0] = pathRedStr
+                strArr[0] = strP.join('?')
+                break
+              case 'HEADER':
+                strArr.forEach((item: any, index: number) => {
+                  if (item.indexOf(data.vul.param_name[key]) > -1) {
+                    strArr[index] = toRed(item, item.split(':')[1])
+                  }
+                })
+                break
+            }
           }
+        } catch (e) {
+          console.log(e)
         }
-      } catch (e) {
-        console.log(e)
+        data.headers[key].req_header = strArr.join('<br/>')
+        data.headers[key].response = data.headers[key].response
+          .split(`\n`)
+          .join('<br/>')
       }
-      this.req_md = strArr.join('<br/>')
-      this.res_md = data.vul.response.split(`\n`).join('<br/>')
+
+      this.requsetIndex = Object.keys(data.headers)[0]
+      this.req_md = data.headers[this.requsetIndex]?.req_header
+      this.res_md = data.headers[this.requsetIndex]?.response
 
       const graphs: any = []
       data.graphs.forEach((item: any) => {
@@ -851,6 +884,7 @@ export default class VulnDetail extends VueBase {
         strategy: {
           ...data.strategy,
         },
+        headers: { ...data.headers },
       }
     })
   }
@@ -1347,5 +1381,10 @@ export default class VulnDetail extends VueBase {
     color: #1a80f2;
     background: #f6f8fa;
   }
+}
+
+.request-select {
+  float: right;
+  width: 364px;
 }
 </style>
