@@ -247,7 +247,7 @@ export default class templateManage extends VueBase {
   padding-top: 0;
 }
 .content-warp {
-  padding: 38px 14px 40px 14px;
+  padding: 20px 14px 40px 14px;
 }
 .search-input {
   border-right: none;

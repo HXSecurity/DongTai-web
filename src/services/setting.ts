@@ -4,7 +4,7 @@ import axios from 'axios'
 
 interface agentListParams {
   page: number
-  pageSize: number
+  page_size: number
 }
 
 export default () =>
@@ -17,8 +17,28 @@ export default () =>
       return request.post('/agent/alias/modified', data)
     }
 
+    // agentList(params: agentListParams): Promise<iResponse> {
+    //   return request.get('/agents', { params })
+    // }
+
+    stat(params: any): Promise<iResponse> {
+      return request.get('/agents/stat', {
+        params,
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
+    }
+
+    summary(): Promise<iResponse> {
+      return request.get('/agents/summary', {
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
+    }
+
     agentList(params: agentListParams): Promise<iResponse> {
-      return request.get('/agents', { params })
+      return request.get('/agents', {
+        params,
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
     }
 
     agentInstall(params: { id: number }): Promise<iResponse> {

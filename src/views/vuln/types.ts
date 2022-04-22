@@ -66,4 +66,5 @@ export interface VulnObj {
     sample_code: string
     repair_suggestion: string
   }
+  headers: any
 }

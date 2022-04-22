@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2239779 */
-  src: url('iconfont.woff2?t=1627552449710') format('woff2'),
-       url('iconfont.woff?t=1627552449710') format('woff'),
-       url('iconfont.ttf?t=1627552449710') format('truetype');
+  src: url('iconfont.woff2?t=1650529341805') format('woff2'),
+       url('iconfont.woff?t=1650529341805') format('woff'),
+       url('iconfont.ttf?t=1650529341805') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,98 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconxiazai:before {
+  content: "\e6aa";
+}
+
+.iconqidong:before {
+  content: "\e6ab";
+}
+
+.iconzanting:before {
+  content: "\e6ac";
+}
+
+.iconjava:before {
+  content: "\e6a8";
+}
+
+.iconpython:before {
+  content: "\e6a9";
+}
+
+.icongolang:before {
+  content: "\e6a6";
+}
+
+.iconphp:before {
+  content: "\e6a7";
+}
+
+.iconneicun:before {
+  content: "\e6a3";
+}
+
+.iconGPU:before {
+  content: "\e6a4";
+}
+
+.iconCPU:before {
+  content: "\e6a5";
+}
+
+.iconchaxun:before {
+  content: "\e6a2";
+}
+
+.iconnotice1:before {
+  content: "\e6a0";
+}
+
+.iconxitongset:before {
+  content: "\e6a1";
+}
+
+.iconset:before {
+  content: "\e69f";
+}
+
+.iconbacktop:before {
+  content: "\e69c";
+}
+
+.iconwudianliu:before {
+  content: "\e69e";
+}
+
+.iconadd:before {
+  content: "\e673";
+}
+
+.iconmiuns:before {
+  content: "\e675";
+}
+
+.iconquanping:before {
+  content: "\e698";
+}
+
+.iconquxiaquanping:before {
+  content: "\e699";
+}
+
+.iconlianku:before {
+  content: "\e69a";
+}
+
+.iconlist:before {
+  content: "\e69b";
+}
+
+.iconnotice:before {
+  content: "\e631";
 }
 
 .iconyonghu:before {
