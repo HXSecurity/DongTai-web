@@ -35,7 +35,7 @@
             >
               <div class="left">
                 <div class="dot"></div>
-                <div class="label">已暂停</div>
+                <div class="label">已离线</div>
               </div>
               <div class="number">{{ summary[3] }}</div>
             </div>
@@ -192,6 +192,7 @@
             <template slot-scope="{ row }">
               <el-switch
                 v-if="row.is_control === 0"
+                v-model="row.is_core_running"
                 :width="32"
                 style="margin-right: 20px"
                 :active-value="1"
