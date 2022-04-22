@@ -22,8 +22,8 @@
           )"
           :key="item.name"
           class="url flex-column-center"
-          :class="currentRoute(item.path) ? 'currentRoute' : ''"
-          @click="$router.push(item.path)"
+          :class="currentRoute(item.name) ? 'currentRoute' : ''"
+          @click="$router.push({ name: item.name })"
         >
           {{ $t(item.meta.i18n) }}
         </div>
@@ -33,13 +33,13 @@
         class="url-warp"
         style="justify-content: space-between"
       >
-        <div
+        <!-- <div
           class="url flex-column-center"
-          :class="currentRoute('/taint') ? 'currentRoute' : ''"
-          @click="$router.push('/taint')"
+          :class="currentRoute('taint') ? 'currentRoute' : ''"
+          @click="$router.push({ name: 'taint' })"
         >
           {{ $t('menu.taintPool') }}
-        </div>
+        </div> -->
         <el-button
           v-if="!userInfo && $route.name !== 'login'"
           type="text"
@@ -51,6 +51,20 @@
         <el-button type="text" class="anent" @click="buildIAST">
           <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
         </el-button>
+        <div class="icon-btn">
+          <span class="icon iconfont" @click="$router.push({ name: 'taint' })"
+            >&#xe6a2;</span
+          >
+        </div>
+        <div class="icon-btn">
+          <span
+            class="icon iconfont"
+            @click="$router.push({ name: 'setting' })"
+          >
+            &#xe6a1;
+          </span>
+        </div>
+
         <el-popover
           v-model="showPop"
           style="margin-right: 20px"
@@ -87,7 +101,9 @@
             </div>
           </div>
           <el-badge slot="reference" :value="count" :hidden="!count">
-            <i style="font-size: 26px" class="el-icon-bell"></i>
+            <span class="icon-btn">
+              <i style="font-size: 16px" class="icon iconfont">&#xe6a0;</i>
+            </span>
           </el-badge>
         </el-popover>
         <Dropdown>
@@ -270,8 +286,8 @@ export default class Header extends VueBase {
   canShow(name: string) {
     return this.$store.getters.routers.includes(name)
   }
-  private currentRoute(path: string): boolean {
-    return this.$route.matched.some((item) => item.path === path)
+  private currentRoute(name: string): boolean {
+    return this.$route.matched.some((item) => item.name === name)
   }
 
   private async logOut() {
@@ -319,7 +335,7 @@ export default class Header extends VueBase {
         font-weight: normal;
         color: #38435a;
         cursor: pointer;
-        min-width: 100px;
+        min-width: 88px;
         text-align: center;
         padding: 0 15px;
 
@@ -328,26 +344,37 @@ export default class Header extends VueBase {
         }
 
         &:hover {
-          color: #4a72ae;
-          background: aliceblue;
-          border-bottom: 2px solid #4a72ae;
+          color: #1a80f2;
+          background: #f6f8fa;
         }
       }
 
       .currentRoute {
-        color: #4a72ae;
-        background: aliceblue;
-        border-bottom: 2px solid #4a72ae;
+        color: #1a80f2;
+        background: #f6f8fa;
+        position: relative;
+        &::after {
+          position: absolute;
+          content: '';
+          width: 28px;
+          height: 2px;
+          background: #1a80f2;
+          border-radius: 2px 2px 0px 0px;
+          bottom: 2px;
+          left: 50%;
+          margin-left: -14px;
+        }
       }
     }
 
     .titleImg {
-      width: 46px;
-      height: 46px;
+      width: 32px;
+      height: 32px;
       border: 1px solid #dde4ef;
       border-radius: 50%;
       vertical-align: middle;
       margin-right: 14px;
+      margin-left: -12px;
     }
 
     .anent {
@@ -364,6 +391,26 @@ export default class Header extends VueBase {
       border-radius: 4px;
       margin-right: 20px;
     }
+  }
+}
+.icon-btn {
+  display: flex;
+  cursor: pointer;
+  margin-right: 12px;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  background: #fff;
+  border-radius: 50%;
+  color: #38435a;
+  &:hover {
+    background: #f6f8fa;
+    color: #1a80f2;
+  }
+  .icon.iconfont {
+    font-size: 16px;
+    height: 24px;
   }
 }
 .badge-header {
@@ -421,5 +468,9 @@ export default class Header extends VueBase {
 .msg-box {
   height: 400px;
   overflow: auto;
+}
+/deep/.el-badge__content.is-fixed {
+  top: 4px;
+  right: 24px;
 }
 </style>

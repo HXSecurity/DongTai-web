@@ -1,5 +1,5 @@
 <template>
-  <main class="container">
+  <main>
     <div class="talentContent">
       <div class="titleLine flex-row-space-between">
         <div class="btn" @click="addDialogShow">
@@ -300,12 +300,10 @@ export default class TalentList extends VueBase {
 
 <style scoped lang="scss">
 .talentContent {
-  margin-top: 28px;
+  padding: 20px;
   background: #fff;
-  padding: 14px;
   font-size: 14px;
-  min-height: calc(100vh - 113px);
-
+  margin-top: 12px;
   .titleLine {
     .btn {
       color: #959ea9;

@@ -1,158 +1,151 @@
 <template>
-  <main>
-    <el-tabs v-model="activeName">
-      <el-tab-pane
-        :label="$t('views.sysInfo.global')"
-        name="global"
-      ></el-tab-pane>
-      <el-tab-pane
-        v-if="userInfo.role === 1 || userInfo.role === 2"
-        :label="$t('views.sysInfo.fuse')"
-        name="agent"
-      ></el-tab-pane>
-    </el-tabs>
-    <div v-if="activeName === 'agent'">
-      <div class="agent-btn-box">
-        <el-button
-          class="btn-border"
-          icon="el-icon-circle-plus-outline"
-          size="small"
-          @click="add"
-        >
-          {{ $t('views.sysInfo.add') }}
-        </el-button>
-      </div>
-      <el-table :data="jsons" class="info-table" border>
-        <el-table-column prop="id" label="ID" width="60"> </el-table-column>
-        <el-table-column label="自动降级" width="120" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.enableAutoFallback ? '是' : '否' }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="cluster_name"
-          width="200"
-          :label="$t('views.sysInfo.cluster_name')"
-        >
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="cluster_version"
-          :label="$t('views.sysInfo.cluster_version')"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="priority"
-          :label="$t('views.sysInfo.priority')"
-          align="center"
-        >
-        </el-table-column>
-        <el-table-column label="高频hook限流" width="120" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.hookLimitTokenPerSecond }}/秒
-          </template>
-        </el-table-column>
-        <el-table-column label="高频流量限流" width="120" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.heavyTrafficLimitTokenPerSecond }}/秒
-          </template>
-        </el-table-column>
-        <el-table-column label="CPU阈值" width="120" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.cpuUsagePercentage }}%
-          </template>
-        </el-table-column>
-        <el-table-column label="内存阈值" width="120" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.memUsagePercentage }}%
-          </template>
-        </el-table-column>
-        <el-table-column label="Agent数量" width="120" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.memUsagePercentage }}
-          </template>
-        </el-table-column>
-
-        <el-table-column
-          width="200"
-          :label="$t('views.sysInfo.operation')"
-          align="center"
-          fixed="right"
-        >
-          <template slot-scope="scope">
-            <div class="table-btn-box">
-              <el-button
-                type="text"
-                size="small"
-                style="color: #4a72ae"
-                @click="edit(scope.row)"
-              >
-                {{ $t('views.sysInfo.edit') }}
-              </el-button>
-              <span class="l"> | </span>
-              <el-button
-                style="color: #f56262"
-                size="small"
-                type="text"
-                @click="del(scope.row)"
-              >
-                {{ $t('views.sysInfo.del') }}
-              </el-button>
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-
-    <div v-if="activeName === 'global'" class="form-box">
-      <div class="cpu-box">
-        <div class="moudleTitle-th">
-          {{ $t('views.sysInfo.agentThreshold') }}
-          <el-popover placement="top-start" width="340" trigger="hover">
-            <p>{{ $t('views.sysInfo.open') }}</p>
-            <p>{{ $t('views.sysInfo.close') }}</p>
-            <span slot="reference"> <i class="el-icon-question"></i>： </span>
-          </el-popover>
+  <main class="sys-main">
+    <div class="sys-info">
+      <div class="agent-box">
+        <div class="agent-btn-box">
+          <el-button
+            class="btn-border"
+            icon="el-icon-circle-plus-outline"
+            size="small"
+            @click="add"
+          >
+            {{ $t('views.sysInfo.add') }}
+          </el-button>
         </div>
-        <span style="margin-right: 16px">{{ $t('views.sysInfo.cpu') }} ≥ </span>
-        <el-input-number
-          v-if="userInfo.role == 1 || userInfo.role == 2"
-          v-model="form.cpu_limit"
-          :max="100"
-          :min="0"
-          :controls="false"
-          style="margin-right: 12px"
-          class="num-input"
-        ></el-input-number>
-        <span v-else>{{ form.cpu_limit }}</span>
-        <span> %</span>
-      </div>
+        <el-table :data="jsons" class="info-table" border>
+          <el-table-column prop="id" label="ID" width="60"> </el-table-column>
+          <el-table-column label="自动降级" width="120" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.enableAutoFallback ? '是' : '否' }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="cluster_name"
+            width="200"
+            :label="$t('views.sysInfo.cluster_name')"
+          >
+          </el-table-column>
+          <el-table-column
+            align="center"
+            prop="cluster_version"
+            :label="$t('views.sysInfo.cluster_version')"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="priority"
+            :label="$t('views.sysInfo.priority')"
+            align="center"
+          >
+          </el-table-column>
+          <el-table-column label="高频hook限流" width="120" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.hookLimitTokenPerSecond }}/秒
+            </template>
+          </el-table-column>
+          <el-table-column label="高频流量限流" width="120" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.heavyTrafficLimitTokenPerSecond }}/秒
+            </template>
+          </el-table-column>
+          <el-table-column label="CPU阈值" width="120" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.cpuUsagePercentage }}%
+            </template>
+          </el-table-column>
+          <el-table-column label="内存阈值" width="120" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.memUsagePercentage }}%
+            </template>
+          </el-table-column>
+          <el-table-column label="Agent数量" width="120" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.memUsagePercentage }}
+            </template>
+          </el-table-column>
 
-      <div class="cpu-box">
-        <div class="moudleTitle-th">
-          {{ $t('views.sysInfo.vul_verifiy') }}
-          <el-popover placement="top-start" width="340" trigger="hover">
-            <p>{{ $t('views.sysInfo.vul') }}</p>
-            <span slot="reference"> <i class="el-icon-question"></i>： </span>
-          </el-popover>
+          <el-table-column
+            width="200"
+            :label="$t('views.sysInfo.operation')"
+            align="center"
+            fixed="right"
+          >
+            <template slot-scope="scope">
+              <div class="table-btn-box">
+                <el-button
+                  type="text"
+                  size="small"
+                  style="color: #4a72ae"
+                  @click="edit(scope.row)"
+                >
+                  {{ $t('views.sysInfo.edit') }}
+                </el-button>
+                <span class="l"> | </span>
+                <el-button
+                  style="color: #f56262"
+                  size="small"
+                  type="text"
+                  @click="del(scope.row)"
+                >
+                  {{ $t('views.sysInfo.del') }}
+                </el-button>
+              </div>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <!-- 
+      <div v-if="activeName === 'global'" class="form-box">
+        <div class="cpu-box">
+          <div class="moudleTitle-th">
+            {{ $t('views.sysInfo.agentThreshold') }}
+            <el-popover placement="top-start" width="340" trigger="hover">
+              <p>{{ $t('views.sysInfo.open') }}</p>
+              <p>{{ $t('views.sysInfo.close') }}</p>
+              <span slot="reference"> <i class="el-icon-question"></i>： </span>
+            </el-popover>
+          </div>
+          <span style="margin-right: 16px"
+            >{{ $t('views.sysInfo.cpu') }} ≥
+          </span>
+          <el-input-number
+            v-if="userInfo.role == 1 || userInfo.role == 2"
+            v-model="form.cpu_limit"
+            :max="100"
+            :min="0"
+            :controls="false"
+            style="margin-right: 12px"
+            class="num-input"
+          ></el-input-number>
+          <span v-else>{{ form.cpu_limit }}</span>
+          <span> %</span>
         </div>
-        <el-switch
-          v-model="form.vul_verifiy"
-          :disabled="userInfo.role !== 1 && userInfo.role !== 2"
-          active-value="1"
-          inactive-value="0"
-        ></el-switch>
-      </div>
-      <div class="btn-box">
-        <el-button
-          v-if="userInfo.role === 1 || userInfo.role === 2"
-          class="btn"
-          type="primary"
-          @click="profileModified"
-          >{{ $t('views.sysInfo.enter') }}</el-button
-        >
-      </div>
+
+        <div class="cpu-box">
+          <div class="moudleTitle-th">
+            {{ $t('views.sysInfo.vul_verifiy') }}
+            <el-popover placement="top-start" width="340" trigger="hover">
+              <p>{{ $t('views.sysInfo.vul') }}</p>
+              <span slot="reference"> <i class="el-icon-question"></i>： </span>
+            </el-popover>
+          </div>
+          <el-switch
+            v-model="form.vul_verifiy"
+            :disabled="userInfo.role !== 1 && userInfo.role !== 2"
+            active-value="1"
+            inactive-value="0"
+          ></el-switch>
+        </div>
+        <div class="btn-box">
+          <el-button
+            v-if="userInfo.role === 1 || userInfo.role === 2"
+            class="btn"
+            type="primary"
+            @click="profileModified"
+            >{{ $t('views.sysInfo.enter') }}</el-button
+          >
+        </div>
+      </div> -->
     </div>
   </main>
 </template>
@@ -245,8 +238,17 @@ export default class SysInfo extends VueBase {
 </script>
 
 <style scoped lang="scss">
-main {
-  padding: 10px;
+.sys-main {
+  display: flex;
+  justify-content: center;
+}
+.sys-info {
+  margin-top: 16px;
+  width: 1200px;
+  background: #fff;
+}
+.agent-box {
+  padding: 20px;
 }
 .btn-border {
   border-radius: 2px;

@@ -27,7 +27,7 @@ const baseRoutes: Array<RouteConfig> = [
         name: 'taint',
         redirect: '/taint/search',
         meta: {
-          isMenu: true,
+          // isMenu: true,
           keepAlive: true,
           disabled: true,
           i18n: 'menu.taintPool',
@@ -185,7 +185,7 @@ const routes: Array<RouteConfig> = [
     name: 'taint',
     redirect: '/taint/search',
     meta: {
-      isMenu: true,
+      // isMenu: true,
       keepAlive: true,
       disabled: true,
       i18n: 'menu.taintPool',
@@ -225,26 +225,73 @@ const routes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/setting',
-    name: 'setting',
-    redirect: '/setting/agentManage',
+    path: 'agentManage',
+    name: 'agentManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.agentManage',
+      name: i18n.t('menu.agentManage'),
+    },
+    component: () => import('@/views/setting/AgentManage.vue'),
+  },
+  {
+    path: 'sysInfo',
+    name: 'sysInfo',
+    meta: {
+      keepAlive: true,
+      i18n: 'menu.sysInfo',
+      name: i18n.t('menu.sysInfo'),
+    },
+    component: () => import('@/views/setting/SysInfo.vue'),
+  },
+  {
+    path: 'agentConfig',
+    name: 'agentConfig',
+    meta: {
+      disabled: true,
+      i18n: 'menu.agentConfig',
+      name: i18n.t('menu.agentConfig'),
+    },
+    component: () => import('@/views/setting/agentConfig.vue'),
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    redirect: '/setting/strategyManage',
+    meta: {
       i18n: 'menu.setting',
       name: i18n.t('menu.setting'),
     },
     component: () => import('@/views/setting/Index.vue'),
     children: [
       {
-        path: 'agentConfig',
-        name: 'agentConfig',
+        path: 'talentList',
+        name: 'talentList',
         meta: {
-          disabled: true,
-          i18n: 'menu.agentConfig',
-          name: i18n.t('menu.agentConfig'),
+          i18n: 'menu.talent',
+          name: i18n.t('menu.talent'),
         },
-        component: () => import('@/views/setting/agentConfig.vue'),
+        component: () => import('@/views/talent/TalentList.vue'),
       },
+      {
+        path: 'departmentList',
+        name: 'departmentList',
+        meta: {
+          i18n: 'menu.department',
+          name: i18n.t('menu.department'),
+        },
+        component: () => import('@/views/department/DepartmentList.vue'),
+      },
+      {
+        path: 'userSetting',
+        name: 'userSetting',
+        meta: {
+          i18n: 'menu.userSetting',
+          name: i18n.t('menu.userSetting'),
+        },
+        component: () => import('@/views/department/userSetting.vue'),
+      },
+
       // {
       //   path: 'agentRank',
       //   name: 'agentRank',
@@ -265,26 +312,7 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/webhook.vue'),
       },
-      {
-        path: 'agentManage',
-        name: 'agentManage',
-        meta: {
-          disabled: true,
-          i18n: 'menu.agentManage',
-          name: i18n.t('menu.agentManage'),
-        },
-        component: () => import('@/views/setting/AgentManage.vue'),
-      },
-      {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          keepAlive: true,
-          i18n: 'menu.sysInfo',
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
+
       {
         path: 'strategyManage',
         name: 'strategyManage',
@@ -426,59 +454,7 @@ const routes: Array<RouteConfig> = [
       },
     ],
   },
-  {
-    path: '/department',
-    name: 'department',
-    redirect: '/department/departmentList',
-    meta: {
-      isMenu: true,
-      i18n: 'menu.roleSetting',
-      name: i18n.t('menu.roleSetting'),
-    },
-    component: () => import('@/views/department/Index.vue'),
-    children: [
-      {
-        path: 'departmentList',
-        name: 'departmentList',
-        meta: {
-          i18n: 'menu.department',
-          name: i18n.t('menu.department'),
-        },
-        component: () => import('@/views/department/DepartmentList.vue'),
-      },
-      {
-        path: 'userSetting',
-        name: 'userSetting',
-        meta: {
-          i18n: 'menu.userSetting',
-          name: i18n.t('menu.userSetting'),
-        },
-        component: () => import('@/views/department/userSetting.vue'),
-      },
-    ],
-  },
-  {
-    path: '/talent',
-    name: 'talent',
-    redirect: '/talent/talentList',
-    meta: {
-      isMenu: true,
-      i18n: 'menu.talent',
-      name: i18n.t('menu.talent'),
-    },
-    component: () => import('@/views/talent/Index.vue'),
-    children: [
-      {
-        path: 'talentList',
-        name: 'talentList',
-        meta: {
-          i18n: 'menu.talent',
-          name: i18n.t('menu.talent'),
-        },
-        component: () => import('@/views/talent/TalentList.vue'),
-      },
-    ],
-  },
+
   {
     path: '/deploy',
     name: '/deploy',
@@ -606,7 +582,7 @@ const adminRoutes: Array<RouteConfig> = [
     name: 'taint',
     redirect: '/taint/search',
     meta: {
-      isMenu: true,
+      // isMenu: true,
       keepAlive: true,
       disabled: true,
       i18n: 'menu.taintPool',
@@ -646,26 +622,45 @@ const adminRoutes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/setting',
-    name: 'setting',
-    redirect: '/setting/agentManage',
+    path: 'agentManage',
+    name: 'agentManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.agentManage',
+      name: i18n.t('menu.agentManage'),
+    },
+    component: () => import('@/views/setting/AgentManage.vue'),
+  },
+  {
+    path: 'sysInfo',
+    name: 'sysInfo',
+    meta: {
+      keepAlive: true,
+      i18n: 'menu.sysInfo',
+      name: i18n.t('menu.sysInfo'),
+    },
+    component: () => import('@/views/setting/SysInfo.vue'),
+  },
+  {
+    path: 'agentConfig',
+    name: 'agentConfig',
+    meta: {
+      disabled: true,
+      i18n: 'menu.agentConfig',
+      name: i18n.t('menu.agentConfig'),
+    },
+    component: () => import('@/views/setting/agentConfig.vue'),
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    redirect: '/setting/strategyManage',
+    meta: {
       i18n: 'menu.setting',
       name: i18n.t('menu.setting'),
     },
     component: () => import('@/views/setting/Index.vue'),
     children: [
-      {
-        path: 'agentConfig',
-        name: 'agentConfig',
-        meta: {
-          disabled: true,
-          i18n: 'menu.agentConfig',
-          name: i18n.t('menu.agentConfig'),
-        },
-        component: () => import('@/views/setting/agentConfig.vue'),
-      },
       // {
       //   path: 'agentRank',
       //   name: 'agentRank',
@@ -686,26 +681,7 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/webhook.vue'),
       },
-      {
-        path: 'agentManage',
-        name: 'agentManage',
-        meta: {
-          disabled: true,
-          i18n: 'menu.agentManage',
-          name: i18n.t('menu.agentManage'),
-        },
-        component: () => import('@/views/setting/AgentManage.vue'),
-      },
-      {
-        path: 'sysInfo',
-        name: 'sysInfo',
-        meta: {
-          keepAlive: true,
-          i18n: 'menu.sysInfo',
-          name: i18n.t('menu.sysInfo'),
-        },
-        component: () => import('@/views/setting/SysInfo.vue'),
-      },
+
       {
         path: 'strategyManage',
         name: 'strategyManage',
@@ -845,37 +821,6 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.about'),
         },
         component: () => import('@/views/setting/about.vue'),
-      },
-    ],
-  },
-  {
-    path: '/department',
-    name: 'department',
-    redirect: '/department/departmentList',
-    meta: {
-      isMenu: true,
-      i18n: 'menu.roleSetting',
-      name: i18n.t('menu.roleSetting'),
-    },
-    component: () => import('@/views/department/Index.vue'),
-    children: [
-      {
-        path: 'departmentList',
-        name: 'departmentList',
-        meta: {
-          i18n: 'menu.department',
-          name: i18n.t('menu.department'),
-        },
-        component: () => import('@/views/department/DepartmentList.vue'),
-      },
-      {
-        path: 'userSetting',
-        name: 'userSetting',
-        meta: {
-          i18n: 'menu.userSetting',
-          name: i18n.t('menu.userSetting'),
-        },
-        component: () => import('@/views/department/userSetting.vue'),
       },
     ],
   },
@@ -1006,7 +951,7 @@ const userRoutes: Array<RouteConfig> = [
     name: 'taint',
     redirect: '/taint/search',
     meta: {
-      isMenu: true,
+      // isMenu: true,
       keepAlive: true,
       disabled: true,
       i18n: 'menu.taintPool',
@@ -1039,36 +984,54 @@ const userRoutes: Array<RouteConfig> = [
     ],
   },
   {
-    path: '/setting',
-    name: 'setting',
-    redirect: '/setting/agentManage',
+    path: 'agentManage',
+    name: 'agentManage',
     meta: {
       isMenu: true,
+      i18n: 'menu.agentManage',
+      name: i18n.t('menu.agentManage'),
+    },
+    component: () => import('@/views/setting/AgentManage.vue'),
+  },
+  {
+    path: 'sysInfo',
+    name: 'sysInfo',
+    meta: {
+      keepAlive: true,
+      i18n: 'menu.sysInfo',
+      name: i18n.t('menu.sysInfo'),
+    },
+    component: () => import('@/views/setting/SysInfo.vue'),
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    redirect: '/setting/strategyManage',
+    meta: {
       i18n: 'menu.setting',
       name: i18n.t('menu.setting'),
     },
     component: () => import('@/views/setting/Index.vue'),
     children: [
       {
-        path: 'agentManage',
-        name: 'agentManage',
+        path: 'departmentList',
+        name: 'departmentList',
         meta: {
-          disabled: true,
-          i18n: 'menu.agentManage',
-          name: i18n.t('menu.agentManage'),
+          i18n: 'menu.department',
+          name: i18n.t('menu.department'),
         },
-        component: () => import('@/views/setting/AgentManage.vue'),
+        component: () => import('@/views/department/DepartmentList.vue'),
       },
       {
-        path: 'sysInfo',
-        name: 'sysInfo',
+        path: 'userSetting',
+        name: 'userSetting',
         meta: {
-          keepAlive: true,
-          i18n: 'menu.sysInfo',
-          name: i18n.t('menu.sysInfo'),
+          i18n: 'menu.userSetting',
+          name: i18n.t('menu.userSetting'),
         },
-        component: () => import('@/views/setting/SysInfo.vue'),
+        component: () => import('@/views/department/userSetting.vue'),
       },
+
       {
         path: 'strategyManage',
         name: 'strategyManage',

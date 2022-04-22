@@ -209,6 +209,8 @@ export default class DepartmentList extends VueBase {
 
 <style scoped lang="scss">
 .depart {
+  padding: 20px;
+  margin-top: 12px;
   .top {
     display: flex;
     justify-content: space-between;
