@@ -35,7 +35,7 @@
             >
               <div class="left">
                 <div class="dot"></div>
-                <div class="label">已暂停</div>
+                <div class="label">已离线</div>
               </div>
               <div class="number">{{ summary[3] }}</div>
             </div>
