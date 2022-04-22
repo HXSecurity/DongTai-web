@@ -714,8 +714,8 @@ export default class AgentConfig extends VueBase {
       performanceBreakerWaitDuration: 40,
       performanceBreakerWindowSize: 2,
       performanceLimitRiskMaxMetricsCount: 3,
-      secondFallbackDuration: 100000000,
-      secondFallbackFrequencyInitBurstSeconds: 100000000,
+      secondFallbackDuration: 1000000000000,
+      secondFallbackFrequencyInitBurstSeconds: 1000000000000,
       secondFallbackFrequencyTokenPerSecond: 10,
       performanceLimitMaxThreshold: {
         cpuUsage: {
@@ -741,7 +741,7 @@ export default class AgentConfig extends VueBase {
         memoryUsage: {
           max: 1000000000000,
           init: null,
-          used: 100000000,
+          used: 1000000000000,
           committed: null,
           memUsagePercentage: 100,
         },
@@ -772,9 +772,9 @@ export default class AgentConfig extends VueBase {
           memUsagePercentage: 100,
         },
         memoryUsage: {
-          max: 100000000,
+          max: 1000000000000,
           init: null,
-          used: 100000000,
+          used: 1000000000000,
           committed: null,
           memUsagePercentage: 100,
         },
