@@ -32,7 +32,14 @@
           :width="36"
           @change="profileModified"
         ></el-switch>
-        <span class="icon iconfont" style="color: #4a72ae" @click="toSetting"
+        <span
+          v-if="
+            $store.getters.userInfo.role === 1 ||
+            $store.getters.userInfo.role === 2
+          "
+          class="icon iconfont"
+          style="color: #4a72ae"
+          @click="toSetting"
           >&#xe69f;</span
         >
       </div>
