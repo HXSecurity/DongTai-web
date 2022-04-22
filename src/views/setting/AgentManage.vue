@@ -80,7 +80,8 @@
       <div class="table-big-box">
         <div class="button-bar">
           <div>
-            <!-- <el-checkbox v-model="a"></el-checkbox>全选 -->
+            <el-checkbox v-model="selectAll"></el-checkbox>
+            <span style="margin: 0 12px 0 4px">全选</span>
             <el-button
               size="small"
               class="resetAllBtn"
@@ -112,6 +113,7 @@
               v-model="searchValue"
               size="small"
               placeholder="请输入项目名"
+              clearable
               @input="searchTable"
             ></el-input>
           </div>
@@ -156,7 +158,11 @@
           <el-table-column label="服务IP" width="180px">
             <template slot-scope="{ row }">
               <div class="dot">
-                {{ `${row.server__ip}:${row.server__port}` }}
+                {{
+                  `${row.server__ip}${
+                    row.server__port ? ':' + row.server__port : ''
+                  }`
+                }}
               </div>
             </template>
           </el-table-column>
@@ -185,9 +191,9 @@
           <el-table-column label="操作" width="120px">
             <template slot-scope="{ row }">
               <el-switch
+                v-if="row.is_control === 0"
                 :width="32"
                 style="margin-right: 20px"
-                :disabled="row.is_control === 1"
                 :active-value="1"
                 :inactive-value="0"
                 @change="
@@ -196,6 +202,12 @@
                   }
                 "
               ></el-switch>
+              <span
+                v-else
+                style="width: 32px; text-align: center; display: inline-block"
+              >
+                <i class="el-icon-loading"></i>
+              </span>
               <!-- <el-button type="text">
                 <i class="icon iconfont">&#xe6aa;</i>
               </el-button> -->
@@ -315,7 +327,7 @@
           <div style="color: rgb(56, 67, 90)">
             已选择
             <span style="color: rgb(74, 114, 174)">{{
-              multipleSelection.length
+              selectAll ? total : multipleSelection.length
             }}</span>
             项
           </div>
@@ -481,6 +493,18 @@ export default class AgentManage extends VueBase {
     }
     this.$message.error(res.msg)
   }
+
+  private async updateAll(type: any) {
+    const res = await this.services.setting.update_core_all({
+      core_status: type,
+    })
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+      this.getTableData()
+      return
+    }
+    this.$message.error(res.msg)
+  }
   created() {
     this.getTableData()
     this.timer = setInterval(() => {
@@ -493,11 +517,10 @@ export default class AgentManage extends VueBase {
     if (this.timeOuter) {
       clearTimeout(this.timeOuter)
       this.timeOuter = null
-    } else {
-      setTimeout(() => {
-        this.getTableData()
-      }, 400)
     }
+    this.timeOuter = setTimeout(() => {
+      this.getTableData()
+    }, 400)
   }
 
   private openEdit(item: any) {
@@ -539,7 +562,7 @@ export default class AgentManage extends VueBase {
     this.getTableData()
     if (this.state == 1) {
       this.timer = setInterval(() => {
-        this.getTableData()
+        this.reflashTable()
       }, 5000)
     } else {
       clearInterval(this.timer)
@@ -589,6 +612,7 @@ export default class AgentManage extends VueBase {
         item.system_load = { rate: 0 }
       }
     })
+    this.getSummy()
   }
 
   private async getTableData() {
@@ -596,7 +620,7 @@ export default class AgentManage extends VueBase {
       page: this.page,
       page_size: this.pageSize,
       state: this.state,
-      token: this.searchValue,
+      project_name: this.searchValue,
     }
     this.loadingStart()
     const { status, msg, data, page } = await this.services.setting.agentList(
@@ -629,7 +653,10 @@ export default class AgentManage extends VueBase {
     this.currentPageSize = data.length
     this.total = data.summary.alltotal
     this.currentPageDelete = 0
+    this.getSummy()
+  }
 
+  private async getSummy() {
     const res = await this.services.setting.summary()
     if (res.status !== 201) {
       this.$message.error(res.msg)
@@ -701,6 +728,10 @@ export default class AgentManage extends VueBase {
   }
 
   private async agentStart(id: any) {
+    if (this.selectAll) {
+      this.updateAll(3)
+      return
+    }
     if (!this.state) {
       return
     }
@@ -741,7 +772,13 @@ export default class AgentManage extends VueBase {
     await this.getTableData()
   }
 
+  private selectAll = false
+
   private async agentStop(id: any) {
+    if (this.selectAll) {
+      this.updateAll(4)
+      return
+    }
     if (!this.state) {
       return
     }

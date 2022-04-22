@@ -374,4 +374,8 @@ export default () =>
     update_core(data: any): Promise<iResponse> {
       return request.post(`/agent/core/update`, data)
     }
+
+    update_core_all(data: any): Promise<iResponse> {
+      return request.post(`/agent/core/update/all`, data)
+    }
   })()
