@@ -388,6 +388,7 @@ export default class SearchCard extends VueBase {
   }
 
   private async send() {
+    const str = this.reqStr.replaceAll('&lt;', '<')
     this.loadingStart()
     const res = await this.services.taint.replay({
       methodPoolId: this.isApi
@@ -395,7 +396,7 @@ export default class SearchCard extends VueBase {
         : this.$route.params.id,
       agent_id:
         this.info.method_pools.id > -1 ? undefined : this.info.relations.agent,
-      replayRequest: this.reqStr,
+      replayRequest: str,
       replay_type: this.isApi ? 3 : undefined,
     })
     this.loadingDone()
