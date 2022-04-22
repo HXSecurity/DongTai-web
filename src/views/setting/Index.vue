@@ -85,6 +85,7 @@ export default class SettingIndex extends VueBase {
     策略管理: [
       'strategyManage',
       'templateManage',
+      'hookRule',
       'sensitiveManage',
       // 'scaManage',
     ],
