@@ -282,15 +282,13 @@
               ></el-input
               >%
             </el-form-item>
-            <el-form-item
-              :label="`${$t('views.agentConfigEdit.userMemory')}（MB）`"
-            >
+            <el-form-item :label="`${$t('views.agentConfigEdit.userMemory')}`">
               <el-input
                 v-model="
                   json.details.performanceLimitMaxThreshold.memoryUsage.used
                 "
               ></el-input
-              >MB
+              >字节
             </el-form-item>
             <div class="title">
               {{ $t('views.agentConfigEdit.limitMemory') }}
@@ -312,15 +310,13 @@
               ></el-input
               >%
             </el-form-item>
-            <el-form-item
-              :label="`${$t('views.agentConfigEdit.userMemory')}（MB）`"
-            >
+            <el-form-item :label="`${$t('views.agentConfigEdit.userMemory')}`">
               <el-input
                 v-model="
                   json.details.performanceLimitRiskThreshold.memoryUsage.used
                 "
               ></el-input
-              >MB
+              >字节
             </el-form-item>
             <div class="title">
               {{ $t('views.agentConfigEdit.limitMemoryMaxOut') }}
