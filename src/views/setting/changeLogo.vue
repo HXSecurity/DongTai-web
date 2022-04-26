@@ -274,7 +274,6 @@ export default class StrategyManage extends VueBase {
         justify-content: space-around;
         img {
           width: 30%;
-          border: 1px dashed #ccc;
         }
       }
     }
