@@ -582,7 +582,7 @@ export default class Deploy extends VueBase {
       window.location.origin +
       '/api/v1/agent/download?url=' +
       window.location.origin +
-      '/openapi&language' +
+      '/openapi&language=' +
       this.language
     window.open(url)
   }

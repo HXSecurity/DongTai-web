@@ -146,16 +146,14 @@ export default {
       settingInfo:
         'Logo 样式与 Icon 样式需要同时上传，未配置项将显示洞态图标。',
       uploadLogo: '上传Logo样式',
-      uploadLogoOne:
-        '1. 支持上传品牌 Logo, 默认展示 “洞态” Logo，上传前可预览线上场景，如下图所示。',
+      uploadLogoOne: '1. 支持上传品牌 Logo,上传前可预览线上场景，如下图所示。',
       uploadLogoTwo:
         '2. Logo 建议使用彩色图片，最小尺寸 100*30，最大尺寸200*60，支持png格式，最大 2 MB，宽高比为10:3，无背景。',
       enLogo: '英文logo',
       zhLogo: '中文logo',
       change: '点击图片替换',
       uploadIcon: '上传Icon样式',
-      uploadIconOne:
-        '1. 支持上传品牌 Icon, 默认展示 “洞态”Icon，上传前可预览线上场景，如下图所示。',
+      uploadIconOne: '1. 支持上传品牌 Icon, 上传前可预览线上场景，如下图所示。',
       uploadIconTwo:
         ' 2. Icon 建议使用彩色图片，最小尺寸32*32，最大尺寸128*128，支持ico格式，最大128KB，宽高比为1:1，无背景。',
       warningPng: '上传头像图片只能是 PNG 格式!',

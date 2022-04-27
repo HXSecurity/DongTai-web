@@ -143,6 +143,8 @@
         >
           <el-option label="JAVA" value="JAVA"></el-option>
           <el-option label="PYTHON" value="PYTHON"></el-option>
+          <el-option label="PHP" value="PHP"></el-option>
+          <el-option label="GO" value="GO"></el-option>
         </el-select>
         <el-select
           v-model="searchObj.status"
@@ -709,7 +711,6 @@ export default class VulListComponent extends VueBase {
   background: #fff;
   overflow: auto;
   padding: 0 6px 20px 6px;
-  height: calc(100vh - 103px);
 
   .title {
     height: 54px;

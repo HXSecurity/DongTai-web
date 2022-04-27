@@ -21,7 +21,10 @@ spec:
         - name: dongtai-web-container
           image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:VERSION
           imagePullPolicy: Always
-
+          volumeMounts:
+            - name: configfile
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
           resources:
             limits:
               cpu: "500m"
@@ -29,21 +32,9 @@ spec:
             requests:
               cpu: "500m"
               memory: 1000Mi
+      volumes:
+        - name: configfile
+          configMap:
+            name: dongtai-web-nginx-conf
       imagePullSecrets:
         - name: aliyun-registry-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: dongtai-web
-  name: dongtai-web-pub-svc
-  namespace: iast-test
-spec:
-  ports:
-  - port: 8081
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: dongtai-web
-  type: LoadBalancer
