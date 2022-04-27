@@ -131,6 +131,7 @@
             label="应用名称"
             prop="server__hostname"
             min-width="120px"
+            show-overflow-tooltip
           >
             <template slot-scope="{ row }">
               <div class="dot project-name" @click="openDrawer(row)">
@@ -1271,6 +1272,7 @@ export default class AgentManage extends VueBase {
         color: #acb4c4;
       }
       .value {
+        flex: 1;
         color: #38435a;
       }
     }
