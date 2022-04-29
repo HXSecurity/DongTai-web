@@ -1153,6 +1153,7 @@ export default class AgentManage extends VueBase {
   font-size: 14px;
   line-height: 16px;
   padding-top: 2px;
+  border: none;
   div {
     display: inline-flex;
     justify-content: center;
@@ -1217,6 +1218,9 @@ export default class AgentManage extends VueBase {
       background: #f2f3f5;
       .cell {
         color: #38435a;
+        .el-checkbox {
+          margin-left: 4px;
+        }
       }
     }
   }
