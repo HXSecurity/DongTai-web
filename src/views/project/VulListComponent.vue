@@ -2,108 +2,86 @@
   <main class="flex-row-space-between">
     <div class="slider-warp">
       <div class="title flex-column-center">
-        <div class="flex-row-space-between">
-          <span style="font-size: 16px; font-weight: bold">{{
-            $t('views.vulnList.filter')
-          }}</span>
-          <el-button type="text" class="resetAllBtn" @click="reset">
-            <span style="font-size: 12px">
-              {{ $t('views.vulnList.resetAll') }}
-            </span>
+        <div class="flex-row-space-between module-title">
+          <span class="filter-title">过滤器</span>
+          <el-button type="text" class="reset-btn" @click="reset">
+            <span>重置全部</span>
           </el-button>
         </div>
       </div>
-      <div
-        class="module-title flex-row-space-between"
-        style="margin-top: 14px; margin-bottom: 0px"
-      >
-        <span style="font-size: 14px">{{ $t('views.vulnList.type') }}</span>
-        <div class="reset-btn" @click="typeChange('')">
-          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
-        </div>
+      <div class="module-title flex-row-space-between">
+        <span class="filter-box-title"> 项目名 </span>
       </div>
-      <div
+      <el-checkbox
         v-for="item in searchOptionsObj.type"
         :key="item.type"
         class="flex-row-space-between module-line"
-        :class="searchObj.type === item.type ? 'selectedLine' : ''"
-        :style="
-          item.count === 0
-            ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
-            : { height: '30px', 'font-size': '14px' }
-        "
-        @click="typeChange(item.type, item.count === 0)"
       >
-        <div class="selectOption">
-          {{ item.type }}
+        <div class="check-label">
+          <div class="selectOption">
+            {{ item.type }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
         </div>
-        <div class="num">
-          {{ item.count }}
-        </div>
+      </el-checkbox>
+      <div class="module-title flex-row-space-between">
+        <span class="filter-box-title"> 等级 </span>
       </div>
-      <div
-        class="module-title flex-row-space-between"
-        style="margin-top: 14px; margin-bottom: 0px"
-      >
-        <span style="font-size: 14px">{{ $t('views.vulnList.level') }}</span>
-        <div class="reset-btn" @click="levelChange('')">
-          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
-        </div>
-      </div>
-      <div
+      <el-checkbox
         v-for="item in searchOptionsObj.level"
         :key="item.level_id"
         class="flex-row-space-between module-line"
-        :class="searchObj.level === item.level_id ? 'selectedLine' : ''"
-        :style="
-          item.count === 0
-            ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
-            : { height: '30px', 'font-size': '14px' }
-        "
-        @click="levelChange(item.level_id, item.count === 0)"
       >
-        <div class="selectOption">
-          {{ item.level }}
+        <div class="check-label">
+          <div class="selectOption">
+            {{ item.level }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
         </div>
-        <div class="num">
-          {{ item.count }}
-        </div>
+      </el-checkbox>
+      <div class="module-title flex-row-space-between">
+        <span class="filter-box-title"> 语言 </span>
       </div>
-      <div
-        class="module-title flex-row-space-between"
-        style="margin-top: 14px; margin-bottom: 0px"
-      >
-        <span style="font-size: 14px">{{ $t('views.vulnList.language') }}</span>
-        <div class="reset-btn" @click="languageChange('')">
-          <span style="font-size: 14px">{{ $t('views.vulnList.reset') }}</span>
-        </div>
-      </div>
-      <div
+      <el-checkbox
         v-for="item in searchOptionsObj.language"
         :key="item.language"
         class="flex-row-space-between module-line"
-        :class="searchObj.language === item.language ? 'selectedLine' : ''"
-        :style="
-          item.count === 0
-            ? { cursor: 'not-allowed', height: '30px', 'font-size': '14px' }
-            : { height: '30px', 'font-size': '14px' }
-        "
-        @click="languageChange(item.language, item.count === 0)"
       >
-        <div class="selectOption">
-          {{ item.language }}
+        <div class="check-label">
+          <div class="selectOption">
+            {{ item.language }}
+          </div>
+          <div class="num">
+            {{ item.count }}
+          </div>
         </div>
-        <div class="num">
-          {{ item.count }}
-        </div>
-      </div>
+      </el-checkbox>
     </div>
 
     <div class="main-warp">
       <div class="selectForm">
+        <div class="selectInput">
+          <el-input
+            v-model="searchObj.url"
+            size="small"
+            placeholder="输入漏洞名称搜索"
+            @keyup.enter.native="newSelectData"
+          >
+            <i
+              slot="suffix"
+              class="el-input__icon el-icon-search"
+              @click="newSelectData"
+            />
+          </el-input>
+        </div>
         <div class="sort-box">
           <el-select
             v-model="searchObj.order"
+            size="small"
             style="width: 160px; font-size: 14px"
             class="commonSelect"
             :placeholder="$t('views.vulnList.sort')"
@@ -133,7 +111,7 @@
             @click="sortSelect(null)"
           ></i>
         </div>
-        <el-select
+        <!-- <el-select
           v-model="searchObj.language"
           :placeholder="$t('views.vulnList.developLanguage')"
           style="margin-left: 10px; width: 160px; font-size: 14px"
@@ -145,8 +123,8 @@
           <el-option label="PYTHON" value="PYTHON"></el-option>
           <el-option label="PHP" value="PHP"></el-option>
           <el-option label="GO" value="GO"></el-option>
-        </el-select>
-        <el-select
+        </el-select> -->
+        <!-- <el-select
           v-model="searchObj.status"
           :placeholder="$t('views.vulnList.vulnStatus')"
           style="margin-left: 10px; width: 160px; font-size: 14px"
@@ -160,22 +138,7 @@
             :label="item.label"
             :value="item.value"
           ></el-option>
-        </el-select>
-        <div class="selectInput">
-          <el-input
-            v-model="searchObj.url"
-            :placeholder="$t('views.vulnList.searchExample')"
-            class="commonInput"
-            style="width: 312px"
-            @keyup.enter.native="newSelectData"
-          >
-            <i
-              slot="suffix"
-              class="el-input__icon el-icon-search"
-              @click="newSelectData"
-            />
-          </el-input>
-        </div>
+        </el-select> -->
       </div>
       <div class="checked-bar">
         <el-checkbox
@@ -522,6 +485,24 @@ export default class VulListComponent extends VueBase {
 </script>
 
 <style scoped lang="scss">
+.flex-row-space-between.module-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.flex-row-space-between.module-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-title {
+  font-weight: 500;
+  font-size: 16px;
+  color: #38435a;
+}
+
 .slider-warp {
   width: 234px;
   margin-top: 14px;
@@ -547,10 +528,12 @@ export default class VulListComponent extends VueBase {
   }
 
   .module-title {
-    margin-top: 28px;
-    margin-bottom: 24px;
     font-size: 16px;
     color: #38435a;
+    .filter-box-title {
+      padding: 10px 0;
+      color: #38435a;
+    }
   }
 
   .reset-btn {
@@ -560,27 +543,39 @@ export default class VulListComponent extends VueBase {
 
   .module-line {
     cursor: pointer;
-    padding-left: 5px;
-    height: 38px;
-    line-height: 38px;
-
-    &:hover {
-      background: #f6f8fa;
+    height: 32px;
+    line-height: 32px;
+    margin-right: 0;
+    /deep/.el-checkbox__label {
+      flex: 1;
+      .check-label {
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
     .selectOption {
       display: inline-block;
-      width: 80%;
-      color: #4b99f1;
+      max-width: 100px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+      color: #38435a;
       font-size: 14px;
     }
 
     .num {
-      color: #959ea9;
+      color: #38435a;
       font-size: 14px;
+    }
+    &.is-checked {
+      .selectOption {
+        color: #1a80f2;
+      }
+
+      .num {
+        color: #1a80f2;
+      }
     }
   }
 
@@ -615,6 +610,7 @@ export default class VulListComponent extends VueBase {
   }
   .selectForm {
     width: 100%;
+    display: flex;
     .sort-box {
       display: inline-flex;
       align-items: center;
@@ -626,22 +622,24 @@ export default class VulListComponent extends VueBase {
     }
 
     .sort-btn {
-      width: 38px;
-      height: 38px;
+      width: 32px;
+      height: 32px;
       border: 1px solid #dcdfe6;
       color: #606266;
       display: inline-block;
       background: #fff;
       border-radius: 4px;
       text-align: center;
-      line-height: 36px;
-      font-size: 14px;
+      line-height: 30px;
+      font-size: 12px;
       cursor: pointer;
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
     .selectInput {
-      float: right;
+      flex: 1;
+      padding-right: 8px;
+      // float: right;
     }
   }
 }

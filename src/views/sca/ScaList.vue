@@ -7,7 +7,7 @@
       <div class="slider-warp" :style="{ marginTop: projectId && '14px' }">
         <div class="title flex-column-center" style="height: 54px">
           <div class="flex-row-space-between">
-            <span style="filter-title">过滤器 </span>
+            <span class="filter-title">过滤器 </span>
             <el-button type="text" class="reset-btn" @click="reset">
               <span>重置全部</span>
             </el-button>
@@ -425,7 +425,7 @@ export default class ScaList extends VueBase {
     this.searchOptionsObj.projects = data.projects
   }
 
-  private dialogFlag = true
+  private dialogFlag = false
   private goDetail(row: any) {
     this.dialogFlag = true
   }
@@ -583,6 +583,11 @@ export default class ScaList extends VueBase {
     }
 
     .selectOption {
+      display: inline-block;
+      max-width: 100px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
       color: #38435a;
       font-size: 14px;
     }
