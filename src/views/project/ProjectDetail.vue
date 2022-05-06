@@ -653,7 +653,9 @@ export default class ProjectDetail extends VueBase {
       this.showApiListFlag = true
     } else {
       this.showApiListFlag = false
-      this.selectTab = 'desc'
+      if (this.selectTab === 'apiList') {
+        this.selectTab = 'desc'
+      }
     }
   }
   async mounted() {
