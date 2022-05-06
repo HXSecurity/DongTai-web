@@ -173,7 +173,6 @@ export default class VulnList extends VueBase {
         return 'iconyingyong'
     }
   }
-
   private goDetail(id: number) {
     this.$router.push(
       `/vuln/vulnDetail/1/${id}?status=` + this.searchObj.status
