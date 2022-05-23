@@ -33,7 +33,7 @@
       </div>
       <el-table :data="tableData" class="projectList-table" style="border: 1px">
         <el-table-column
-          width="200px"
+          width="250px"
           prop="name"
           :label="$t('views.projectManage.name')"
         >
@@ -55,7 +55,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="300px"
+          min-width="300px"
           style="padding-left: 20px"
           :label="$t('views.projectManage.vul')"
         >
@@ -92,9 +92,11 @@
         <el-table-column
           prop="owner"
           :label="$t('views.projectManage.owner')"
+          width="80px"
         ></el-table-column>
         <el-table-column
           prop="latest_time"
+          width="180px"
           :label="$t('views.projectManage.time')"
         ></el-table-column>
         <el-table-column

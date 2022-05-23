@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 2239779 */
-  src: url('iconfont.woff2?t=1650529341805') format('woff2'),
-       url('iconfont.woff?t=1650529341805') format('woff'),
-       url('iconfont.ttf?t=1650529341805') format('truetype');
+  src: url('iconfont.woff2?t=1651830455035') format('woff2'),
+       url('iconfont.woff?t=1651830455035') format('woff'),
+       url('iconfont.ttf?t=1651830455035') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,46 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.iconyanzheng:before {
+  content: "\e6b5";
+}
+
+.icontongbu:before {
+  content: "\e6b6";
+}
+
+.iconcipan:before {
+  content: "\e6b4";
+}
+
+.iconfanye:before {
+  content: "\e6b1";
+}
+
+.icontishi:before {
+  content: "\e6b2";
+}
+
+.iconchongfang:before {
+  content: "\e6b3";
+}
+
+.iconcalendar:before {
+  content: "\e6b0";
+}
+
+.iconadd1:before {
+  content: "\e6ad";
+}
+
+.icondelete:before {
+  content: "\e6ae";
+}
+
+.iconreset:before {
+  content: "\e6af";
 }
 
 .iconxiazai:before {

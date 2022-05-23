@@ -12,80 +12,32 @@
       <div class="v-title-line"></div>
       <div class="v-title-top-line"></div>
       <div class="v-title-bottom-line"></div>
-      <div class="v-title" @click="vItem.open = !vItem.open">
+      <div class="v-title" @click="openRow(vItem)">
         <div
           class="v-title-before"
-          :style="{ background: levelColor(vItem.type) }"
+          :style="{ background: levelColor(vItem.level) }"
         ></div>
-        <div
-          class="v-title-dot"
-          :style="{ background: levelColor(vItem.type) }"
-        ></div>
-        <div class="left">{{ vItem.type }}</div>
+        <div class="v-title-dot"></div>
+        <div class="left">{{ vItem.dependency_level }}层依赖</div>
         <div class="center">
           <div class="center-left">
-            <template v-if="vItem.uuid">
-              <div>
-                【{{ vItem.metav2.type }}】
-                {{ vItem.metav2.project_name }}
-                @{{ vItem.metav2.project_version }}
-              </div>
-              <div>
-                {{ vItem.callerClass + ':' + vItem.callerLineNumber }}
-              </div>
-            </template>
-            <template v-else>
-              <div>
-                {{
-                  vIndex == tree.length - 1 ? '数据对象返回' : '数据对象传播'
-                }}
-              </div>
-              <div>
-                {{ vItem.callerClass + ':' + vItem.callerLineNumber }}
-              </div>
-            </template>
+            <div>{{ vItem.project_name }}@{{ vItem.project_version }}</div>
           </div>
           <div class="center-right">
-            <span>{{
-              vItem.type === '危险方法'
-                ? vItem.sourceValues
-                : vItem.targetValues
+            <span :style="{ color: levelColor(vItem.level) }">{{
+              vItem.level
             }}</span>
           </div>
         </div>
-        <i class="icon iconfont rightFont" :class="vItem.open ? 'active' : ''"
+        <i
+          v-if="vItem.dependency_level > 0"
+          class="icon iconfont rightFont"
+          :class="vItem.open ? 'active' : ''"
           >&#xe69c;</i
         >
       </div>
-      <div>
-        <div v-if="vItem.open">
-          <stacksList
-            v-if="vItem.graphv2 && vItem.graphv2.length"
-            class="link-card"
-            :tree="vItem.graphv2"
-          ></stacksList>
-          <div v-else>
-            <div class="info-card">
-              <div class="info-card-title">{{ levelLabel(vItem.tag) }}</div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">方法</div>
-                <div class="info-card-item-value">{{ vItem.methodName }}</div>
-              </div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">对象</div>
-                <div class="info-card-item-value">{{ vItem.className }}</div>
-              </div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">参数</div>
-                <div class="info-card-item-value">{{ vItem.sourceValues }}</div>
-              </div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">返回</div>
-                <div class="info-card-item-value">{{ vItem.targetValues }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div v-if="vItem.open" class="next">
+        <StacksList :tree="vItem.next"></StacksList>
       </div>
     </div>
   </div>
@@ -94,28 +46,52 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import stacksList from './stacksList.vue'
+import qs from 'qs'
+import StacksList from './stacksList.vue'
+import { formatTimestamp } from '@/utils/utils'
 
 @Component({
   name: 'LinkList',
   components: {
-    stacksList,
+    StacksList,
   },
 })
 export default class LinkList extends VueBase {
   @Prop() tree: any
+  @Prop() aggr_id: any
   created() {
     this.tree.forEach((element: any) => {
       this.$set(element, 'open', false)
     })
   }
+
+  private async openRow(row: any) {
+    if (!row.next) {
+      const res = await this.services.sca.vulProjectAssets({
+        project_id: row.project_id,
+        project_version_id: row.project_version_id,
+        vul_id: this.aggr_id,
+      })
+      if (res.status === 201) {
+        this.$set(row, 'open', !row.open)
+        this.$set(row, 'next', res.data)
+      }
+      return
+    }
+    this.$set(row, 'open', !row.open)
+  }
+
   private levelColor(level: any) {
     switch (level) {
-      case '危险方法':
+      case '高危':
         return '#E56363'
-      case '污点来源方法':
+      case '中危':
         return '#F49E0B'
-      case '传播方法':
+      case '低危':
+        return '#2F90EA'
+      case '无风险':
+        return '#ABB2C0'
+      case '信息':
         return '#DBDBDB'
     }
   }
@@ -231,12 +207,13 @@ export default class LinkList extends VueBase {
       border-bottom-right-radius: 40px;
     }
     .v-title-dot {
-      width: 8px;
-      height: 8px;
+      width: 14px;
+      height: 1px;
       display: inline-block;
       position: absolute;
       border-radius: 50%;
-      left: -17px;
+      background: #b6bbc5;
+      left: -14px;
       top: 38px;
     }
   }
@@ -254,17 +231,17 @@ export default class LinkList extends VueBase {
     }
   }
 
-  .v-box + .v-box {
-    .v-title-top-line {
-      display: inline-block;
-      width: 1px;
-      height: 10px;
-      position: absolute;
-      background: #fff;
-      left: -1px;
-      top: 38px;
-    }
-  }
+  // .v-box + .v-box {
+  //   .v-title-top-line {
+  //     display: inline-block;
+  //     width: 1px;
+  //     height: 10px;
+  //     position: absolute;
+  //     background: #fff;
+  //     left: -1px;
+  //     top: 38px;
+  //   }
+  // }
 
   .only-one {
     .v-title-top-line {
@@ -276,32 +253,23 @@ export default class LinkList extends VueBase {
     border-left: 1px solid #b6bbc5;
     position: relative;
     padding-top: 8px;
-    &.last-no-border {
+    .v-title-top-line {
+      position: absolute;
+      background: #fff;
+      height: 48px;
+      top: 0px;
+      left: -1px;
+      width: 1px;
+    }
+    & + .v-box {
       .v-title-top-line {
+        position: absolute;
         background: #b6bbc5;
-        height: 40px;
+        height: 48px;
         top: 0px;
         left: -1px;
         width: 1px;
       }
-    }
-    .v-title-top-line {
-      display: inline-block;
-      width: 1px;
-      height: 47px;
-      position: absolute;
-      background: #fff;
-      left: -1px;
-      top: 0px;
-    }
-    .v-title-bottom-line {
-      display: inline-block;
-      width: 1px;
-      height: 8px;
-      position: absolute;
-      background: #fff;
-      left: -1px;
-      top: 54px;
     }
   }
   .last-no-border {
@@ -338,6 +306,9 @@ export default class LinkList extends VueBase {
 
   .link-card {
     padding-left: 36px;
+  }
+  .next {
+    padding-left: 40px;
   }
 }
 </style>

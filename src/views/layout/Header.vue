@@ -51,18 +51,25 @@
         <el-button type="text" class="anent" @click="buildIAST">
           <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
         </el-button>
-        <div class="icon-btn">
-          <span class="icon iconfont" @click="$router.push({ name: 'taint' })"
-            >&#xe6a2;</span
+        <div class="icon-btn" @click="$router.push({ name: 'taint' })">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="数据查询"
+            placement="bottom"
           >
+            <span class="icon iconfont">&#xe6a2;</span>
+          </el-tooltip>
         </div>
-        <div class="icon-btn">
-          <span
-            class="icon iconfont"
-            @click="$router.push({ name: 'setting' })"
+        <div class="icon-btn" @click="$router.push({ name: 'setting' })">
+          <el-tooltip
+            class="item"
+            effect="dark"
+            content="系统设置"
+            placement="bottom"
           >
-            &#xe6a1;
-          </span>
+            <span class="icon iconfont"> &#xe6a1; </span>
+          </el-tooltip>
         </div>
 
         <el-popover
@@ -101,9 +108,16 @@
             </div>
           </div>
           <el-badge slot="reference" :value="count" :hidden="!count">
-            <span class="icon-btn">
-              <i style="font-size: 16px" class="icon iconfont">&#xe6a0;</i>
-            </span>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="消息通知"
+              placement="bottom"
+            >
+              <span class="icon-btn">
+                <i style="font-size: 16px" class="icon iconfont">&#xe6a0;</i>
+              </span>
+            </el-tooltip>
           </el-badge>
         </el-popover>
         <Dropdown>

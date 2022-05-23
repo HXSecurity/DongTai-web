@@ -10,16 +10,16 @@
             v-if="!hiddenMap[i.name]"
             :key="i.path"
             class="menu-item"
-            :class="curModule(i.path) ? 'currentModule' : ''"
+            :class="curModule(i.name) ? 'currentModule' : ''"
             @click="$router.push(i.path)"
           >
             {{ $t(i.meta.i18n) }}
           </div>
         </template> -->
-
         <div v-for="(i, k) in menuGroup" :key="k">
-          <template v-if="menuGroup[k].length == 1">
+          <template v-if="i.length == 1">
             <div
+              v-if="RouterMap[i[0]]"
               :key="RouterMap[i[0]].path"
               class="menu-item"
               :class="curModule(RouterMap[i[0]].path) ? 'currentModule' : ''"
@@ -31,10 +31,9 @@
           <template v-else>
             <div>
               <div
+                v-if="i.filter((z) => RouterMap[z]).length > 0"
                 class="menu-item"
-                :class="
-                  menuGroup[k].some((ii) => $route.name === ii) ? 'active' : ''
-                "
+                :class="i.some((ii) => $route.name === ii) ? 'active' : ''"
                 @click="menuActive[k] = !menuActive[k]"
               >
                 <span>{{ k }}</span>
@@ -46,18 +45,22 @@
               <div
                 class="menu-item-group"
                 :style="`height:${
-                  menuActive[k] ? menuGroup[k].length * 38 + 'px' : '0px'
+                  menuActive[k]
+                    ? i.filter((z) => RouterMap[z]).length * 38 + 'px'
+                    : '0px'
                 }`"
               >
-                <div
-                  v-for="j in i"
-                  :key="RouterMap[j].path"
-                  class="menu-item"
-                  :class="curModule(RouterMap[j].path) ? 'currentModule' : ''"
-                  @click="$router.push(RouterMap[j].path)"
-                >
-                  {{ $t(RouterMap[j].meta.i18n) }}
-                </div>
+                <template v-for="j in i">
+                  <div
+                    v-if="RouterMap[j]"
+                    :key="RouterMap[j] && RouterMap[j].path"
+                    class="menu-item"
+                    :class="curModule(RouterMap[j].path) ? 'currentModule' : ''"
+                    @click="$router.push(RouterMap[j].path)"
+                  >
+                    {{ $t(RouterMap[j].meta.i18n) }}
+                  </div>
+                </template>
               </div>
             </div>
           </template>

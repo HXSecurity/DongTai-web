@@ -9,6 +9,10 @@ interface agentListParams {
 
 export default () =>
   new (class {
+    enum(): Promise<iResponse> {
+      return request.get('/circuit_config/enum/all')
+    }
+
     agentUpdate(): Promise<iResponse> {
       return request.get('/agent/status/update', { timeout: 1000 })
     }
@@ -17,6 +21,12 @@ export default () =>
       return request.post('/agent/alias/modified', data)
     }
 
+    audit(data: any): Promise<iResponse> {
+      return request.post('/agent/audit', data)
+    }
+
+    // agentList(params: any): Promise<iResponse> {
+    //   return request.get('/agents', { params })
     // agentList(params: agentListParams): Promise<iResponse> {
     //   return request.get('/agents', { params })
     // }
@@ -34,7 +44,7 @@ export default () =>
       })
     }
 
-    agentList(params: agentListParams): Promise<iResponse> {
+    agentList(params: any): Promise<iResponse> {
       return request.get('/agents', {
         params,
         baseURL: process.env.VUE_APP_BASE_API_V2,
@@ -162,6 +172,10 @@ export default () =>
       return request.get('/program_language')
     }
 
+    vulRecheckPayload(params: any): Promise<iResponse> {
+      return request.get('/vul_recheck_payload', { params })
+    }
+
     hookRuleList(params: {
       type: string
       page: number
@@ -179,6 +193,7 @@ export default () =>
     }): Promise<iResponse> {
       return request.get('/engine/hook/rule_types', { params })
     }
+
     ruleTypeAdd(params: {
       type: string
       name: string
@@ -210,6 +225,14 @@ export default () =>
       return request.post('/engine/hook/rule/modify', params)
     }
 
+    vul_recheck_payload(params: any): Promise<iResponse> {
+      return request.post('/vul_recheck_payload', params)
+    }
+
+    edit_vul_recheck_payload(data: any): Promise<iResponse> {
+      return request.put('/vul_recheck_payload/' + data.id, data)
+    }
+
     ruleDisable(params: { rule_id: string }): Promise<iResponse> {
       return request.get('/engine/hook/rule/disable', { params })
     }
@@ -225,6 +248,15 @@ export default () =>
     changeStatus(params: any): Promise<iResponse> {
       return request.get('/engine/hook/rule/status', { params })
     }
+
+    changeVulStatus(data: any): Promise<iResponse> {
+      return request.put('/vul_recheck_payload/status', data)
+    }
+
+    delVulStatus(data: any): Promise<iResponse> {
+      return request.delete('/vul_recheck_payload/' + data.id)
+    }
+
     ruleDelete(params: { rule_id: string }): Promise<iResponse> {
       return request.get('/engine/hook/rule/delete', { params })
     }
@@ -313,6 +345,26 @@ export default () =>
       return request.get(`/version_control/versionlist`)
     }
 
+    machinecode(): Promise<iResponse> {
+      return request.get(`/license/machinecode`)
+    }
+
+    isAuthenticated(): Promise<iResponse> {
+      return request.get(`/license/is_authenticated`)
+    }
+
+    uploadLicense(data: any): Promise<iResponse> {
+      return request.post(`/license/upload_license`, data)
+    }
+
+    detailLicense(): Promise<iResponse> {
+      return request.get(`/license/detail_license`)
+    }
+
+    currentConcurrency(): Promise<iResponse> {
+      return request.get(`/license/current_concurrency`)
+    }
+
     get_sca_strategy(params: any): Promise<iResponse> {
       return request.get(
         `/scadb/maven/bulk?page=${params.page}&page_size=${params.page_size}&name=${params.name}`
@@ -343,8 +395,28 @@ export default () =>
     get_license_list(): Promise<iResponse> {
       return request.get(`/scadb/license_list`)
     }
+
+    circuitPriority(row: any, data: any): Promise<iResponse> {
+      return request.put(`/circuit_config/${row.id}/priority`, data)
+    }
+
+    circuitReset(row: any): Promise<iResponse> {
+      return request.put(`/circuit_config/${row.id}/reset`)
+    }
+
     get_threshold(): Promise<iResponse> {
-      return request.get(`/threshold/settings/get`)
+      return request.get(`/circuit_config`)
+    }
+
+    createCircuit(data: any): Promise<iResponse> {
+      return request.post(`/circuit_config`, data)
+    }
+
+    updateCircuit(data: any): Promise<iResponse> {
+      return request.put(`/circuit_config/` + data.id, data)
+    }
+    getCircuit(id: any): Promise<iResponse> {
+      return request.get(`/circuit_config/` + id)
     }
 
     save_threshold(data: any): Promise<iResponse> {
@@ -355,7 +427,7 @@ export default () =>
     }
 
     del_threshold(data: any): Promise<iResponse> {
-      return request.post(`/threshold/settings/del`, data)
+      return request.delete(`/circuit_config/` + data.id)
     }
 
     webhook_type(): Promise<iResponse> {
