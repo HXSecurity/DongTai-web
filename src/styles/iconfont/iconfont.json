@@ -6,6 +6,76 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "29501168",
+      "name": "yanzheng",
+      "font_class": "yanzheng",
+      "unicode": "e6b5",
+      "unicode_decimal": 59061
+    },
+    {
+      "icon_id": "29501189",
+      "name": "tongbu",
+      "font_class": "tongbu",
+      "unicode": "e6b6",
+      "unicode_decimal": 59062
+    },
+    {
+      "icon_id": "29500904",
+      "name": "cipan",
+      "font_class": "cipan",
+      "unicode": "e6b4",
+      "unicode_decimal": 59060
+    },
+    {
+      "icon_id": "29498093",
+      "name": "fanye",
+      "font_class": "fanye",
+      "unicode": "e6b1",
+      "unicode_decimal": 59057
+    },
+    {
+      "icon_id": "29498094",
+      "name": "tishi",
+      "font_class": "tishi",
+      "unicode": "e6b2",
+      "unicode_decimal": 59058
+    },
+    {
+      "icon_id": "29498095",
+      "name": "chongfang",
+      "font_class": "chongfang",
+      "unicode": "e6b3",
+      "unicode_decimal": 59059
+    },
+    {
+      "icon_id": "29236366",
+      "name": "calendar",
+      "font_class": "calendar",
+      "unicode": "e6b0",
+      "unicode_decimal": 59056
+    },
+    {
+      "icon_id": "29194054",
+      "name": "add",
+      "font_class": "add1",
+      "unicode": "e6ad",
+      "unicode_decimal": 59053
+    },
+    {
+      "icon_id": "29194055",
+      "name": "delete",
+      "font_class": "delete",
+      "unicode": "e6ae",
+      "unicode_decimal": 59054
+    },
+    {
+      "icon_id": "29194056",
+      "name": "reset",
+      "font_class": "reset",
+      "unicode": "e6af",
+      "unicode_decimal": 59055
+    },
+    {
       "icon_id": "29181899",
       "name": "xiazai",
       "font_class": "xiazai",

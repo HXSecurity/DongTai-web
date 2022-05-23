@@ -10,6 +10,7 @@
   "dependencies": {
     "@antv/g6": "4.1.11",
     "@innologica/vue-dropdown-menu": "^0.1.4",
+    "@types/sortablejs": "^1.13.0",
     "axios": "^0.21.0",
     "cookies-js": "^1.2.3",
     "core-js": "^3.6.5",
@@ -19,6 +20,7 @@
     "markdown-it-xss": "^1.0.2",
     "node-sass": "^5.0.0",
     "nprogress": "^0.2.0",
+    "sortablejs": "^1.15.0",
     "view-design": "^4.6.1",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",

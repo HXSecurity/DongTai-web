@@ -3,7 +3,9 @@
     <div class="sca-dialog-desc-box">
       <div class="sca-dialog-title">修复建议</div>
       <div class="sca-dialog-info">
-        升级fastjson@1.2.4版本至1.3.5及以上版本，升级fastjson@1.2.4版本至1.3.5及以上版本，升级4版本至1.3.5及以上版本
+        升级{{ dialogInfo.package_name }}@{{ dialogInfo.version }}版本至{{
+          dialogInfo.safe_version
+        }}及以上版本。
       </div>
     </div>
     <div class="sca-dialog-desc-box">
@@ -21,16 +23,18 @@
           <div class="pic-info" style="padding: 16px">
             <div class="pic-info-item">
               <div class="label">许可证名称</div>
-              <div class="info">Apache 2.0</div>
+              <div class="info">{{ dialogInfo.license }}</div>
             </div>
             <div class="pic-info-item">
               <div class="label">风险</div>
-              <div class="info">高</div>
+              <div class="info">
+                {{ switchLevel(dialogInfo.license_level).label }}
+              </div>
             </div>
             <div class="pic-info-item">
               <div class="label">许可证说明</div>
               <div class="info">
-                允许商业集成,允许商业集成,允许商业集成,允许商业集成允许商业集成
+                {{ dialogInfo.license_desc }}
               </div>
             </div>
           </div>
@@ -41,28 +45,21 @@
       <div class="sca-dialog-title">关联项目</div>
       <div class="sca-dialog-info">
         <el-row :gutter="8">
-          <el-col :span="8">
-            <div class="project-box">
-              <span class="project-name">commons-fi...</span>
-              <span class="project-link">（3层直接引用）</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="project-box">
-              <span class="project-name">commons-fi...</span>
-              <span class="project-link">（3层直接引用）</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="project-box">
-              <span class="project-name">commons-fi...</span>
-              <span class="project-link">（3层直接引用）</span>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="project-box">
-              <span class="project-name">commons-fi...</span>
-              <span class="project-link">（3层直接引用）</span>
+          <el-col
+            v-for="project in projects"
+            :key="project.id"
+            :span="8"
+            style="margin-top: 8px"
+          >
+            <div class="project-box" @click="toProject(project.project_id)">
+              <span class="project-name">
+                {{ project.project_name }}
+              </span>
+              <span class="project-link"
+                >（{{ project.dependency_level }}层{{
+                  project.dependency_level > 1 ? '间' : '直'
+                }}接引用）</span
+              >
             </div>
           </el-col>
         </el-row>
@@ -79,23 +76,23 @@
           <el-table-column
             prop="name"
             label="漏洞名称"
-            width="280"
-            show-overflow-tooltip=""
+            width="380"
+            show-overflow-tooltip
           >
             <template slot-scope="{ row }">
-              <span class="table-sca-name">
-                {{ row.name }}
+              <span class="table-sca-name" @click="toVulnD(row)">
+                {{ row.vul_title }}
               </span>
             </template>
           </el-table-column>
           <el-table-column
             prop="type"
             label="漏洞类型"
-            width="120"
+            width="150"
             show-overflow-tooltip=""
           >
             <template slot-scope="{ row }">
-              {{ row.type }}
+              {{ row.vul_type }}
             </template>
           </el-table-column>
           <el-table-column
@@ -105,14 +102,20 @@
             header-align="center"
           >
             <template slot-scope="{ row }">
-              <span :class="row.level_type" class="level-type">
+              <span
+                class="level-type"
+                :style="{
+                  color: levelColor(row.level).color,
+                  background: levelColor(row.level).bg,
+                }"
+              >
                 {{ row.level }}
               </span>
             </template>
           </el-table-column>
           <el-table-column prop="num" label="编号">
             <template slot-scope="{ row }">
-              {{ row.num }}
+              {{ row.cve_id }}
             </template>
           </el-table-column>
         </el-table>
@@ -122,25 +125,83 @@
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
+import { Component, Prop } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import Distribution from '@/views/project/components/distribution.vue'
 @Component({ name: 'ScaDialog', components: { Distribution } })
 export default class ScaDialog extends VueBase {
-  private level_data = [
-    { level_id: 1, level_name: '高危', num: 11 },
-    { level_id: 2, level_name: '中危', num: 1 },
-    { level_id: 3, level_name: '低危', num: 0 },
-    { level_id: 4, level_name: '无风险', num: 0 },
-    { level_id: 5, level_name: '提示', num: 0 },
-  ]
-  private tableData = [
+  @Prop() dialogInfo: any
+
+  private tableData: any = []
+  async getAssetVuls() {
+    const res = await this.services.sca.assetVuls(this.dialogInfo.id)
+    this.tableData.push(...res.data)
+  }
+
+  private projects: any = []
+
+  async getProjects() {
+    const res = await this.services.sca.assetProjects(this.dialogInfo.id)
+    this.projects.push(...res.data)
+  }
+
+  private toVulnD(item: any) {
+    this.$router.push(
+      `/vuln/scaDetail/${item.asset_vul_id}/1?status=1&id=${item.asset_vul_id}`
+    )
+  }
+
+  toProject(id: any) {
+    this.$router.push('/project/projectDetail/' + id)
+  }
+
+  created() {
+    this.getAssetVuls()
+    this.getProjects()
+  }
+
+  private levelColor(level: any) {
+    switch (level) {
+      case '高危':
+        return { label: '高', color: '#E56363', bg: 'rgba(229, 99, 99, 0.1)' }
+      case '中危':
+        return { label: '中', color: '#F49E0B', bg: 'rgba(244, 158, 11, 0.1)' }
+      case '低危':
+        return { label: '低', color: '#2F90EA', bg: 'rgba(47, 144, 234, 0.1)' }
+      case '无风险':
+        return { label: '无', color: '#ABB2C0', bg: 'rgba(172, 180, 196, 0.1)' }
+    }
+  }
+
+  private switchLevel(level: any) {
+    switch (level) {
+      case 1:
+        return { label: '高', color: '#E56363', bg: 'rgba(229, 99, 99, 0.1)' }
+      case 2:
+        return { label: '中', color: '#F49E0B', bg: 'rgba(244, 158, 11, 0.1)' }
+      case 3:
+        return { label: '低', color: '#2F90EA', bg: 'rgba(47, 144, 234, 0.1)' }
+      case 0:
+        return {
+          label: '无风险',
+          color: '#ABB2C0',
+          bg: 'rgba(172, 180, 196, 0.1)',
+        }
+    }
+  }
+
+  private level_data: any = [
     {
-      name: 'fastjson@1.2.3反序列化漏洞',
-      type: '反序列化漏洞',
-      level: '高危',
-      level_type: 'height',
-      num: 'CVE-2022-12341',
+      level_id: 1,
+      level_name: '高危',
+      num: this.dialogInfo.vul_high_count,
+    },
+    { level_id: 2, level_name: '中危', num: this.dialogInfo.vul_medium_count },
+    { level_id: 3, level_name: '低危', num: this.dialogInfo.vul_low_count },
+    {
+      level_id: 4,
+      level_name: '无风险',
+      num: this.dialogInfo.vul_info_count,
     },
   ]
 }
@@ -194,7 +255,7 @@ export default class ScaDialog extends VueBase {
             flex: 1;
             color: #38435a;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 400;
           }
         }
       }
@@ -205,7 +266,14 @@ export default class ScaDialog extends VueBase {
     background: #fafafa;
     border-radius: 2px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
     .project-name {
+      display: inline-block;
+      width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
       color: #1a80f2;
     }
     .project-link {
@@ -222,10 +290,12 @@ export default class ScaDialog extends VueBase {
     }
     .table-sca-name {
       color: #1a80f2;
+      cursor: pointer;
     }
     .level-type {
       width: 40px;
       height: 24px;
+      font-size: 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;

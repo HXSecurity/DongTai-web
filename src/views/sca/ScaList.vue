@@ -13,13 +13,19 @@
             </el-button>
           </div>
         </div>
-        <div class="module-title flex-row-space-between">
+        <div
+          v-if="searchOptionsObj.level.length"
+          class="module-title flex-row-space-between"
+        >
           <span class="filter-box-title"> 等级 </span>
         </div>
         <el-checkbox
           v-for="item in searchOptionsObj.level"
           :key="item.level_id"
+          v-model="searchObj.level"
+          :label="item.level_id"
           class="flex-row-space-between module-line"
+          @change="getTableData(true)"
         >
           <div class="check-label">
             <div class="selectOption">
@@ -31,17 +37,23 @@
           </div>
         </el-checkbox>
 
-        <div class="module-title flex-row-space-between">
+        <div
+          v-if="searchOptionsObj.license.length"
+          class="module-title flex-row-space-between"
+        >
           <span class="filter-box-title"> 开源许可证 </span>
         </div>
         <el-checkbox
-          v-for="item in searchOptionsObj.language"
-          :key="item.language"
+          v-for="item in searchOptionsObj.license"
+          :key="item.id"
+          v-model="searchObj.license"
+          :label="item.license"
           class="flex-row-space-between module-line"
+          @change="getTableData(true)"
         >
           <div class="check-label">
             <div class="selectOption">
-              {{ item.language }}
+              {{ item.license }}
             </div>
             <div class="num">
               {{ item.count }}
@@ -49,13 +61,19 @@
           </div>
         </el-checkbox>
 
-        <div class="module-title flex-row-space-between">
+        <div
+          v-if="searchOptionsObj.language.length"
+          class="module-title flex-row-space-between"
+        >
           <span class="filter-box-title"> 语言 </span>
         </div>
         <el-checkbox
           v-for="item in searchOptionsObj.language"
           :key="item.language"
+          v-model="searchObj.language"
+          :label="item.language"
           class="flex-row-space-between module-line"
+          @change="getTableData(true)"
         >
           <div class="check-label">
             <div class="selectOption">
@@ -129,7 +147,6 @@
           :data="tableData"
           style="width: 100%; margin-top: 18px; cursor: pointer"
           @row-click="goDetail"
-          @sort-change="tableSort"
         >
           <el-table-column
             label="组件名称"
@@ -149,10 +166,10 @@
             show-overflow-tooltip
           >
             <template slot-scope="{ row }">
-              <div>
-                <p>{{ row.version }}</p>
-                <p class="pkg-version">
-                  <span class="el-icon-user"></span> {{ row.version }}
+              <div class="version-box">
+                <p>{{ row.last_version }}</p>
+                <p v-if="row.safe_version" class="pkg-version">
+                  <span class="el-icon-user"></span> {{ row.safe_version }}
                 </p>
               </div>
             </template>
@@ -160,16 +177,29 @@
           <el-table-column label="漏洞" prop="license" min-width="160px">
             <template slot-scope="{ row }">
               <div class="danger-box">
-                <div class="height">0</div>
-                <div class="middle">1</div>
-                <div class="low">22</div>
-                <div class="info">3</div>
+                <div class="height">{{ row.vul_high_count }}</div>
+                <div class="middle">{{ row.vul_medium_count }}</div>
+                <div class="low">{{ row.vul_low_count }}</div>
+                <div class="info">{{ row.vul_info_count }}</div>
               </div>
             </template>
           </el-table-column>
           <el-table-column label="许可证" prop="license" width="160px">
+            <template slot-scope="scope">
+              <span>
+                {{ scope.row.license }}
+                <span
+                  class="tag"
+                  :style="{
+                    color: levelColor(scope.row.license_level).color,
+                    background: levelColor(scope.row.license_level).bg,
+                  }"
+                  >{{ levelColor(scope.row.license_level).label }}</span
+                >
+              </span>
+            </template>
           </el-table-column>
-          <el-table-column label="关联项目" prop="license" width="160px">
+          <el-table-column label="关联项目" prop="project_count" width="160px">
           </el-table-column>
         </el-table>
         <div class="pagination">
@@ -186,31 +216,43 @@
         </div>
       </div>
     </div>
-    <el-dialog :visible="dialogFlag" custom-class="sca-dialog">
+    <el-dialog
+      :visible.sync="dialogFlag"
+      custom-class="sca-dialog"
+      :show-close="false"
+      append-to-body
+      destroy-on-close
+      close-on-click-modal
+      width="980px"
+    >
       <template slot="title">
         <div class="sca-dialog-title-box">
-          <div class="top">commons-fileupload:commons-fileupload</div>
+          <div class="top">{{ dialogInfo.package_name }}</div>
+          <span
+            class="el-icon-close close-btn"
+            @click="dialogFlag = false"
+          ></span>
           <div class="bottom">
             <div class="bottom-item">
               <div class="label">语言</div>
-              <div class="info">Python</div>
+              <div class="info">{{ dialogInfo.language }}</div>
             </div>
             <div class="bottom-item">
               <div class="label">当前版本</div>
-              <div class="info">2.1.2</div>
+              <div class="info">{{ dialogInfo.version }}</div>
             </div>
             <div class="bottom-item">
               <div class="label">最高版本</div>
-              <div class="info">2.1.3</div>
+              <div class="info">{{ dialogInfo.last_version }}</div>
             </div>
             <div class="bottom-item">
               <div class="label">安全版本</div>
-              <div class="info">2.1.4</div>
+              <div class="info">{{ dialogInfo.safe_version }}</div>
             </div>
           </div>
         </div>
       </template>
-      <ScaDialog></ScaDialog>
+      <ScaDialog v-if="dialogFlag" :dialog-info="dialogInfo"></ScaDialog>
     </el-dialog>
   </main>
 </template>
@@ -225,53 +267,65 @@ import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
 
 @Component({ name: 'ScaList', components: { ScrollToTop, ScaDialog } })
 export default class ScaList extends VueBase {
-  @Prop() version: number | undefined
-  @Prop(String) projectId!: string
+  @Prop() version: string | number | undefined
+  @Prop() projectId: string | number | undefined
   private sortSelect(flag: any) {
     this.searchObj.sort = flag
     this.newSelectData()
   }
+
+  private dialogInfo = {}
+
   private debounceMyScroll: any
   private page = 1
   private pageSize = 10
   private total = 0
   private dataEnd = false
   private tableData: Array<ScaListObj> = []
-  private searchOptionsObj = {
+  private searchOptionsObj: any = {
     language: [],
     level: [],
-    projects: [],
+    license: [],
     orderOptions: [
       {
         label: this.$t('views.scaList.orderOptions.level'),
         value: 'level',
       },
       {
-        label: this.$t('views.scaList.orderOptions.package_name'),
-        value: 'package_name',
-      },
-      {
-        label: this.$t('views.scaList.orderOptions.version'),
-        value: 'version',
+        label: '许可证',
+        value: 'license',
       },
       {
         label: this.$t('views.scaList.orderOptions.language'),
         value: 'language',
       },
       {
-        label: this.$t('views.scaList.orderOptions.vul_count'),
+        label: '漏洞数量',
         value: 'vul_count',
       },
     ],
   }
 
-  private searchObj = {
-    language: '',
-    level: '',
-    project_name: '',
+  private levelColor(level: any) {
+    switch (level) {
+      case 1:
+        return { label: '高', color: '#E56363', bg: 'rgba(229, 99, 99, 0.1)' }
+      case 2:
+        return { label: '中', color: '#F49E0B', bg: 'rgba(244, 158, 11, 0.1)' }
+      case 3:
+        return { label: '低', color: '#2F90EA', bg: 'rgba(47, 144, 234, 0.1)' }
+      case 0:
+        return { label: '无', color: '#ABB2C0', bg: 'rgba(172, 180, 196, 0.1)' }
+    }
+  }
+
+  private searchObj: any = {
+    language: [],
+    level: [],
     keyword: '',
+    license: [],
+    project_id: undefined,
     order: '',
-    project_id: '',
     sort: null,
   }
 
@@ -281,25 +335,16 @@ export default class ScaList extends VueBase {
     }
   }
 
-  private tableSort(e: any) {
-    if (e.order == 'ascending') {
-      this.searchObj.order = e.prop
-    } else {
-      this.searchObj.order = '-' + e.prop
-    }
-    this.newSelectData()
-    //
-  }
-
   private reset() {
-    this.searchObj.language = ''
-    this.searchObj.level = ''
-    this.searchObj.project_name = ''
+    this.searchObj.language = []
+    this.searchObj.level = []
+    this.searchObj.order = ''
+    this.searchObj.sort = null
+    this.searchObj.license = []
     this.searchObj.keyword = ''
     if (this.$route.name !== 'projectDetail/:pid') {
       this.searchObj.project_id = ''
     }
-    this.kw = ''
     this.newSelectData()
   }
 
@@ -318,10 +363,6 @@ export default class ScaList extends VueBase {
     }
   }
 
-  private handleSelect(item: any) {
-    this.projectNameChange(item.id, false)
-  }
-
   private languageChange(val: string, stop: boolean) {
     if (stop) {
       return
@@ -335,17 +376,6 @@ export default class ScaList extends VueBase {
       return
     }
     this.searchObj.level = val
-    this.newSelectData()
-  }
-
-  private projectNameChange(val: string, stop: boolean) {
-    if (stop) {
-      return
-    }
-    this.searchObj.project_id = val
-    if (!val) {
-      this.kw = val
-    }
     this.newSelectData()
   }
 
@@ -373,16 +403,23 @@ export default class ScaList extends VueBase {
     return formatTimestamp(val)
   }
   public async getTableData(flag?: undefined | boolean) {
+    if (flag) {
+      this.page = 1
+    }
+    let sort = ''
+    if (!this.searchObj.sort) {
+      sort = '-'
+    }
     const params = {
       page: this.page,
       pageSize: this.pageSize,
       language: this.searchObj.language,
-      level: this.searchObj.level,
-      project_name: this.searchObj.project_name,
+      level_id: this.searchObj.level,
       keyword: this.searchObj.keyword,
-      order: this.searchObj.order,
-      project_id: this.searchObj.project_id,
-      version_id: this.version,
+      license: this.searchObj.license,
+      order: sort + this.searchObj.order,
+      project_id: this.projectId,
+      version_id: String(this.version),
     }
     this.loadingStart()
     const { status, data, msg, page } = await this.services.sca.scaList(params)
@@ -401,12 +438,8 @@ export default class ScaList extends VueBase {
 
   public async scaSummary() {
     const params = {
-      language: this.searchObj.language,
-      level: this.searchObj.level,
-      project_name: this.searchObj.project_name,
       keyword: this.searchObj.keyword,
-      order: this.searchObj.order,
-      project_id: this.searchObj.project_id,
+      project_id: this.projectId,
       version_id: this.version,
     }
     this.loadingStart()
@@ -422,11 +455,12 @@ export default class ScaList extends VueBase {
     }
     this.searchOptionsObj.language = data.language
     this.searchOptionsObj.level = data.level
-    this.searchOptionsObj.projects = data.projects
+    this.searchOptionsObj.license = data.license
   }
 
   private dialogFlag = false
   private goDetail(row: any) {
+    this.dialogInfo = row
     this.dialogFlag = true
   }
   projectNameSplit(name: string, total: number) {
@@ -466,7 +500,15 @@ export default class ScaList extends VueBase {
 .pkg-name {
   color: #1a80f2;
 }
-
+.version-box {
+  p {
+    display: block;
+    max-width: 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}
 .pkg-version {
   font-size: 12px;
   color: #51cb74;
@@ -561,6 +603,7 @@ export default class ScaList extends VueBase {
 
   .module-title {
     font-size: 16px;
+    font-weight: 500;
     color: #38435a;
   }
 
@@ -590,11 +633,13 @@ export default class ScaList extends VueBase {
       overflow: hidden;
       color: #38435a;
       font-size: 14px;
+      font-weight: 400;
     }
 
     .num {
       color: #38435a;
       font-size: 14px;
+      font-weight: 400;
     }
     &.is-checked {
       .selectOption {
@@ -670,5 +715,20 @@ export default class ScaList extends VueBase {
   .el-dialog__body {
     padding: 0px 24px 16px 24px;
   }
+  .close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    &:hover {
+      color: #1a80f2;
+    }
+  }
+}
+
+.tag {
+  padding: 2px;
+  border-radius: 2px;
+  font-size: 12px;
 }
 </style>

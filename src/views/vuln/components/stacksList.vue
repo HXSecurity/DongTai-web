@@ -1,5 +1,5 @@
 <template>
-  <div class="links">
+  <div class="stacks">
     <div
       v-for="(vItem, vIndex) in tree"
       :key="vIndex"
@@ -12,38 +12,20 @@
       <div class="v-title-line"></div>
       <div class="v-title-top-line"></div>
       <div class="v-title-bottom-line"></div>
-      <div class="v-title" @click="vItem.open = !vItem.open">
+      <div class="v-title" @click="open(vItem)">
         <div
           class="v-title-before"
-          :style="{ background: levelColor(vItem.type) }"
+          :style="{ background: levelColor(vItem.tag) }"
         ></div>
         <div
           class="v-title-dot"
-          :style="{ background: levelColor(vItem.type) }"
+          :style="{ background: levelColor(vItem.tag) }"
         ></div>
-        <div class="left">{{ vItem.type }}</div>
+        <div class="left">{{ levelLabel(vItem.tag) }}</div>
         <div class="center">
           <div class="center-left">
-            <template v-if="vItem.uuid">
-              <div>
-                【{{ vItem.metav2.type }}】
-                {{ vItem.metav2.project_name }}
-                @{{ vItem.metav2.project_version }}
-              </div>
-              <div>
-                {{ vItem.callerClass + ':' + vItem.callerLineNumber }}
-              </div>
-            </template>
-            <template v-else>
-              <div>
-                {{
-                  vIndex == tree.length - 1 ? '数据对象返回' : '数据对象传播'
-                }}
-              </div>
-              <div>
-                {{ vItem.callerClass + ':' + vItem.callerLineNumber }}
-              </div>
-            </template>
+            <div>{{ vItem.callerMethod }}</div>
+            <div>{{ vItem.callerClass + ':' + vItem.callerLineNumber }}</div>
           </div>
           <div class="center-right">
             <span>{{
@@ -57,33 +39,27 @@
           >&#xe69c;</i
         >
       </div>
-      <div>
-        <div v-if="vItem.open">
-          <stacksList
-            v-if="vItem.graphv2 && vItem.graphv2.length"
-            class="link-card"
-            :tree="vItem.graphv2"
-          ></stacksList>
-          <div v-else>
-            <div class="info-card">
-              <div class="info-card-title">{{ levelLabel(vItem.tag) }}</div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">方法</div>
-                <div class="info-card-item-value">{{ vItem.methodName }}</div>
-              </div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">对象</div>
-                <div class="info-card-item-value">{{ vItem.className }}</div>
-              </div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">参数</div>
-                <div class="info-card-item-value">{{ vItem.sourceValues }}</div>
-              </div>
-              <div class="info-card-item">
-                <div class="info-card-item-label">返回</div>
-                <div class="info-card-item-value">{{ vItem.targetValues }}</div>
-              </div>
-            </div>
+      <div v-if="vItem.open">
+        <div v-if="vItem.graphv2 && vItem.graphv2.length" class="link-card">
+          <GraphList :tree="vItem.graphv2"></GraphList>
+        </div>
+        <div v-else class="info-card">
+          <div class="info-card-title">{{ levelLabel(vItem.tag) }}</div>
+          <div class="info-card-item">
+            <div class="info-card-item-label">方法</div>
+            <div class="info-card-item-value">{{ vItem.methodName }}</div>
+          </div>
+          <div class="info-card-item">
+            <div class="info-card-item-label">对象</div>
+            <div class="info-card-item-value">{{ vItem.className }}</div>
+          </div>
+          <div class="info-card-item">
+            <div class="info-card-item-label">参数</div>
+            <div class="info-card-item-value">{{ vItem.sourceValues }}</div>
+          </div>
+          <div class="info-card-item">
+            <div class="info-card-item-label">返回</div>
+            <div class="info-card-item-value">{{ vItem.targetValues }}</div>
           </div>
         </div>
       </div>
@@ -94,39 +70,71 @@
 <script lang="ts">
 import { Component, Prop } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
-import stacksList from './stacksList.vue'
+import qs from 'qs'
+import { formatTimestamp } from '@/utils/utils'
+import GraphList from './graphList.vue'
 
 @Component({
-  name: 'LinkList',
+  name: 'StacksList',
   components: {
-    stacksList,
+    GraphList,
   },
 })
-export default class LinkList extends VueBase {
+export default class StacksList extends VueBase {
   @Prop() tree: any
   created() {
+    let firstNum: any = null
+    let lastNum: any = null
+    const middle = this.tree.filter((element: any, index: any) => {
+      if (element.onlyCard) {
+        return false
+      }
+      if (element.tag == 'propagator') {
+        if (firstNum === null) {
+          firstNum = index
+        }
+        return true
+      }
+      if (element.tag == 'sink') {
+        lastNum = index
+      }
+    })
+    if (middle && middle.length > 1) {
+      const middleG = JSON.parse(JSON.stringify(this.tree[firstNum]))
+      const graphsv22 = this.tree.splice(
+        firstNum,
+        lastNum || this.tree.length + 1
+      )
+      middleG.graphv2 = graphsv22
+      this.tree[firstNum] = middleG
+    }
     this.tree.forEach((element: any) => {
       this.$set(element, 'open', false)
     })
   }
+
+  private open(vItem: any) {
+    this.$set(vItem, 'open', !vItem.open)
+    this.$forceUpdate()
+  }
   private levelColor(level: any) {
     switch (level) {
-      case '危险方法':
+      case 'sink':
         return '#E56363'
-      case '污点来源方法':
+      case 'source':
         return '#F49E0B'
-      case '传播方法':
+      case 'propagator':
         return '#DBDBDB'
     }
   }
 
   private levelLabel(level: any) {
     switch (level) {
-      case 2:
+      case 'sink':
         return '危险函数执行'
-      case 0:
+      case 'source':
         return '外部参数传入'
-      case 1:
+      case 'propagator':
         return '数据调用传播'
     }
   }
@@ -149,7 +157,7 @@ export default class LinkList extends VueBase {
 </script>
 
 <style scoped lang="scss">
-.links {
+.stacks {
   .v-title {
     padding: 8px 16px;
     margin-left: 12px;
@@ -253,7 +261,6 @@ export default class LinkList extends VueBase {
       transform: rotateZ(0deg);
     }
   }
-
   .v-box + .v-box {
     .v-title-top-line {
       display: inline-block;

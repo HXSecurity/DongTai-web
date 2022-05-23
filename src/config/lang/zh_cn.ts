@@ -203,15 +203,12 @@ export default {
         term5: ``,
         term6: ``,
         term7: ``,
-        p1:
-          '若尚未启动 Web 应用服务器，请启动 Web 应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击Agent管理，查看Agent是否注册成功。如果没有注册成功，按照如下步骤进行排查：',
+        p1: '若尚未启动 Web 应用服务器，请启动 Web 应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击Agent管理，查看Agent是否注册成功。如果没有注册成功，按照如下步骤进行排查：',
         p2: '1. 检查 agent.jar 文件',
-        p3:
-          '运行 java -jar /tmp/agent.jar 命令，查看是否反馈 agent.jar 的使用帮助，如果没有，说明 agent.jar 文件不正确，请重新下载然后检查 agent.jar 文件，如果仍然不正确，请前往 github 给工程师提交 issue，我们会及时给您回复',
+        p3: '运行 java -jar /tmp/agent.jar 命令，查看是否反馈 agent.jar 的使用帮助，如果没有，说明 agent.jar 文件不正确，请重新下载然后检查 agent.jar 文件，如果仍然不正确，请前往 github 给工程师提交 issue，我们会及时给您回复',
         p4: '2. 检查网络情况',
         p51: '在 Web 应用服务器中，检查是否可访问',
-        p52:
-          '服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往 github 给工程师提交 issue，我们会及时给您回复',
+        p52: '服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往 github 给工程师提交 issue，我们会及时给您回复',
         title2: '确认Agent端所在环境在我们的支持列表中。',
       },
       python: {
@@ -234,26 +231,21 @@ export default {
         'term6-3': '- pip >= 19.2.3',
         manualInstallationDesc: '找到第一步下载的压缩文件执行以下命令',
         settings: '项目配置',
-        p1:
-          '若尚未启动 Web 应用服务器，请启动 Web 应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击Agent管理，查看Agent是否注册成功。如果没有注册成功，按照如下步骤进行排查：',
+        p1: '若尚未启动 Web 应用服务器，请启动 Web 应用服务器。然后再浏览器访问应用。稍等1-2分钟，刷新系统配置页面，点击Agent管理，查看Agent是否注册成功。如果没有注册成功，按照如下步骤进行排查：',
         p2: '1. 检查 dongtai-agent-python.tar.gz 文件',
-        p3:
-          '运行pip3 install ./dongtai-agent-python.tar.gz 命令，查看是否反馈 dongtai-agent-python.tar.gz 的使用帮助，如果没有，说明 dongtai-agent-python.tar.gz文件不正确，请重新下载然后检查 dongtai-agent-python.tar.gz文件，如果仍然不正确，请前往 github 给工程师提交 issue，我们会及时给您回复',
+        p3: '运行pip3 install ./dongtai-agent-python.tar.gz 命令，查看是否反馈 dongtai-agent-python.tar.gz 的使用帮助，如果没有，说明 dongtai-agent-python.tar.gz文件不正确，请重新下载然后检查 dongtai-agent-python.tar.gz文件，如果仍然不正确，请前往 github 给工程师提交 issue，我们会及时给您回复',
         p4: '2. 检测Django项目的setting.py文件，MIDDLEWARE配置是否有增加',
         p5: `'dongtai_agent_python.middlewares.django_middleware.FireMiddleware'`,
         p6: '3. 检查网络情况',
         p71: '在 Web 应用服务器中，检查是否可访问',
-        p72:
-          ' 服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往 github 给工程师提交 issue，我们会及时给您回复',
+        p72: ' 服务，如果不可访问，说明网络不通，请解决网络访问的问题；如果网络不存在问题，请前往 github 给工程师提交 issue，我们会及时给您回复',
         settingName: '配置项目名称',
-        n1:
-          '配置系统环境变量projectName，demoProjectName为自定义项目名称，与web页面，项目管理中新增项目名称保持一致，否则无法上报流量',
+        n1: '配置系统环境变量projectName，demoProjectName为自定义项目名称，与web页面，项目管理中新增项目名称保持一致，否则无法上报流量',
         n2: 'linux/mac命令导入：',
         n3: 'export projectName=demoProjectName',
         n4: 'Windows 增加环境变量:',
         n5: '验证： 命令行 直接输入 env 即可查看',
-        n6:
-          '注意，若无法配置系统环境变量，可更改agent配置文件，修改项目名称，找到python安装agent扩展包路径地址，例如：/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/dongtai_agent_python修改dongtai_agent_python/config.json中的project.name，系统环境变量projectName优先级高于配置文件中的project.name；',
+        n6: '注意，若无法配置系统环境变量，可更改agent配置文件，修改项目名称，找到python安装agent扩展包路径地址，例如：/Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site-packages/dongtai_agent_python修改dongtai_agent_python/config.json中的project.name，系统环境变量projectName优先级高于配置文件中的project.name；',
       },
       php: {
         ManualInstallation: '手动安装',
@@ -719,19 +711,15 @@ export default {
       detailR: '请输入匹配方式',
       fixR: '请输入匹配规则',
       t: '敏感数据配置',
-      p1:
-        '敏感信息检测功能正式开启公测，为了检测敏感信息泄漏的安全风险，需要配置敏感信息的匹配规则及相关的策略。',
+      p1: '敏感信息检测功能正式开启公测，为了检测敏感信息泄漏的安全风险，需要配置敏感信息的匹配规则及相关的策略。',
       'p1-1': '检测位置：',
       'p1-2': '1. HTTP Request Param 参数',
       'p1-3': '2. HTTP Request Post Data',
       'p1-4': '3. HTTP Response Data',
       p2: '流程（以增加 手机号码泄漏 为例）：',
-      p3:
-        '1. 进入 “策略管理” 页面，新增策略 “手机号码泄漏”，填写策略描述、修复建议并选择启用；',
-      p4:
-        '2. 返回 当前页面，点击 “新增匹配规则” 按钮，选择 策略名称为 “手机号码泄漏”，匹配方式为 “正则匹配”，填写 “匹配规则”，然后点击保存即可。',
-      tip:
-        '策略名称的来自 策略管理 中的策略名称，如不存在，可联系管理员前往策略管理 新增策略',
+      p3: '1. 进入 “策略管理” 页面，新增策略 “手机号码泄漏”，填写策略描述、修复建议并选择启用；',
+      p4: '2. 返回 当前页面，点击 “新增匹配规则” 按钮，选择 策略名称为 “手机号码泄漏”，匹配方式为 “正则匹配”，填写 “匹配规则”，然后点击保存即可。',
+      tip: '策略名称的来自 策略管理 中的策略名称，如不存在，可联系管理员前往策略管理 新增策略',
       fixP: '输入正则表达式的规则，用于匹配当前策略',
       testP: '输入完内容后，点击运行按钮进行测试',
       search: '搜索',
@@ -862,8 +850,7 @@ export default {
       vul_verifiy: '主动验证',
       infoTitle: 'Agent 配置',
       agentThreshold: 'Agent 停止阈值',
-      vul:
-        '主动验证功能用于验证存在污点调用链的漏洞是否真实有效。主动验证时， engine 自动识别攻击参数位置，并构造 payload，然后从 Agent 内部重放 HTTP/HTTPS 流量，进行验证。该功能非必须功能，关闭不会造成漏洞检测结果的变化，如不需要，可自行关闭。',
+      vul: '主动验证功能用于验证存在污点调用链的漏洞是否真实有效。主动验证时， engine 自动识别攻击参数位置，并构造 payload，然后从 Agent 内部重放 HTTP/HTTPS 流量，进行验证。该功能非必须功能，关闭不会造成漏洞检测结果的变化，如不需要，可自行关闭。',
       open: '当CPU利用率满足阈值条件时，Agent自动停止。',
       close: '当CPU利用率低于阈值条件时，Agent自动启动。',
       cpu: 'CPU 利用率 ',

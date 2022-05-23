@@ -11,37 +11,60 @@
           v-model="item.checked"
           style="margin-right: 12px; margin-top: 2px"
         ></el-checkbox>
-        <span class="vul-name" :title="itemTitle" @click="goDetail(item)">
-          {{ itemTitle }}
+        <span class="vul-name" :title="item.vul_name" @click="goDetail(item)">
+          {{ item.vul_name }}
         </span>
       </span>
       <span
         class="time flex-column-center"
         style="font-size: 12px; height: 32px"
       >
-        {{ item.first_time }}
+        {{ fmtTime(item.create_time) }}
       </span>
     </div>
     <div class="card-content">
-      <Sync
-        :item="item"
-        :setting-inte="settingInte"
-        :get-table-data="getTableData"
-        :source_type="1"
-      ></Sync>
-      <div class="top-stack">
-        <i class="iconfont iconyuandianzhong"></i>
-        <span>
-          {{ item.top_stack }}
-        </span>
-      </div>
-      <div class="bottom-stack">
-        <i class="iconfont iconyuandianzhong"></i>
-        <span>
-          {{ item.bottom_stack }}
-        </span>
-      </div>
+      <div class="card-content-item-box">
+        <div style="position: absolute; top: 20px; right: 0">
+          <Sync
+            :item="item"
+            :setting-inte="settingInte"
+            :get-table-data="getTableData"
+            :source_type="2"
+          ></Sync>
+        </div>
 
+        <div class="card-content-item">
+          <div class="label">编号：</div>
+          <div class="value">
+            <span v-for="(i, key) in CVENUMBERS" :key="'cve' + key">
+              <span v-if="i.label" class="jump" @click="openWindow(i.link)"
+                >{{ i.label }} </span
+              >{{ key != CVENUMBERS.length - 1 && i.label ? '|' : '' }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="card-content-item-box">
+        <div class="card-content-item">
+          <div class="label">开源许可证：</div>
+          <div class="value">
+            {{ item.license }}
+            <span class="tag" :class="switchLevelClass(item.license_level)">
+              {{ switchLevelTag(item.license_level) }}
+            </span>
+          </div>
+        </div>
+        <div class="card-content-item">
+          <div class="label">修复版本：</div>
+          <div class="value">{{ item.package_safe_version }}</div>
+        </div>
+        <div class="card-content-item">
+          <div class="label">可利用性：</div>
+          <div class="value">
+            {{ item.availability_str }}
+          </div>
+        </div>
+      </div>
       <div class="infoLine flex-row-space-between">
         <div class="flex-row-space-between" style="width: 60%">
           <span class="info">
@@ -49,26 +72,38 @@
             <el-tooltip
               class="item"
               effect="dark"
-              :content="item.agent__project_name"
+              :content="item.pro_info[0].asset__project_name"
               placement="top-start"
-              :disabled="item.agent__project_name.length <= 11"
+              :disabled="item.pro_info[0].asset__project_name.length <= 11"
             >
               <span
                 class="dot"
                 style="cursor: pointer"
                 @click="
                   $router.push(
-                    '/project/projectDetail/' + item.agent__bind_project_id
+                    '/project/projectDetail/' +
+                      item.pro_info[0].asset__project_id
                   )
                 "
               >
-                {{ item.agent__project_name }}</span
+                {{ item.pro_info[0].asset__project_name }}</span
               >
             </el-tooltip>
           </span>
+          <span
+            v-if="item.pro_info && item.pro_info.length > 1"
+            class="info"
+            style="color: #1a80f2; cursor: pointer"
+            @click="open = !open"
+            >(更多 {{ item.pro_info.length }} 个)
+            <i
+              style="vertical-align: middle"
+              :class="open ? 'el-icon-arrow-up' : 'el-icon-arrow-down'"
+            ></i
+          ></span>
           <span class="info" style="flex: 1.5">
             <i class="iconfont" :class="switchServerType(item.server_type)"></i>
-            {{ item.agent__server__container }}
+            {{ item.pro_info[0].asset__agent__server__container }}
           </span>
 
           <span
@@ -82,36 +117,34 @@
                 ? { color: '#2E8FE9' }
                 : item.level_id === 4
                 ? { color: '#7BC1AB' }
-                : item.level_id === 4
-                ? { color: '#7BC1AB' }
                 : ''
             "
           >
             <i class="iconfont iconweixian"></i>
             {{ switchLevel(item.level_id) }}
           </span>
-          <span class="info" style="flex: 1.2; line-height: 28px">
+          <!-- <span class="info" style="flex: 1.2; line-height: 28px">
             <i
               class="iconfont iconshijian-2"
               style="color: #a2a5ab; font-size: 14px"
             ></i>
             {{ item.latest_time }}
-          </span>
+          </span> -->
         </div>
         <div>
           <!-- <div class="tag">
-            {{ item.language }}
-          </div>
-          <div class="tag2" style="margin-left: 20px">
-            {{ item.type }}
-          </div> -->
+                  {{ item.language }}
+                </div>
+                <div class="tag2" style="margin-left: 20px">
+                  {{ item.type }}
+                </div> -->
           <div class="tageIcon" style="margin-left: 20px">
             <i
               class="iconfont iconicon_yingyong_table"
               style="color: #e7f5e4"
             ></i>
             <span style="background: #e7f5e4; color: #63974e">
-              {{ item.agent__language }}
+              {{ item.package_language }}
             </span>
           </div>
 
@@ -122,23 +155,39 @@
             ></i>
             <span
               style="background: #fce9de; color: #e07d43"
-              :title="item.server_type"
+              :title="item.package_name"
               class="showDot"
             >
-              {{ item.server_type }}
-            </span>
-          </div>
-
-          <div class="tageIcon" style="margin-left: 20px">
-            <i
-              class="iconfont iconicon_yingyong_table"
-              style="color: #e5f3f3"
-            ></i>
-            <span style="background: #e5f3f3; color: #3c9aa2">
-              {{ item.status__name }}
+              {{ item.package_name }}
             </span>
           </div>
         </div>
+      </div>
+    </div>
+    <div v-if="open" class="project-card">
+      <div
+        v-for="pro_info in item.pro_info"
+        :key="pro_info.asset__project_id"
+        class="project-card-item"
+      >
+        <i class="iconfont iconyingyong" style="color: #a3b0e2"></i>
+        <el-tooltip
+          effect="dark"
+          :content="pro_info.asset__project_name"
+          placement="top-start"
+          :disabled="pro_info.asset__project_name.length <= 24"
+        >
+          <span
+            class="asset_project_name"
+            @click="
+              $router.push(
+                '/project/projectDetail/' + pro_info.asset__project_id
+              )
+            "
+          >
+            {{ pro_info.asset__project_name }}</span
+          >
+        </el-tooltip>
       </div>
     </div>
   </div>
@@ -149,24 +198,65 @@ import { Component, Prop } from 'vue-property-decorator'
 import { formatTimestamp, getPassedTime } from '@/utils/utils'
 import VueBase from '@/VueBase'
 import Sync from './sync.vue'
-@Component({ name: 'VulnList', components: { Sync } })
-export default class VulnList extends VueBase {
+@Component({ name: 'ScaCard', components: { Sync } })
+export default class ScaCard extends VueBase {
   @Prop() item: any
   @Prop() searchObj: any
   @Prop() settingInte: any
   @Prop() getTableData: any
 
+  private open = false
+
+  fmtTime(str: any) {
+    return formatTimestamp(str)
+  }
+
+  get CVENUMBERS() {
+    const res = []
+    for (let key in this.item.vul_cve_nums) {
+      switch (key) {
+        case 'cnnvd':
+          res.push({
+            label: this.item.vul_cve_nums[key],
+            link: `http://www.cnnvd.org.cn/web/xxk/ldxqById.tag?CNNVD=${this.item.vul_cve_nums[key]}`,
+          })
+          break
+        case 'cnvd':
+          res.push({
+            label: this.item.vul_cve_nums[key],
+            link: `https://www.cnvd.org.cn/flaw/show/${this.item.vul_cve_nums[key]}`,
+          })
+          break
+        case 'cve':
+          res.push({
+            label: this.item.vul_cve_nums[key],
+            link: `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${this.item.vul_cve_nums[key]}`,
+          })
+          break
+        case 'cwe':
+          res.push({
+            label: this.item.vul_cve_nums[key],
+            link: `https://cwe.mitre.org/data/definitions/${this.item.vul_cve_nums['cwe_num']}.html`,
+          })
+          break
+      }
+    }
+    return res
+  }
+
   openWindow(url: string) {
     window.open(url)
   }
 
-  get itemTitle() {
-    let title = ''
-    title = `${this.item.uri} 的 ${this.item.http_method} 出现 ${this.item.strategy__vul_name}`
-    if (this.item.taint_position) {
-      title += '位置:' + this.item.taint_position
+  switchAva(availability: any) {
+    switch (availability) {
+      case 1:
+        return '存在利用代码'
+      case 2:
+        return '存在分析文章'
+      case 3:
+        return '无利用信息'
     }
-    return title
   }
 
   switchLanguage(language: number) {
@@ -191,8 +281,32 @@ export default class VulnList extends VueBase {
         return '低危'
       case 4:
         return '无风险'
-      case 5:
-        return '提示'
+    }
+  }
+
+  switchLevelTag(level: number) {
+    switch (level) {
+      case 1:
+        return '高'
+      case 2:
+        return '中'
+      case 3:
+        return '低'
+      case 0:
+        return '无'
+    }
+  }
+
+  switchLevelClass(level: number) {
+    switch (level) {
+      case 1:
+        return 'high'
+      case 2:
+        return 'middle'
+      case 3:
+        return 'low'
+      case 0:
+        return 'none'
     }
   }
 
@@ -217,7 +331,7 @@ export default class VulnList extends VueBase {
   }
   private goDetail(item: any) {
     this.$router.push(
-      `/vuln/vulnDetail/1/${item.id}?status=` +
+      `/vuln/scaDetail/${item.id}/1?status=` +
         this.searchObj.status +
         '&id=' +
         item.id
@@ -283,50 +397,46 @@ export default class VulnList extends VueBase {
   .card-content {
     padding: 0 12px;
     position: relative;
-    .top-stack {
-      margin-top: 18px;
-      position: relative;
-      color: #9199a2;
-      &:before {
-        content: '';
-        width: 1px;
-        height: 20px;
-        background: #dee4ea;
-        position: absolute;
-        left: 5px;
-        top: 18px;
-      }
-
-      i {
-        color: #5491ef;
-        font-size: 12px;
-        vertical-align: top;
-        margin-right: 5px;
-      }
-
-      span {
-        width: calc(100% - 18px);
-        word-break: break-all;
-        display: inline-block;
-        vertical-align: top;
-      }
+    .card-content-item-box {
+      display: flex;
+      justify-content: space-between;
     }
-
-    .bottom-stack {
+    .card-content-item {
       margin-top: 18px;
-      color: #9199a2;
-      i {
-        color: #6ec79f;
-        font-size: 12px;
-        vertical-align: top;
-        margin-right: 5px;
+      display: flex;
+      flex: 1;
+      .label {
+        color: #959fb4;
       }
-
-      span {
-        width: calc(100% - 18px);
-        word-break: break-all;
-        display: inline-block;
-        vertical-align: top;
+      .value {
+        color: #38435a;
+        .tag {
+          color: #e56363;
+          background: rgba(229, 99, 99, 0.1);
+          border-radius: 2px;
+          font-size: 12px;
+          padding: 2px;
+          &.height {
+            background: rgba(229, 99, 99, 0.1);
+            border-radius: 2px;
+            color: #e56363;
+          }
+          &.middle {
+            background: rgba(244, 158, 11, 0.1);
+            border-radius: 2px;
+            color: #f49e0b;
+          }
+          &.low {
+            background: rgba(47, 144, 234, 0.1);
+            border-radius: 2px;
+            color: #2f90ea;
+          }
+          &.none {
+            background: rgba(172, 180, 196, 0.1);
+            border-radius: 2px;
+            color: #abb2c0;
+          }
+        }
       }
     }
 
@@ -335,6 +445,7 @@ export default class VulnList extends VueBase {
 
       .info {
         flex: 1;
+        line-height: 28px;
       }
 
       .tag {
@@ -450,6 +561,35 @@ export default class VulnList extends VueBase {
   .update-box + .update-box {
     border-left: 1px solid #959fb4;
   }
+}
+.jump {
+  cursor: pointer;
+}
+
+.project-card {
+  margin: 8px 16px 0px 16px;
+  background: rgba(242, 243, 245, 0.4);
+  border-radius: 4px;
+  color: #1a80f2;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 8px 0px;
+  &-item {
+    padding: 8px 16px;
+    width: 25%;
+  }
+}
+.project-card-item {
+  display: flex;
+  align-items: center;
+}
+.asset_project_name {
+  margin-left: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: calc(100% - 20px);
+  cursor: pointer;
 }
 
 .vul-name {

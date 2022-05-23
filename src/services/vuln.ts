@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 import { iResponse } from '@/services/types'
+import { Params } from './../views/taint/types/search.d'
 
 interface vulnListParams {
   page?: number
@@ -16,9 +17,73 @@ interface vulnListParams {
 
 export default () =>
   new (class {
-    // 漏洞列表
+    // 查看日志
+    vullog(id: any, vul_type: any): Promise<iResponse> {
+      return request.get('/vullog/' + id + '?vul_type=' + vul_type)
+    }
+
+    // 获取项目
+    integrationProject(params: any): Promise<iResponse> {
+      return request.get('/integration/projects', { params })
+    }
+
+    integrationIssue(data: any, type: any): Promise<iResponse> {
+      return request.post(
+        `/integration/issue?integration_type=` +
+          type +
+          '&vul_id=' +
+          data.vul_id,
+        data
+      )
+    }
+
+    integrationMeta(params: any): Promise<iResponse> {
+      return request.get('/integration/project/meta', { params })
+    }
+
     vulnList(params: vulnListParams): Promise<iResponse> {
+      // sca_vul_list_content
       return request.get('/vulns', { params })
+    }
+
+    // 漏洞概要
+    vulSummaryNum(data?: any): any {
+      switch (data.type) {
+        case 'sca':
+          return request.post('/sca_vul_summary', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V2,
+          })
+        case 'vuln':
+          return request.post('/app_vul_summary', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V2,
+          })
+      }
+    }
+
+    // 漏洞列表 sca+app
+    vulListContent(data: any): any {
+      switch (data.type) {
+        case 'sca':
+          return request.post('/sca_vul_list_content', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V2,
+          })
+        case 'vuln':
+          return request.post('/app_vul_list_content', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V2,
+          })
+      }
+    }
+
+    // 漏洞列表 sca+app
+    recheck(data: any): Promise<iResponse> {
+      return request.post('/vul/recheck', data, {
+        baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
+    }
+
+    // 漏洞列表 sca+app
+    vulListDelete(data: any): Promise<iResponse> {
+      return request.post('/vul_list_delete', data)
     }
 
     // 漏洞概要
@@ -67,5 +132,20 @@ export default () =>
 
     vulStatus(): Promise<iResponse> {
       return request.get(`vul/status_list`)
+    }
+
+    // 配置hook
+    inteConfig(data: any, type: any): Promise<iResponse> {
+      return request.post(`/integration/config?integration_type=` + type, data)
+    }
+
+    // 配置hook
+    deleteConfig(type: any): Promise<iResponse> {
+      return request.delete(`/integration/config/` + type)
+    }
+
+    // gethook
+    getConfig(type: any): Promise<iResponse> {
+      return request.get(`/integration/config/` + type)
     }
   })()

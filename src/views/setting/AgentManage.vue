@@ -119,6 +119,7 @@
           </div>
         </div>
         <el-table
+          ref="agentTable"
           :data="tableData"
           class="agentManageTable"
           header-align="center"
@@ -146,7 +147,11 @@
             prop="bind_project__name"
           >
             <template slot-scope="{ row }">
-              <div class="dot" style="width: 140px">
+              <div
+                class="dot project-name"
+                style="width: 140px"
+                @click="toDetail(row.bind_project__id)"
+              >
                 {{ row.bind_project__name }}
               </div>
             </template>
@@ -206,13 +211,13 @@
               ></el-switch>
               <span
                 v-else
-                style="width: 32px; text-align: center; display: inline-block"
+                style="width: 52px; display: inline-block; padding-left: 10px"
               >
                 <i class="el-icon-loading"></i>
               </span>
-              <!-- <el-button type="text">
+              <el-button type="text" @click="exportAgent(row.id)">
                 <i class="icon iconfont">&#xe6aa;</i>
-              </el-button> -->
+              </el-button>
             </template>
           </el-table-column>
 
@@ -467,6 +472,9 @@ export default class AgentManage extends VueBase {
     this.drawer = true
   }
 
+  private toDetail(id: string) {
+    this.$router.push(`/project/projectDetail/${id}`)
+  }
   private summary = {}
   private tableData: Array<AgentListObj> = []
   private total = 0
@@ -482,7 +490,7 @@ export default class AgentManage extends VueBase {
     { value: 0, label: this.$t('views.agentManage.not_running') },
   ]
   private searchValue = ''
-  private multipleSelection = []
+  private multipleSelection: any = []
   private async update(id: any, type: any) {
     const res = await this.services.setting.update_core({
       id: id,
@@ -490,7 +498,7 @@ export default class AgentManage extends VueBase {
     })
     if (res.status === 201) {
       this.$message.success(res.msg)
-      this.getTableData()
+      this.getTableData(true)
       return
     }
     this.$message.error(res.msg)
@@ -502,15 +510,25 @@ export default class AgentManage extends VueBase {
     })
     if (res.status === 201) {
       this.$message.success(res.msg)
-      this.getTableData()
+      this.getTableData(true)
       return
     }
     this.$message.error(res.msg)
   }
+  private async examine(row: any) {
+    const res = await this.services.setting.audit({ id: row.id })
+    if (res.status === 201) {
+      this.$message.success(res.msg)
+      this.getTableData(true)
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
   created() {
-    this.getTableData()
+    this.getTableData(true)
     this.timer = setInterval(() => {
-      this.reflashTable()
+      // this.reflashTable()
+      this.getTableData()
     }, 5000)
   }
   private timer: any
@@ -521,8 +539,12 @@ export default class AgentManage extends VueBase {
       this.timeOuter = null
     }
     this.timeOuter = setTimeout(() => {
-      this.getTableData()
+      this.getTableData(true)
     }, 400)
+  }
+
+  private exportAgent(id: any) {
+    window.open('/api/v1/agent/log/' + id)
   }
 
   private openEdit(item: any) {
@@ -557,78 +579,84 @@ export default class AgentManage extends VueBase {
   }
   private beforeDestroy() {
     clearInterval(this.timer)
+    this.timer = null
   }
   private changeState(item: any) {
     this.state = item
     this.page = 1
-    this.getTableData()
-    if (this.state == 1) {
-      this.timer = setInterval(() => {
-        this.reflashTable()
-      }, 5000)
-    } else {
-      clearInterval(this.timer)
-      this.timer = null
-    }
+    this.getTableData(true)
+    clearInterval(this.timer)
+    this.timer = null
+    this.timer = setInterval(() => {
+      // this.reflashTable()
+      this.getTableData()
+    }, 5000)
   }
   private currentChange(val: number | string) {
     this.page = parseInt(`${val}`)
-    this.getTableData()
+    this.getTableData(true)
   }
 
   private sizeChange(val: number | string) {
     this.pageSize = parseInt(`${val}`)
-    this.getTableData()
+    this.getTableData(true)
   }
 
-  private async reflashTable() {
-    if (this.tableData.some((item: any) => item.isEdit)) {
-      return
-    }
-    const params = {
-      page: this.page,
-      page_size: this.pageSize,
-      state: this.state,
-    }
-    const { status, msg, data } = await this.services.setting.agentList(params)
-    if (status !== 201) {
-      this.$message({
-        type: 'error',
-        message: msg,
-        showClose: true,
-      })
-      return
-    }
-    const dataMap = {}
-    data.agents &&
-      data.agents.forEach((item: any) => {
-        return (dataMap[item.id] = item)
-      })
-    this.tableData.forEach((item: any) => {
-      for (const key in item) {
-        item[key] = dataMap[item.id][key]
-      }
-      try {
-        item.system_load = JSON.parse(item.system_load)
-      } catch (err) {
-        item.system_load = { rate: 0 }
-      }
-    })
-    this.getSummy()
-  }
+  // private async reflashTable() {
+  //   if (this.tableData.some((item: any) => item.isEdit)) {
+  //     return
+  //   }
+  //   const params = {
+  //     page: this.page,
+  //     page_size: this.pageSize,
+  //     state: this.state,
+  //   }
+  //   const { status, msg, data } = await this.services.setting.agentList(params)
+  //   if (status !== 201) {
+  //     this.$message({
+  //       type: 'error',
+  //       message: msg,
+  //       showClose: true,
+  //     })
+  //     return
+  //   }
+  //   const dataMap = {}
+  //   data.agents &&
+  //     data.agents.forEach((item: any) => {
+  //       return (dataMap[item.id] = item)
+  //     })
+  //   this.tableData.forEach((item: any) => {
+  //     for (const key in item) {
+  //       item[key] = dataMap[item.id][key]
+  //     }
+  //     try {
+  //       item.system_load = JSON.parse(item.system_load)
+  //     } catch (err) {
+  //       item.system_load = { rate: 0 }
+  //     }
+  //   })
+  //   this.getSummy()
+  // }
 
-  private async getTableData() {
+  private async getTableData(showLoading = false) {
+    const multipleSelectionID = this.multipleSelection.map(
+      (item: any) => item.id
+    )
     const params = {
       page: this.page,
       page_size: this.pageSize,
       state: this.state,
       project_name: this.searchValue,
     }
-    this.loadingStart()
+    if (showLoading) {
+      this.loadingStart()
+    }
     const { status, msg, data, page } = await this.services.setting.agentList(
       params
     )
-    this.loadingDone()
+    if (showLoading) {
+      this.loadingDone()
+    }
     if (status !== 201) {
       this.$message({
         type: 'error',
@@ -637,9 +665,9 @@ export default class AgentManage extends VueBase {
       })
       return
     }
-    if (data.length === 0 && this.page > 1) {
+    if (data.agents && data.agents.length === 0 && this.page > 1) {
       this.page--
-      await this.getTableData()
+      await this.getTableData(true)
       return
     }
     this.tableData = data.agents
@@ -656,6 +684,16 @@ export default class AgentManage extends VueBase {
     this.total = data.summary.alltotal
     this.currentPageDelete = 0
     this.getSummy()
+    this.tableData.filter((item: any) => {
+      return multipleSelectionID.some((m: any) => {
+        if (item.id === m) {
+          this.$nextTick(() => {
+            const tab: any = this.$refs.agentTable
+            tab.toggleRowSelection(item, true)
+          })
+        }
+      })
+    })
   }
 
   private async getSummy() {
@@ -848,7 +886,6 @@ export default class AgentManage extends VueBase {
         type: 'warning',
       }
     ).then(async () => {
-      debugger
       const { status, msg } = await this.services.setting.agentDelete({
         id: Number(id),
       })
@@ -898,7 +935,8 @@ export default class AgentManage extends VueBase {
         break
     }
     await this.update(id, type)
-    this.reflashTable()
+    // this.reflashTable()
+    this.getTableData()
   }
 }
 </script>
