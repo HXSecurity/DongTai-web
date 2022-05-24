@@ -81,7 +81,7 @@ import VueBase from '@/VueBase'
 export default class SettingIndex extends VueBase {
   menuActive = {
     策略管理: true,
-    组织管理: false,
+    // 组织管理: false,
   }
 
   menuGroup = {
@@ -92,7 +92,6 @@ export default class SettingIndex extends VueBase {
       'sensitiveManage',
       // 'scaManage',
     ],
-    组织管理: ['talentList', 'departmentList', 'userSetting'],
     密码修改: ['changePassword'],
     品牌配置: ['changeLogo'],
     状态监控: ['StatusMonitoring'],
