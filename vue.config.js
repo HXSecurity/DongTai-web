@@ -31,6 +31,10 @@ module.exports = {
                 target: process.env.VUE_TARGET_HOST,
                 changeOrigin: true
             },
+            '/openapi': {
+                target: process.env.VUE_TARGET_HOST,
+                changeOrigin: true
+            },
         }
     }
 }
