@@ -144,6 +144,16 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/vuln/VulnDetail.vue'),
       },
+      {
+        path: 'scaDetail/:page/:id',
+        name: 'scaDetail/:page/:id',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scaDetail',
+          name: i18n.t('menu.scaDetail'),
+        },
+        component: () => import('@/views/sca/ScaDetail.vue'),
+      },
     ],
   },
   {
@@ -167,16 +177,6 @@ const routes: Array<RouteConfig> = [
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
-      },
-      {
-        path: 'scaDetail/:page/:id',
-        name: 'scaDetail/:page/:id',
-        meta: {
-          disabled: true,
-          i18n: 'menu.scaDetail',
-          name: i18n.t('menu.scaDetail'),
-        },
-        component: () => import('@/views/sca/ScaDetail.vue'),
       },
     ],
   },
@@ -264,44 +264,6 @@ const routes: Array<RouteConfig> = [
     },
     component: () => import('@/views/setting/Index.vue'),
     children: [
-      {
-        path: 'talentList',
-        name: 'talentList',
-        meta: {
-          i18n: 'menu.talent',
-          name: i18n.t('menu.talent'),
-        },
-        component: () => import('@/views/talent/TalentList.vue'),
-      },
-      {
-        path: 'departmentList',
-        name: 'departmentList',
-        meta: {
-          i18n: 'menu.department',
-          name: i18n.t('menu.department'),
-        },
-        component: () => import('@/views/department/DepartmentList.vue'),
-      },
-      {
-        path: 'userSetting',
-        name: 'userSetting',
-        meta: {
-          i18n: 'menu.userSetting',
-          name: i18n.t('menu.userSetting'),
-        },
-        component: () => import('@/views/department/userSetting.vue'),
-      },
-
-      // {
-      //   path: 'agentRank',
-      //   name: 'agentRank',
-      //   meta: {
-      //     disabled: true,
-      //     i18n: 'menu.agentRank',
-      //     name: i18n.t('menu.agentRank'),
-      //   },
-      //   component: () => import('@/views/setting/agentRank.vue'),
-      // },
       {
         path: 'webhook',
         name: 'webhook',
@@ -541,6 +503,16 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/vuln/VulnDetail.vue'),
       },
+      {
+        path: 'scaDetail/:page/:id',
+        name: 'scaDetail/:page/:id',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scaDetail',
+          name: i18n.t('menu.scaDetail'),
+        },
+        component: () => import('@/views/sca/ScaDetail.vue'),
+      },
     ],
   },
   {
@@ -564,16 +536,6 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
-      },
-      {
-        path: 'scaDetail/:page/:id',
-        name: 'scaDetail/:page/:id',
-        meta: {
-          disabled: true,
-          i18n: 'menu.scaDetail',
-          name: i18n.t('menu.scaDetail'),
-        },
-        component: () => import('@/views/sca/ScaDetail.vue'),
       },
     ],
   },
@@ -910,6 +872,16 @@ const userRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/vuln/VulnDetail.vue'),
       },
+      {
+        path: 'scaDetail/:page/:id',
+        name: 'scaDetail/:page/:id',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scaDetail',
+          name: i18n.t('menu.scaDetail'),
+        },
+        component: () => import('@/views/sca/ScaDetail.vue'),
+      },
     ],
   },
   {
@@ -933,16 +905,6 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
-      },
-      {
-        path: 'scaDetail/:page/:id',
-        name: 'scaDetail/:page/:id',
-        meta: {
-          disabled: true,
-          i18n: 'menu.scaDetail',
-          name: i18n.t('menu.scaDetail'),
-        },
-        component: () => import('@/views/sca/ScaDetail.vue'),
       },
     ],
   },
@@ -1013,25 +975,6 @@ const userRoutes: Array<RouteConfig> = [
     },
     component: () => import('@/views/setting/Index.vue'),
     children: [
-      {
-        path: 'departmentList',
-        name: 'departmentList',
-        meta: {
-          i18n: 'menu.department',
-          name: i18n.t('menu.department'),
-        },
-        component: () => import('@/views/department/DepartmentList.vue'),
-      },
-      {
-        path: 'userSetting',
-        name: 'userSetting',
-        meta: {
-          i18n: 'menu.userSetting',
-          name: i18n.t('menu.userSetting'),
-        },
-        component: () => import('@/views/department/userSetting.vue'),
-      },
-
       {
         path: 'strategyManage',
         name: 'strategyManage',
