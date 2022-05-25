@@ -15,18 +15,6 @@
             >
           </div>
           <div class="operate">
-            <el-button type="text" class="operateBtn" @click="scaExport">
-              <i class="iconfont icondaochu-5"></i>
-              {{ $t('views.projectDetail.scaExport') }}</el-button
-            >
-            <el-button type="text" class="operateBtn" @click="openExport()">
-              <i class="iconfont icondaochu-5"></i>
-              {{ $t('views.projectDetail.export') }}
-            </el-button>
-            <el-button type="text" class="operateBtn" @click="autoTest()">
-              <i class="iconfont icondaochu-5"></i>
-              {{ $t('views.projectDetail.autoTest') }}
-            </el-button>
             <el-button
               type="text"
               class="operateBtn"
@@ -289,104 +277,6 @@
         }}</el-button>
       </div>
     </el-dialog>
-
-    <el-dialog
-      custom-class="exp_dialog"
-      :title="$t('views.projectDetail.export')"
-      :visible.sync="exportDialog"
-      width="80%"
-    >
-      <div style="padding: 20px 60px">
-        <el-form>
-          <el-form-item
-            style="font-weight: 500"
-            :label="$t('views.projectDetail.exportType')"
-          >
-            <div class="dialog-top">
-              <el-radio-group v-model="type" class="exp_radio">
-                <el-radio label="docx">docx</el-radio>
-                <el-radio label="pdf">pdf</el-radio>
-                <el-radio label="xlsx">xlsx</el-radio>
-              </el-radio-group>
-              <el-button class="exp_btn" @click="async_add">
-                {{ $t('views.projectDetail.exportbtn') }}
-              </el-button>
-            </div>
-          </el-form-item>
-        </el-form>
-        <div>
-          <div class="export-table-title">
-            {{ $t('views.projectDetail.exportHistory') }}
-          </div>
-          <el-table class="export-table" :data="exportList" style="width: 100%">
-            <el-table-column
-              prop="type"
-              :label="$t('views.projectDetail.reportTtype')"
-              width="180"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="create_time"
-              :label="$t('views.projectDetail.reportTtime')"
-              min-width="180"
-            >
-              <template slot-scope="scope">
-                <div>{{ formatTimestamp(scope.row.create_time) }}</div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="status"
-              :label="$t('views.projectDetail.reportStatus')"
-              width="180"
-            >
-              <template slot-scope="scope">
-                <div>
-                  {{
-                    scope.row.status === 1
-                      ? $t('views.projectDetail.done')
-                      : $t('views.projectDetail.loading')
-                  }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              :label="$t('views.projectDetail.handle')"
-              width="180"
-            >
-              <template slot-scope="scope">
-                <div>
-                  <el-button
-                    :disabled="scope.row.status === 0"
-                    type="text"
-                    @click="projectExport(scope.row.id, scope.row.type)"
-                  >
-                    <i class="el-icon-download"></i>
-                  </el-button>
-                  <el-button
-                    v-if="scope.row.status === 1"
-                    type="text"
-                    @click="deleteExport(scope.row.id)"
-                  >
-                    <i class="el-icon-delete"></i>
-                  </el-button>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div
-            style="display: flex; justify-content: flex-end; padding-top: 16px"
-          >
-            <el-pagination
-              :current-page.sync="exp_page"
-              layout="total, prev, pager, next,jumper"
-              :total="exp_total"
-              @current-change="handleCurrentChange"
-            >
-            </el-pagination>
-          </div>
-        </div>
-      </div>
-    </el-dialog>
   </main>
 </template>
 
@@ -424,9 +314,7 @@ export default class ProjectDetail extends VueBase {
   }
   private exp_page = 1
   private exp_total = 0
-  private exportDialog = false
   private type = 'docx'
-  private exportList = []
   private selectTab = 'desc'
   private projectObj: ProjectObj = {
     id: 0,
@@ -447,14 +335,6 @@ export default class ProjectDetail extends VueBase {
       return
     }
     this.versionFlag = false
-  }
-  private openExport() {
-    this.getExportList()
-    this.exportDialog = true
-  }
-
-  private scaExport = async () => {
-    await this.services.sca.scaExport(this.$route.params.pid)
   }
 
   private async versionCurrent(item: any) {
@@ -705,92 +585,7 @@ export default class ProjectDetail extends VueBase {
         }
       })
   }
-  async deleteExport(id: number) {
-    this.$confirm(
-      this.$t('views.projectDetail.rWarningInfo') as string,
-      this.$t('views.projectDetail.warning') as string,
-      {
-        confirmButtonText: this.$t(
-          'views.projectDetail.enterVersion'
-        ) as string,
-        cancelButtonText: this.$t(
-          'views.projectDetail.cancelVersion'
-        ) as string,
-        type: 'warning',
-      }
-    ).then(async () => {
-      const res = await this.services.project.exportDelete({ id })
-      if (res.status === 201) {
-        this.$message.success(res.msg)
-        this.getExportList()
-      } else {
-        this.$message.error(res.msg)
-      }
-    })
-  }
-  async async_add() {
-    const res = await this.services.project.async_add({
-      type: this.type,
-      pname: this.projectObj.name,
-      pid: this.$route.params.pid,
-    })
-    if (res.status === 201) {
-      this.$message.success(res.msg)
-      this.getExportList()
-    } else {
-      this.$message.error(res.msg)
-    }
-    console.log(res)
-  }
-  async handleCurrentChange(val: number) {
-    this.exp_page = val
-    this.getExportList()
-  }
-  async getExportList() {
-    const res = await this.services.project.exportList({
-      page: this.exp_page,
-      pageSize: 20,
-      pid: this.$route.params.pid,
-    })
-    if (res.status === 201) {
-      this.exportList = res.data
-      this.exp_total = res.page.alltotal
-    } else {
-      this.$message.error(res.msg)
-    }
-  }
-  projectExport(id: string, type: string) {
-    request
-      .get(`/project/report/download?id=${id}`, {
-        responseType: 'blob',
-      })
-      .then((res: any) => {
-        if (res.type === 'application/json') {
-          this.$message.error({
-            message: this.$t('views.projectDetail.exportFail') as string,
-            showClose: true,
-          })
-        } else {
-          const blob = new Blob([res], {
-            type: 'application/octet-stream',
-          })
-          const link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = this.projectObj.name + '.' + type
-          link.click()
-          this.$message.success({
-            message: this.$t('views.projectDetail.exportSuccess') as string,
-            showClose: true,
-          })
-        }
-      })
-      .catch(() => {
-        this.$message.error({
-          message: this.$t('views.projectDetail.exportFail') as string,
-          showClose: true,
-        })
-      })
-  }
+
   private getTagColoe(language: string) {
     switch (language) {
       case 'JAVA':
@@ -799,35 +594,6 @@ export default class ProjectDetail extends VueBase {
         return ''
       default:
         return ''
-    }
-  }
-  private async projectRecheck() {
-    const { status, msg } = await this.services.project.projectsRecheck(
-      this.$route.params.pid
-    )
-    if (status !== 201) {
-      this.$message({
-        type: 'error',
-        message: msg,
-        showClose: true,
-      })
-    } else {
-      this.$message({
-        type: 'success',
-        message: msg,
-        showClose: true,
-      })
-    }
-  }
-
-  private async autoTest() {
-    const res = await this.services.project.api_test({
-      id: this.$route.params.pid,
-    })
-    if (res.status === 201) {
-      this.$message.success(res.msg)
-    } else {
-      this.$message.error(res.msg)
     }
   }
 }

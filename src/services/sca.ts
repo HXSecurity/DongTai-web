@@ -61,11 +61,4 @@ export default () =>
     getScaDetail(id: number): Promise<iResponse> {
       return request.get(`/sca/${id}`)
     }
-
-    // scaExport
-    scaExport(project_id: string) {
-      window.open(
-        `${process.env.VUE_APP_BASE_API}/sca_export?project_id=` + project_id
-      )
-    }
   })()
