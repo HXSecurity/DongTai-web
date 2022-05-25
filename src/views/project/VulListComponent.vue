@@ -16,8 +16,8 @@
         <span class="filter-box-title"> 危险等级 </span>
       </div>
       <el-checkbox
-        v-for="item in searchOptionsObj.level"
-        :key="'level' + item.id"
+        v-for="(item, index) in searchOptionsObj.level"
+        :key="'level' + item.id + '-' + index"
         v-model="searchObj.level_str"
         :label="item.id"
         class="flex-row-space-between module-line"
@@ -40,8 +40,8 @@
       </div>
       <div class="obj-scroll">
         <el-checkbox
-          v-for="item in searchOptionsObj.projects"
-          :key="item.id"
+          v-for="(item, index) in searchOptionsObj.projects"
+          :key="'object' + item.id + '-' + index"
           v-model="searchObj.project_str"
           :label="item.id"
           class="flex-row-space-between module-line"
@@ -65,8 +65,8 @@
           <span class="filter-box-title"> 可利用性 </span>
         </div>
         <el-checkbox
-          v-for="item in searchOptionsObj.availability"
-          :key="'availability' + item.id"
+          v-for="(item, index) in searchOptionsObj.availability"
+          :key="'availability' + item.id + '-' + index"
           v-model="searchObj.availability_str"
           :label="item.id"
           class="flex-row-space-between module-line"
@@ -91,8 +91,8 @@
           <span class="filter-box-title"> 漏洞类型 </span>
         </div>
         <el-checkbox
-          v-for="item in searchOptionsObj.hook_type"
-          :key="'hook_type' + item.id"
+          v-for="(item, index) in searchOptionsObj.hook_type"
+          :key="'hook_type' + item.id + '-' + index"
           v-model="searchObj.hook_type_str"
           :label="item.id"
           class="flex-row-space-between module-line"
@@ -114,8 +114,8 @@
           <span class="filter-box-title"> 漏洞状态 </span>
         </div>
         <el-checkbox
-          v-for="item in searchOptionsObj.status"
-          :key="'status' + item.id"
+          v-for="(item, index) in searchOptionsObj.status"
+          :key="'status' + item.id + '-' + index"
           v-model="searchObj.status_str"
           :label="item.id"
           class="flex-row-space-between module-line"
@@ -138,8 +138,8 @@
         <span class="filter-box-title"> 语言 </span>
       </div>
       <el-checkbox
-        v-for="item in searchOptionsObj.language"
-        :key="'language' + item.id"
+        v-for="(item, index) in searchOptionsObj.language"
+        :key="'language' + item.id + '-' + index"
         v-model="searchObj.language_str"
         :label="item.id"
         class="flex-row-space-between module-line"

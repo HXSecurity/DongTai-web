@@ -115,8 +115,8 @@
             <span class="filter-box-title"> 漏洞状态 </span>
           </div>
           <el-checkbox
-            v-for="item in searchOptionsObj.status"
-            :key="'status' + item.id"
+            v-for="(item, index) in searchOptionsObj.status"
+            :key="'status' + item.id + '-' + index"
             v-model="searchObj.status_str"
             :label="item.id"
             class="flex-row-space-between module-line"
@@ -139,8 +139,8 @@
           <span class="filter-box-title"> 语言 </span>
         </div>
         <el-checkbox
-          v-for="item in searchOptionsObj.language"
-          :key="'language' + item.id"
+          v-for="(item, index) in searchOptionsObj.language"
+          :key="'language' + item.id + '-' + index"
           v-model="searchObj.language_str"
           :label="item.id"
           class="flex-row-space-between module-line"
