@@ -28,10 +28,10 @@ export default class Index extends VueBase {
 
   private randerEchart() {
     const data: any = []
-    let total = 0
+    const selected = {}
     this.data.forEach((item: any) => {
-      total += item.num
       data.push({ value: item.num, name: item.level_name })
+      selected[item.level_name] = item.num > 0
     })
     const option: any = {
       tooltip: {
@@ -60,8 +60,13 @@ export default class Index extends VueBase {
         },
       },
       legend: {
+        tooltip: {
+          show: true,
+        },
         bottom: '0',
-        left: 'center',
+        borderWidth: 0,
+        data: data.map((item: any) => item.name),
+        selected: selected,
       },
       series: [
         {

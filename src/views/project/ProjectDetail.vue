@@ -104,66 +104,67 @@
           {{ $t('views.projectDetail.apiList') }}
         </el-button>
       </div>
-      <div v-if="selectTab === 'desc'">
-        <div
-          id="type_summary_level_count"
-          class="module flex-row-space-between"
-        >
-          <div class="module-content">
-            <div class="module-title">
-              {{ $t('views.projectDetail.vulNum') }}
-            </div>
+      <template v-if="projectObj.versionData.version_id">
+        <div v-if="selectTab === 'desc'">
+          <div
+            id="type_summary_level_count"
+            class="module flex-row-space-between"
+          >
+            <div class="module-content">
+              <div class="module-title">
+                {{ $t('views.projectDetail.vulNum') }}
+              </div>
 
-            <div>
-              <Distribution
-                v-if="projectObj.level_count"
+              <div>
+                <Distribution
+                  v-if="projectObj.level_count"
+                  :height="312"
+                  :data="projectObj.level_count"
+                />
+              </div>
+            </div>
+            <div class="module-content">
+              <div class="module-title">
+                {{ $t('views.projectDetail.type') }}
+              </div>
+
+              <Type
+                v-if="projectObj.type_summary"
                 :height="312"
-                :data="projectObj.level_count"
+                :data="projectObj.type_summary"
               />
             </div>
           </div>
-          <div class="module-content">
+          <div class="module">
             <div class="module-title">
-              {{ $t('views.projectDetail.type') }}
+              {{ $t('views.projectDetail.trend') }}
             </div>
-
-            <Type
-              v-if="projectObj.type_summary"
-              :height="312"
-              :data="projectObj.type_summary"
-            />
+            <Trend v-if="projectObj.day_num" :data="projectObj.day_num" />
           </div>
         </div>
-        <div class="module">
-          <div class="module-title">
-            {{ $t('views.projectDetail.trend') }}
-          </div>
-
-          <Trend v-if="projectObj.day_num" :data="projectObj.day_num" />
+        <div v-if="selectTab === 'vul'">
+          <vul-list-component
+            ref="vulListComponent"
+            :project-id="$route.params.pid"
+            :version="projectObj.versionData.version_id"
+          ></vul-list-component>
         </div>
-      </div>
-      <div v-if="selectTab === 'vul'">
-        <vul-list-component
-          ref="vulListComponent"
-          :project-id="$route.params.pid"
-          :version="projectObj.versionData.version_id"
-        ></vul-list-component>
-      </div>
-      <div v-if="selectTab === 'component'">
-        <ScaList
-          ref="componentList"
-          :project-id="$route.params.pid"
-          :version="projectObj.versionData.version_id"
-        ></ScaList>
-      </div>
-      <div v-if="selectTab === 'apiList' && showApiListFlag">
-        <ApiList
-          ref="apiList"
-          :project-id="$route.params.pid"
-          :version-id="projectObj.versionData.version_id"
-        >
-        </ApiList>
-      </div>
+        <div v-if="selectTab === 'component'">
+          <ScaList
+            ref="componentList"
+            :project-id="$route.params.pid"
+            :version="projectObj.versionData.version_id"
+          ></ScaList>
+        </div>
+        <div v-if="selectTab === 'apiList' && showApiListFlag">
+          <ApiList
+            ref="apiList"
+            :project-id="$route.params.pid"
+            :version-id="projectObj.versionData.version_id"
+          >
+          </ApiList>
+        </div>
+      </template>
     </div>
 
     <el-dialog
@@ -423,7 +424,6 @@ export default class ProjectDetail extends VueBase {
         ...item,
         project_id: this.$route.params.pid,
       })
-      console.log(res)
       if (res.status !== 201) {
         this.$message({
           type: 'error',
