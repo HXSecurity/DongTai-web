@@ -283,7 +283,7 @@
 
 <script lang="ts">
 import VueBase from '../../VueBase'
-import { Component } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import { ProjectObj } from './types'
 import { formatTimestamp } from '@/utils/utils'
 import request from '@/utils/request'
@@ -538,13 +538,20 @@ export default class ProjectDetail extends VueBase {
       }
     }
   }
-  async mounted() {
+
+  @Watch('$route.params.pid', { immediate: true, deep: true })
+  async init() {
     if (this.$route.query.activeName) {
       this.selectTab = this.$route.query.activeName as string
+    } else {
+      this.selectTab = 'desc'
     }
     await this.showApiList()
     await this.projectsSummary()
     await this.getVersionList()
+  }
+  async mounted() {
+    this.init()
   }
   private offsetHeight = 0
   private async projectsSummary(id?: string) {
