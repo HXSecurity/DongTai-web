@@ -123,7 +123,7 @@
               :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
             ></el-input>
           </el-form-item>
-
+          <!-- 
           <el-form-item prop="base_url">
             <template slot="label">
               {{ $t('views.projectEdit.appAddress') }}
@@ -161,7 +161,7 @@
               style="width: 430px; margin-left: 20px"
               :placeholder="$t('views.projectEdit.tokenPlaceholder')"
             ></el-input>
-          </el-form-item>
+          </el-form-item> -->
         </template>
         <el-form-item>
           <el-button
