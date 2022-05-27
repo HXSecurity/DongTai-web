@@ -609,7 +609,6 @@ export default class ProjectDetail extends VueBase {
 <style scoped lang="scss">
 .project-warp {
   margin-top: 28px;
-  background: #fff;
   padding: 14px 14px 80px 14px;
 
   .title-warp {

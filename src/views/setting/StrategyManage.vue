@@ -301,16 +301,12 @@ export default class StrategyManage extends VueBase {
 
   private async getTableData() {
     this.loadingStart()
-    const {
-      status,
-      msg,
-      data,
-      page,
-    } = await this.services.setting.strategyList(false, {
-      page: this.page,
-      page_size: this.page_size,
-      name: this.searchValue,
-    })
+    const { status, msg, data, page } =
+      await this.services.setting.strategyList(false, {
+        page: this.page,
+        page_size: this.page_size,
+        name: this.searchValue,
+      })
     this.loadingDone()
     if (status !== 201) {
       this.$message({

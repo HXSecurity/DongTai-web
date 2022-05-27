@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "30043196",
+      "name": "Union",
+      "font_class": "Union",
+      "unicode": "e6b7",
+      "unicode_decimal": 59063
+    },
+    {
+      "icon_id": "30043197",
+      "name": "shezhi",
+      "font_class": "shezhi",
+      "unicode": "e6b8",
+      "unicode_decimal": 59064
+    },
+    {
+      "icon_id": "30043198",
+      "name": "export",
+      "font_class": "export",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
       "icon_id": "29501168",
       "name": "yanzheng",
       "font_class": "yanzheng",
