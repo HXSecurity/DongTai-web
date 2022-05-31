@@ -3,176 +3,141 @@
     <div style="height: 28px"></div>
     <div class="content-warp">
       <div class="back">
-        <span @click="$router.push('/project')">
-          <i class="el-icon-back"></i>{{ $t('views.projectEdit.back') }}
+        <span @click="$router.go(-1)">
+          <i class="el-icon-arrow-left"></i>{{ $t('views.projectEdit.back') }}
         </span>
       </div>
-      <div class="title">{{ $t('views.projectEdit.title') }}</div>
-      <el-form
-        ref="submitForm"
-        :model="submitForm"
-        :label-width="$i18n.locale === 'en' ? '160px' : '120px'"
-        style="margin-top: 32px"
-        status-icon
-        :rules="rules"
-      >
-        <el-form-item :label="$t('views.projectEdit.name')" prop="name">
-          <el-input
-            v-model="submitForm.name"
-            style="width: 672px"
-            :placeholder="$t('views.projectEdit.namePlaceholder')"
-          ></el-input>
-        </el-form-item>
-        <!-- <el-form-item :label="$t('views.projectEdit.mode')">
-          <el-radio
-            v-model="submitForm.mode"
-            :label="$t('views.projectEdit.mode1')"
-            >{{ $t('views.projectEdit.mode1') }}</el-radio
+      <div class="info-box">
+        <div class="info">
+          <div class="title">项目设置</div>
+          <el-form
+            ref="submitForm"
+            :model="submitForm"
+            :label-width="$i18n.locale === 'en' ? '160px' : '120px'"
+            status-icon
+            :rules="rules"
           >
-          <el-radio
-            v-model="submitForm.mode"
-            :label="$t('views.projectEdit.mode2')"
-            >{{ $t('views.projectEdit.mode2') }}</el-radio
-          >
-        </el-form-item> -->
-        <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
-          <el-select
-            v-model="submitForm.scanId"
-            style="width: 550px"
-            :placeholder="$t('views.projectEdit.scanPlaceholder')"
-            @change="agentChange"
-          >
-            <el-option
-              v-for="item in strategyList"
-              :key="item.id"
-              :value="item.id"
-              :label="item.name"
-            ></el-option>
-          </el-select>
-          <i
-            class="el-icon-circle-plus-outline addStrategyIcon"
-            @click="scanAddDialogShow"
-          >
-            {{ $t('views.projectEdit.scanAdd') }}
-          </i>
-        </el-form-item>
-        <template v-if="!advanced">
-          <el-form-item>
-            <span class="advancedSetting" @click="advanced = true">
-              {{ $t('views.projectEdit.advanced') }}
-            </span>
-          </el-form-item>
-        </template>
-        <template v-if="advanced">
-          <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
-            <el-radio v-model="submitForm.vul_validation" :label="0">
-              {{ $t('views.projectEdit.followAll') }}
-            </el-radio>
-            <el-radio v-model="submitForm.vul_validation" :label="1">
-              {{ $t('views.projectEdit.off') }}
-            </el-radio>
-            <el-radio v-model="submitForm.vul_validation" :label="2">
-              {{ $t('views.projectEdit.on') }}
-            </el-radio>
-          </el-form-item>
-          <el-form-item>
-            <template slot="label">
-              {{ $t('views.projectEdit.agent') }}
-              <el-popover placement="top-start" width="340" trigger="hover">
-                <p>{{ $t('views.projectEdit.agent_popover') }}</p>
-                <span slot="reference"> <i class="el-icon-question"></i> </span>
-              </el-popover>
+            <el-form-item :label="$t('views.projectEdit.name')" prop="name">
+              <el-input
+                v-model="submitForm.name"
+                style="width: 500px"
+                :placeholder="$t('views.projectEdit.namePlaceholder')"
+              ></el-input>
+            </el-form-item>
+            <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
+              <div class="scan-line">
+                <el-select
+                  v-model="submitForm.scanId"
+                  style="width: 390px"
+                  :placeholder="$t('views.projectEdit.scanPlaceholder')"
+                  @change="agentChange"
+                >
+                  <el-option
+                    v-for="item in strategyList"
+                    :key="item.id"
+                    :value="item.id"
+                    :label="item.name"
+                  ></el-option>
+                </el-select>
+                <i
+                  class="el-icon-circle-plus-outline addStrategyIcon"
+                  @click="scanAddDialogShow"
+                >
+                  {{ $t('views.projectEdit.scanAdd') }}
+                </i>
+              </div>
+            </el-form-item>
+            <template v-if="!advanced">
+              <el-form-item>
+                <span class="advancedSetting" @click="advanced = true">
+                  {{ $t('views.projectEdit.advanced') }}
+                </span>
+              </el-form-item>
             </template>
-            <el-select
-              v-model="submitForm.agentIdList"
-              multiple
-              filterable
-              style="width: 550px"
-              :placeholder="$t('views.projectEdit.agentPlaceholder')"
-              @change="agentChange"
-            >
-              <el-option
-                v-for="item in engineList"
-                :key="item.id"
-                :value="item.id"
-                :label="item.short_name"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="version_name">
-            <template slot="label">
-              {{ $t('views.projectEdit.version_name') }}
-              <el-popover placement="top-start" width="340" trigger="hover">
-                <p>{{ $t('views.projectEdit.version_name_popover') }}</p>
-                <span slot="reference"> <i class="el-icon-question"></i> </span>
-              </el-popover>
+            <template v-if="advanced">
+              <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
+                <el-radio v-model="submitForm.vul_validation" :label="0">
+                  {{ $t('views.projectEdit.followAll') }}
+                </el-radio>
+                <el-radio v-model="submitForm.vul_validation" :label="1">
+                  {{ $t('views.projectEdit.off') }}
+                </el-radio>
+                <el-radio v-model="submitForm.vul_validation" :label="2">
+                  {{ $t('views.projectEdit.on') }}
+                </el-radio>
+              </el-form-item>
+              <el-form-item>
+                <template slot="label">
+                  {{ $t('views.projectEdit.agent') }}
+                  <el-popover placement="top-start" width="340" trigger="hover">
+                    <p>{{ $t('views.projectEdit.agent_popover') }}</p>
+                    <span slot="reference">
+                      <i class="el-icon-question"></i>
+                    </span>
+                  </el-popover>
+                </template>
+                <el-select
+                  v-model="submitForm.agentIdList"
+                  multiple
+                  filterable
+                  style="width: 500px"
+                  :placeholder="$t('views.projectEdit.agentPlaceholder')"
+                  @change="agentChange"
+                >
+                  <el-option
+                    v-for="item in engineList"
+                    :key="item.id"
+                    :value="item.id"
+                    :label="item.short_name"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="version_name">
+                <template slot="label">
+                  {{ $t('views.projectEdit.version_name') }}
+                  <el-popover placement="top-start" width="340" trigger="hover">
+                    <p>{{ $t('views.projectEdit.version_name_popover') }}</p>
+                    <span slot="reference">
+                      <i class="el-icon-question"></i>
+                    </span>
+                  </el-popover>
+                </template>
+                <el-input
+                  v-model="submitForm.version_name"
+                  style="width: 500px"
+                  :placeholder="$t('views.projectEdit.versionNamePlaceholder')"
+                ></el-input>
+              </el-form-item>
+              <el-form-item
+                :label="$t('views.projectEdit.description')"
+                prop="description"
+              >
+                <el-input
+                  v-model="submitForm.description"
+                  style="width: 500px"
+                  :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
+                ></el-input>
+              </el-form-item>
             </template>
-            <el-input
-              v-model="submitForm.version_name"
-              style="width: 550px"
-              :placeholder="$t('views.projectEdit.versionNamePlaceholder')"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            :label="$t('views.projectEdit.description')"
-            prop="description"
-          >
-            <el-input
-              v-model="submitForm.description"
-              style="width: 550px"
-              :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
-            ></el-input>
-          </el-form-item>
-          <!-- 
-          <el-form-item prop="base_url">
-            <template slot="label">
-              {{ $t('views.projectEdit.appAddress') }}
-              <el-popover placement="top-start" width="340" trigger="hover">
-                <p>{{ $t('views.projectEdit.appAddressDesc') }}</p>
-                <span slot="reference"> <i class="el-icon-question"></i> </span>
-              </el-popover>
-            </template>
-            <el-input
-              v-model="submitForm.base_url"
-              style="width: 550px"
-              :placeholder="$t('views.projectEdit.appAddressPlaceholder')"
-            ></el-input>
-          </el-form-item>
-          <el-form-item prop="header_value">
-            <template slot="label">
-              {{ $t('views.projectEdit.token') }}
-              <el-popover placement="top-start" width="340" trigger="hover">
-                <p>{{ $t('views.projectEdit.tokenDesc') }}</p>
-                <span slot="reference"> <i class="el-icon-question"></i> </span>
-              </el-popover>
-            </template>
-            <el-select
-              v-model="submitForm.test_req_header_key"
-              allow-create
-              filterable
-              style="width: 100px"
-            >
-              <el-option v-for="item in header_id" :key="item" :value="item">{{
-                item
-              }}</el-option>
-            </el-select>
-            <el-input
-              v-model="submitForm.test_req_header_value"
-              style="width: 430px; margin-left: 20px"
-              :placeholder="$t('views.projectEdit.tokenPlaceholder')"
-            ></el-input>
-          </el-form-item> -->
-        </template>
-        <el-form-item>
-          <el-button
-            type="text"
-            size="small"
-            class="submit-btn"
-            @click="projectAdd"
-            >{{ $t('views.projectEdit.submit') }}</el-button
-          >
-        </el-form-item>
-      </el-form>
+            <el-form-item>
+              <el-button
+                type="text"
+                size="small"
+                class="submit-btn clear"
+                @click="$router.go(-1)"
+                >取消</el-button
+              >
+              <el-button
+                type="text"
+                size="small"
+                class="submit-btn"
+                @click="projectAdd"
+                >{{ $t('views.projectEdit.submit') }}</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </div>
+      </div>
     </div>
     <el-dialog
       :visible.sync="scanAddDialogOpen"
@@ -630,7 +595,7 @@ export default class ProjectEdit extends VueBase {
   min-height: calc(100vh - 92px);
 
   .back {
-    color: #9ea3a8;
+    color: #0085ff;
     cursor: pointer;
 
     i {
@@ -640,10 +605,11 @@ export default class ProjectEdit extends VueBase {
   }
 
   .title {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: #38435a;
-    margin-top: 22px;
+    margin-top: 24px;
+    margin-bottom: 32px;
   }
 
   .submit-btn {
@@ -651,10 +617,16 @@ export default class ProjectEdit extends VueBase {
     border-color: #4a72ae;
     background: #4a72ae;
     color: #ffffff;
-    height: 32px;
-    width: 92px;
     border-radius: 2px;
-    padding: 6px, 32px, 6px, 32px;
+    padding: 6px 16px;
+    &.clear {
+      border: 1px solid #959fb4;
+      border-color: #959fb4;
+      background: #ffffff;
+      color: #959fb4;
+      border-radius: 2px;
+      padding: 6px 16px;
+    }
   }
 
   .addStrategyIcon {
@@ -691,5 +663,18 @@ export default class ProjectEdit extends VueBase {
   border-radius: 2px;
   border: 1px solid #4a72ae;
   color: #4a72ae;
+}
+
+.info-box {
+  display: flex;
+  justify-content: center;
+  .info {
+    width: 700px;
+  }
+}
+
+.scan-line {
+  display: flex;
+  align-items: center;
 }
 </style>
