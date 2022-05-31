@@ -696,10 +696,33 @@ export default class VulnDetail extends VueBase {
       if (data.graphs && data.graphs[0] && data.graphs[0].graph) {
         const graph = data.graphs[0].graph
         const meta = data.graphs[0].meta
-        graph.forEach((item: any) => {
+        graph.forEach((item: any, index: any) => {
           if (item.uuid) {
             data.graphsv2.some((i: any) => {
               if (i.meta.uuid == item.uuid) {
+                if (index == 0) {
+                  i.graph.forEach((iitem: any, iindex: any) => {
+                    if (iindex > 0) {
+                      iitem.type = '传播方法'
+                      iitem.tag = 'propagator'
+                    }
+                  })
+                }
+                if (index == graph.length - 1 && index > 1) {
+                  i.graph.forEach((iitem: any, iindex: any) => {
+                    iitem.type = '传播方法'
+                    iitem.tag = 'propagator'
+                  })
+                }
+
+                if (index < graph.length - 1 && index > 0) {
+                  i.graph.forEach((iitem: any, iindex: any) => {
+                    if (iindex < i.graph.length - 1) {
+                      iitem.type = '传播方法'
+                      iitem.tag = 'propagator'
+                    }
+                  })
+                }
                 item.graphv2 = i.graph
                 item.metav2 = i.meta
                 return true
@@ -736,6 +759,7 @@ export default class VulnDetail extends VueBase {
             // 当不是服务时 且不是最后一个的时候 先组装调用链服务
             if (!item.uuid && index !== graph.length - 1) {
               g.graphv2.push(item)
+              item.isUsed = true
               if (!g.type) {
                 g.type = item.type
                 g.code = item.code
@@ -755,7 +779,9 @@ export default class VulnDetail extends VueBase {
 
             // 当倒数第二个不是服务时候 把积攒起来的调用链组合为服务添加进入
             if (!item.uuid && index === graph.length - 2) {
-              g.graphv2.push(item)
+              if (!item.isUsed) {
+                g.graphv2.push(item)
+              }
               if (!g.type) {
                 g.type = item.type
                 g.code = item.code
