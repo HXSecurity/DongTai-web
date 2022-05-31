@@ -1,6 +1,11 @@
 <template>
   <main class="container">
     <div v-if="projectObj" class="project-warp">
+      <div class="back">
+        <span @click="$router.go(-1)">
+          <i class="el-icon-arrow-left"></i>返回列表
+        </span>
+      </div>
       <div class="title-warp">
         <div class="title-top flex-row-space-between">
           <div class="name">
@@ -21,7 +26,6 @@
               @click="$router.push(`/project/projectEdit/${$route.params.pid}`)"
             >
               <i class="iconfont iconshezhi-2"></i>
-              {{ $t('views.projectDetail.setting') }}
             </el-button>
           </div>
         </div>
@@ -641,12 +645,12 @@ export default class ProjectDetail extends VueBase {
     .operate {
       // color: #b1b9c4;
       .operateBtn {
-        width: 90px;
+        width: 32px;
         height: 32px;
-        line-height: 0;
+        background: #f2f3f5;
         border-radius: 2px;
+        line-height: 0;
         font-size: 14px;
-        border: 1px solid #4a72ae;
         color: #4a72ae;
       }
 
@@ -770,6 +774,16 @@ export default class ProjectDetail extends VueBase {
   }
   /deep/.el-radio__input.is-checked + .el-radio__label {
     color: #606266;
+  }
+}
+
+.back {
+  color: #0085ff;
+  cursor: pointer;
+  margin-bottom: 12px;
+  i {
+    font-size: 16px;
+    margin-right: 8px;
   }
 }
 </style>
