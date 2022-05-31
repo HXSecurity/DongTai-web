@@ -98,6 +98,21 @@
             >
               <div><i class="icon iconfont">&#xe6ac;</i> <span>暂停</span></div>
             </el-button>
+            <el-button
+              size="small"
+              class="resetAllBtn"
+              :disabled="!state"
+              @click="agentUpdate(0)"
+            >
+              <div>
+                <i
+                  class="icon iconfont"
+                  style="font-size: 12px; overflow: inherit"
+                  >&#xe68d;</i
+                >
+                <span>升级</span>
+              </div>
+            </el-button>
             <!-- <el-button
               size="small"
               class="resetAllBtn exportBtn"
@@ -194,7 +209,7 @@
             </template>
           </el-table-column>
           <!-- 3   4 -->
-          <el-table-column label="操作" width="120px">
+          <el-table-column label="操作" width="140px">
             <template slot-scope="{ row }">
               <el-switch
                 v-if="row.is_control === 0"
@@ -215,9 +230,26 @@
               >
                 <i class="el-icon-loading"></i>
               </span>
-              <el-button type="text" @click="exportAgent(row.id)">
-                <i class="icon iconfont">&#xe6aa;</i>
-              </el-button>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="下载日志"
+                placement="top"
+              >
+                <el-button type="text" @click="exportAgent(row.id)">
+                  <i class="icon iconfont">&#xe6aa;</i>
+                </el-button>
+              </el-tooltip>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="升级Agent"
+                placement="top"
+              >
+                <el-button type="text" @click="agentUpdate(row.id)">
+                  <i class="icon iconfont" style="font-size: 12px">&#xe68d;</i>
+                </el-button>
+              </el-tooltip>
             </template>
           </el-table-column>
 
@@ -795,6 +827,55 @@ export default class AgentManage extends VueBase {
       }
     }
     const { status, msg } = await this.services.setting.agentStart(params)
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
+      return
+    }
+    this.$message({
+      type: 'success',
+      message: msg,
+      showClose: true,
+    })
+    await this.getTableData()
+  }
+
+  private async agentUpdate(id: any) {
+    if (this.selectAll) {
+      this.updateAll(8)
+      return
+    }
+    if (!this.state) {
+      return
+    }
+    if (id === 0) {
+      if (this.multipleSelection.length === 0) {
+        this.$message.warning(
+          this.$t('views.agentManage.selectWarning') as string
+        )
+        return
+      }
+    }
+    this.loadingStart()
+    let params: any = {}
+    if (id) {
+      params = { id: parseInt(id) }
+    } else {
+      params = {
+        ids: String(
+          this.multipleSelection.map((item: any) => parseInt(item.id))
+        ),
+      }
+    }
+    const { status, msg } = await this.services.setting.update_core({
+      id: params.id,
+      ids: params.ids,
+      core_status: 8,
+    })
     this.loadingDone()
     if (status !== 201) {
       this.$message({
