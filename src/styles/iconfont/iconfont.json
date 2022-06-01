@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "30099447",
+      "name": "new",
+      "font_class": "new",
+      "unicode": "e6ba",
+      "unicode_decimal": 59066
+    },
+    {
+      "icon_id": "30099449",
+      "name": "shengji",
+      "font_class": "shengji1",
+      "unicode": "e6bb",
+      "unicode_decimal": 59067
+    },
+    {
+      "icon_id": "30099450",
+      "name": "piliagnshengji",
+      "font_class": "piliagnshengji",
+      "unicode": "e6bc",
+      "unicode_decimal": 59068
+    },
+    {
+      "icon_id": "30099500",
+      "name": "banben",
+      "font_class": "banben",
+      "unicode": "e6bd",
+      "unicode_decimal": 59069
+    },
+    {
       "icon_id": "30043196",
       "name": "Union",
       "font_class": "Union",

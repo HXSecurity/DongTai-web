@@ -100,7 +100,22 @@
             </el-button>
             <el-button
               size="small"
-              class="resetAllBtn"
+              class="resetAllBtn updateBtn"
+              :disabled="!state || selectAll"
+              @click="logExport"
+            >
+              <div>
+                <i
+                  class="icon iconfont"
+                  style="font-size: 12px; overflow: inherit"
+                  >&#xe6aa;</i
+                >
+                <span>导出日志</span>
+              </div>
+            </el-button>
+            <el-button
+              size="small"
+              class="resetAllBtn updateBtn"
               :disabled="!state"
               @click="agentUpdate(0)"
             >
@@ -108,9 +123,9 @@
                 <i
                   class="icon iconfont"
                   style="font-size: 12px; overflow: inherit"
-                  >&#xe68d;</i
+                  >&#xe6bc;</i
                 >
-                <span>升级</span>
+                <span>批量升级</span>
               </div>
             </el-button>
             <!-- <el-button
@@ -247,7 +262,7 @@
                 placement="top"
               >
                 <el-button type="text" @click="agentUpdate(row.id)">
-                  <i class="icon iconfont" style="font-size: 12px">&#xe68d;</i>
+                  <i class="icon iconfont" style="font-size: 12px">&#xe6bb;</i>
                 </el-button>
               </el-tooltip>
             </template>
@@ -844,6 +859,42 @@ export default class AgentManage extends VueBase {
     await this.getTableData()
   }
 
+  private async logExport() {
+    if (this.selectAll) {
+      return
+    }
+    if (!this.state) {
+      return
+    }
+    if (this.multipleSelection.length === 0) {
+      this.$message.warning(
+        this.$t('views.agentManage.selectWarning') as string
+      )
+      return
+    }
+    const params = {
+      ids: String(this.multipleSelection.map((item: any) => parseInt(item.id))),
+    }
+    const { status, msg } = await this.services.setting.log_export_batch({
+      ids: params.ids,
+      mode: 1,
+    })
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
+      return
+    }
+    this.$message({
+      type: 'success',
+      message: '导出日志中，请留意通知信息',
+      showClose: true,
+    })
+  }
+
   private async agentUpdate(id: any) {
     if (this.selectAll) {
       this.updateAll(8)
@@ -1263,16 +1314,24 @@ export default class AgentManage extends VueBase {
   margin-left: 18px;
 }
 .resetAllBtn {
-  height: 32px;
-  width: 80px;
-  padding: 0;
+  padding: 8px 16px;
   background: #4a72ae;
   border-radius: 2px;
   color: #fff;
   font-size: 14px;
-  line-height: 16px;
-  padding-top: 2px;
   border: none;
+  &.updateBtn {
+    background: #f2f3f5;
+    border-radius: 2px;
+    color: #38435a;
+    &:hover {
+      background: #e5e6eb;
+      color: #38435a;
+    }
+    &.is-disabled {
+      background: #f2f3f5;
+    }
+  }
   div {
     display: inline-flex;
     justify-content: center;
@@ -1280,7 +1339,7 @@ export default class AgentManage extends VueBase {
   }
   .icon {
     font-size: 14px;
-    margin-right: 4px;
+    margin-right: 8px;
   }
   &:hover {
     background: #1a80f2;
