@@ -446,6 +446,9 @@ export default () =>
     update_core(data: any): Promise<iResponse> {
       return request.post(`/agent/core/update`, data)
     }
+    log_export_batch(data: any): Promise<iResponse> {
+      return request.post(`/agent/log/batch`, data)
+    }
 
     update_core_all(data: any): Promise<iResponse> {
       return request.post(`/agent/core/update/all`, data)
