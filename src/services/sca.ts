@@ -29,13 +29,6 @@ export default () =>
       })
     }
 
-    assetVulProjects(aggr_id: any, params: any): Promise<iResponse> {
-      return request.get('/asset_vul_projects/' + aggr_id, {
-        params,
-        baseURL: '/openapi/sca/v1',
-      })
-    }
-
     assetVuls(aggr_id: any): Promise<iResponse> {
       return request.get('/asset_vuls/' + aggr_id, {
         baseURL: '/openapi/sca/v1',
