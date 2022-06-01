@@ -924,7 +924,7 @@ export default class AgentManage extends VueBase {
     }
     const { status, msg } = await this.services.setting.update_core({
       id: params.id,
-      ids: params.ids,
+      agent_ids: params.ids,
       core_status: 8,
     })
     this.loadingDone()
