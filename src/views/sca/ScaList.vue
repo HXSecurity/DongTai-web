@@ -38,30 +38,6 @@
         </el-checkbox>
 
         <div
-          v-if="searchOptionsObj.license.length"
-          class="module-title flex-row-space-between"
-        >
-          <span class="filter-box-title"> 开源许可证 </span>
-        </div>
-        <el-checkbox
-          v-for="item in searchOptionsObj.license"
-          :key="item.id"
-          v-model="searchObj.license"
-          :label="item.license"
-          class="flex-row-space-between module-line"
-          @change="getTableData(true)"
-        >
-          <div class="check-label">
-            <div class="selectOption">
-              {{ item.license }}
-            </div>
-            <div class="num">
-              {{ item.count }}
-            </div>
-          </div>
-        </el-checkbox>
-
-        <div
           v-if="searchOptionsObj.language.length"
           class="module-title flex-row-space-between"
         >
@@ -162,7 +138,7 @@
           <el-table-column
             label="最高版本"
             prop="version"
-            :width="'110px'"
+            :width="'160px'"
             show-overflow-tooltip
           >
             <template slot-scope="{ row }">
@@ -174,7 +150,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="漏洞" prop="license" min-width="160px">
+          <el-table-column label="漏洞" prop="license" min-width="200px">
             <template slot-scope="{ row }">
               <div class="danger-box">
                 <div class="height">{{ row.vul_high_count }}</div>
@@ -184,22 +160,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="许可证" prop="license" width="160px">
-            <template slot-scope="scope">
-              <span>
-                {{ scope.row.license }}
-                <span
-                  class="tag"
-                  :style="{
-                    color: levelColor(scope.row.license_level).color,
-                    background: levelColor(scope.row.license_level).bg,
-                  }"
-                  >{{ levelColor(scope.row.license_level).label }}</span
-                >
-              </span>
-            </template>
-          </el-table-column>
-          <el-table-column label="关联项目" prop="project_count" width="160px">
+          <el-table-column label="关联项目" prop="project_count" width="200px">
           </el-table-column>
         </el-table>
         <div class="pagination">

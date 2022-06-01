@@ -138,19 +138,9 @@
               </el-tooltip>
             </div>
             <div v-dot class="info">
-              <span class="label"> 开源许可证： </span>
-              <span>{{ assetVulDetail.base_info.license_desc }}</span>
-            </div>
-            <div v-dot class="info">
               <span class="label"> 语言： </span>
               <span class="dot">{{ assetVulDetail.base_info.language }}</span>
             </div>
-          </div>
-          <div v-if="assetVulDetail.base_info.safe_version" class="warning-bar">
-            <i class="el-icon-warning" style="margin-right: 8px"></i> 快速修复：
-            升级{{ assetVulDetail.base_info.package_name }}至{{
-              assetVulDetail.base_info.safe_version
-            }}及以上版本
           </div>
         </div>
         <div class="module-title">漏洞描述</div>
@@ -158,49 +148,6 @@
           {{ assetVulDetail.base_info && assetVulDetail.base_info.vul_detail }}
         </div>
 
-        <div class="module-title link">
-          <div>
-            函数依赖调用<span class="linkNum">（{{ total }}）</span>
-          </div>
-          <div>
-            <el-input
-              v-model="keyword"
-              size="small"
-              placeholder="请输入项目名称搜索"
-              @keydown.native.enter="getAssetVulProjects"
-            >
-              <i
-                slot="suffix"
-                class="el-icon-search"
-                style="line-height: 32px"
-                @click="getAssetVulProjects"
-              ></i>
-            </el-input>
-          </div>
-        </div>
-        <div class="vulnDesc">
-          <LinkList :tree="assetVulProjects" :aggr_id="aggr_id"></LinkList>
-          <div class="pagination-box">
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="total"
-              :page-size="numberPages"
-              @current-change="changePage"
-            >
-            </el-pagination>
-          </div>
-        </div>
-
-        <!-- <div class="module-title">详细信息</div>
-        <div class="markdownContent httpRequest">
-          <MyMarkdownIt
-            :content="assetVulDetail.poc_info.description"
-            style="color: #747c8c"
-          ></MyMarkdownIt>
-        </div>
-        <div class="split-line"></div> -->
-        <!--Runtime environment-->
         <div
           v-for="(poc, index) in assetVulDetail.poc_info &&
           assetVulDetail.poc_info.poc_list"
@@ -213,11 +160,6 @@
               style="color: #747c8c"
             ></MyMarkdownIt>
           </div>
-        </div>
-
-        <div class="module-title">修复方案</div>
-        <div class="vulnDesc">
-          {{ assetVulDetail.poc_info && assetVulDetail.poc_info.fix_plan }}
         </div>
 
         <div class="module-title">参考及分析文章</div>
@@ -285,13 +227,11 @@ import VueBase from '@/VueBase'
 import request from '@/utils/request'
 import qs from 'qs'
 import Sync from '../vuln/components/sync.vue'
-import LinkList from './components/linkList.vue'
 
 @Component({
   name: 'VulnDetail',
   components: {
     Sync,
-    LinkList,
   },
 })
 export default class VulnDetail extends VueBase {
@@ -348,11 +288,6 @@ export default class VulnDetail extends VueBase {
 
   private settingInte: any = []
   private assetVulDetail: any = {}
-
-  private async changePage(page: any) {
-    this.page = page
-    this.getAssetVulProjects()
-  }
 
   goBack = () => {
     this.$router.push({
@@ -429,7 +364,6 @@ export default class VulnDetail extends VueBase {
     this.aggr_id = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
     await this.getAssetVulDetail()
-    await this.getAssetVulProjects()
     this.syncInfo = {
       source_type: 2,
       id: this.aggr_id,
@@ -510,18 +444,6 @@ export default class VulnDetail extends VueBase {
       })
       this.$router.push('/vuln/vulnList')
     }
-  }
-
-  private assetVulProjects = []
-  private numberPages = 10
-  private async getAssetVulProjects() {
-    const res = await this.services.sca.assetVulProjects(this.aggr_id, {
-      page: this.page,
-      keyword: this.keyword,
-    })
-    this.assetVulProjects = res.data
-    this.total = res.page.alltotal
-    this.numberPages = res.page.page_size
   }
 
   private logList: any = []
