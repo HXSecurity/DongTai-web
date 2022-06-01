@@ -1,42 +1,12 @@
 <template>
   <main class="sca-dialog">
     <div class="sca-dialog-desc-box">
-      <div class="sca-dialog-title">修复建议</div>
-      <div class="sca-dialog-info">
-        升级{{ dialogInfo.package_name }}@{{ dialogInfo.version }}版本至{{
-          dialogInfo.safe_version
-        }}及以上版本。
-      </div>
-    </div>
-    <div class="sca-dialog-desc-box">
       <div class="sca-dialog-title">风险分析</div>
       <div class="sca-dialog-pic-box">
         <div class="sca-dialog-pic" style="margin-right: 8px">
           <div class="pic-title">漏洞分布</div>
           <div class="pic-info">
             <Distribution :data="level_data" :height="188"></Distribution>
-          </div>
-        </div>
-
-        <div class="sca-dialog-pic" style="margin-left: 8px">
-          <div class="pic-title">开源许可证</div>
-          <div class="pic-info" style="padding: 16px">
-            <div class="pic-info-item">
-              <div class="label">许可证名称</div>
-              <div class="info">{{ dialogInfo.license }}</div>
-            </div>
-            <div class="pic-info-item">
-              <div class="label">风险</div>
-              <div class="info">
-                {{ switchLevel(dialogInfo.license_level).label }}
-              </div>
-            </div>
-            <div class="pic-info-item">
-              <div class="label">许可证说明</div>
-              <div class="info">
-                {{ dialogInfo.license_desc }}
-              </div>
-            </div>
           </div>
         </div>
       </div>
