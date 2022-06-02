@@ -262,7 +262,7 @@
                 placement="top"
               >
                 <el-button type="text" @click="agentUpdate(row.id)">
-                  <i class="icon iconfont" style="font-size: 12px">&#xe6bb;</i>
+                  <i class="icon iconfont">&#xe6bc;</i>
                 </el-button>
               </el-tooltip>
             </template>
