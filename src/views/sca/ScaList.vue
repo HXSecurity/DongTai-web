@@ -253,10 +253,6 @@ export default class ScaList extends VueBase {
         value: 'level',
       },
       {
-        label: '许可证',
-        value: 'license',
-      },
-      {
         label: this.$t('views.scaList.orderOptions.language'),
         value: 'language',
       },

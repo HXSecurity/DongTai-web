@@ -911,9 +911,9 @@ export default {
       description: '版本描述',
       descriptionPlaceholder: '请输入版本描述，如：更新xxxx功能，优化xxxx等',
       agent_popover:
-        '通过选择 Agent，将 Agent 绑定至当前项目；推荐在 Agent 端使用 project.name 参数进行 Agent 与项目的自动绑定',
+        '通过选择 Agent，将 Agent 绑定至当前项目；推荐在 Agent 端使用 dongtai.app.name 参数进行 Agent 与项目的自动绑定',
       version_name_popover:
-        '推荐在 Agent 端使用 project.version 参数指定项目版本',
+        '推荐在 Agent 端使用 dongtai.app.version 参数指定项目版本',
       vul_verifiy: '主动验证',
     },
     apiList: {
