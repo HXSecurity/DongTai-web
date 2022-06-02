@@ -176,8 +176,7 @@ export default {
       begin: 'Select a language and start the installation',
       installing: 'Installing',
       agent: 'Agent',
-      term:
-        'Before the installation, please make sure to confirm the following precautions: ',
+      term: 'Before the installation, please make sure to confirm the following precautions: ',
       download: 'Downloading Agent',
       install: 'Installing Agent',
       copy: 'copy',
@@ -201,15 +200,12 @@ export default {
         term4: `b. JDK version: 1.6 and above`,
         term5: `c. Framework: Any`,
         term6: `d. Middleware: Any`,
-        p1:
-          'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
+        p1: 'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
         p2: '1. Check the agent.jar',
-        p3:
-          'Execute the following command “java -jar /temp/agent.jar” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p3: 'Execute the following command “java -jar /temp/agent.jar” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
         p4: '2. Check the network connection',
         p51: 'If the Web Service is unable to access to ',
-        p52:
-          'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p52: 'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
         title2:
           'Ensure the service of installing the probe meet the requirement as below',
       },
@@ -234,27 +230,21 @@ export default {
         manualInstallationDesc:
           'Extract download file with the following command.',
         settings: 'Settings',
-        p1:
-          'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
+        p1: 'Start/Restart the Web Service and then access it with the browser.Once registered, the agent should appear in the Settings > Engine list.If you do not see the agent on list within a few minutes, check the following:',
         p2: '1. Check the dongtai-agent-python.tar.gz',
-        p3:
-          'Execute the following command “pip3 install ./dongtai-agent-python.tar.gz” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
-        p4:
-          '2. Check the setting.py in Django application Ensure the following line is added to the MIDDLEWARE configuration.',
+        p3: 'Execute the following command “pip3 install ./dongtai-agent-python.tar.gz” to check it is working.Please re-download the agent file and try again otherwise.If the problem still persists, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p4: '2. Check the setting.py in Django application Ensure the following line is added to the MIDDLEWARE configuration.',
         p5: `'dongtai_agent_python.middlewares.django_middleware.FireMiddleware'`,
         p6: '3. Check the network connection',
         p71: 'If the Web Service is unable to access to ',
-        p72:
-          'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
+        p72: 'Please check the network connection and try again.Otherwise, you can directly report the issue to us on Github and we will get you an answer back shortly.',
         settingName: 'Configuration Item Name',
-        n1:
-          'Configure the projectName in the system environment variable, demoProjectName is the custom project name. Keep it consistent with the new application name in the Applications list, otherwise, the traffic cannot be uploaded.',
+        n1: 'Configure the projectName in the system environment variable, demoProjectName is the custom project name. Keep it consistent with the new application name in the Applications list, otherwise, the traffic cannot be uploaded.',
         n2: 'Import linux/mac command:',
         n3: 'export projectName=demoProjectName',
         n4: 'Adds Windows  environment variables:',
         n5: 'Verification: Enter env directly on the command line to view',
-        n6:
-          'Note: If you cannot configure the system environment variables, you can change the agent configuration file, modify the project name, and find the path address of the python installation agent extension package, for example: /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site -packages/dongtai_agent_python modify project.name in dongtai_agent_python/config.json, the priority of system environment variable projectName is higher than project.name in configuration file;',
+        n6: 'Note: If you cannot configure the system environment variables, you can change the agent configuration file, modify the project name, and find the path address of the python installation agent extension package, for example: /Library/Frameworks/Python.framework/Versions/3.8/lib/python3.8/site -packages/dongtai_agent_python modify project.name in dongtai_agent_python/config.json, the priority of system environment variable projectName is higher than project.name in configuration file;',
       },
       php: {
         Manualinstallation: 'manual installation',
@@ -734,19 +724,15 @@ export default {
       detailR: 'Please enter how to match',
       fixR: 'Please enter a matching rule',
       t: 'Sensitive data configuration',
-      p1:
-        'Sensitive information detection function officially opened public testing, in order to detect the security risk of sensitive information leakage, it is necessary to configure the matching rules of sensitive information and related policies.',
+      p1: 'Sensitive information detection function officially opened public testing, in order to detect the security risk of sensitive information leakage, it is necessary to configure the matching rules of sensitive information and related policies.',
       'p1-1': 'Detection location:',
       'p1-2': '1. HTTP Request Param',
       'p1-3': '2. HTTP Request Post Data',
       'p1-4': '3. HTTP Response Data',
       p2: 'Process (to increase mobile phone number leakage for example): ',
-      p3:
-        '1. Go to the "Policy Management" page, add a new policy "Mobile Phone Number Leak", fill in the policy description, repair suggestions and choose to enable;',
-      p4:
-        '2. Go back to the current page, click on the "New Matching Rules" button, select the policy name is "Mobile Phone Number Leak", match the way is "Regular Match", fill in "Match Rules" and click Save.',
-      tip:
-        'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
+      p3: '1. Go to the "Policy Management" page, add a new policy "Mobile Phone Number Leak", fill in the policy description, repair suggestions and choose to enable;',
+      p4: '2. Go back to the current page, click on the "New Matching Rules" button, select the policy name is "Mobile Phone Number Leak", match the way is "Regular Match", fill in "Match Rules" and click Save.',
+      tip: 'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
       search: 'Search',
       noValidatio: 'No Validatio Data',
     },
@@ -768,8 +754,7 @@ export default {
       add: 'add',
       searchValue: 'Search for Scan Strategy',
       nameR: 'Please select the scan strategy name',
-      tip:
-        'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
+      tip: 'The policy name comes from the policy name in Policy Management, and if it does not exist, you can contact the administrator to go to Policy Management New policy',
       search: 'Search',
     },
     upgradeOnline: {
@@ -872,10 +857,8 @@ export default {
       vul_verifiy: 'Verification',
       infoTitle: 'Agent Settings',
       agentThreshold: 'Agent Threshold',
-      vul:
-        'The active verification function is used to verify whether the vulnerability of the tainted call chain is true and effective. During active verification, engine automatically identifies the location of attack parameters, constructs a payload, and then replays http / HTTPS traffic from within the agent for verification. This function is not necessary. Closing it will not change the vulnerability detection results. If it is not needed, it can be closed by itself.      ',
-      open:
-        'When the CPU utilization meets the threshold condition, the agent automatically stops.',
+      vul: 'The active verification function is used to verify whether the vulnerability of the tainted call chain is true and effective. During active verification, engine automatically identifies the location of attack parameters, constructs a payload, and then replays http / HTTPS traffic from within the agent for verification. This function is not necessary. Closing it will not change the vulnerability detection results. If it is not needed, it can be closed by itself.      ',
+      open: 'When the CPU utilization meets the threshold condition, the agent automatically stops.',
       close:
         'When the CPU utilization is lower than the threshold condition, the agent starts automatically.',
       cpu: 'Utilization      ',
@@ -938,9 +921,9 @@ export default {
       description: 'Version Description',
       descriptionPlaceholder: 'Please enter a version description',
       agent_popover:
-        'Bind the agent to the current project by selecting the agent; It is recommended to use the project.name parameter on the agent side to automatically bind the agent to the project',
+        'Bind the agent to the current project by selecting the agent; It is recommended to use the dongtai.app.name parameter on the agent side to automatically bind the agent to the project',
       version_name_popover:
-        'It is recommended to use the project.version parameter on the agent side to specify the project version',
+        'It is recommended to use the pdongtai.app.version parameter on the agent side to specify the project version',
       vul_verifiy: 'Verification',
     },
     apiList: {
