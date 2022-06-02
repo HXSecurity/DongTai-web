@@ -23,13 +23,13 @@ export default class Index extends VueBase {
   }
   randerEchart() {
     let total = 0
-    const legendData: any = ['高危', '中危', '低危', '提示', '无风险']
+    const legendData: any = ['高危', '中危', '低危', '无风险', '提示']
     const levelData: any = [
       { value: 0, name: '高危' },
       { value: 0, name: '中危' },
       { value: 0, name: '低危' },
-      { value: 0, name: '提示' },
       { value: 0, name: '无风险' },
+      { value: 0, name: '提示' },
     ]
     const typeData: any = []
     this.data.forEach((item: any) => {
@@ -65,8 +65,8 @@ export default class Index extends VueBase {
             高危: '#E56363',
             中危: '#F49E0B',
             低危: '#2F90EA',
-            提示: '#ACB4C4',
-            无风险: '#D8D8D8',
+            无风险: '#ACB4C4',
+            提示: '#D8D8D8',
           }
           return `
             <div style="display: flex;align-items: center;justify-content: space-between;width:160px;height:8px;">
