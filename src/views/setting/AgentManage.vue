@@ -188,7 +188,27 @@
           </el-table-column>
           <el-table-column label="语言" prop="is_core_running" width="100px">
             <template slot-scope="{ row }">
-              <Language :language="row.language"></Language>
+              <div>
+                <Language :language="row.language"></Language>
+                <div class="version-row">
+                  <i class="icon iconfont" style="color: #959fb4">&#xe6bd;</i>
+                  <span>{{ row.version }}</span>
+                  <el-tooltip
+                    class="item"
+                    effect="dark"
+                    content="升级Agent"
+                    placement="top"
+                  >
+                    <el-button
+                      style="padding-top: 8px"
+                      type="text"
+                      @click="agentUpdate(row.id)"
+                    >
+                      <i class="icon iconfont">&#xe6bc;</i>
+                    </el-button>
+                  </el-tooltip>
+                </div>
+              </div>
             </template>
           </el-table-column>
           <el-table-column label="服务IP" width="180px">
@@ -253,16 +273,6 @@
               >
                 <el-button type="text" @click="exportAgent(row.id)">
                   <i class="icon iconfont">&#xe6aa;</i>
-                </el-button>
-              </el-tooltip>
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="升级Agent"
-                placement="top"
-              >
-                <el-button type="text" @click="agentUpdate(row.id)">
-                  <i class="icon iconfont">&#xe6bc;</i>
                 </el-button>
               </el-tooltip>
             </template>
@@ -1458,6 +1468,21 @@ export default class AgentManage extends VueBase {
         color: #38435a;
       }
     }
+  }
+}
+.version-row {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  .icon {
+    font-size: 12px;
+    line-height: 100%;
+  }
+  > span {
+    margin: 0 4px;
+    color: #959fb4;
+    line-height: 12px;
+    font-size: 12px;
   }
 }
 </style>
