@@ -39,6 +39,7 @@
       <div class="sca-dialog-title">漏洞信息</div>
       <div class="sca-dialog-info">
         <el-table
+          v-loading="tableLoading"
           :data="tableData"
           style="width: 100%"
           class="sca-dialog-table"
@@ -101,10 +102,12 @@ import Distribution from '@/views/project/components/distribution.vue'
 @Component({ name: 'ScaDialog', components: { Distribution } })
 export default class ScaDialog extends VueBase {
   @Prop() dialogInfo: any
-
+  private tableLoading = false
   private tableData: any = []
   async getAssetVuls() {
+    this.tableLoading = true
     const res = await this.services.sca.assetVuls(this.dialogInfo.id)
+    this.tableLoading = false
     this.tableData.push(...res.data)
   }
 
