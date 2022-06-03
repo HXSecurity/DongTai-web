@@ -554,9 +554,6 @@ export default class ProjectDetail extends VueBase {
     await this.projectsSummary()
     await this.getVersionList()
   }
-  async mounted() {
-    this.init()
-  }
   private offsetHeight = 0
   private async projectsSummary(id?: string) {
     const { status, msg, data } = await this.services.project.projectsSummary(
