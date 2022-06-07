@@ -32,8 +32,8 @@ export default class Index extends VueBase {
       YHData.push(item.day_num_level_1)
       YMData.push(item.day_num_level_2)
       YLData.push(item.day_num_level_3)
-      YNData.push(item.day_num_level_4)
-      YIData.push(item.day_num_level_5)
+      YNData.push(item.day_num_level_5)
+      YIData.push(item.day_num_level_4)
     })
 
     const option: any = {
