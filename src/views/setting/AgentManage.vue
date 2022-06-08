@@ -883,7 +883,7 @@ export default class AgentManage extends VueBase {
       return
     }
     const params = {
-      ids: String(this.multipleSelection.map((item: any) => parseInt(item.id))),
+      ids: this.multipleSelection.map((item: any) => parseInt(item.id)),
     }
     const { status, msg } = await this.services.setting.log_export_batch({
       ids: params.ids,
