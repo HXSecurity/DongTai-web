@@ -129,14 +129,14 @@ jobs:
             registry.cn-beijing.aliyuncs.com/huoxian_pub/dongtai-web:${{ steps.release.outputs.version }}
             registry.cn-beijing.aliyuncs.com/huoxian_pub/dongtai-web:latest
 
-      - name: Deploy to staging
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-        with:
-          args: |
-            find deploy/deploy-eks-iast-saas-web-prod.yml -type f -exec sed -i 's/VERSION/${{ steps.release.outputs.VERSION }}/g' {} \;
-            ls deploy/deploy-eks-iast-saas-web-prod.yml | xargs -I {} kubectl apply -f {}
+      #- name: Deploy to staging
+      #  uses: wahyd4/kubectl-helm-action@master
+      #  env:
+      #    KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      #  with:
+      #    args: |
+      #      find deploy/deploy-eks-iast-saas-web-prod.yml -type f -exec sed -i 's/VERSION/${{ steps.release.outputs.VERSION }}/g' {} \;
+      #      ls deploy/deploy-eks-iast-saas-web-prod.yml | xargs -I {} kubectl apply -f {}
 
 
       - name: finish build
