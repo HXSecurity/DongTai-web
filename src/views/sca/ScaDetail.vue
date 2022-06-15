@@ -239,8 +239,11 @@ export default class VulnDetail extends VueBase {
   private deleteDialogOpen = false
   private logDialogOpen = false
   fmtTime(time: any) {
-    const data = new Date(time).getTime() / 1000
-    return formatTimestamp(data)
+    if (time) {
+      const data = new Date(time).getTime() / 1000
+      return formatTimestamp(data)
+    }
+    return ''
   }
 
   async openUrl(url: any) {
