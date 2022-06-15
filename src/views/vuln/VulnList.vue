@@ -790,10 +790,10 @@ export default class VulnList extends VueBase {
           label: '漏洞级别',
           value: 1,
         },
-        {
-          label: '发现时间',
-          value: 2,
-        },
+        // {
+        //   label: '发现时间',
+        //   value: 2,
+        // },
         {
           label: '最新活跃',
           value: 3,
