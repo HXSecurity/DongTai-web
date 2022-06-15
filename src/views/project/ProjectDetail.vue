@@ -2,7 +2,7 @@
   <main class="container">
     <div v-if="projectObj" class="project-warp">
       <div class="back">
-        <span @click="$router.go(-1)">
+        <span @click="goProjectList">
           <i class="el-icon-arrow-left"></i>返回列表
         </span>
       </div>
@@ -365,6 +365,12 @@ export default class ProjectDetail extends VueBase {
       await this.projectsSummary()
       await this.getVersionList()
     }
+  }
+
+  goProjectList() {
+    this.$router.push({
+      name: 'projectManage',
+    })
   }
 
   private async changeActive(e: any) {
