@@ -682,16 +682,22 @@ export default class VulnList extends VueBase {
     window.removeEventListener('scroll', this.myScroll)
   }
 
+  timer: any = null
   private myScroll() {
-    const bottomWindow =
-      document.documentElement.scrollTop + window.innerHeight >
-      document.documentElement.offsetHeight - 1
-    if (bottomWindow) {
-      if (!this.dataEnd) {
-        this.page += 1
-        this.getTableData()
-      }
+    if (this.timer) {
+      clearTimeout(this.timer)
     }
+    this.timer = setTimeout(() => {
+      const bottomWindow =
+        document.documentElement.scrollTop + window.innerHeight >
+        document.documentElement.offsetHeight - 1
+      if (bottomWindow) {
+        if (!this.dataEnd) {
+          this.page += 1
+          this.getTableData()
+        }
+      }
+    }, 100)
   }
 
   private async getTableData(reflash = false) {

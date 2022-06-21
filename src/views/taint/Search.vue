@@ -11,17 +11,11 @@
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.url') }}
             </div>
-            <div class="info">(.*)/druid/.*</div>
+            <div class="info">/druid/</div>
           </div>
           <div class="example">
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.req_data') }}
-            </div>
-            <div class="info">(.*)whoami(.*)</div>
-          </div>
-          <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.signature') }}
             </div>
             <div class="info">whoami</div>
           </div>
@@ -35,19 +29,13 @@
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.req_header_fs') }}
             </div>
-            <div class="info">(.*)exec</div>
+            <div class="info">exec</div>
           </div>
           <div class="example">
             <div class="label" :class="$i18n.locale">
               {{ $t('views.search.req_data') }}
             </div>
             <div class="info">&lt;script&gt; alert(1) &lt;/script&gt;</div>
-          </div>
-          <div class="example">
-            <div class="label" :class="$i18n.locale">
-              {{ $t('views.search.sinkvalues') }}
-            </div>
-            <div class="info">(.*)rememberMe(.*)</div>
           </div>
         </div>
       </div>
@@ -94,14 +82,14 @@ export default class Index extends VueBase {
   private type = ''
   private value = ''
   private tableList: Array<any> = []
-  private afterkeys = ''
+  private afterkeys = {}
   private loadingFlag = false
   private search([type, value]: any[]) {
     this.type = type
     this.value = value
     this.page = 1
     this.tableList = []
-    this.afterkeys = ''
+    this.afterkeys = {}
     if (!value) {
       this.$message.warning(this.$t('views.search.warning') as string)
     }
@@ -138,6 +126,15 @@ export default class Index extends VueBase {
       return item.method_pools.id
     })
     const SearchBar: any = this.$refs.SearchBar
+
+    let afterObj: any = undefined
+    for (let key in this.afterkeys) {
+      if (!afterObj) {
+        afterObj = {}
+      }
+      afterObj['search_after_' + key] = this.afterkeys[key]
+    }
+
     const res: any = await this.services.taint.search({
       ...searchKey,
       search_mode: SearchBar.search_mode,
@@ -147,7 +144,7 @@ export default class Index extends VueBase {
       ],
       page_index: this.page,
       page_size: 10,
-      search_after_update_time: this.afterkeys || undefined,
+      ...afterObj,
       exclude_ids: exclude_ids,
     })
     this.loadingFlag = false
@@ -171,7 +168,7 @@ export default class Index extends VueBase {
         relations: relations_map[item.id],
       }
     })
-    this.afterkeys = res.data.afterkeys.update_time
+    this.afterkeys = res.data.afterkeys
     this.tableList = this.tableList.concat(tableList)
     this.dataEnd = false
     if (tableList.length < 10) {
