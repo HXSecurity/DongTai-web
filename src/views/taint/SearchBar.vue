@@ -11,14 +11,6 @@
       >
         <el-option :label="$t('views.search.url')" value="url"></el-option>
         <el-option
-          :label="$t('views.search.signature')"
-          value="signature"
-        ></el-option>
-        <el-option
-          :label="$t('views.search.sinkvalues')"
-          value="sinkvalues"
-        ></el-option>
-        <el-option
           :label="$t('views.search.req_header_fs')"
           value="req_header_fs"
         ></el-option>
