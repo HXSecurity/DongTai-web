@@ -23,6 +23,8 @@ export default class Status extends VueBase {
         return { class: 'close', label: '暂停中' }
       case 4:
         return { class: 'uninstrall', label: '已离线' }
+      default:
+        return { class: 'uninstrall', label: '已离线' }
     }
   }
 }
