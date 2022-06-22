@@ -155,7 +155,12 @@
           header-align="center"
           @selection-change="handleSelectionChange"
         >
-          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column
+            type="selection"
+            width="55"
+            :selectable="agentSelectable"
+          >
+          </el-table-column>
           <el-table-column label="序号" prop="id" width="105">
           </el-table-column>
           <el-table-column
@@ -194,6 +199,7 @@
                   <i class="icon iconfont" style="color: #959fb4">&#xe6bd;</i>
                   <span>{{ row.version }}</span>
                   <el-tooltip
+                    v-if="row.state !== 4 && row.language === 'JAVA'"
                     class="item"
                     effect="dark"
                     content="升级Agent"
@@ -249,6 +255,7 @@
               <el-switch
                 v-if="row.is_control === 0"
                 v-model="row.is_core_running"
+                :disabled="row.state === 4"
                 :width="32"
                 style="margin-right: 20px"
                 :active-value="1"
@@ -694,6 +701,10 @@ export default class AgentManage extends VueBase {
   //   })
   //   this.getSummy()
   // }
+
+  private agentSelectable(row: any) {
+    return row.state !== 4
+  }
 
   private async getTableData(showLoading = false) {
     const multipleSelectionID = this.multipleSelection.map(
