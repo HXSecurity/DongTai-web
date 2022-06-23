@@ -83,6 +83,15 @@
             :rule-type="type"
           />
         </el-tab-pane>
+        <el-tab-pane label="主动验证" name="5" class="info-tab">
+          <VulnTable
+            v-if="type === '5'"
+            :get-base="getBase"
+            :active-language="activeLanguage"
+            :active-language-name="activeLanguageName"
+            :rule-type="type"
+          />
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -92,12 +101,14 @@
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import DangerTable from '@/views/setting/components/dangerTable.vue'
+import VulnTable from '@/views/setting/components/vulnTable.vue'
 import HookTable from '@/views/setting/components/hookTable.vue'
 @Component({
   name: 'HookRule',
   components: {
     DangerTable,
     HookTable,
+    VulnTable,
   },
 })
 export default class ChangePassword extends VueBase {
