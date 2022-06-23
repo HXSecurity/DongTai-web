@@ -135,7 +135,7 @@
               style="color: #e5f3f3"
             ></i>
             <span style="background: #e5f3f3; color: #3c9aa2">
-              {{ item.status }}
+              {{ item.status__name }}
             </span>
           </div>
         </div>
