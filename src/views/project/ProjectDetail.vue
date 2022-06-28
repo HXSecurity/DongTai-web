@@ -549,7 +549,7 @@ export default class ProjectDetail extends VueBase {
     }
   }
 
-  @Watch('$route.params.pid', { immediate: true, deep: true })
+  @Watch('$route.params.pid', { immediate: true })
   async init() {
     if (this.$route.query.activeName) {
       this.selectTab = this.$route.query.activeName as string
