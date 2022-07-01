@@ -169,7 +169,6 @@
             :page-size="pageSize"
             :current-page="page"
             layout=" prev, pager, next, sizes"
-            :total="total"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
           >
@@ -240,7 +239,6 @@ export default class ScaList extends VueBase {
   private debounceMyScroll: any
   private page = 1
   private pageSize = 10
-  private total = 0
   private dataEnd = false
   private tableData: Array<ScaListObj> = []
   private searchOptionsObj: any = {
@@ -388,7 +386,6 @@ export default class ScaList extends VueBase {
       })
       return
     }
-    this.total = page.alltotal
     this.tableData = data
   }
 
