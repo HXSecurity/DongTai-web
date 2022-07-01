@@ -168,7 +168,7 @@
             :page-sizes="[10, 20, 40, 50]"
             :page-size="pageSize"
             :current-page="page"
-            layout=" prev, pager, next, jumper,sizes,total"
+            layout=" prev, pager, next, sizes"
             :total="total"
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -658,7 +658,13 @@ export default class ScaList extends VueBase {
       }
     }
   }
+  
 }
+  /deep/.btn-quicknext{
+    &+.number{
+    display: none;
+    }
+  }
 </style>
 
 <style lang="scss">
@@ -687,4 +693,5 @@ export default class ScaList extends VueBase {
   border-radius: 2px;
   font-size: 12px;
 }
+
 </style>
