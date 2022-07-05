@@ -290,7 +290,7 @@ main {
 
 .logListTable {
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f6f8fa;
     }
   }

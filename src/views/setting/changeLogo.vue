@@ -285,7 +285,7 @@ export default class StrategyManage extends VueBase {
       .upload-box {
         flex: 1;
         margin: 8px;
-        /deep/.el-upload {
+        ::v-deep.el-upload {
           display: flex !important;
           flex: 1;
         }

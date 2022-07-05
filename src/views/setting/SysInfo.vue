@@ -770,7 +770,7 @@ export default class SysInfo extends VueBase {
   width: 470px;
   .num-input {
     width: 120px;
-    /deep/.el-input__inner {
+    ::v-deep.el-input__inner {
       border-radius: 2px;
     }
   }
@@ -811,16 +811,16 @@ export default class SysInfo extends VueBase {
   border-left: 1px solid rgba(230, 233, 236, 0.5);
   border-right: 1px solid rgba(230, 233, 236, 0.5);
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f2f3f5;
       color: #38435a;
       padding-left: 10px;
     }
-    /deep/td {
+    ::v-deeptd {
       padding-left: 10px;
     }
 
-    /deep/.el-table__row {
+    ::v-deep.el-table__row {
       .rank-icon {
         cursor: pointer;
         display: none;

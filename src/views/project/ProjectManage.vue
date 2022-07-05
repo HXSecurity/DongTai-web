@@ -231,7 +231,7 @@ export default class ProjectManage extends VueBase {
       border-left: 1px solid #e5e6eb;
       border-right: 1px solid #e5e6eb;
       border-top: 1px solid #e5e6eb;
-      /deep/th {
+      ::v-deepth {
         background: #f2f3f5;
         .cell {
           color: #38435a;

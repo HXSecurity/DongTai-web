@@ -675,7 +675,7 @@ export default class VulnDetail extends VueBase {
     border: 1px solid #e6e9ec;
     border-radius: 2px;
     background: #fff;
-    /deep/tt {
+    ::v-deeptt {
       color: red !important;
       font-style: normal !important;
     }

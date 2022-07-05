@@ -777,13 +777,13 @@ export default class HookTable extends VueBase {
     padding-bottom: 6px;
   }
 }
-/deep/.el-table th {
+::v-deep.el-table th {
   background: #f8f9fb;
 }
 
 .hookTable {
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f6f8fa;
     }
   }

@@ -516,7 +516,7 @@ export default class ScaList extends VueBase {
 .vulnSelect {
   width: 134px;
   margin-left: 8px;
-  /deep/.el-input__inner {
+  ::v-deep.el-input__inner {
     border-right: none;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -570,7 +570,7 @@ export default class ScaList extends VueBase {
     height: 32px;
     line-height: 32px;
     margin-right: 0;
-    /deep/.el-checkbox__label {
+    ::v-deep.el-checkbox__label {
       flex: 1;
       .check-label {
         display: flex;
@@ -627,7 +627,7 @@ export default class ScaList extends VueBase {
 .sca-list-table {
   margin-top: 16px;
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       line-height: 0;
       color: #38435a;
       background: #f2f3f5;
@@ -655,13 +655,12 @@ export default class ScaList extends VueBase {
       }
     }
   }
-  
 }
-  /deep/.btn-quicknext{
-    &+.number{
+::v-deep.btn-quicknext {
+  & + .number {
     display: none;
-    }
   }
+}
 </style>
 
 <style lang="scss">
@@ -690,5 +689,4 @@ export default class ScaList extends VueBase {
   border-radius: 2px;
   font-size: 12px;
 }
-
 </style>

@@ -392,7 +392,7 @@ export default class Index extends VueBase {
     }
   }
 }
-/deep/em {
+::v-deepem {
   color: red !important;
 }
 </style>

@@ -974,7 +974,7 @@ export default class VulListComponent extends VueBase {
     height: 32px;
     line-height: 32px;
     margin-right: 0;
-    /deep/.el-checkbox__label {
+    ::v-deep.el-checkbox__label {
       flex: 1;
       .check-label {
         display: flex;
@@ -1057,7 +1057,7 @@ export default class VulListComponent extends VueBase {
     .sort-box {
       display: inline-flex;
       align-items: center;
-      /deep/.el-input__inner {
+      ::v-deep.el-input__inner {
         border-right: none;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;

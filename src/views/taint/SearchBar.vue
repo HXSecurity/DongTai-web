@@ -280,12 +280,12 @@ export default class SearchBar extends VueBase {
   .flex-item {
     align-items: center;
     display: flex;
-    /deep/.el-input__inner {
+    ::v-deep.el-input__inner {
       border-radius: 0;
       border-color: #c8e0ff;
     }
     .input-with-select {
-      /deep/.el-input__inner {
+      ::v-deep.el-input__inner {
         border-left: none;
       }
     }
@@ -293,7 +293,7 @@ export default class SearchBar extends VueBase {
       &.el-input__inner {
         border-left: none;
       }
-      /deep/.el-range-input {
+      ::v-deep.el-range-input {
         width: 45% !important;
       }
     }
