@@ -403,7 +403,7 @@ export default class Index extends VueBase {
     align-items: center;
     flex: 1;
     padding: 0 12px;
-    /deep/.el-tag--dark {
+    ::v-deep.el-tag--dark {
       min-width: 70px;
       text-align: center;
     }

@@ -377,7 +377,7 @@ export default class StrategyManage extends VueBase {
 .search-box {
   display: flex;
   align-items: center;
-  /deep/.el-input__inner {
+  ::v-deep.el-input__inner {
     border-right: none;
     border-radius: 0;
   }
@@ -420,7 +420,7 @@ export default class StrategyManage extends VueBase {
 .strategyManageTable {
   margin-top: 16px;
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f6f8fa;
     }
   }

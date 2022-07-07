@@ -811,19 +811,15 @@ export default class HookTable extends VueBase {
   }
   async getTable() {
     this.loadingStart()
-    const {
-      status,
-      msg,
-      data,
-      page,
-    } = await this.services.setting.hookRuleList({
-      page: this.currentPage,
-      pageSize: this.pageSize,
-      type: this.ruleType,
-      strategy_type: this.rule_type,
-      language_id: this.activeLanguage,
-      keyword: this.keyword,
-    })
+    const { status, msg, data, page } =
+      await this.services.setting.hookRuleList({
+        page: this.currentPage,
+        pageSize: this.pageSize,
+        type: this.ruleType,
+        strategy_type: this.rule_type,
+        language_id: this.activeLanguage,
+        keyword: this.keyword,
+      })
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -908,13 +904,13 @@ export default class HookTable extends VueBase {
     padding-bottom: 6px;
   }
 }
-/deep/.el-table th {
+::v-deep.el-table th {
   background: #f8f9fb;
 }
 
 .hookTable {
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f6f8fa;
     }
   }

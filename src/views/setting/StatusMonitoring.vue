@@ -125,7 +125,8 @@
                 v-model="cacheTime"
                 style="display: inline-block; width: 140px; margin: 0 8px"
                 placeholder="请选择时间点"
-                value-format="HH:mm:ss"
+                value-format="HH:mm"
+                format="HH:mm"
                 size="mini"
                 @change="cacheTimeChange"
               ></el-time-picker>
@@ -140,8 +141,12 @@
               天前数据
             </div>
             <div class="clear-cache-box">
-              <el-button size="mini" type="primary">保存变更</el-button>
-              <el-button size="mini" type="primary">立即清理</el-button>
+              <el-button size="mini" type="primary" @click="cleanData"
+                >保存变更</el-button
+              >
+              <el-button size="mini" type="primary" @click="dataCleanTask"
+                >立即清理</el-button
+              >
             </div>
           </div>
         </el-card>
@@ -179,7 +184,7 @@ export default class StatusMonitoring extends VueBase {
 
   private cache = 1
   private cacheIo = false
-  private cacheTime = '00:00:00'
+  private cacheTime = '00:00'
 
   private cacheTimeChange(date: Date) {
     console.log(date)
@@ -205,8 +210,54 @@ export default class StatusMonitoring extends VueBase {
     }
     this.healthData.oss = res.data.oss
   }
+  // 保持变更
+  private async cleanData() {
+    this.loadingStart()
+    let obj = {
+      clean_time: this.cacheTime,
+      days_before: this.cache,
+      enable: this.cacheIo,
+    }
+    const res = await this.services.setting.dataClean(obj)
+    this.loadingDone()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.$message.success('变更成功')
+  }
+  // 查询清理配置时间
+  private async getClineData() {
+    this.loadingStart()
+    let obj = {}
+    const res = await this.services.setting.getDataClean(obj)
+    this.loadingDone()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.cache = res.data.days_before
+    this.cacheTime = res.data.clean_time
+    this.cacheIo = res.data.enable
+  }
+  // 立即清理
+  private async dataCleanTask() {
+    this.loadingStart()
+    let obj = {
+      days_before: this.cache,
+    }
+    const res = await this.services.setting.dataCleanTask(obj)
+    this.loadingDone()
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.$message.success('清理成功')
+  }
+
   created() {
     this.getHealth()
+    this.getClineData()
   }
 }
 </script>

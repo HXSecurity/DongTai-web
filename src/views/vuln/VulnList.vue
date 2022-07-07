@@ -1007,7 +1007,7 @@ export default class VulnList extends VueBase {
     height: 32px;
     line-height: 32px;
     margin-right: 0;
-    /deep/.el-checkbox__label {
+    ::v-deep.el-checkbox__label {
       flex: 1;
       .check-label {
         display: flex;
@@ -1092,7 +1092,7 @@ export default class VulnList extends VueBase {
     width: 100%;
     display: flex;
     .vulnSelect {
-      /deep/.el-input__inner {
+      ::v-deep.el-input__inner {
         border-right: none;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;

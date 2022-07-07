@@ -76,7 +76,7 @@ main {
     .ruleForm {
       width: 620px;
     }
-    /deep/.el-input__inner {
+    ::v-deep.el-input__inner {
       border-radius: 2px;
     }
 

@@ -750,13 +750,13 @@ main {
   }
 }
 .install {
-  /deep/.el-tabs__item:hover {
+  ::v-deep.el-tabs__item:hover {
     color: #38435a;
   }
-  /deep/.el-tabs__item {
+  ::v-deep.el-tabs__item {
     color: #38435a;
   }
-  /deep/.el-tabs__active-bar {
+  ::v-deep.el-tabs__active-bar {
     color: #4a72ae;
     background-color: #4a72ae;
   }

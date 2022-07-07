@@ -229,16 +229,12 @@ export default class sensitiveManage extends VueBase {
   }
   private async getTableData() {
     this.loadingStart()
-    const {
-      status,
-      msg,
-      data,
-      page,
-    } = await this.services.setting.get_sensitive_info_rule({
-      page: this.page,
-      page_size: this.page_size,
-      name: this.name,
-    })
+    const { status, msg, data, page } =
+      await this.services.setting.get_sensitive_info_rule({
+        page: this.page,
+        page_size: this.page_size,
+        name: this.name,
+      })
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -298,7 +294,7 @@ export default class sensitiveManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
-/deep/.el-card__header {
+::v-deep.el-card__header {
   background: rgba(255, 150, 87, 0.1);
   padding: 8px !important;
   border-bottom: none;
@@ -315,7 +311,7 @@ export default class sensitiveManage extends VueBase {
     }
   }
 }
-/deep/.el-card__body {
+::v-deep.el-card__body {
   background: rgba(255, 150, 87, 0.1);
   padding: 16px;
   padding-top: 0;
@@ -329,7 +325,7 @@ export default class sensitiveManage extends VueBase {
 .search-box {
   display: flex;
   align-items: center;
-  /deep/.el-input__inner {
+  ::v-deep.el-input__inner {
     border-right: none;
     border-radius: 0;
   }
@@ -386,7 +382,7 @@ export default class sensitiveManage extends VueBase {
 .sensitiveManageTable {
   margin-top: 16px;
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f6f8fa;
     }
   }
