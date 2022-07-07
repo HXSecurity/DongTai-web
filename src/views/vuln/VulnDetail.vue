@@ -1121,7 +1121,7 @@ export default class VulnDetail extends VueBase {
     border: 1px solid #e6e9ec;
     border-radius: 2px;
     background: #fff;
-    /deep/tt {
+    ::v-deeptt {
       color: red !important;
       font-style: normal !important;
     }
@@ -1223,7 +1223,7 @@ export default class VulnDetail extends VueBase {
             font-size: 14px;
             line-height: 14px;
             color: #959fb4;
-            /deep/em {
+            ::v-deepem {
               color: red;
               font-style: normal;
             }

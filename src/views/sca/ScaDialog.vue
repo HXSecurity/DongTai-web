@@ -255,7 +255,7 @@ export default class ScaDialog extends VueBase {
   }
   .sca-dialog-table {
     &.el-table {
-      /deep/th {
+      ::v-deepth {
         line-height: 0;
         color: #38435a;
         background: #f2f3f5;

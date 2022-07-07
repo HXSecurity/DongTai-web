@@ -528,19 +528,19 @@ export default class SearchCard extends VueBase {
   .tabs {
     padding: 0 20px;
     border-bottom: 1px solid #c8e0ff;
-    /deep/.el-tabs__nav-wrap::after {
+    ::v-deep.el-tabs__nav-wrap::after {
       background-color: #fff;
     }
-    /deep/.el-tabs__header {
+    ::v-deep.el-tabs__header {
       margin: 0 0 1px;
     }
-    /deep/.el-tabs__item.is-active {
+    ::v-deep.el-tabs__item.is-active {
       color: #1a80f2;
     }
-    /deep/.el-tabs__active-bar {
+    ::v-deep.el-tabs__active-bar {
       color: #1a80f2;
     }
-    /deep/.el-tabs__item {
+    ::v-deep.el-tabs__item {
       color: #38435a;
     }
   }
@@ -610,7 +610,7 @@ export default class SearchCard extends VueBase {
     background: #f56262;
   }
 }
-/deep/tt {
+::v-deeptt {
   color: red !important;
 }
 .card-btn {
@@ -626,7 +626,7 @@ export default class SearchCard extends VueBase {
   justify-content: center;
   color: #ffffff;
 }
-/deep/.el-textarea__inner {
+::v-deep.el-textarea__inner {
   border: none;
   resize: none;
 }

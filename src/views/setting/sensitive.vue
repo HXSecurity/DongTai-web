@@ -277,11 +277,11 @@ export default class sensitiveManage extends VueBase {
 .header {
   padding-bottom: 16px;
   color: #4a72ae;
-  /deep/.el-page-header__left::after {
+  ::v-deep.el-page-header__left::after {
     display: none;
   }
 }
-/deep/.el-card__header {
+::v-deep.el-card__header {
   background: rgba(255, 150, 87, 0.1);
   padding: 8px !important;
   border-bottom: none;
@@ -298,7 +298,7 @@ export default class sensitiveManage extends VueBase {
     }
   }
 }
-/deep/.el-card__body {
+::v-deep.el-card__body {
   background: rgba(255, 150, 87, 0.1);
   padding: 16px;
   padding-top: 0;
@@ -312,7 +312,7 @@ export default class sensitiveManage extends VueBase {
 .search-box {
   display: flex;
   align-items: center;
-  /deep/.el-input__inner {
+  ::v-deep.el-input__inner {
     border-right: none;
     border-radius: 0;
   }

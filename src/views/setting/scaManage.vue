@@ -614,14 +614,14 @@ export default class LogManage extends VueBase {
     margin-top: 16px;
   }
 }
-/deep/.el-table th {
+::v-deep.el-table th {
   background: #f8f9fb;
   color: #959fb4;
 }
 .hookTable {
   margin-top: 16px;
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f6f8fa;
     }
   }

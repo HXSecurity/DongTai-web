@@ -151,7 +151,7 @@ export default class ChangePassword extends VueBase {
   .ruleForm {
     width: 470px;
   }
-  /deep/.el-input__inner {
+  ::v-deep.el-input__inner {
     border-radius: 2px;
   }
 

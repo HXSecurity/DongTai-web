@@ -483,7 +483,7 @@ export default class Header extends VueBase {
   height: 400px;
   overflow: auto;
 }
-/deep/.el-badge__content.is-fixed {
+::v-deep.el-badge__content.is-fixed {
   top: 4px;
   right: 24px;
 }

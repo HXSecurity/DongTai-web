@@ -54,8 +54,22 @@ export default () =>
     agentInstall(params: { id: number }): Promise<iResponse> {
       return request.post('/agent/install', params)
     }
+    // 状态管理-保持变更
+    getDataClean(params: any): Promise<iResponse> {
+      return request.get('/systemmonitor/data_clean', {
+        params,
+      })
+    }
+    // 状态管理-修改变更
+    dataClean(params: any): Promise<iResponse> {
+      return request.post('/systemmonitor/data_clean', params)
+    }
+    // 状态管理-立即清理
+    dataCleanTask(params: any): Promise<iResponse> {
+      return request.post('/systemmonitor/data_clean/task', params)
+    }
 
-    agentUninstall(params: { id: number }): Promise<iResponse> {
+    agentUninstall(params: any): Promise<iResponse> {
       return request.post('/agent/uninstall', params)
     }
 

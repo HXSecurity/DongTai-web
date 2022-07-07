@@ -1403,7 +1403,7 @@ export default class AgentManage extends VueBase {
     top: 9px;
     color: #959fb4;
   }
-  /deep/.el-input__inner {
+  ::v-deep.el-input__inner {
     background: #e6f8ea;
     border: none;
     padding: 0;
@@ -1413,7 +1413,7 @@ export default class AgentManage extends VueBase {
 
 .agentManageTable {
   &.el-table {
-    /deep/th {
+    ::v-deepth {
       background: #f2f3f5;
       .cell {
         color: #38435a;

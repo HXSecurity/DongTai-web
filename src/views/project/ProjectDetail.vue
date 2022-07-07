@@ -738,7 +738,7 @@ export default class ProjectDetail extends VueBase {
   }
 }
 
-/deep/.el-dialog__body {
+::v-deep.el-dialog__body {
   padding: 0 20px;
 }
 .dialog-footer {
@@ -771,11 +771,11 @@ export default class ProjectDetail extends VueBase {
 }
 .exp_radio {
   margin-top: 10px;
-  /deep/.el-radio__input.is-checked .el-radio__inner {
+  ::v-deep.el-radio__input.is-checked .el-radio__inner {
     background: #4a72ae;
     border-color: #4a72ae;
   }
-  /deep/.el-radio__input.is-checked + .el-radio__label {
+  ::v-deep.el-radio__input.is-checked + .el-radio__label {
     color: #606266;
   }
 }
