@@ -83,23 +83,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="24">
-        <el-card class="box-card" shadow="hover">
-          <div slot="header" class="clearfix">
-            <span>
-              <b>硬盘空间状态监控</b>
-            </span>
-            <!-- <el-button style="float: right; padding: 3px 0" type="text"
-              >操作按钮</el-button
-            > -->
-          </div>
-          <div class="text">硬盘总量 : 500G</div>
-          <div class="text">硬盘使用量 : 300G</div>
-          <div class="text">硬盘剩余量 : 200G</div>
-        </el-card>
-      </el-col>
-    </el-row>
+   
     <el-row>
       <el-col :span="24">
         <el-card class="box-card" shadow="hover">
