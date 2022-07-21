@@ -240,7 +240,7 @@ export default class VulnDetail extends VueBase {
   private logDialogOpen = false
   fmtTime(time: any) {
     if (time) {
-      const data = new Date(time).getTime() / 1000
+      const data = new Date(time).getTime() * 1000
       return formatTimestamp(data)
     }
     return ''
