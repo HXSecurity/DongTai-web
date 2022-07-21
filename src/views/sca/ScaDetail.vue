@@ -213,7 +213,7 @@
       <div class="log-list">
         <div v-for="log in logList" :key="log.id" class="log-item">
           <div class="log-item-name">{{ log.msg }}</div>
-          <div class="log-item-time">{{ fmtTime(log.datetime) }}</div>
+          <div class="log-item-time">{{ fmtTime(log.datetime * 1000 * 1000) }}</div>
         </div>
       </div>
     </el-dialog>
