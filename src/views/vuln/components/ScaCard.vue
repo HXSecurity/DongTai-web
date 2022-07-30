@@ -147,7 +147,7 @@
               {{ item.package_language }}
             </span>
           </div>
-
+          <!-- 
           <div class="tageIcon" style="margin-left: 20px">
             <i
               class="iconfont iconicon_yingyong_table"
@@ -160,7 +160,7 @@
             >
               {{ item.package_name }}
             </span>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
