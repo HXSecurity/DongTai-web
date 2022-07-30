@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="card-content-item-box">
+      <!-- <div class="card-content-item-box">
         <div class="card-content-item">
           <div class="label">开源许可证：</div>
           <div class="value">
@@ -64,7 +64,7 @@
             {{ item.availability_str }}
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="infoLine flex-row-space-between">
         <div class="flex-row-space-between" style="width: 60%">
           <span class="info">
