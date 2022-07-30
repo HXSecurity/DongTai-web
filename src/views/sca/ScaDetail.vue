@@ -213,7 +213,9 @@
       <div class="log-list">
         <div v-for="log in logList" :key="log.id" class="log-item">
           <div class="log-item-name">{{ log.msg }}</div>
-          <div class="log-item-time">{{ fmtTime(log.datetime * 1000 * 1000) }}</div>
+          <div class="log-item-time">
+            {{ fmtTime(log.datetime * 1000 * 1000) }}
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -275,9 +277,9 @@ export default class VulnDetail extends VueBase {
         case 'cwe':
           const cwe =
             this.assetVulDetail.base_info[key] &&
-            this.assetVulDetail.base_info[key].split('-')[1]
+            this.assetVulDetail.base_info[key][0]
           res.push({
-            label: this.assetVulDetail.base_info[key],
+            label: cwe,
             link: `https://cwe.mitre.org/data/definitions/${cwe}.html`,
           })
           break
