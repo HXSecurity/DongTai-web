@@ -136,16 +136,33 @@
             </template>
           </el-table-column>
           <el-table-column
-            label="最高版本"
+            label="安全版本"
             prop="version"
             :width="'160px'"
             show-overflow-tooltip
           >
             <template slot-scope="{ row }">
               <div class="version-box">
-                <p>{{ row.last_version }}</p>
-                <p v-if="row.safe_version" class="pkg-version">
-                  <span class="el-icon-user"></span> {{ row.safe_version }}
+                <p
+                  v-if="row.safe_version_list && row.safe_version_list.length"
+                  class="pkg-version"
+                >
+                  <el-popover placement="bottom" width="100" trigger="hover">
+                    <div
+                      v-for="(version, index) in row.safe_version_list"
+                      :key="index"
+                      style="font-size: 12px; color: #51cb74; margin-top: 4px"
+                    >
+                      <span class="el-icon-user"></span>
+                      {{ version.version }}
+                    </div>
+                    <template slot="reference">
+                      <div>
+                        <span class="el-icon-user"></span>
+                        {{ row.safe_version_list[0].version }}
+                      </div>
+                    </template>
+                  </el-popover>
                 </p>
               </div>
             </template>
@@ -202,12 +219,33 @@
               <div class="info">{{ dialogInfo.version }}</div>
             </div>
             <div class="bottom-item">
-              <div class="label">最高版本</div>
-              <div class="info">{{ dialogInfo.last_version }}</div>
-            </div>
-            <div class="bottom-item">
               <div class="label">安全版本</div>
-              <div class="info">{{ dialogInfo.safe_version }}</div>
+              <div class="info">
+                <div class="version-box">
+                  <p
+                    v-if="
+                      dialogInfo.safe_version_list &&
+                      dialogInfo.safe_version_list.length
+                    "
+                  >
+                    <el-popover placement="bottom" width="100" trigger="hover">
+                      <div
+                        v-for="(version, index) in dialogInfo.safe_version_list"
+                        :key="index"
+                        style="font-size: 12px; color: #51cb74; margin-top: 4px"
+                      >
+                        {{ version.version }}
+                      </div>
+                      <template slot="reference">
+                        <div>
+                          <span class="el-icon-user"></span>
+                          {{ dialogInfo.safe_version_list[0].version }}
+                        </div>
+                      </template>
+                    </el-popover>
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
