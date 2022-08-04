@@ -26,7 +26,6 @@
         :label="$t('views.strategyManage.name')"
         prop="vul_name"
         min-width="260px"
-        show-overflow-tooltip
       >
         <template slot-scope="{ row }">
           <div class="two-line vul_name" @click="toPath(1, row.id)">

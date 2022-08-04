@@ -44,24 +44,14 @@
           style="width: 100%"
           class="sca-dialog-table"
         >
-          <el-table-column
-            prop="name"
-            label="漏洞名称"
-            width="380"
-            show-overflow-tooltip
-          >
+          <el-table-column prop="name" label="漏洞名称" width="380">
             <template slot-scope="{ row }">
               <span class="table-sca-name" @click="toVulnD(row)">
                 {{ row.vul_title }}
               </span>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="type"
-            label="漏洞类型"
-            width="150"
-            show-overflow-tooltip=""
-          >
+          <el-table-column prop="type" label="漏洞类型" width="150">
             <template slot-scope="{ row }">
               {{ row.vul_type }}
             </template>

@@ -78,42 +78,16 @@
             <span>{{ $t('views.scaManage.empty') }}</span>
           </div>
         </template>
-        <el-table-column
-          label="GroupID"
-          prop="group_id"
-          width="160px"
-          show-overflow-tooltip
-        >
+        <el-table-column label="GroupID" prop="group_id" width="160px">
         </el-table-column>
-        <el-table-column
-          label="AtrifactID"
-          prop="atrifact_id"
-          width="160px"
-          show-overflow-tooltip
-        >
+        <el-table-column label="AtrifactID" prop="atrifact_id" width="160px">
         </el-table-column>
-        <el-table-column label="Version" prop="version" show-overflow-tooltip>
+        <el-table-column label="Version" prop="version"> </el-table-column>
+        <el-table-column label="Sha1" prop="sha_1" width="300px">
         </el-table-column>
-        <el-table-column
-          label="Sha1"
-          prop="sha_1"
-          width="300px"
-          show-overflow-tooltip
-        >
+        <el-table-column label="PackageName" prop="package_name" width="120px">
         </el-table-column>
-        <el-table-column
-          label="PackageName"
-          prop="package_name"
-          width="120px"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          label="License"
-          prop="license"
-          show-overflow-tooltip
-          width="100px"
-        >
+        <el-table-column label="License" prop="license" width="100px">
         </el-table-column>
         <el-table-column
           prop="address"

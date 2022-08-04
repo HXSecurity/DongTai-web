@@ -66,7 +66,6 @@
           :label="$t('views.sensitiveManage.name')"
           prop="vul_name"
           min-width="160px"
-          show-overflow-tooltip
         >
           <template slot-scope="{ row }">
             <div>

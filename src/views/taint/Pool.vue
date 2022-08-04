@@ -9,14 +9,12 @@
       >
         <el-table-column
           :label="'url' /*$t('views.scaList.tableHeaders.name')*/"
-          show-overflow-tooltip
           prop="url"
           min-width="240px"
         ></el-table-column>
         <el-table-column
           :label="'uri' /*$t('views.scaList.tableHeaders.version')*/"
           prop="uri"
-          show-overflow-tooltip
           width="80px"
         ></el-table-column>
         <el-table-column
@@ -29,7 +27,6 @@
           width="100px"
         ></el-table-column>
         <el-table-column
-          show-overflow-tooltip
           :label="$t('views.scaList.tableHeaders.req_header')"
           prop="req_header"
           width="100px"
@@ -37,14 +34,12 @@
         <el-table-column
           :label="$t('views.scaList.tableHeaders.method_pool')"
           prop="method_pool"
-          :show-overflow-tooltip="true"
           width="500px"
           @click="showMethodPool(method_pool)"
         >
         </el-table-column>
         <el-table-column
           :label="$t('views.scaList.tableHeaders.context_path')"
-          show-overflow-tooltip
           prop="context_path"
           width="80px"
         ></el-table-column>

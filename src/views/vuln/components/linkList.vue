@@ -40,17 +40,24 @@
                   vIndex == tree.length - 1 ? '数据对象返回' : '数据对象传播'
                 }}
               </div>
-              <div>
+              <div :title="vItem.callerClass + ':' + vItem.callerLineNumber">
                 {{ vItem.callerClass + ':' + vItem.callerLineNumber }}
               </div>
             </template>
           </div>
           <div class="center-right">
-            <span>{{
-              vItem.type === '危险方法'
-                ? vItem.sourceValues
-                : vItem.targetValues
-            }}</span>
+            <span
+              :title="
+                vItem.type === '危险方法'
+                  ? vItem.sourceValues
+                  : vItem.targetValues
+              "
+              >{{
+                vItem.type === '危险方法'
+                  ? vItem.sourceValues
+                  : vItem.targetValues
+              }}</span
+            >
           </div>
         </div>
         <i class="icon iconfont rightFont" :class="vItem.open ? 'active' : ''"

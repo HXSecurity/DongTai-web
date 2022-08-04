@@ -128,19 +128,13 @@
             label="组件名称"
             prop="package_name"
             fixed="left"
-            show-overflow-tooltip
             width="240"
           >
             <template slot-scope="{ row }">
               <span class="pkg-name">{{ row.package_name }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            label="安全版本"
-            prop="version"
-            :width="'160px'"
-            show-overflow-tooltip
-          >
+          <el-table-column label="安全版本" prop="version" :width="'160px'">
             <template slot-scope="{ row }">
               <div class="version-box">
                 <p

@@ -167,7 +167,6 @@
             label="应用名称"
             prop="server__hostname"
             min-width="120px"
-            show-overflow-tooltip
           >
             <template slot-scope="{ row }">
               <div class="dot project-name" @click="openDrawer(row)">
