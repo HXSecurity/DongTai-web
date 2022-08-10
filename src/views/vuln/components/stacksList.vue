@@ -164,7 +164,7 @@ export default class StacksList extends VueBase {
     color: #38435a;
     position: relative;
     cursor: pointer;
-    height: 82px;
+    min-height: 82px;
     display: flex;
     align-items: center;
     border: 1px solid #e6e9ec;
@@ -186,25 +186,18 @@ export default class StacksList extends VueBase {
         div {
           padding: 0 20px;
           width: 346px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          -o-text-overflow: ellipsis;
+          word-break: break-all;
         }
       }
       .center-right {
         padding: 0 20px;
         width: 346px;
-        height: 100%;
         align-items: center;
         display: flex;
         span {
           display: inline-block;
           width: 340px;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          -o-text-overflow: ellipsis;
+          word-break: break-all;
         }
       }
     }
@@ -231,7 +224,7 @@ export default class StacksList extends VueBase {
     .v-title-before {
       display: inline-block;
       width: 8px;
-      height: 80px;
+      height: 100%;
       position: absolute;
       left: 0;
       top: 0;
