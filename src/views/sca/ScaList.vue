@@ -153,7 +153,7 @@
                     <template slot="reference">
                       <div>
                         <span class="el-icon-user"></span>
-                        {{ row.latest_safe_version }}
+                        {{ row.latest_safe_version || '暂无' }}
                       </div>
                     </template>
                   </el-popover>
@@ -233,7 +233,7 @@
                       <template slot="reference">
                         <div>
                           <span class="el-icon-user"></span>
-                          {{ dialogInfo.latest_safe_version }}
+                          {{ dialogInfo.latest_safe_version || '暂无' }}
                         </div>
                       </template>
                     </el-popover>
