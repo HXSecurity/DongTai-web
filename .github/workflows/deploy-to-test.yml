@@ -51,7 +51,7 @@ jobs:
           context: .
           push: true
           tags: |
-            dongtai/dongtai-web-test:${{ steps.release.outputs.VERSION }}
+            dongtai/dongtai-web-test:${{github.run_number}}
             dongtai/dongtai-web-test:latest
 
       - uses: actions/checkout@master
