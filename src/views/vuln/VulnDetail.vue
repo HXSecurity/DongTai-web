@@ -192,7 +192,26 @@
         </div>
         <div class="split-line"></div>
       </template>
-
+      <div class="url-list">
+        <UrlComponent
+          v-for="(url, index) in urls"
+          :key="index"
+          :url="url"
+        ></UrlComponent>
+        <div class="pagination-box">
+          <el-pagination
+            :current-page="headerPage"
+            background
+            :page-sizes="[10, 20, 50, 100]"
+            :page-size="headerPageSize"
+            layout=" prev, pager, next, jumper, sizes, total"
+            :total="total"
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+          >
+          </el-pagination>
+        </div>
+      </div>
       <!-- Stain flow vul-->
       <div v-if="vulnObj.graphs.length" class="module-title">污点流图</div>
       <div v-if="vulnObj.graphs.length">
@@ -293,6 +312,8 @@ import qs from 'qs'
 import LinkList from './components/linkList.vue'
 import StacksList from './components/stacksList.vue'
 import Sync from './components/sync.vue'
+import UrlComponent from './components/urlComponent.vue'
+import emitter from '../taint/Emitter'
 
 @Component({
   name: 'VulnDetail',
@@ -300,6 +321,7 @@ import Sync from './components/sync.vue'
     LinkList,
     StacksList,
     Sync,
+    UrlComponent,
   },
 })
 export default class VulnDetail extends VueBase {
@@ -461,12 +483,18 @@ export default class VulnDetail extends VueBase {
     this.cardIndex = 0
     await this.getStatus()
     await this.getVulnDetail()
+    await this.getUrls()
     this.syncInfo = {
       id: this.$route.params.id,
     }
   }
   async created() {
+    emitter.on('getUrls', this.getUrls)
     this.init()
+  }
+
+  async beforeDestroy() {
+    emitter.off('getUrls', this.getUrls)
   }
 
   private goToPoolDetail() {
@@ -913,6 +941,33 @@ export default class VulnDetail extends VueBase {
     return className
   }
 
+  private urls: any = []
+  private headerPage = 1
+  private headerPageSize = 10
+  async getUrls() {
+    const res = await this.services.vuln.getHeaderVul({
+      page: this.headerPage,
+      page_size: this.headerPageSize,
+      vul_id: this.selectedId,
+    })
+    if (res.status === 201) {
+      this.urls = res.data
+      this.total = res.page.alltotal
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+
+  handleSizeChange(val: number) {
+    this.headerPageSize = val
+    this.getUrls()
+  }
+
+  handleCurrentChange(val: number) {
+    this.headerPage = val
+    this.getUrls()
+  }
+
   // exportVul() {
   //   var projectName = this.vulnObj.vul.project_name
   //   request
@@ -988,6 +1043,12 @@ export default class VulnDetail extends VueBase {
   align-items: center;
   cursor: pointer;
   font-size: 14px;
+}
+
+.pagination-box {
+  padding-top: 12px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .fixed-warp {
@@ -1121,7 +1182,7 @@ export default class VulnDetail extends VueBase {
     border: 1px solid #e6e9ec;
     border-radius: 2px;
     background: #fff;
-    ::v-deeptt {
+    ::v-deep(tt) {
       color: red !important;
       font-style: normal !important;
     }
