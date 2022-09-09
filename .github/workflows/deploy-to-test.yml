@@ -45,29 +45,14 @@ jobs:
           npm test
           npm run build --if-present
 
-      #- name: Build and push
-      #  uses: docker/build-push-action@v2
-      #  with:
-      #    context: .
-      #    push: true
-      #    tags: |
-      #      registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:latest
-      #      registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:1.0.${{github.run_number}}
-      - name: Build
-        run: |
-          docker build -t registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:latest .
-          docker tag registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:latest  registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:1.0.${{github.run_number}}
-          
-      - name: push
-        uses: nick-invision/retry@v2
+      - name: Build and push
+        uses: docker/build-push-action@v2
         with:
-          timeout_seconds: 300
-          max_attempts: 10
-          #retry_on: timeout
-          command: |
-            docker push registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:latest
-            docker push registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:1.0.${{github.run_number}}
-
+          context: .
+          push: true
+          tags: |
+            dongtai/dongtai-web-test:${{ steps.release.outputs.VERSION }}
+            dongtai/dongtai-web-test:latest
 
       - uses: actions/checkout@master
       - name: deploy to cluster

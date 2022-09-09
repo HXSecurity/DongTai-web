@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: dongtai-web-container
-          image: registry.cn-beijing.aliyuncs.com/secnium/iast-saas-web-test:VERSION
+          image: dongtai/dongtai-web-test:VERSION
           imagePullPolicy: Always
           volumeMounts:
             - name: configfile
