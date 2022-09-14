@@ -148,4 +148,12 @@ export default () =>
     getConfig(type: any): Promise<iResponse> {
       return request.get(`/integration/config/` + type)
     }
+
+    getHeaderVul(params: any): Promise<iResponse> {
+      return request.get(`/header_vul`, { params })
+    }
+
+    deleteHeaderVul(id: any): Promise<iResponse> {
+      return request.delete(`/header_vul/${id}`)
+    }
   })()
