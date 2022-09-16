@@ -131,6 +131,7 @@ const routes: Array<RouteConfig> = [
         name: 'vulnList',
         meta: {
           i18n: 'menu.vulnList',
+          keepAlive: true,
           name: i18n.t('menu.vulnList'),
         },
         component: () => import('@/views/vuln/VulnList.vue'),
@@ -490,6 +491,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'vulnList',
         meta: {
           i18n: 'menu.vulnList',
+          keepAlive: true,
           name: i18n.t('menu.vulnList'),
         },
         component: () => import('@/views/vuln/VulnList.vue'),
@@ -859,6 +861,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'vulnList',
         meta: {
           i18n: 'menu.vulnList',
+          keepAlive: true,
           name: i18n.t('menu.vulnList'),
         },
         component: () => import('@/views/vuln/VulnList.vue'),
