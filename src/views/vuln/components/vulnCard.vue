@@ -29,18 +29,49 @@
         :get-table-data="getTableData"
         :source_type="1"
       ></Sync>
-      <div class="top-stack">
-        <i class="iconfont iconyuandianzhong"></i>
-        <span>
-          {{ item.top_stack }}
-        </span>
-      </div>
-      <div class="bottom-stack">
-        <i class="iconfont iconyuandianzhong"></i>
-        <span>
-          {{ item.bottom_stack }}
-        </span>
-      </div>
+      <template v-if="item.is_header_vul">
+        <div style="height: 120px; margin-top: 18px">
+          <div
+            v-for="(header_vul_url, index) in item.header_vul_urls.slice(0, 3)"
+            :key="index"
+            class="header-vul-url"
+          >
+            {{ header_vul_url.url }}
+          </div>
+          <el-tooltip
+            class="item"
+            effect="dark"
+            placement="top-start"
+            :disabled="item.header_vul_urls.length <= 2"
+          >
+            <template #content>
+              <div style="max-height: 200px; overflow: auto">
+                <div
+                  v-for="(header_vul_url, index) in item.header_vul_urls"
+                  :key="index"
+                >
+                  {{ header_vul_url.url }}
+                </div>
+              </div>
+            </template>
+            <span>更多</span>
+          </el-tooltip>
+        </div>
+      </template>
+      <template v-else>
+        <div class="top-stack">
+          <i class="iconfont iconyuandianzhong"></i>
+          <span>
+            {{ item.top_stack }}
+          </span>
+        </div>
+        <div class="bottom-stack">
+          <i class="iconfont iconyuandianzhong"></i>
+          <span>
+            {{ item.bottom_stack }}
+          </span>
+        </div>
+      </template>
 
       <div class="infoLine flex-row-space-between">
         <div class="flex-row-space-between" style="width: 60%">
@@ -283,6 +314,10 @@ export default class VulnList extends VueBase {
   .card-content {
     padding: 0 12px;
     position: relative;
+    .header-vul-url {
+      color: #666;
+      margin-bottom: 12px;
+    }
     .top-stack {
       margin-top: 18px;
       position: relative;
