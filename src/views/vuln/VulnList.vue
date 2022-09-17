@@ -511,21 +511,21 @@ export default class VulnList extends VueBase {
 
   openInNew() {
     if (this.vulnType === 'vuln') {
-      const route = this.$router.resolve(
+      const route: any = this.$router.resolve(
         `/vuln/vulnDetail/1/${this.rightClickItem.id}?status=` +
           this.searchObj.status +
           '&id=' +
           this.rightClickItem.id
       )
-      window.open(route.href as any, '_blank')
+      window.open(route.href, '_blank')
     } else {
-      const route = this.$router.push(
+      const route: any = this.$router.push(
         `/vuln/scaDetail/${this.rightClickItem.id}/1?status=` +
           this.searchObj.status +
           '&id=' +
           this.rightClickItem.id
       )
-      window.open(route.href as any, '_blank')
+      window.open(route.href, '_blank')
     }
   }
 
