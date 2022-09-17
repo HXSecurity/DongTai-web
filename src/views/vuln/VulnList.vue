@@ -320,7 +320,6 @@ import VueBase from '@/VueBase'
 import { VulnListObj } from './types'
 import VulnCard from './components/vulnCard.vue'
 import ScaCard from './components/ScaCard.vue'
-import { watch } from 'vue'
 
 @Component({ name: 'VulnList', components: { VulnCard, ScaCard } })
 export default class VulnList extends VueBase {
@@ -518,7 +517,7 @@ export default class VulnList extends VueBase {
           '&id=' +
           this.rightClickItem.id
       )
-      window.open(route.href, '_blank')
+      window.open(route.href as any, '_blank')
     } else {
       const route = this.$router.push(
         `/vuln/scaDetail/${this.rightClickItem.id}/1?status=` +
@@ -526,16 +525,17 @@ export default class VulnList extends VueBase {
           '&id=' +
           this.rightClickItem.id
       )
-      window.open(route.href, '_blank')
+      window.open(route.href as any, '_blank')
     }
   }
 
-  top = 0
-  left = 0
-  visible = false
+  top: any = 0
+  left: any = 0
+  visible: any = false
+  rightClickItem: any = {}
 
   @Watch('visible', { immediate: true })
-  visibleFun(value) {
+  visibleFun(value: any) {
     if (value) {
       document.body.addEventListener('click', this.closeMenu)
     } else {
@@ -543,7 +543,7 @@ export default class VulnList extends VueBase {
     }
   }
 
-  openMenu(e, item) {
+  openMenu(e: any, item: any) {
     this.rightClickItem = item
 
     var x = e.pageX
