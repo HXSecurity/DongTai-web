@@ -766,6 +766,7 @@ export default class HookTable extends VueBase {
         rule_target: '',
         inherit: this.hook.inherit,
         track: this.hook.track,
+        language_id: this.activeLanguage,
       })
 
       this.loadingDone()
@@ -789,6 +790,7 @@ export default class HookTable extends VueBase {
         rule_target: '',
         inherit: this.hook.inherit,
         track: this.hook.track,
+        language_id: this.activeLanguage,
       })
 
       this.loadingDone()
