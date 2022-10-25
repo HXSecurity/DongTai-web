@@ -224,6 +224,7 @@ export default () =>
       rule_target: string
       inherit: string
       track: string
+      language_id: number
     }): Promise<iResponse> {
       return request.post('/engine/hook/rule/add', params)
     }
@@ -235,6 +236,7 @@ export default () =>
       rule_target: string
       inherit: string
       track: string
+      language_id: number
     }): Promise<iResponse> {
       return request.post('/engine/hook/rule/modify', params)
     }
