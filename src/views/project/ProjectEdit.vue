@@ -66,7 +66,7 @@
                   {{ $t('views.projectEdit.on') }}
                 </el-radio>
               </el-form-item>
-              <el-form-item>
+              <!-- <el-form-item>
                 <template slot="label">
                   {{ $t('views.projectEdit.agent') }}
                   <el-popover placement="top-start" width="340" trigger="hover">
@@ -91,7 +91,7 @@
                     :label="item.short_name"
                   ></el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
               <el-form-item prop="version_name">
                 <template slot="label">
                   {{ $t('views.projectEdit.version_name') }}
