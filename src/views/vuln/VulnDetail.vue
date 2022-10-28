@@ -632,7 +632,7 @@ export default class VulnDetail extends VueBase {
       function toRed(str: any, red: any) {
         const pattern = new RegExp(red, 'gi')
         return str.replace(pattern, function (match: string) {
-          return "<tt style='color:red'>" + match + '</tt>'
+          return '<tt>' + match + '</tt>'
         })
       }
       for (let key in data.headers) {
@@ -644,6 +644,7 @@ export default class VulnDetail extends VueBase {
         const strArr = str.split(`\n`)
         try {
           for (const key in data.vul.param_name) {
+            console.log(key)
             switch (key) {
               case 'GET':
                 const strArrNoSpace = strArr[0].split(' ')
@@ -656,6 +657,7 @@ export default class VulnDetail extends VueBase {
                 strG[1] = getRedStr
                 strArrNoSpace[1] = strG.join('?')
                 strArr[0] = strArrNoSpace.join(' ')
+                console.log(getRedStr)
                 break
               case 'POST':
                 if (!this.isJSON(strArr[strArr.length - 1])) {
@@ -1033,6 +1035,10 @@ export default class VulnDetail extends VueBase {
   color: #959fb4;
   font-size: 14px;
 }
+tt {
+  color: red !important;
+  font-style: normal !important;
+}
 </style>
 
 <style scoped lang="scss">
@@ -1182,10 +1188,6 @@ export default class VulnDetail extends VueBase {
     border: 1px solid #e6e9ec;
     border-radius: 2px;
     background: #fff;
-    ::v-deep(tt) {
-      color: red !important;
-      font-style: normal !important;
-    }
   }
 
   .baseInfo {
