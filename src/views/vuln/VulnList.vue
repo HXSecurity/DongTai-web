@@ -281,7 +281,11 @@
         </div>
       </div>
       <div class="tool-box-placeholder"></div>
-      <div v-for="item in tableData" :key="'card' + item.id">
+      <div
+        v-for="item in tableData"
+        :key="'card' + item.id"
+        @contextmenu.prevent="openMenu($event, item)"
+      >
         <VulnCard
           v-if="vulnType === 'vuln'"
           :item="item"
@@ -298,11 +302,19 @@
         ></ScaCard>
       </div>
     </div>
+
+    <ul
+      v-show="visible"
+      :style="{ left: left + 'px', top: top + 'px' }"
+      class="contextmenu"
+    >
+      <li @click="openInNew(rightClickItem)">在新窗口打开</li>
+    </ul>
   </main>
 </template>
 
 <script lang="ts">
-import { Component } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import { formatTimestamp, getPassedTime } from '@/utils/utils'
 import VueBase from '@/VueBase'
 import { VulnListObj } from './types'
@@ -495,6 +507,55 @@ export default class VulnList extends VueBase {
     hook_type_str: [],
     language_str: [],
     sort: null,
+  }
+
+  openInNew() {
+    if (this.vulnType === 'vuln') {
+      const route: any = this.$router.resolve(
+        `/vuln/vulnDetail/1/${this.rightClickItem.id}?status=` +
+          this.searchObj.status +
+          '&id=' +
+          this.rightClickItem.id
+      )
+      window.open(route.href, '_blank')
+    } else {
+      const route: any = this.$router.push(
+        `/vuln/scaDetail/${this.rightClickItem.id}/1?status=` +
+          this.searchObj.status +
+          '&id=' +
+          this.rightClickItem.id
+      )
+      window.open(route.href, '_blank')
+    }
+  }
+
+  top: any = 0
+  left: any = 0
+  visible: any = false
+  rightClickItem: any = {}
+
+  @Watch('visible', { immediate: true })
+  visibleFun(value: any) {
+    if (value) {
+      document.body.addEventListener('click', this.closeMenu)
+    } else {
+      document.body.removeEventListener('click', this.closeMenu)
+    }
+  }
+
+  openMenu(e: any, item: any) {
+    this.rightClickItem = item
+
+    var x = e.pageX
+    var y = e.pageY
+
+    this.top = y
+    this.left = x
+
+    this.visible = true
+  }
+  closeMenu() {
+    this.visible = false
   }
 
   async created() {
@@ -1177,6 +1238,20 @@ export default class VulnList extends VueBase {
     width: 4px;
     height: 4px;
     background-clip: padding-box;
+  }
+}
+
+.contextmenu {
+  margin: 0;
+  background: #fff;
+  z-index: 3000;
+  position: absolute;
+  list-style-type: none;
+  border-radius: 2px 4px;
+  border: 1px solid #ccc;
+  li {
+    padding: 4px;
+    cursor: pointer;
   }
 }
 </style>

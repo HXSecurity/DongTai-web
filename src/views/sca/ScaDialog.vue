@@ -25,11 +25,6 @@
               <span class="project-name">
                 {{ project.project_name }}
               </span>
-              <span class="project-link"
-                >（{{ project.dependency_level }}层{{
-                  project.dependency_level > 1 ? '间' : '直'
-                }}接引用）</span
-              >
             </div>
           </el-col>
         </el-row>
@@ -49,6 +44,11 @@
               <span class="table-sca-name" @click="toVulnD(row)">
                 {{ row.vul_title }}
               </span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="type" label="漏洞来源组件" width="150">
+            <template slot-scope="{ row }">
+              {{ row.origin_package }}
             </template>
           </el-table-column>
           <el-table-column prop="type" label="漏洞类型" width="150">
