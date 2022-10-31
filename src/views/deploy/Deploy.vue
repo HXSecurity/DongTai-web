@@ -17,6 +17,7 @@
             @click="changeLanguage('python')"
           >
             <img src="../../assets/img/deploy/python.png" />
+            <span class="beta">beta</span>
           </div>
           <div
             class="language"
@@ -35,6 +36,17 @@
             <img src="../../assets/img/deploy/go.png" />
             <span class="beta">beta</span>
           </div>
+        </div>
+        <div
+          v-if="
+            language === 'go' || language === 'php' || language === 'python'
+          "
+					class="title"
+        >
+          {{
+              obj[language].key
+            }}
+            Agent当前主要由社区维护，beta版本无法保证成功部署。
         </div>
         <div class="title">
           {{ $t('views.deploy.installing') }} {{ obj[language].key }}
