@@ -382,7 +382,7 @@
           </div>
         </template>
       </div>
-      <div class="container-right">
+      <!-- <div class="container-right">
         <div class="title">{{ $t('views.deploy.help') }}</div>
         <div class="right-desc margin-t-16">
           {{ obj[language].name }}
@@ -420,7 +420,7 @@
             >{{ $t('views.deploy.issue') }}</span
           >
         </div>
-      </div>
+      </div> -->
     </div>
   </main>
 </template>
