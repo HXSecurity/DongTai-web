@@ -2,9 +2,9 @@ name: Deploy DongTai-Web to AWS
 
 on:
   pull_request:
-    branches: [ "guoshun" ]
+    branches: [ "guoshun*" ]
   push:
-    branches: [ "guoshun" ]
+    branches: [ "guoshun*" ]
 jobs:
   Deploy-To-Dev:
     if: github.event_name == 'push'
