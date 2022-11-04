@@ -16,10 +16,10 @@
       <div class="about-text">
         {{ $t('views.about.nowVersion') }}：{{ now_version }}
       </div>
-      <div v-if="new_version && new_version === now_version" class="about-text">
+      <div v-if="now_version" class="about-text">
         {{ $t('views.about.already') }}
       </div>
-      <div v-if="new_version && new_version !== now_version" class="about-text">
+      <!-- <div v-if="new_version && new_version !== now_version" class="about-text">
         {{ $t('views.about.newVersion') }}：{{ new_version }}
         <span class="text-btn" @click="toUpdate">{{
           $t('views.about.update')
@@ -27,20 +27,20 @@
       </div>
       <div v-if="!new_version" class="about-text">
         {{ $t('views.about.checking') }}
-      </div>
-      <div class="about-text">
+      </div> -->
+      <!-- <div class="about-text">
         <span class="text-btn" @click="toHelp">{{
           $t('views.about.help')
         }}</span>
         <span class="text-btn" @click="toBug">{{
           $t('views.about.issue')
         }}</span>
-      </div>
-      <div class="btn-box">
+      </div> -->
+      <!-- <div class="btn-box">
         <el-button class="btn" @click="versionVisible = true">{{
           $t('views.about.detail')
         }}</el-button>
-      </div>
+      </div> -->
     </div>
     <el-dialog
       :title="$t('views.about.version')"
