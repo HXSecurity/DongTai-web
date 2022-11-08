@@ -36,11 +36,11 @@
           $t('views.about.issue')
         }}</span>
       </div> -->
-      <div class="btn-box">
+      <!-- <div class="btn-box">
         <el-button class="btn" @click="versionVisible = true">{{
           $t('views.about.detail')
         }}</el-button>
-      </div>
+      </div> -->
     </div>
     <el-dialog
       :title="$t('views.about.version')"
