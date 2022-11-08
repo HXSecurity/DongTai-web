@@ -50,7 +50,7 @@ export default {
     webhook: 'Webhook',
     agentConfig: '探针配置',
     agentRank: '降级配置',
-    about: '关于洞态',
+    about: '关于国舜',
     projectEdit: '项目配置',
     home: '首页',
     scaManage: '组件库',
