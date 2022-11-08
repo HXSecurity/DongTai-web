@@ -70,7 +70,7 @@
             <div class="label">{{ $t('views.deploy.downloadWorld') }}：</div>
             <div class="info">
               <el-button class="download-btn" @click="downloadAgent"
-                ><span class="el-icon-download"></span> DongTai
+                ><span class="el-icon-download"></span> GuoShun
                 {{ obj[language].name }} Agent</el-button
               >
             </div>
