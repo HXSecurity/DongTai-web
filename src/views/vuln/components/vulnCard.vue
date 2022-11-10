@@ -193,7 +193,7 @@ export default class VulnList extends VueBase {
 
   get itemTitle() {
     let title = ''
-    title = `${this.item.uri} 的 ${this.item.http_method} 出现 ${this.item.strategy__vul_name}`
+    title = `${this.item.uri}  ${this.item.http_method} 出现 ${this.item.strategy__vul_name}`
     if (this.item.taint_position) {
       title += '位置:' + this.item.taint_position
     }

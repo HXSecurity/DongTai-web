@@ -21,7 +21,7 @@
           "
         >
           {{
-            `${vulnObj.vul.url}的${vulnObj.vul.http_method}出现${
+            `${vulnObj.vul.url} ${vulnObj.vul.http_method}出现${
               vulnObj.vul.type
             }漏洞${
               vulnObj.vul.taint_position
