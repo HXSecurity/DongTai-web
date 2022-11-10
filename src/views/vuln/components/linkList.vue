@@ -54,7 +54,7 @@
               "
             >
               <span
-                v-html="
+                v-dompurify-html="
                   vItem.type === '危险方法'
                     ? vItem.sourceValues
                     : vItem.targetValues
