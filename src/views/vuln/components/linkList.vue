@@ -52,12 +52,16 @@
                   ? vItem.sourceValues
                   : vItem.targetValues
               "
-              >{{
-                vItem.type === '危险方法'
-                  ? vItem.sourceValues
-                  : vItem.targetValues
-              }}</span
             >
+              <span
+                v-html="
+                  vItem.type === '危险方法'
+                    ? vItem.sourceValues
+                    : vItem.targetValues
+                "
+              >
+              </span>
+            </span>
           </div>
         </div>
         <i class="icon iconfont rightFont" :class="vItem.open ? 'active' : ''"
