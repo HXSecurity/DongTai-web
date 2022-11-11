@@ -15,7 +15,11 @@ import VueClipboard from 'vue-clipboard2'
 import VueDOMPurifyHTML from 'vue-dompurify-html'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-Vue.use(VueDOMPurifyHTML)
+Vue.use(VueDOMPurifyHTML,{ 
+	default: {
+			KEEP_CONTENT: false
+	}
+})
 Vue.use(VueClipboard)
 Vue.config.productionTip = false
 
