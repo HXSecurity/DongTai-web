@@ -57,11 +57,11 @@
             <div class="info-card-item-value">{{ vItem.className }}</div>
           </div>
           <div class="info-card-item">
-            <div class="info-card-item-label">参数</div>
+            <div class="info-card-item-label">污点输入</div>
             <div class="info-card-item-value">{{ vItem.ori_sourceValues }}</div>
           </div>
           <div class="info-card-item">
-            <div class="info-card-item-label">返回</div>
+            <div class="info-card-item-label">污点输出</div>
 						<div class="info-card-item-value">{{ vItem.ori_targetValues }}</div>
           </div>
         </div>
