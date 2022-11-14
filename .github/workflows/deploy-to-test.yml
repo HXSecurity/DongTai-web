@@ -5,7 +5,21 @@ on:
     branches: [ main ]
   push:
     branches: [ main ]
+
+# concurrency:
+#   group: dlc-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 jobs:
+  CheckDeadLinks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v2
+      - run: sudo npm install -g markdown-link-check
+      - run: |
+          for file in $(find . -name "*.md"); do
+            markdown-link-check -c .github/workflows/config/.dlc.json -q "$file"
+          done
   Deploy-To-Test:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -48,6 +62,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             dongtai/dongtai-web-test:1.0.${{github.run_number}}
