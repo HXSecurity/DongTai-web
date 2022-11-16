@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: dongtai-web-container
-          image: dongtai/dongtai-web-test:VERSION
+          image: registry.cn-hongkong.aliyuncs.com/huoxian_pub/dongtai-web-test:VERSION
           imagePullPolicy: Always
           volumeMounts:
             - name: configfile
