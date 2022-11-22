@@ -1,12 +1,12 @@
 <template>
   <div class="resource">
     <div class="resource-item">
-      <span class="icon iconfont" style="color: #2f90ea">&#xe6a4;</span>
-      <span>{{ cpu_rate || 0 }}%</span>
+      <span class="icon iconfont" style="color: #f49e0b">&#xe6b4;</span>
+      <span>{{ disk_rate || 0 }}%</span>
     </div>
     <div class="resource-item">
-      <span class="icon iconfont" style="color: #f49e0b">&#xe6a5;</span>
-      <span>{{ disk_rate || 0 }}%</span>
+      <span class="icon iconfont" style="color: #2f90ea">&#xe6a5;</span>
+      <span>{{ cpu_rate || 0 }}%</span>
     </div>
     <div class="resource-item">
       <span class="icon iconfont" style="color: #1a80f2">&#xe6a3;</span>
@@ -18,7 +18,6 @@
 <script lang="ts">
 import VueBase from '@/VueBase'
 import { Component, Prop } from 'vue-property-decorator'
-
 @Component({
   name: 'Resource',
 })
