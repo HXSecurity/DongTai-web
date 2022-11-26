@@ -249,7 +249,7 @@
             </template>
           </el-table-column>
           <!-- 3   4 -->
-          <el-table-column label="操作" width="140px">
+          <el-table-column label="暂停/启用" width="140px">
             <template slot-scope="{ row }">
               <el-switch
                 v-if="row.is_control === 0"
