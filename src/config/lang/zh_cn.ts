@@ -50,7 +50,7 @@ export default {
     webhook: 'Webhook',
     agentConfig: '探针配置',
     agentRank: '降级配置',
-    about: '关于洞态',
+    about: '关于国舜',
     projectEdit: '项目配置',
     home: '首页',
     scaManage: '组件库',
@@ -193,9 +193,9 @@ export default {
         autoInstall: '自动安装',
         ManualInstallation: '手动安装',
         autoInstallDesc:
-          '上传 DongTai JAVA Agent到应用服务器，查看需要部署Agent的 JAVA Web应用的进程 id，然后运行命令安装Agent，命令如下',
+          '上传 GuoShun JAVA Agent到应用服务器，查看需要部署Agent的 JAVA Web应用的进程 id，然后运行命令安装Agent，命令如下',
         term1:
-          '检查Agent所在系统与DongTai OpenApi之间网络环境是否可以互相连接。',
+          '检查Agent所在系统与GuoShun OpenApi之间网络环境是否可以互相连接。',
         term2:
           '确认Agent端所在环境在我们的支持列表中。支持列表：Any Java EEServer、Tomcat、JBoss、Jetty、Resin、WebLogic、WebSphere',
         term3: ``,

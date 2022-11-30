@@ -82,7 +82,7 @@
             <div class="label">{{ $t('views.deploy.downloadWorld') }}：</div>
             <div class="info">
               <el-button class="download-btn" @click="downloadAgent"
-                ><span class="el-icon-download"></span> DongTai
+                ><span class="el-icon-download"></span> GuoShun
                 {{ obj[language].name }} Agent</el-button
               >
             </div>
@@ -405,7 +405,7 @@
           </div>
         </template>
       </div>
-      <div class="container-right">
+      <!-- <div class="container-right">
         <div class="title">{{ $t('views.deploy.help') }}</div>
         <div class="right-desc margin-t-16">
           {{ obj[language].name }}
@@ -444,7 +444,7 @@
           >
         </div>
       </div>
-    </div>
+    </div> -->
   </main>
 </template>
 
@@ -473,7 +473,7 @@ export default class Deploy extends VueBase {
         this.$t('views.deploy.java.term5'),
         this.$t('views.deploy.java.term6'),
       ],
-      download: 'java -jar dongtai-agent.jar -m install -p <pid>',
+      download: 'java -jar guoshun-agent.jar -m install -p <pid>',
       video:
         'https://huoqi-public.oss-cn-beijing.aliyuncs.com/iast/install_java_agent.mp4',
     },
@@ -544,7 +544,7 @@ export default class Deploy extends VueBase {
   get shell() {
     switch (this.language) {
       case 'java':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=java" -H "Authorization: Token ${this.token}" -o dongtai-agent.jar -k`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=java" -H "Authorization: Token ${this.token}" -o guoshun-agent.jar -k`
       case 'python':
         return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H "Authorization: Token ${this.token}" -o dongtai-agent-python.tar.gz -k`
       case 'php':

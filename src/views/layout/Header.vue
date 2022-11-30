@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="sca_setup" style="background: #fff">
+    <!-- <div v-if="sca_setup" style="background: #fff">
       <div class="header-top-bar">
         未配置ScaToken:<a
           target="_blank"
@@ -8,7 +8,7 @@
           >点我配置</a
         >
       </div>
-    </div>
+    </div> -->
     <header class="header">
       <div class="container flex-row-space-between header-warp">
         <div class="logo flex-column-center" @click="$router.push('/')">

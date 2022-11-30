@@ -364,16 +364,16 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
-      {
-        path: 'changeLogo',
-        name: 'changeLogo',
-        meta: {
-          disabled: true,
-          i18n: 'menu.changeLogo',
-          name: i18n.t('menu.changeLogo'),
-        },
-        component: () => import('@/views/setting/changeLogo.vue'),
-      },
+      // {
+      //   path: 'changeLogo',
+      //   name: 'changeLogo',
+      //   meta: {
+      //     disabled: true,
+      //     i18n: 'menu.changeLogo',
+      //     name: i18n.t('menu.changeLogo'),
+      //   },
+      //   component: () => import('@/views/setting/changeLogo.vue'),
+      // },
       // {
       //   path: 'upgradeOnline',
       //   name: 'upgradeOnline',
@@ -735,16 +735,16 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
-      {
-        path: 'changeLogo',
-        name: 'changeLogo',
-        meta: {
-          disabled: true,
-          i18n: 'menu.changeLogo',
-          name: i18n.t('menu.changeLogo'),
-        },
-        component: () => import('@/views/setting/changeLogo.vue'),
-      },
+      // {
+      //   path: 'changeLogo',
+      //   name: 'changeLogo',
+      //   meta: {
+      //     disabled: true,
+      //     i18n: 'menu.changeLogo',
+      //     name: i18n.t('menu.changeLogo'),
+      //   },
+      //   component: () => import('@/views/setting/changeLogo.vue'),
+      // },
       // {
       //   path: 'upgradeOnline',
       //   name: 'upgradeOnline',

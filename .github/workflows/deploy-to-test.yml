@@ -2,9 +2,9 @@ name: Deploy DongTai-Web to AWS
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [ max-191 ]
   push:
-    branches: [ main ]
+    branches: [ max-191 ]
 
 # concurrency:
 #   group: dlc-${{ github.event.pull_request.number || github.ref }}
@@ -26,14 +26,7 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-
     steps:
-      - name: start-build
-        uses: joelwmale/webhook-action@master
-        with:
-          url: ${{ secrets.WEBHOOK_URL }}
-          body: '{"msg_type": "interactive","card": {"config": {"wide_screen_mode": true,"enable_forward": true},"elements": [{"tag": "div","text": {"content": "状态：构建开始\n项目：${{github.repository}}\n分支：${{github.ref}}\n流程：${{github.workflow}}\n构建编号：${{github.run_number}}\n触发事件：${{github.event_name}}\n提交人：${{github.actor}}\nSHA-1：${{github.sha}}\n","tag": "lark_md"}}]}}'
-
       - name: checkout
         uses: actions/checkout@v2
 
@@ -49,9 +42,8 @@ jobs:
       - name: Login to AliyunRegistry
         uses: docker/login-action@v1
         with:
-          registry: ${{ secrets.ALIYUN_REGISTRY }}
-          username: ${{ secrets.ALIYUN_DOCKERHUB_USER }}
-          password: ${{ secrets.ALIYUN_DOCKERHUB_PASSWORD }}
+          username: ${{ secrets.DONGTAI_DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DONGTAI_DOCKERHUB_TOKEN }}
       
       - name: test and build
         run: |
@@ -66,21 +58,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            registry.cn-hongkong.aliyuncs.com/huoxian_pub/dongtai-web-test:1.0.${{github.run_number}}
-            registry.cn-hongkong.aliyuncs.com/huoxian_pub/dongtai-web-test:latest
-
-      - uses: actions/checkout@master
-      - name: deploy to cluster
-        uses: wahyd4/kubectl-helm-action@master
-        env:
-          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_TEST_DATA }}
-        with:
-          args: |
-            find deploy/deploy-eks-iast-saas-web-test.yml -type f -exec sed -i 's/VERSION/1.0.${{github.run_number}}/g' {} \;
-            ls deploy/deploy-eks-iast-saas-web-test.yml | xargs -I {} kubectl apply -f {}
-      
-      - name: finish build
-        uses: joelwmale/webhook-action@master
-        with:
-          url: ${{ secrets.WEBHOOK_URL }}
-          body: '{"msg_type": "interactive","card": {"config": {"wide_screen_mode": true,"enable_forward": true},"elements": [{"tag": "div","text": {"content": "状态：构建完成\n项目：${{github.repository}}\n分支：${{github.ref}}\n流程：${{github.workflow}}\n构建编号：${{github.run_number}}\n触发事件：${{github.event_name}}\n提交人：${{github.actor}}\nSHA-1：${{github.sha}}\n","tag": "lark_md"}}]}}'
+            dongtai/dongtai-web-guoshun:1.9.0
+            dongtai/dongtai-web-guoshun:latest
