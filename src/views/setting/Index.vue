@@ -95,6 +95,7 @@ export default class SettingIndex extends VueBase {
     密码修改: ['changePassword'],
     品牌配置: ['changeLogo'],
     状态监控: ['StatusMonitoring'],
+    系统配置: ['SystemSettings'],
     操作日志: ['logManage'],
     关于洞态: ['about'],
   }
