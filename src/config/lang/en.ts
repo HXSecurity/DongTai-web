@@ -86,6 +86,7 @@ export default {
     chinese: 'Chinese',
     englist: 'English',
     statusMonitoring: 'Status Monitoring',
+    systemSettings: 'System Settings',
     userSetting: 'User Setting',
     roleSetting: 'Role Setting',
     sensitiveManage: 'Sensitive',

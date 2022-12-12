@@ -22,3 +22,6 @@ pnpm-debug.log*
 *.sw?
 
 # nginx conf
+
+# dist
+/dist
