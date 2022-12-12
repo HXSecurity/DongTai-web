@@ -365,16 +365,6 @@ const routes: Array<RouteConfig> = [
         component: () => import('@/views/setting/StatusMonitoring.vue'),
       },
       {
-        path: 'SystemSettings',
-        name: 'SystemSettings',
-        meta: {
-          disabled: true,
-          i18n: 'menu.systemSettings',
-          name: i18n.t('menu.systemSettings'),
-        },
-        component: () => import('@/views/setting/SystemSettings.vue'),
-      },
-      {
         path: 'changeLogo',
         name: 'changeLogo',
         meta: {
@@ -744,6 +734,16 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.statusMonitoring'),
         },
         component: () => import('@/views/setting/StatusMonitoring.vue'),
+      },
+      {
+        path: 'SystemSettings',
+        name: 'SystemSettings',
+        meta: {
+          disabled: true,
+          i18n: 'menu.systemSettings',
+          name: i18n.t('menu.systemSettings'),
+        },
+        component: () => import('@/views/setting/SystemSettings.vue'),
       },
       {
         path: 'changeLogo',
