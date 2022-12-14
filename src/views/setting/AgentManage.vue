@@ -253,7 +253,7 @@
             <template slot-scope="{ row }">
               <el-switch
                 v-if="row.is_control === 0"
-                v-model="row.is_core_running"
+                v-model="row.state === 1 ? 1 else 0 "
                 :disabled="row.state === 4"
                 :width="32"
                 style="margin-right: 20px"
