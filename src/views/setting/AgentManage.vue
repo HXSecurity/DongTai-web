@@ -4,7 +4,20 @@
       <div></div>
       <div class="tool-bar">
         <div class="state-tag-box">
-          <div class="state-title">Agent 安装状态</div>
+          <div class="state-title">
+            <span>Agent 安装状态</span>
+            <el-select
+              v-model="last_days"
+              size="small"
+              @change="getTableData(true)"
+            >
+              <el-option label="过去2天" :value="2"></el-option>
+              <el-option label="过去7天" :value="7"></el-option>
+              <el-option label="过去14天" :value="14"></el-option>
+              <el-option label="过去30天" :value="30"></el-option>
+              <el-option label="过去90天" :value="90"></el-option>
+            </el-select>
+          </div>
           <div class="state-card-box">
             <div
               class="all card"
@@ -164,7 +177,7 @@
           <el-table-column label="序号" prop="id" width="105">
           </el-table-column>
           <el-table-column
-            label="应用名称"
+            label="UUID"
             prop="server__hostname"
             min-width="120px"
           >
@@ -172,6 +185,26 @@
               <div class="dot project-name" @click="openDrawer(row)">
                 {{ row.server__hostname || '未命名' }}
               </div>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="事件记录" prop="events" min-width="120px">
+            <template slot-scope="{ row }">
+              <el-tooltip class="item" effect="dark" placement="top">
+                <div class="dot">
+                  {{ row.events && row.events[row.events.length - 1] }}
+                </div>
+
+                <div slot="content">
+                  <div
+                    v-for="item in row.events"
+                    :key="item"
+                    class="event-item"
+                  >
+                    {{ item }}
+                  </div>
+                </div>
+              </el-tooltip>
             </template>
           </el-table-column>
 
@@ -218,13 +251,24 @@
           </el-table-column>
           <el-table-column label="服务IP" width="180px">
             <template slot-scope="{ row }">
-              <div class="dot">
-                {{
-                  `${row.server__ip}${
-                    row.server__port ? ':' + row.server__port : ''
-                  }`
-                }}
-              </div>
+              <el-tooltip class="item" effect="dark" placement="top">
+                <div class="dot">
+                  {{
+                    row.ipaddresses &&
+                    row.ipaddresses[row.ipaddresses.length - 1]
+                  }}
+                </div>
+
+                <div slot="content">
+                  <div
+                    v-for="item in row.ipaddresses"
+                    :key="item"
+                    class="event-item"
+                  >
+                    {{ item }}
+                  </div>
+                </div>
+              </el-tooltip>
             </template>
           </el-table-column>
           <el-table-column label="资源" prop="server" width="230px">
@@ -253,7 +297,7 @@
             <template slot-scope="{ row }">
               <el-switch
                 v-if="row.is_control === 0"
-                v-model="row.state === 2 ? 1 : 0 "
+                v-model="row.state === 2 ? 1 : 0"
                 :disabled="row.state === 4"
                 :width="32"
                 style="margin-right: 20px"
@@ -524,6 +568,8 @@ export default class AgentManage extends VueBase {
   private activeProject: any = {}
   private drawer = false
 
+  private last_days = 2
+
   async openDrawer(row: AgentListObj) {
     const res = await this.services.setting.stat({
       id: row.id,
@@ -713,6 +759,7 @@ export default class AgentManage extends VueBase {
       page: this.page,
       page_size: this.pageSize,
       state: this.state,
+      last_days: this.last_days,
       project_name: this.searchValue,
     }
     if (showLoading) {
@@ -1109,8 +1156,11 @@ export default class AgentManage extends VueBase {
     flex-direction: column;
     justify-content: space-between;
     .state-title {
+      display: flex;
+      justify-content: space-between;
       color: #38435a;
       font-weight: 600;
+      margin-bottom: 12px;
     }
     .state-card-box {
       display: flex;
@@ -1479,6 +1529,9 @@ export default class AgentManage extends VueBase {
       }
     }
   }
+}
+.event-item + .event-item {
+  margin-top: 4px;
 }
 .version-row {
   display: flex;
