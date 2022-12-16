@@ -61,7 +61,7 @@
           <el-button type="text" class="anent" @click="buildIAST">
             <i class="el-icon-plus"></i> {{ $t('base.deploy') }}
           </el-button>
-          <div class="icon-btn" @click="$router.push({ name: 'taint' })">
+          <!-- <div class="icon-btn" @click="$router.push({ name: 'taint' })">
             <el-tooltip
               class="item"
               effect="dark"
@@ -70,7 +70,7 @@
             >
               <span class="icon iconfont">&#xe6a2;</span>
             </el-tooltip>
-          </div>
+          </div> -->
           <div class="icon-btn" @click="$router.push({ name: 'setting' })">
             <el-tooltip
               class="item"

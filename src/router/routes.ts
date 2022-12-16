@@ -42,17 +42,17 @@ const baseRoutes: Array<RouteConfig> = [
           //   },
           //   component: () => import('@/views/taint/Pool.vue'),
           // },
-          {
-            path: 'search',
-            name: 'search',
-            meta: {
-              keepAlive: true,
-              disabled: true,
-              i18n: 'menu.taintPool',
-              name: i18n.t('menu.taintPool'),
-            },
-            component: () => import('@/views/taint/Search.vue'),
-          },
+          // {
+          //   path: 'search',
+          //   name: 'search',
+          //   meta: {
+          //     keepAlive: true,
+          //     disabled: true,
+          //     i18n: 'menu.taintPool',
+          //     name: i18n.t('menu.taintPool'),
+          //   },
+          //   component: () => import('@/views/taint/Search.vue'),
+          // },
           {
             path: 'poolDetail/:id',
             name: 'poolDetail',
@@ -201,17 +201,17 @@ const routes: Array<RouteConfig> = [
       //   },
       //   component: () => import('@/views/taint/Pool.vue'),
       // },
-      {
-        path: 'search',
-        name: 'search',
-        meta: {
-          keepAlive: true,
-          disabled: true,
-          i18n: 'menu.taintPool',
-          name: i18n.t('menu.taintPool'),
-        },
-        component: () => import('@/views/taint/Search.vue'),
-      },
+      // {
+      //   path: 'search',
+      //   name: 'search',
+      //   meta: {
+      //     keepAlive: true,
+      //     disabled: true,
+      //     i18n: 'menu.taintPool',
+      //     name: i18n.t('menu.taintPool'),
+      //   },
+      //   component: () => import('@/views/taint/Search.vue'),
+      // },
       {
         path: 'poolDetail/:id',
         name: 'poolDetail',
@@ -561,17 +561,17 @@ const adminRoutes: Array<RouteConfig> = [
       //   },
       //   component: () => import('@/views/taint/Pool.vue'),
       // },
-      {
-        path: 'search',
-        name: 'search',
-        meta: {
-          keepAlive: true,
-          disabled: true,
-          i18n: 'menu.taintPool',
-          name: i18n.t('menu.taintPool'),
-        },
-        component: () => import('@/views/taint/Search.vue'),
-      },
+      // {
+      //   path: 'search',
+      //   name: 'search',
+      //   meta: {
+      //     keepAlive: true,
+      //     disabled: true,
+      //     i18n: 'menu.taintPool',
+      //     name: i18n.t('menu.taintPool'),
+      //   },
+      //   component: () => import('@/views/taint/Search.vue'),
+      // },
       {
         path: 'poolDetail/:id',
         name: 'poolDetail',
@@ -934,17 +934,17 @@ const userRoutes: Array<RouteConfig> = [
     },
     component: () => import('@/views/taint/Index.vue'),
     children: [
-      {
-        path: 'search',
-        name: 'search',
-        meta: {
-          keepAlive: true,
-          disabled: true,
-          i18n: 'menu.taintPool',
-          name: i18n.t('menu.taintPool'),
-        },
-        component: () => import('@/views/taint/Search.vue'),
-      },
+      // {
+      //   path: 'search',
+      //   name: 'search',
+      //   meta: {
+      //     keepAlive: true,
+      //     disabled: true,
+      //     i18n: 'menu.taintPool',
+      //     name: i18n.t('menu.taintPool'),
+      //   },
+      //   component: () => import('@/views/taint/Search.vue'),
+      // },
       {
         path: 'poolDetail/:id',
         name: 'poolDetail',
