@@ -381,18 +381,6 @@
               </div>
             </div>
           </el-form-item>
-          <el-form-item v-if="createFrom.metrics.length" label="指标粒度">
-            <el-input-number
-              v-model="createFrom.interval"
-              step-strictly
-              :min="0"
-              :step="30"
-              size="small"
-              placeholder="请输入"
-              style="width: 240px; margin-right: 16px"
-            ></el-input-number
-            >秒
-          </el-form-item>
         </el-form>
       </div>
       <div class="dialog-btn-box">
@@ -535,7 +523,6 @@ export default class SysInfo extends VueBase {
     this.createFrom = {
       name: '',
       metric_group: 1,
-      interval: 0,
       deal: 1,
       is_enable: 1,
       targets: [],
@@ -547,7 +534,6 @@ export default class SysInfo extends VueBase {
   private createFrom: any = {
     name: '',
     metric_group: 1,
-    interval: 0,
     deal: 1,
     is_enable: 1,
     targets: [],

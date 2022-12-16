@@ -88,11 +88,15 @@
               </div>
               <div class="info-card-item">
                 <div class="info-card-item-label">污点输入</div>
-                <div class="info-card-item-value">{{ vItem.ori_sourceValues }}</div>
+                <div class="info-card-item-value">
+                  {{ vItem.ori_sourceValues }}
+                </div>
               </div>
               <div class="info-card-item">
                 <div class="info-card-item-label">污点输出</div>
-                <div class="info-card-item-value">{{ vItem.ori_targetValues }}</div>
+                <div class="info-card-item-value">
+                  {{ vItem.ori_targetValues }}
+                </div>
               </div>
             </div>
           </div>

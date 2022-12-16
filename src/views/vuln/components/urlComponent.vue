@@ -86,8 +86,8 @@ export default class LinkList extends VueBase {
 
   private changeRequest(e: any) {
     this.requsetIndex = e
-    this.req_md = this.url.details[e].req_header
-    this.res_md = this.url.details[e].res_header
+    this.req_md = this.url.details[e].req_header.split(`\n`).join('<br/>')
+    this.res_md = this.url.details[e].res_header.split(`\n`).join('<br/>')
   }
 
   private show = false
@@ -114,7 +114,11 @@ export default class LinkList extends VueBase {
 
   created() {
     this.req_md = this.url.details[this.requsetIndex].req_header
+      .split(`\n`)
+      .join('<br/>')
     this.res_md = this.url.details[this.requsetIndex].res_header
+      .split(`\n`)
+      .join('<br/>')
   }
 }
 </script>
