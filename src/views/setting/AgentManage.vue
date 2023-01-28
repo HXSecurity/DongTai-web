@@ -197,11 +197,12 @@
 
                 <div slot="content">
                   <div
-                    v-for="item in row.events"
+                    v-for="item in row.new_events"
                     :key="item"
                     class="event-item"
                   >
-                    {{ item }}
+                    {{ item.name }}{{ item.time && ':' }}
+                    {{ item.time | formatTimestamp }}
                   </div>
                 </div>
               </el-tooltip>
@@ -554,6 +555,9 @@ import Resource from './components/resource.vue'
   name: 'AgentManage',
   filters: {
     formatTimestamp(date: number | any) {
+      if (!date) {
+        return ''
+      }
       return formatTimestamp(date)
     },
   },
