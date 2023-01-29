@@ -92,6 +92,7 @@ export default class SettingIndex extends VueBase {
       'sensitiveManage',
       // 'scaManage',
     ],
+    项目模版: ['projectTemplate'],
     密码修改: ['changePassword'],
     品牌配置: ['changeLogo'],
     状态监控: ['StatusMonitoring'],
