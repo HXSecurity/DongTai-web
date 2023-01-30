@@ -41,12 +41,10 @@
           v-if="
             language === 'go' || language === 'php' || language === 'python'
           "
-					class="title"
+          class="title"
         >
-          {{
-              obj[language].key
-            }}
-            Agent当前主要由社区维护，beta版本无法保证成功部署。
+          {{ obj[language].key }}
+          Agent当前主要由社区维护，beta版本无法保证成功部署。
         </div>
         <div class="title">
           {{ $t('views.deploy.installing') }} {{ obj[language].key }}
@@ -59,7 +57,7 @@
             </div>
             <p
               v-for="(item, index) in obj[language].term"
-              :key="item"
+              :key="index"
               :style="{
                 textIndent: `${
                   language === 'java' && index > 1 ? '20px' : '0'
@@ -69,6 +67,114 @@
               <span>{{ item }}</span>
             </p>
           </div>
+        </div>
+        <div class="agentList">
+          <el-form label-position="left" label-width="90px" :model="agentForm">
+            <el-row>
+              <el-col :span="12">
+                <el-form-item
+                  :label="$t('views.deploy.entryName')"
+                  style="margin-bottom: 14px"
+                >
+                  <el-input
+                    v-model="agentForm.entryName"
+                    :placeholder="$t('views.deploy.entryNamePlaceholder')"
+                    clearable
+                    class="addUserInput"
+                    size="small"
+                    style="width: 240px"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item
+                  label-width="90px"
+                  style="margin-bottom: 14px"
+                  :label="$t('views.deploy.projectTemplate')"
+                >
+                  <el-select
+                    v-model="agentForm.projectTemplate"
+                    class="addUserInput"
+                    clearable
+                    size="small"
+                    style="width: 180px"
+                  >
+                    <el-option
+                      v-for="(item, index) in projectList"
+                      :key="index"
+                      :label="item.template_name"
+                      :value="item.id"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <!-- <el-col :span="16">
+                <el-form-item label="Tag" prop="template_name">
+                  <div class="tagList" @click="tagclick">
+                    <span
+                      v-for="(item, index) in agentForm.tagList"
+                      :key="index"
+                      class="tagItem"
+                    >
+                      <span>{{ item }}</span>
+                      <el-button
+                        class="deletag"
+                        type="text"
+                        @click="deletag(item)"
+                        >x</el-button
+                      >
+                    </span>
+                    <el-input
+                      v-show="agentForm.tagshow"
+                      ref="agentTagInput"
+                      v-model="agentForm.tagOption"
+                      clearable
+                      class="addUserInput"
+                      size="mini"
+                      style="width: 120px"
+                      @blur="agentTagInputBlur"
+                      @change="agentTagChange"
+                    ></el-input>
+                  </div>
+                </el-form-item>
+              </el-col> -->
+              <el-col :span="12">
+                <el-form-item
+                  label-width="90px"
+                  :label="$t('views.deploy.projectVersion')"
+                >
+                  <el-input
+                    v-model="agentForm.version"
+                    :placeholder="$t('views.deploy.projectVersion')"
+                    clearable
+                    class="addUserInput"
+                    size="small"
+                    style="width: 240px"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <el-form-item :label="$t('views.deploy.department')">
+                  <el-select
+                    v-model="agentForm.department"
+                    class="addUserInput"
+                    clearable
+                    size="small"
+                    style="width: 180px"
+                  >
+                    <el-option
+                      v-for="(item, index) in departmentList"
+                      :key="index"
+                      :label="item.name"
+                      :value="item.token"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
         </div>
         <div class="title-2 margin-t-24">
           <span class="icon-no">1</span>
@@ -426,7 +532,7 @@
         </div>
         <div
           v-for="(item, index) in documents"
-          :key="item.id"
+          :key="index"
           class="help-list"
           :class="index ? 'margin-t-24' : 'margin-t-32'"
         >
@@ -457,9 +563,14 @@ export default class Deploy extends VueBase {
   private activeName = 'Spring-boot/Netty/Jetty/Sofa'
   private language = 'java'
   private token = ''
+  private defaultTemplate = ''
   private uri = window.location.origin + '/openapi'
   private documents = []
+  private tagOptions = []
   private md = {}
+  private agentForm: any = {}
+  private departmentList = []
+  private projectList = []
 
   private obj = {
     java: {
@@ -544,13 +655,70 @@ export default class Deploy extends VueBase {
   get shell() {
     switch (this.language) {
       case 'java':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=java" -H "Authorization: Token ${this.token}" -o dongtai-agent.jar -k`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${
+          this.uri
+        }&language=java&token=${
+          this.agentForm.department || this.token
+        }&projectName=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
+          'Demo%20Project'
+        }&projectVersion=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          'V1.0'
+        }&template_id=${
+          this.agentForm.projectTemplate || this.defaultTemplate
+        }" -H "Authorization: Token ${
+          this.agentForm.department || this.token
+        }" -o dongtai-agent.jar -k`
+
       case 'python':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=python&projectName=Demo%20Project" -H "Authorization: Token ${this.token}" -o dongtai-agent-python.tar.gz -k`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${
+          this.uri
+        }&language=python&token=${
+          this.agentForm.department || this.token
+        }&projectName=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
+          'Demo%20Project'
+        }&projectVersion=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          'V1.0'
+        }&template_id=${
+          this.agentForm.projectTemplate || this.defaultTemplate
+        }" -H "Authorization: Token ${
+          this.agentForm.department || this.token
+        }" -o dongtai-agent-python.tar.gz -k`
       case 'php':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=php" -H "Authorization: Token ${this.token}" -o php-agent.tar.gz`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${
+          this.uri
+        }&language=php&token=${
+          this.agentForm.department || this.token
+        }&projectName=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
+          'Demo%20Project'
+        }&projectVersion=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          'V1.0'
+        }&template_id=${
+          this.agentForm.projectTemplate || this.defaultTemplate
+        }" -H "Authorization: Token ${
+          this.agentForm.department || this.token
+        }" -o php-agent.tar.gz`
       case 'go':
-        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${this.uri}&language=go" -H "Authorization: Token ${this.token}" -o dongtai-go-agent-config.yaml`
+        return `curl -X GET "${this.uri}/api/v1/agent/download?url=${
+          this.uri
+        }&language=go&token=${
+          this.agentForm.department || this.token
+        }&projectName=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
+          'Demo%20Project'
+        }&projectVersion=${
+          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          'V1.0'
+        }&template_id=${
+          this.agentForm.projectTemplate || this.defaultTemplate
+        }" -H "Authorization: Token ${
+          this.agentForm.department || this.token
+        }" -o dongtai-go-agent-config.yaml`
     }
   }
   get pythonShell() {
@@ -560,6 +728,26 @@ export default class Deploy extends VueBase {
     window.open(url)
   }
 
+  private tagclick() {
+    this.agentForm.tagshow = true
+    this.$nextTick(() => {
+      ;(this.$refs.agentTagInput as any).focus()
+    })
+  }
+  private agentTagInputBlur() {
+    this.agentForm.tagshow = false
+  }
+  private agentTagChange() {
+    if (!this.agentForm.tagList.includes(this.agentForm.tagOption)) {
+      this.agentForm.tagList.push(this.agentForm.tagOption)
+    }
+    this.agentForm.tagOption = ''
+  }
+  private deletag(key: any) {
+    this.agentForm.tagList = this.agentForm.tagList.filter((item: any) => {
+      return item !== key
+    })
+  }
   private onCopy() {
     this.$message({
       message: '已复制',
@@ -595,7 +783,15 @@ export default class Deploy extends VueBase {
       '/api/v1/agent/download?url=' +
       window.location.origin +
       '/openapi&language=' +
-      this.language
+      this.language +
+      `&token=${this.agentForm.department || this.token}&projectName=${
+        (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
+        'Demo%20Project'
+      }&projectVersion=${
+        (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
+        'V1.0'
+      }&template_id=${this.agentForm.projectTemplate || this.defaultTemplate}`
+    console.log('url', url)
     window.open(url)
   }
   private async getDoc() {
@@ -606,11 +802,32 @@ export default class Deploy extends VueBase {
       this.documents = docRes.data.documents
     }
   }
-  private async created() {
-    const res = await this.services.deploy.getToken()
+
+  private async getListProjecttemplat() {
+    const res = await this.services.setting.listProjecttemplat({
+      page: 1,
+      page_size: 100,
+    })
     if (res.status === 201) {
-      this.token = res.data.token
+      this.projectList = res.data
+      this.defaultTemplate = res.data[0].id
+      return
     }
+    this.$message.error(res.msg)
+  }
+  private async getListDepartment() {
+    // 部门list
+    const res = await this.services.deploy.getDepartment({})
+    if (res.status === 201) {
+      this.departmentList = res.data
+      this.token = res.data[0].token
+      return
+    }
+    this.$message.error(res.msg)
+  }
+  private async created() {
+    await this.getListProjecttemplat()
+    await this.getListDepartment()
     await this.getMd()
     await this.getDoc()
   }
@@ -631,6 +848,32 @@ main {
     box-sizing: border-box;
     width: 795px;
     padding: 24px;
+    .agentList {
+      margin-top: 16px;
+      .tagList {
+        width: 360px;
+        line-height: 40px;
+        height: 40px;
+        border: 1px solid #c4c4c4;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 8px;
+        .tagItem {
+          width: fit-content;
+          color: #0969da;
+          background: #ddf4ff;
+          border-radius: 2em;
+          height: 26px;
+          line-height: 26px;
+          padding: 0 6px;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+      }
+    }
     .language-box {
       padding: 16px 0;
       display: flex;

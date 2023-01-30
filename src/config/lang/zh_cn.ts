@@ -219,6 +219,12 @@ export default {
       item: '条',
     },
     deploy: {
+      entryName: '项目名称',
+      entryNamePlaceholder: '请输入项目名称',
+      projectTemplate: '项目模版',
+      projectTemplatePlaceholder: '请选择',
+      projectVersion: '项目版本',
+      department: '部门',
       begin: '选择一种语言，开始安装',
       installing: '安装',
       agent: 'Agent',

@@ -208,6 +208,12 @@ export default {
       item: '',
     },
     deploy: {
+      entryName: 'Entry Name',
+      entryNamePlaceholder: 'Please enter the project name',
+      projectTemplate: 'Template',
+      projectTemplatePlaceholder: 'Please Select',
+      projectVersion: 'Version',
+      department: 'Department',
       begin: 'Select a language and start the installation',
       installing: 'Installing',
       agent: 'Agent',

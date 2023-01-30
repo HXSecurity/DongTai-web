@@ -60,4 +60,8 @@ export default () =>
     getMD(params: any): Promise<iResponse> {
       return request.get('/agent/deploy', { params })
     }
+    // // 部门token
+    getDepartment(params: any): Promise<iResponse> {
+      return request.get('/user/department/token')
+    }
   })()
