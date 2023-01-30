@@ -645,6 +645,19 @@ const adminRoutes: Array<RouteConfig> = [
         },
         component: () => import('@/views/setting/webhook.vue'),
       },
+      {
+        path: 'projectTemplate',
+        name: 'projectTemplate',
+        component: () => import('@/views/setting/projectTemplate.vue'),
+        meta: {
+          disabled: true,
+          i18n: 'menu.projectTemplate',
+          isMenu: false,
+          keepAlive: false,
+          name: 'menu.projectTemplate',
+        },
+        redirect: '',
+      },
 
       {
         path: 'strategyManage',

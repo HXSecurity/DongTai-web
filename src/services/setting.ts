@@ -469,4 +469,22 @@ export default () =>
     update_core_all(data: any): Promise<iResponse> {
       return request.post(`/agent/core/update/all`, data)
     }
+    // 配置模版
+    creatProjecttemplat(data: any): Promise<iResponse> {
+      return request.post(`/projecttemplate`, data)
+    }
+    listProjecttemplat(params: any): Promise<iResponse> {
+      return request.get(
+        `/projecttemplate?page=${params.page}&page_size=${params.page_size}`
+      )
+    }
+    getProjecttemplat(params: any): Promise<iResponse> {
+      return request.get(`/projecttemplate/${params.id}`)
+    }
+    putProjecttemplat(data: any): Promise<iResponse> {
+      return request.put(`/projecttemplate/` + data.id, data)
+    }
+    delProjecttemplat(data: any): Promise<iResponse> {
+      return request.delete(`/projecttemplate/` + data.id)
+    }
   })()
