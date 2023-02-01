@@ -663,7 +663,7 @@ export default class Deploy extends VueBase {
           (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
           'Demo%20Project'
         }&projectVersion=${
-          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          (this.agentForm.version && encodeURI(this.agentForm.version)) ||
           'V1.0'
         }&template_id=${
           this.agentForm.projectTemplate || this.defaultTemplate
@@ -680,7 +680,7 @@ export default class Deploy extends VueBase {
           (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
           'Demo%20Project'
         }&projectVersion=${
-          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          (this.agentForm.version && encodeURI(this.agentForm.version)) ||
           'V1.0'
         }&template_id=${
           this.agentForm.projectTemplate || this.defaultTemplate
@@ -696,7 +696,7 @@ export default class Deploy extends VueBase {
           (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
           'Demo%20Project'
         }&projectVersion=${
-          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          (this.agentForm.version && encodeURI(this.agentForm.version)) ||
           'V1.0'
         }&template_id=${
           this.agentForm.projectTemplate || this.defaultTemplate
@@ -712,7 +712,7 @@ export default class Deploy extends VueBase {
           (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
           'Demo%20Project'
         }&projectVersion=${
-          (this.agentForm.entryName && encodeURI(this.agentForm.version)) ||
+          (this.agentForm.version && encodeURI(this.agentForm.version)) ||
           'V1.0'
         }&template_id=${
           this.agentForm.projectTemplate || this.defaultTemplate
