@@ -926,6 +926,8 @@ export default {
     },
     projectEdit: {
       token: '访问凭证',
+      department: '部门',
+      departmentPlaceholder: '请选择部门',
       tokenDesc: '配置当前项目的访问凭证，用于自动扫描功能中的权限处理',
       tokenPlaceholder: '请输入访问凭证',
       appAddress: '项目地址',

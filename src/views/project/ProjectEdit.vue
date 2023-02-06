@@ -47,6 +47,25 @@
                 </i>
               </div>
             </el-form-item>
+            <el-form-item
+              :label="$t('views.projectEdit.department')"
+              prop="department_id"
+            >
+              <div class="scan-line">
+                <el-select
+                  v-model="submitForm.department_id"
+                  style="width: 390px"
+                  :placeholder="$t('views.projectEdit.departmentPlaceholder')"
+                >
+                  <el-option
+                    v-for="item in departmentList"
+                    :key="item.id"
+                    :value="item.id"
+                    :label="item.name"
+                  ></el-option>
+                </el-select>
+              </div>
+            </el-form-item>
             <template v-if="!advanced">
               <el-form-item>
                 <span class="advancedSetting" @click="advanced = true">
@@ -222,6 +241,7 @@ import { Form } from 'element-ui'
 @Component({ name: 'ProjectEdit' })
 export default class ProjectEdit extends VueBase {
   private advanced = false
+  private departmentList = []
   private submitForm: {
     name: string
     mode: string
@@ -233,6 +253,7 @@ export default class ProjectEdit extends VueBase {
     base_url: string
     test_req_header_key: string
     test_req_header_value: string
+    department_id: any
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
@@ -244,6 +265,7 @@ export default class ProjectEdit extends VueBase {
     base_url: '',
     test_req_header_key: '',
     test_req_header_value: '',
+    department_id: '',
   }
   private engineList: Array<{
     id: number
@@ -280,6 +302,13 @@ export default class ProjectEdit extends VueBase {
         trigger: 'change',
       },
     ],
+    department_id: [
+      {
+        required: true,
+        message: this.$t('views.projectEdit.departmentPlaceholder'),
+        trigger: 'change',
+      },
+    ],
   }
 
   private scanAddDialogOpen = false
@@ -293,9 +322,18 @@ export default class ProjectEdit extends VueBase {
     name: '',
   }
   private isSelectAll = false
-
+  private async getListDepartment() {
+    // 部门list
+    const res = await this.services.deploy.getDepartment({})
+    if (res.status === 201) {
+      this.departmentList = res.data
+      return
+    }
+    this.$message.error(res.msg)
+  }
   async created() {
     await this.getEngineList()
+    await this.getListDepartment()
     await this.strategyUserList()
     if (this.$route.params.pid) {
       await this.projectDetail()
@@ -342,6 +380,7 @@ export default class ProjectEdit extends VueBase {
     this.submitForm.base_url = data.base_url
     this.submitForm.test_req_header_key = data.test_req_header_key
     this.submitForm.test_req_header_value = data.test_req_header_value
+    this.submitForm.department_id = data.department_id
 
     this.agentChange()
   }
@@ -535,6 +574,7 @@ export default class ProjectEdit extends VueBase {
           base_url: string
           test_req_header_key: string
           test_req_header_value: string
+          department_id: any
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
@@ -550,6 +590,7 @@ export default class ProjectEdit extends VueBase {
           base_url: this.submitForm.base_url,
           test_req_header_key: this.submitForm.test_req_header_key,
           test_req_header_value: this.submitForm.test_req_header_value,
+          department_id: this.submitForm.department_id,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid
