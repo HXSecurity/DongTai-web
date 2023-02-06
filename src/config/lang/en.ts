@@ -925,6 +925,8 @@ export default {
     },
     projectEdit: {
       token: 'Access Token',
+      department: 'Department',
+      departmentPlaceholder: 'Please select a department',
       tokenDesc:
         'Configure the access credentials of the current project for permission processing in the automatic scanning function',
       tokenPlaceholder: 'Place enter the access token',
