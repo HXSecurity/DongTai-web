@@ -29,12 +29,36 @@
         {{ $t('views.about.checking') }}
       </div>
       <div class="about-text">
+        <div class="download-item margin-t-16">
+          <div class="label">{{ $t('views.about.token') }}：</div>
+          <div class="info">
+            <div class="markdown">
+              <span> {{ userToken }}</span>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                :content="$t('views.deploy.copy')"
+                placement="top"
+              >
+                <span
+                  v-clipboard:error="onError"
+                  v-clipboard:copy="userToken"
+                  v-clipboard:success="onCopy"
+                  class="el-icon-document-copy icon"
+                ></span>
+              </el-tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="about-text">
         <span class="text-btn" @click="toHelp">{{
           $t('views.about.help')
         }}</span>
         <span class="text-btn" @click="toBug">{{
           $t('views.about.issue')
         }}</span>
+        <span class="text-btn" @click="toApi">{{ $t('views.about.api') }}</span>
       </div>
       <div class="btn-box">
         <el-button class="btn" @click="versionVisible = true">{{
@@ -91,6 +115,7 @@ export default class StatusMonitoring extends VueBase {
   private versionVisible = false
   private versionMap: any = {}
   private versionString = ''
+  private userToken = ''
   private async getVersion() {
     const res = await this.services.setting.version()
     this.new_version = res.data.tag_name.substr(1)
@@ -144,8 +169,18 @@ export default class StatusMonitoring extends VueBase {
   private toBug() {
     window.open('https://github.com/HXSecurity/DongTai/issues')
   }
+  private toApi() {
+    window.open('https://i0x0fy4ibf.feishu.cn/docx/doxcnSoxZjm2nEMyT3KJwg6ej4e')
+  }
+  private async getUserToken() {
+    const res = await this.services.user.userToken()
+    if (res.status === 201) {
+      this.userToken = res.data.token
+    }
+  }
   created() {
     this.getNowVersion()
+    this.getUserToken()
     this.getVersion()
   }
 }
@@ -165,6 +200,54 @@ export default class StatusMonitoring extends VueBase {
   .about-text {
     margin-top: 10px;
     font-size: 16px;
+    .download-item {
+      display: flex;
+      align-items: center;
+      .label {
+        box-sizing: border-box;
+        padding: 0 4px;
+        width: 100px;
+        text-align: left;
+      }
+      .info {
+        word-wrap: break-word;
+        word-break: break-all;
+        flex: 1;
+      }
+      .download-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+        color: #ffffff;
+        background: #4a72ae;
+        border-radius: 2px;
+      }
+    }
+    .markdown {
+      background: #ebf0f5;
+      border-radius: 2px;
+      color: #38435a;
+      font-size: 14px;
+      max-width: 400px;
+      line-height: 32px;
+      padding: 0 30px 0 16px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      .icon {
+        right: 10px;
+        bottom: 8px;
+        position: absolute;
+        display: inline-block;
+        color: #1a80f2;
+        cursor: pointer;
+      }
+    }
+    .margin-t-16 {
+      // margin-top: 16px;
+      margin-left: -12px;
+    }
   }
   .row {
     display: flex;
