@@ -1121,6 +1121,8 @@ export default {
       },
     },
     about: {
+      api: 'API',
+      token: 'Token',
       nowVersion: 'Current Version',
       newVersion: 'New Version',
       already: 'Already',

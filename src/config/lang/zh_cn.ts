@@ -1112,6 +1112,8 @@ export default {
       },
     },
     about: {
+      api: 'api文档',
+      token: 'token信息',
       nowVersion: '当前版本',
       newVersion: '最新版本',
       already: '已是最新版本',
