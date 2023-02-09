@@ -16,11 +16,11 @@
             :label="$t('menu.templateName')"
           >
           </el-table-column>
-          <el-table-column :label="$t('menu.Form.Time')" width="240">
+          <!-- <el-table-column :label="$t('menu.Form.time')" width="240">
             <template slot-scope="{ row }">
               <span>{{ formatTimestamp(row.latest_time) }}</span>
             </template>
-          </el-table-column>
+          </el-table-column> -->
           <el-table-column
             :label="$t('views.strategyManage.settings')"
             width="200"
