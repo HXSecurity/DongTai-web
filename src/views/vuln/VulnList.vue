@@ -788,7 +788,9 @@ export default class VulnList extends VueBase {
     const { status, data, msg, page } = await this.services.vuln.vulListContent(
       params
     )
-    this.loadingDone()
+    setTimeout(() => {
+      this.loadingDone()
+    }, 200)
     if (status !== 201) {
       this.$message({
         type: 'error',

@@ -568,7 +568,12 @@ export default class Deploy extends VueBase {
   private documents = []
   private tagOptions = []
   private md = {}
-  private agentForm: any = {}
+  private agentForm: any = {
+    entryName: '',
+    department: '',
+    version: '',
+    projectTemplate: '',
+  }
   private departmentList = []
   private projectList = []
 
@@ -788,8 +793,7 @@ export default class Deploy extends VueBase {
         (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
         'Demo%20Project'
       }&projectVersion=${
-        (this.agentForm.entryName && encodeURI(this.agentForm.entryName)) ||
-        'V1.0'
+        (this.agentForm.version && encodeURI(this.agentForm.version)) || 'V1.0'
       }&template_id=${this.agentForm.projectTemplate || this.defaultTemplate}`
     console.log('url', url)
     window.open(url)
@@ -810,7 +814,8 @@ export default class Deploy extends VueBase {
     })
     if (res.status === 201) {
       this.projectList = res.data
-      this.defaultTemplate = res.data[0].id
+      this.defaultTemplate = res.data[res.data.length - 1]?.id || ''
+      this.agentForm.projectTemplate = this.defaultTemplate
       return
     }
     this.$message.error(res.msg)
@@ -820,7 +825,8 @@ export default class Deploy extends VueBase {
     const res = await this.services.deploy.getDepartment({})
     if (res.status === 201) {
       this.departmentList = res.data
-      this.token = res.data[0].token
+      this.token = res.data[res.data.length - 1]?.token || ''
+      this.agentForm.department = this.token
       return
     }
     this.$message.error(res.msg)
@@ -828,6 +834,8 @@ export default class Deploy extends VueBase {
   private async created() {
     await this.getListProjecttemplat()
     await this.getListDepartment()
+    this.agentForm.entryName = 'Demo Project'
+    this.agentForm.version = 'V1.0'
     await this.getMd()
     await this.getDoc()
   }

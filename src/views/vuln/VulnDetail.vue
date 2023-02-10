@@ -342,9 +342,10 @@ export default class VulnDetail extends VueBase {
   }
 
   goBack = () => {
-    this.$router.push({
-      name: 'vulnList',
-    })
+    // this.$router.push({
+    //   name: 'vulnList',
+    // })
+    this.$router.go(-1)
   }
 
   private levelColor(level: any) {

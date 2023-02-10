@@ -11,8 +11,8 @@
           <div class="name">
             {{ projectObj.name }}
             <el-tag
-              v-for="item in projectObj.agent_language"
-              :key="item"
+              v-for="(item, index) in projectObj.agent_language"
+              :key="index"
               size="small"
               :type="getTagColoe(item)"
               style="margin-left: 12px"
@@ -53,8 +53,8 @@
               @change="changeVersion"
             >
               <el-option
-                v-for="item in versionList"
-                :key="item.version_id"
+                v-for="(item, index) in versionList"
+                :key="index"
                 :value="item.version_id"
                 :label="item.version_name"
               >
@@ -146,7 +146,7 @@
             <Trend v-if="projectObj.day_num" :data="projectObj.day_num" />
           </div>
         </div>
-        <div v-if="selectTab === 'vul'">
+        <div v-show="selectTab === 'vul'">
           <vul-list-component
             ref="vulListComponent"
             :project-id="$route.params.pid"
@@ -302,6 +302,11 @@ import Distribution from './components/distribution.vue'
 import Trend from './components/trend.vue'
 import Type from './components/type.vue'
 
+Component.registerHooks([
+  'beforeRouteEnter',
+  'beforeRouteLeave',
+  'beforeRouteUpdate',
+])
 @Component({
   name: 'ProjectDetail',
   components: {
@@ -314,6 +319,18 @@ import Type from './components/type.vue'
   },
 })
 export default class ProjectDetail extends VueBase {
+  beforeRouteEnter(to: any, from: any, next: any) {
+    next()
+  }
+  beforeRouteLeave(to: any, from: any, next: any) {
+    if (to.meta.i18n === 'menu.vulnDetail') {
+      this.$store.dispatch('setRouteInfo', [])
+    } else {
+      this.$store.dispatch('setRouteInfo', ['ProjectIndex', 'ProjectDetail'])
+    }
+    console.log('@store', this.$store.getters.vulnRouteInfo)
+    next()
+  }
   formatTimestamp(time: number) {
     return formatTimestamp(time)
   }
@@ -378,6 +395,7 @@ export default class ProjectDetail extends VueBase {
     this.$router.replace({
       query: merge(this.$route.query, { activeName: e }) as any,
     })
+    // this.$set(this.$route.query, 'activeName', e)
     if (e === 'desc') {
       await this.projectsSummary(this.projectObj.versionData.version_id)
     }
@@ -539,7 +557,7 @@ export default class ProjectDetail extends VueBase {
     if (res.status !== 201) {
       this.$message.error(res.msg)
     }
-    if (res.data.length > 0) {
+    if (res.data?.length > 0) {
       this.showApiListFlag = true
     } else {
       this.showApiListFlag = false
@@ -555,6 +573,9 @@ export default class ProjectDetail extends VueBase {
       this.selectTab = this.$route.query.activeName as string
     } else {
       this.selectTab = 'desc'
+    }
+    if (!this.$route.params.pid) {
+      return
     }
     await this.showApiList()
     await this.projectsSummary()
