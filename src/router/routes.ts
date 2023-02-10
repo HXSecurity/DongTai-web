@@ -108,6 +108,7 @@ const routes: Array<RouteConfig> = [
         name: 'projectDetail/:pid',
         meta: {
           disabled: true,
+          keepAlive: true,
           i18n: 'menu.projectDetail',
           name: i18n.t('menu.projectDetail'),
         },
@@ -468,6 +469,7 @@ const adminRoutes: Array<RouteConfig> = [
         name: 'projectDetail/:pid',
         meta: {
           disabled: true,
+          keepAlive: true,
           i18n: 'menu.projectDetail',
           name: i18n.t('menu.projectDetail'),
         },
@@ -861,6 +863,7 @@ const userRoutes: Array<RouteConfig> = [
         name: 'projectDetail/:pid',
         meta: {
           disabled: true,
+          keepAlive: true,
           i18n: 'menu.projectDetail',
           name: i18n.t('menu.projectDetail'),
         },

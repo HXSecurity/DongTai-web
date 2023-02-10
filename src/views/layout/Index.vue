@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header class="layoutHeader" @reload="reload" />
-    <keep-alive>
+    <keep-alive :exclude="$store.getters.vulnRouteInfo">
       <router-view
         v-if="$route.meta.keepAlive && flag"
         class="layoutMain"

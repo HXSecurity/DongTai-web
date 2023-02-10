@@ -279,7 +279,7 @@
         </div>
       </div>
       <div class="tool-box-placeholder"></div>
-      <div v-for="item in tableData" :key="'card' + item.id">
+      <div v-for="(item, index) in tableData" :key="'card' + item.id + index">
         <VulnCard
           v-if="vulnType === 'vuln'"
           :item="item"
