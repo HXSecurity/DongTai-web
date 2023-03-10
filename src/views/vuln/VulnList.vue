@@ -1067,9 +1067,10 @@ export default class VulnList extends VueBase {
 
   .module-line {
     cursor: pointer;
-    height: 32px;
+    min-height: 32px;
     line-height: 32px;
     margin-right: 0;
+    padding: 10px 0;
     ::v-deep.el-checkbox__label {
       flex: 1;
       .check-label {
@@ -1080,10 +1081,14 @@ export default class VulnList extends VueBase {
 
     .selectOption {
       display: inline-block;
-      max-width: 100px;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      overflow: hidden;
+      min-width: 100px;
+      flex: 1;
+      margin-right: 10px;
+      // text-overflow: ellipsis;
+      // white-space: nowrap;
+      // overflow: hidden;
+      white-space: normal;
+      word-break: break-all;
       color: #38435a;
       font-size: 14px;
       font-weight: 400;

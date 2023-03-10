@@ -321,9 +321,9 @@ export default class ProjectManage extends VueBase {
 
 .projectName {
   width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // white-space: nowrap;
   cursor: pointer;
   color: #4b99f1;
 }
