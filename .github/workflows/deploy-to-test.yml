@@ -40,7 +40,11 @@ jobs:
 
       - name: setup nodejs
         uses: actions/setup-node@v1
-      
+
+      - name: Get the release version
+        id: version
+        run: echo ::set-output name=GITHUB_REF::${GITHUB_REF##*/}
+        
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
