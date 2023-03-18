@@ -100,6 +100,7 @@ export default {
     sca: 'Libraries',
     scaList: 'Component management list',
     scaDetail: 'Component management details',
+    scanDetail: 'Scan vulnerability details',
     changeLogo: 'Site Identity',
     setting: 'Settings',
     agentManage: 'Agent',

@@ -96,6 +96,7 @@ export default {
     sca: '组件',
     scaList: '组件管理列表',
     scaDetail: '组件管理详情',
+    scanDetail: '扫描漏洞详情',
     setting: '系统配置',
     changeLogo: '品牌配置',
     agentManage: 'Agent',
