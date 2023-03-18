@@ -57,6 +57,10 @@ export default () =>
           return request.post('/app_vul_summary', data, {
             baseURL: process.env.VUE_APP_BASE_API_V2,
           })
+        case 'scan':
+          return request.post('/dastvul/summary', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V1,
+          })
       }
     }
 
@@ -70,6 +74,10 @@ export default () =>
         case 'vuln':
           return request.post('/app_vul_list_content', data, {
             baseURL: process.env.VUE_APP_BASE_API_V2,
+          })
+        default:
+          return request.post('/dastvul', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V1,
           })
       }
     }
@@ -105,6 +113,12 @@ export default () =>
     getVulnDetail(id: number): Promise<iResponse> {
       return request.get(`/vuln/${id}`, {
         baseURL: process.env.VUE_APP_BASE_API_V2,
+      })
+    }
+    // 扫描漏洞详情
+    getScanDetail(id: number): Promise<iResponse> {
+      return request.get(`/dastvul/${id}`, {
+        baseURL: process.env.VUE_APP_BASE_API_V1,
       })
     }
 
