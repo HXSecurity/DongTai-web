@@ -737,8 +737,8 @@ export default class VulListComponent extends VueBase {
       params = {
         page: this.page,
         page_size: this.pageSize,
-        bind_project_id: this.projectId,
-        project_version_id: String(this.version),
+        bind_project_id: Number(this.projectId),
+        project_version_id: Number(this.version),
         keywords: this.searchObj.keywords || undefined,
         project_id: this.searchObj.project_str.join(',') || undefined,
         vul_level_id: this.searchObj.level_str.join(',') || undefined,
@@ -850,11 +850,18 @@ export default class VulListComponent extends VueBase {
         },
       ]
     }
-
-    const params = {
+    let params
+    params = {
       bind_project_id: this.projectId,
       project_version_id: String(this.version),
       type: this.vulnType,
+    }
+    if (this.vulnType === 'scan') {
+      params = {
+        bind_project_id: Number(this.projectId),
+        project_version_id: Number(this.version),
+        type: this.vulnType,
+      }
     }
     this.loadingStart()
     let res
