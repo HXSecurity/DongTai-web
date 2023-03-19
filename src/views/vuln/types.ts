@@ -29,6 +29,7 @@ interface Graph {
 }
 
 export interface VulnObj {
+  graphs: any
   vul: {
     url: string
     uri: string
@@ -65,4 +66,5 @@ export interface VulnObj {
     sample_code: string
     repair_suggestion: string
   }
+  headers: any
 }

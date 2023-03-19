@@ -1,18 +1,35 @@
 <template>
   <main class="container">
     <div v-if="projectObj" class="project-warp">
+      <div class="back">
+        <span @click="goProjectList">
+          <i class="el-icon-arrow-left"></i>返回列表
+        </span>
+      </div>
       <div class="title-warp">
-        <div class="name">
-          {{ projectObj.name }}
-          <el-tag
-            v-for="item in projectObj.agent_language"
-            :key="item"
-            size="small"
-            :type="getTagColoe(item)"
-            style="margin-left: 12px"
-            >{{ item }}</el-tag
-          >
+        <div class="title-top flex-row-space-between">
+          <div class="name">
+            {{ projectObj.name }}
+            <el-tag
+              v-for="(item, index) in projectObj.agent_language"
+              :key="index"
+              size="small"
+              :type="getTagColoe(item)"
+              style="margin-left: 12px"
+              >{{ item }}</el-tag
+            >
+          </div>
+          <div class="operate">
+            <el-button
+              type="text"
+              class="operateBtn"
+              @click="$router.push(`/project/projectEdit/${$route.params.pid}`)"
+            >
+              <i class="iconfont iconshezhi-2"></i>
+            </el-button>
+          </div>
         </div>
+
         <div class="info-line flex-row-space-between">
           <div class="info">
             <i class="iconfont iconjiance-copy"></i>
@@ -36,8 +53,8 @@
               @change="changeVersion"
             >
               <el-option
-                v-for="item in versionList"
-                :key="item.version_id"
+                v-for="(item, index) in versionList"
+                :key="index"
                 :value="item.version_id"
                 :label="item.version_name"
               >
@@ -49,24 +66,6 @@
               style="margin-left: 12px; cursor: pointer; color: #4fb794"
               @click="showVersion"
             ></i>
-          </div>
-          <div class="operate">
-            <el-button
-              type="text"
-              class="operateBtn"
-              @click="exportDialog = true"
-            >
-              <i class="iconfont icondaochu-5"></i>
-              {{ $t('views.projectDetail.export') }}
-            </el-button>
-            <el-button
-              type="text"
-              class="operateBtn"
-              @click="$router.push(`/project/projectEdit/${projectObj.id}`)"
-            >
-              <i class="iconfont iconshezhi-2"></i>
-              {{ $t('views.projectDetail.setting') }}
-            </el-button>
           </div>
         </div>
       </div>
@@ -109,53 +108,67 @@
           {{ $t('views.projectDetail.apiList') }}
         </el-button>
       </div>
-      <div v-if="selectTab === 'desc'">
-        <div
-          id="type_summary_level_count"
-          class="module flex-row-space-between"
-        >
-          <div class="module-content">
-            <div class="module-title">
-              {{ $t('views.projectDetail.vulNum') }}
+      <template v-if="projectObj.versionData.version_id">
+        <div v-if="selectTab === 'desc'">
+          <div
+            id="type_summary_level_count"
+            class="module flex-row-space-between"
+          >
+            <div class="module-content">
+              <div class="module-title">
+                {{ $t('views.projectDetail.vulNum') }}
+              </div>
+
+              <div>
+                <Distribution
+                  v-if="projectObj.level_count"
+                  :height="312"
+                  :data="projectObj.level_count"
+                />
+              </div>
             </div>
-            <div id="level_count" class="module-card"></div>
+            <div class="module-content">
+              <div class="module-title">
+                {{ $t('views.projectDetail.type') }}
+              </div>
+
+              <Type
+                v-if="projectObj.type_summary"
+                :height="312"
+                :data="projectObj.type_summary"
+              />
+            </div>
           </div>
-          <div class="module-content">
+          <div class="module">
             <div class="module-title">
-              {{ $t('views.projectDetail.type') }}
+              {{ $t('views.projectDetail.trend') }}
             </div>
-            <div id="type_summary" class="module-card"></div>
+            <Trend v-if="projectObj.day_num" :data="projectObj.day_num" />
           </div>
         </div>
-        <div class="module">
-          <div class="module-title">
-            {{ $t('views.projectDetail.trend') }}
-          </div>
-          <div id="day_num" class="module-card"></div>
+        <div v-show="selectTab === 'vul'">
+          <vul-list-component
+            ref="vulListComponent"
+            :project-id="$route.params.pid"
+            :version="projectObj.versionData.version_id"
+          ></vul-list-component>
         </div>
-      </div>
-      <div v-if="selectTab === 'vul'">
-        <vul-list-component
-          ref="vulListComponent"
-          :project-id="$route.params.pid"
-          :version="projectObj.versionData.version_id"
-        ></vul-list-component>
-      </div>
-      <div v-if="selectTab === 'component'">
-        <ScaList
-          ref="componentList"
-          :project-id="$route.params.pid"
-          :version="projectObj.versionData.version_id"
-        ></ScaList>
-      </div>
-      <div v-if="selectTab === 'apiList' && showApiListFlag">
-        <ApiList
-          ref="apiList"
-          :project-id="$route.params.pid"
-          :version-id="projectObj.versionData.version_id"
-        >
-        </ApiList>
-      </div>
+        <div v-if="selectTab === 'component'">
+          <ScaList
+            ref="componentList"
+            :project-id="$route.params.pid"
+            :version="projectObj.versionData.version_id"
+          ></ScaList>
+        </div>
+        <div v-if="selectTab === 'apiList' && showApiListFlag">
+          <ApiList
+            ref="apiList"
+            :project-id="$route.params.pid"
+            :version-id="projectObj.versionData.version_id"
+          >
+          </ApiList>
+        </div>
+      </template>
     </div>
 
     <el-dialog
@@ -197,6 +210,7 @@
             <el-input
               v-else
               v-model="scope.row.version_name"
+              maxlength="20"
               size="small"
               :placeholder="$t('views.projectDetail.search_version_name')"
             />
@@ -268,107 +282,12 @@
         }}</el-button>
       </div>
     </el-dialog>
-
-    <el-dialog
-      custom-class="exp_dialog"
-      :title="$t('views.projectDetail.export')"
-      :visible.sync="exportDialog"
-      width="80%"
-    >
-      <div style="padding: 20px 60px">
-        <el-form :model="form">
-          <el-form-item
-            style="font-weight: 500"
-            :label="$t('views.projectDetail.exportType')"
-            :label-width="formLabelWidth"
-          >
-            <div class="dialog-top">
-              <el-radio-group v-model="type" class="exp_radio">
-                <el-radio label="docx">docx</el-radio>
-                <el-radio label="pdf">pdf</el-radio>
-                <el-radio label="xlsx">xlsx</el-radio>
-              </el-radio-group>
-              <el-button class="exp_btn" @click="async_add">
-                {{ $t('views.projectDetail.exportbtn') }}
-              </el-button>
-            </div>
-          </el-form-item>
-        </el-form>
-        <div>
-          <div class="export-table-title">
-            {{ $t('views.projectDetail.exportHistory') }}
-          </div>
-          <el-table class="export-table" :data="exportList" style="width: 100%">
-            <el-table-column
-              prop="type"
-              :label="$t('views.projectDetail.reportTtype')"
-              width="180"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="create_time"
-              :label="$t('views.projectDetail.reportTtime')"
-              width="180"
-            >
-              <template slot-scope="scope">
-                <div>{{ formatTimestamp(scope.row.create_time) }}</div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="status"
-              :label="$t('views.projectDetail.reportStatus')"
-            >
-              <template slot-scope="scope">
-                <div>
-                  {{
-                    scope.row.status === 1
-                      ? $t('views.projectDetail.done')
-                      : $t('views.projectDetail.loading')
-                  }}
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column prop="status" label="状态">
-              <template slot-scope="scope">
-                <div>
-                  <el-button
-                    :disabled="scope.row.status === 0"
-                    type="text"
-                    @click="projectExport(scope.row.id, scope.row.type)"
-                  >
-                    <i class="el-icon-download"></i>
-                  </el-button>
-                  <el-button
-                    v-if="scope.row.status === 1"
-                    type="text"
-                    @click="deleteExport(scope.row.id)"
-                  >
-                    <i class="el-icon-delete"></i>
-                  </el-button>
-                </div>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div
-            style="display: flex; justify-content: flex-end; padding-top: 16px"
-          >
-            <el-pagination
-              :current-page.sync="currentPage1"
-              layout="total, prev, pager, next,jumper"
-              :total="exp_total"
-              @current-change="handleCurrentChange"
-            >
-            </el-pagination>
-          </div>
-        </div>
-      </div>
-    </el-dialog>
   </main>
 </template>
 
 <script lang="ts">
 import VueBase from '../../VueBase'
-import { Component } from 'vue-property-decorator'
+import { Component, Watch } from 'vue-property-decorator'
 import { ProjectObj } from './types'
 import { formatTimestamp } from '@/utils/utils'
 import request from '@/utils/request'
@@ -379,23 +298,45 @@ import ApiList from './apiList.vue'
 import ScaList from '../sca/ScaList.vue'
 import merge from 'webpack-merge'
 
+import Distribution from './components/distribution.vue'
+import Trend from './components/trend.vue'
+import Type from './components/type.vue'
+
+Component.registerHooks([
+  'beforeRouteEnter',
+  'beforeRouteLeave',
+  'beforeRouteUpdate',
+])
 @Component({
   name: 'ProjectDetail',
   components: {
     VulListComponent,
     ScaList,
     ApiList,
+    Distribution,
+    Trend,
+    Type,
   },
 })
 export default class ProjectDetail extends VueBase {
+  beforeRouteEnter(to: any, from: any, next: any) {
+    next()
+  }
+  beforeRouteLeave(to: any, from: any, next: any) {
+    if (to.meta.i18n === 'menu.vulnDetail') {
+      this.$store.dispatch('setRouteInfo', [])
+    } else {
+      this.$store.dispatch('setRouteInfo', ['ProjectIndex', 'ProjectDetail'])
+    }
+    console.log('@store', this.$store.getters.vulnRouteInfo)
+    next()
+  }
   formatTimestamp(time: number) {
     return formatTimestamp(time)
   }
   private exp_page = 1
   private exp_total = 0
-  private exportDialog = false
   private type = 'docx'
-  private exportList = []
   private selectTab = 'desc'
   private projectObj: ProjectObj = {
     id: 0,
@@ -411,12 +352,17 @@ export default class ProjectDetail extends VueBase {
   private versionList: any[] = []
   private versionFlag = false
   private enterVersionDialog() {
+    if (this.versionList.some((item) => item.isEdit)) {
+      this.$message.error(this.$t('views.projectDetail.beforeClose') as string)
+      return
+    }
     this.versionFlag = false
   }
+
   private async versionCurrent(item: any) {
     const res: any = await this.services.project.versionCurrent({
       version_id: item.version_id,
-      project_id: this.projectObj.id,
+      project_id: this.$route.params.pid,
     })
     if (res.status !== 201) {
       this.$message({
@@ -432,7 +378,16 @@ export default class ProjectDetail extends VueBase {
       })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
+      await this.showApiList()
+      await this.projectsSummary()
+      await this.getVersionList()
     }
+  }
+
+  goProjectList() {
+    this.$router.push({
+      name: 'projectManage',
+    })
   }
 
   private async changeActive(e: any) {
@@ -440,6 +395,7 @@ export default class ProjectDetail extends VueBase {
     this.$router.replace({
       query: merge(this.$route.query, { activeName: e }) as any,
     })
+    // this.$set(this.$route.query, 'activeName', e)
     if (e === 'desc') {
       await this.projectsSummary(this.projectObj.versionData.version_id)
     }
@@ -473,7 +429,7 @@ export default class ProjectDetail extends VueBase {
     if (!item.version_id) {
       const res: any = await this.services.project.versionAdd({
         ...item,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       if (res.status !== 201) {
         this.$message({
@@ -494,9 +450,8 @@ export default class ProjectDetail extends VueBase {
     } else {
       const res: any = await this.services.project.versionEdit({
         ...item,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
-      console.log(res)
       if (res.status !== 201) {
         this.$message({
           type: 'error',
@@ -539,7 +494,7 @@ export default class ProjectDetail extends VueBase {
     ).then(async () => {
       const res: any = await this.services.project.versionDelete({
         version_id: item.version_id,
-        project_id: this.projectObj.id,
+        project_id: this.$route.params.pid,
       })
       if (res.status != 201) {
         this.$message({
@@ -549,7 +504,7 @@ export default class ProjectDetail extends VueBase {
         })
       } else {
         this.$message({
-          type: 'error',
+          type: 'success',
           message: res.msg,
           showClose: true,
         })
@@ -602,21 +557,31 @@ export default class ProjectDetail extends VueBase {
     if (res.status !== 201) {
       this.$message.error(res.msg)
     }
-    if (res.data.length > 0) {
+    if (res.data?.length > 0) {
       this.showApiListFlag = true
     } else {
       this.showApiListFlag = false
-      this.selectTab = 'desc'
+      if (this.selectTab === 'apiList') {
+        this.selectTab = 'desc'
+      }
     }
   }
-  async mounted() {
+
+  @Watch('$route.params.pid', { immediate: true })
+  async init() {
     if (this.$route.query.activeName) {
       this.selectTab = this.$route.query.activeName as string
+    } else {
+      this.selectTab = 'desc'
+    }
+    if (!this.$route.params.pid) {
+      return
     }
     await this.showApiList()
     await this.projectsSummary()
     await this.getVersionList()
   }
+  private offsetHeight = 0
   private async projectsSummary(id?: string) {
     const { status, msg, data } = await this.services.project.projectsSummary(
       this.$route.params.pid,
@@ -636,247 +601,26 @@ export default class ProjectDetail extends VueBase {
       name: data.name,
       latest_time: formatTimestamp(data.latest_time),
     }
-
-    const type_summary = document.getElementById('type_summary') as HTMLElement
-    const level_count = document.getElementById('level_count') as HTMLElement
-    const type_summary_level_count = document.getElementById(
-      'type_summary_level_count'
-    ) as HTMLElement
-    if (!type_summary || !level_count || !type_summary_level_count) {
-      return false
-    }
-    const height = Math.ceil(data.type_summary.length / 5) * 30
-    const domHeight = type_summary.offsetHeight
-    type_summary.style.height = domHeight + height + 'px'
-    level_count.style.height = domHeight + height + 'px'
-    type_summary_level_count.style.height = domHeight + 40 + height + 'px'
-
-    if (this.selectTab !== 'desc') {
-      return
-    }
-
-    const levelCountChart = echarts.init(
-      document.getElementById('level_count') as HTMLElement
-    )
-    const levelCountOption: EChartsOption = {
-      tooltip: {
-        trigger: 'axis',
-      },
-      grid: {
-        height: domHeight + height - 100,
-        left: '3%',
-        right: '4%',
-        containLabel: true,
-      },
-      xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01],
-      },
-      yAxis: {
-        type: 'category',
-        data: data.level_count
-          .map((item: { level_name: string }) => {
-            return item.level_name
-          })
-          .reverse(),
-      },
-      series: [
-        {
-          type: 'bar',
-          barWidth: 10,
-          data: data.level_count
-            .map((item: { num: number }) => {
-              return item.num
-            })
-            .reverse(),
-        },
-      ],
-    }
-    levelCountChart.setOption(levelCountOption)
-    const typeSummaryChart = echarts.init(type_summary as HTMLElement)
-    const typeSummaryOption: EChartsOption = {
-      tooltip: {
-        trigger: 'item',
-      },
-      legend: {
-        orient: 'horizontal',
-        bottom: 10,
-        data: data.type_summary.map((item: { type_name: string }) => {
-          return item.type_name
-        }),
-      },
-      series: [
-        {
-          type: 'pie',
-          width: 580,
-          height: 300,
-          data: data.type_summary.reduce(
-            (
-              list: { name: any; value: any; tooltip: { formatter: string } }[],
-              item: { type_name: any; type_count: any }
-            ) => {
-              list.push({
-                name: item.type_name,
-                value: item.type_count,
-                tooltip: {
-                  formatter:
-                    this.$t('views.projectDetail.pieType') +
-                    '<br />{b0}: {c0} ({d}%)<br />',
-                },
-              })
-              return list
-            },
-            []
-          ),
-        },
-      ],
-    }
-    typeSummaryChart.setOption(typeSummaryOption)
-
-    const dayNumChart = echarts.init(
-      document.getElementById('day_num') as HTMLElement
-    )
-    const dayNumOption: EChartsOption = {
-      tooltip: {
-        trigger: 'axis',
-      },
-      xAxis: {
-        type: 'category',
-        data: data.day_num.map((item: { day_label: any }) => {
-          return item.day_label
-        }),
-      },
-      yAxis: {
-        type: 'value',
-      },
-      series: [
-        {
-          data: data.day_num.map((item: { day_num: any }) => {
-            return item.day_num
-          }),
-          itemStyle: {
-            color: 'rgba(99, 161, 242,1)',
-          },
-          type: 'line',
-          areaStyle: {
-            color: new (echarts as any).graphic.LinearGradient(0, 0, 0, 1, [
-              {
-                offset: 0,
-                color: 'rgba(99, 161, 242,1)',
-              },
-              {
-                offset: 1,
-                color: 'rgba(99, 161, 242,0.3)',
-              },
-            ]),
-          },
-        },
-      ],
-    }
-    dayNumChart.setOption(dayNumOption)
   }
   showVersion() {
     this.versionFlag = true
   }
   getVersionList() {
-    this.services.project.versionList(this.projectObj.id).then((res: any) => {
-      if (res.status === 201) {
-        this.versionList = res.data
-      } else {
-        this.$message({
-          type: 'error',
-          message: res.msg,
-          showClose: true,
-        })
-      }
-    })
-  }
-  async deleteExport(id: number) {
-    this.$confirm(
-      this.$t('views.projectDetail.rWarningInfo') as string,
-      this.$t('views.projectDetail.warning') as string,
-      {
-        confirmButtonText: this.$t(
-          'views.projectDetail.enterVersion'
-        ) as string,
-        cancelButtonText: this.$t(
-          'views.projectDetail.cancelVersion'
-        ) as string,
-        type: 'warning',
-      }
-    ).then(async () => {
-      const res = await this.services.project.exportDelete({ id })
-      if (res.status === 201) {
-        this.$message.success(res.msg)
-        this.getExportList()
-      } else {
-        this.$message.error(res.msg)
-      }
-    })
-  }
-  async async_add() {
-    const res = await this.services.project.async_add({
-      vid: this.projectObj.versionData.version_id,
-      type: this.type,
-      pname: this.projectObj.name,
-      pid: this.$route.params.pid,
-    })
-    if (res.status === 201) {
-      this.$message.success(res.msg)
-      this.getExportList()
-    } else {
-      this.$message.error(res.msg)
-    }
-    console.log(res)
-  }
-  async handleCurrentChange(val: number) {
-    this.exp_page = val
-    this.getExportList()
-  }
-  async getExportList() {
-    const res = await this.services.project.exportList({
-      page: this.exp_page,
-      pageSize: 10,
-    })
-    if (res.status === 201) {
-      this.exportList = res.data
-      this.exp_total = res.page.alltotal
-    } else {
-      this.$message.error(res.msg)
-    }
-  }
-  projectExport(id: string, type: string) {
-    request
-      .get(`/project/report/download?id=${id}`, {
-        responseType: 'blob',
-      })
+    this.services.project
+      .versionList(this.$route.params.pid)
       .then((res: any) => {
-        if (res.type === 'application/json') {
-          this.$message.error({
-            message: this.$t('views.projectDetail.exportFail') as string,
-            showClose: true,
-          })
+        if (res.status === 201) {
+          this.versionList = res.data
         } else {
-          const blob = new Blob([res], {
-            type: 'application/octet-stream',
-          })
-          const link = document.createElement('a')
-          link.href = window.URL.createObjectURL(blob)
-          link.download = this.projectObj.name + '.' + type
-          link.click()
-          this.$message.success({
-            message: this.$t('views.projectDetail.exportSuccess') as string,
+          this.$message({
+            type: 'error',
+            message: res.msg,
             showClose: true,
           })
         }
       })
-      .catch(() => {
-        this.$message.error({
-          message: this.$t('views.projectDetail.exportFail') as string,
-          showClose: true,
-        })
-      })
   }
+
   private getTagColoe(language: string) {
     switch (language) {
       case 'JAVA':
@@ -887,37 +631,14 @@ export default class ProjectDetail extends VueBase {
         return ''
     }
   }
-  private async projectRecheck() {
-    const { status, msg } = await this.services.project.projectsRecheck(
-      this.$route.params.pid
-    )
-    if (status !== 201) {
-      this.$message({
-        type: 'error',
-        message: msg,
-        showClose: true,
-      })
-    } else {
-      this.$message({
-        type: 'success',
-        message: msg,
-        showClose: true,
-      })
-    }
-  }
-
-  created() {
-    this.getExportList()
-  }
 }
 </script>
 
 <style scoped lang="scss">
 .project-warp {
   margin-top: 28px;
-  background: #fff;
   padding: 14px 14px 80px 14px;
-
+  background: #fff;
   .title-warp {
     padding-bottom: 13px;
     border-bottom: 1px solid #e6e9ec;
@@ -944,29 +665,27 @@ export default class ProjectDetail extends VueBase {
           font-style: inherit;
         }
       }
-
-      .operate {
-        // color: #b1b9c4;
-
-        .operateBtn {
-          width: 90px;
-          height: 32px;
-          line-height: 0;
-          border-radius: 2px;
-          font-size: 14px;
-          border: 1px solid #4a72ae;
-          color: #4a72ae;
-        }
-
-        // i {
-        //   cursor: pointer;
-        //   margin-left: 24px;
-
-        //   &:first-child {
-        //     margin-left: 0;
-        //   }
-        // }
+    }
+    .operate {
+      // color: #b1b9c4;
+      .operateBtn {
+        width: 32px;
+        height: 32px;
+        background: #f2f3f5;
+        border-radius: 2px;
+        line-height: 0;
+        font-size: 14px;
+        color: #4a72ae;
       }
+
+      // i {
+      //   cursor: pointer;
+      //   margin-left: 24px;
+
+      //   &:first-child {
+      //     margin-left: 0;
+      //   }
+      // }
     }
   }
 
@@ -1040,7 +759,7 @@ export default class ProjectDetail extends VueBase {
   }
 }
 
-/deep/.el-dialog__body {
+::v-deep.el-dialog__body {
   padding: 0 20px;
 }
 .dialog-footer {
@@ -1073,12 +792,22 @@ export default class ProjectDetail extends VueBase {
 }
 .exp_radio {
   margin-top: 10px;
-  /deep/.el-radio__input.is-checked .el-radio__inner {
+  ::v-deep.el-radio__input.is-checked .el-radio__inner {
     background: #4a72ae;
     border-color: #4a72ae;
   }
-  /deep/.el-radio__input.is-checked + .el-radio__label {
+  ::v-deep.el-radio__input.is-checked + .el-radio__label {
     color: #606266;
+  }
+}
+
+.back {
+  color: #0085ff;
+  cursor: pointer;
+  margin-bottom: 12px;
+  i {
+    font-size: 16px;
+    margin-right: 8px;
   }
 }
 </style>

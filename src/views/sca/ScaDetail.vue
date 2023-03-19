@@ -1,443 +1,544 @@
 <template>
   <main class="container">
-    <div v-if="!sliderWarpContract" class="fixed-warp">
-      <div class="slider-warp">
-        <div class="titleForm">
-          {{ $t('views.scaDetail.scaList') }}
-          <!-- <el-select v-model="searchObj.order" size="mini" style="width: 90px">
-            <el-option
-              v-for="item in orderOptions"
-              :key="item.value"
-              :value="item.value"
-              :label="item.label"
-            ></el-option>
-          </el-select>
-          <el-input
-            v-model="searchObj.keyword"
-            style="width: 106px"
-            size="mini"
-          >
-            <i
-              slot="suffix"
-              class="el-input__icon el-icon-search"
-              @click="newSelectData"
-            />
-          </el-input> -->
-        </div>
-        <div class="page-line flex-column-center">
-          <div class="flex-row-space-between">
-            <div class="flex-column-center">
-              <el-pagination
-                small
-                layout="prev, next"
-                :total="total"
-                :current-page="page"
-                :page-size="20"
-                @current-change="currentChange"
-              >
-              </el-pagination>
-            </div>
-            <div class="flex-column-center">
-              <span style="color: #969ba4; line-height: 25px">
-                <strong style="color: #38435a; font-weight: 400">{{
-                  page
-                }}</strong
-                >/{{ Math.ceil(total / 20) }}
-              </span>
-            </div>
-            <div class="flex-column-center">
-              <el-button
-                type="text"
-                style="color: #5782db"
-                @click="getTableData"
-              >
-                {{ $t('views.scaDetail.reload') }}
-              </el-button>
-            </div>
-          </div>
-        </div>
-        <div
-          v-for="item in tableData"
-          :key="item.id"
-          class="card"
-          :class="item.id === selectedId ? 'selected' : ''"
-          @click="idChange(item.id)"
-        >
-          <div class="titleLine">
-            {{ item.package_name }}
-          </div>
-          <div class="infoLine flex-row-space-between">
-            <span
-              :style="
-                item.level_type === 1
-                  ? { color: '#EA7171' }
-                  : item.level_type === 2
-                  ? { color: '#F39D0A' }
-                  : item.level_type === 3
-                  ? { color: '#2E8FE9' }
-                  : item.level_type === 4
-                  ? { color: '#7BC1AB' }
-                  : ''
-              "
-            >
-              <i class="iconfont iconweixian"></i>
-              {{ item.level }}
-            </span>
-            <span style="display: flex; align-items: center">
-              <i
-                class="iconfont iconbanben-2"
-                style="color: #a2a5ab; font-size: 14px"
-              ></i>
-              <span class="long-dot" :title="item.version">
-                {{ item.version }}
-              </span>
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
     <div
-      class="operateCol"
-      :style="sliderWarpContract ? {} : { 'margin-left': '228px' }"
-    >
-      <div style="height: 100%">
-        <i
-          class="iconfont operateIcon"
-          :class="sliderWarpContract ? 'iconopen1-2' : 'iconopen11'"
-          @click="sliderWarpContract = !sliderWarpContract"
-        ></i>
-      </div>
-    </div>
-    <div
-      v-if="scaObj && scaObj.package_name"
-      class="sca-warp"
+      class="vuln-warp"
       :class="
         sliderWarpContract ? 'slider-warp-contract' : 'slider-warp-spreadOut'
       "
     >
-      <div class="sca-title">
-        {{ scaObj.package_name }}
+      <div class="go-back-title">
+        <span @click="goBack">
+          <i class="el-icon-arrow-left"></i> 返回列表
+        </span>
       </div>
-      <div class="sca-info">
-        <div class="info-line">
-          <span>
-            <i class="iconfont iconbanben-3"></i>
-            {{ $t('views.scaDetail.version') }}：
-          </span>
-          {{ scaObj.version }}
+      <div class="vuln-title flex-row-space-between">
+        <div
+          style="
+            flex: 1;
+            max-width: 800px;
+            word-break: break-all;
+            line-height: 32px;
+          "
+        >
+          {{ assetVulDetail.base_info && assetVulDetail.base_info.vul_title }}
         </div>
-        <div class="info-line">
-          <span>
-            <i class="iconfont iconwendangzhongxin"></i>
-            {{ $t('views.scaDetail.signature_value') }}：
-          </span>
-          {{ scaObj.signature_value }}
-        </div>
-        <div class="info-line">
-          <span>
-            <i class="iconfont iconapp"></i>
-            {{ $t('views.scaDetail.project_name') }}：
-          </span>
-          <span
-            style="cursor: pointer"
-            @click="
-              scaObj.project_id &&
-                $router.push('/project/projectDetail/' + scaObj.project_id)
-            "
+        <div class="btnWarp">
+          <!-- <el-select
+            v-model="assetVulDetail.base_info.status"
+            size="small"
+            placeholder="状态变更"
+            style="width: 104px"
+            clearable
+            @change="changeStatus"
           >
-            {{ scaObj.project_name }}
-          </span>
-        </div>
-        <div class="info-line">
-          <span>
-            <i class="iconfont iconicon_details_banben"></i>
-            {{ $t('views.scaDetail.version_now') }}：
-          </span>
-          {{ scaObj.project_version }}
-        </div>
-        <div class="info-line">
-          <span>
-            <i class="iconfont iconweixian-2"></i>
-            {{ $t('views.scaDetail.level') }}：
-          </span>
-          {{ scaObj.level }}
-        </div>
-        <div class="info-line">
-          <span>
-            <i class="iconfont iconlishi"></i>
-            {{ $t('views.scaDetail.vul_count') }}：
-          </span>
-          {{ `${scaObj.vul_count}${$t('views.scaDetail.unit')}` }}
-        </div>
-        <div class="info-line">
-          <span>
-            <i class="iconfont iconapp"></i>
-            {{ $t('views.scaDetail.agent') }}：
-          </span>
-          {{ scaObj.agent_name }}
+            <el-option
+              v-for="item in statusOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select> -->
+          <!-- <el-tooltip
+            class="item"
+            effect="dark"
+            content="漏洞验证"
+            placement="top"
+          >
+            <div class="checkedAllBtn" @click="recheckVul('project')">
+              <i class="icon iconfont">&#xe6b5;</i>
+            </div>
+          </el-tooltip> -->
+          <Sync
+            :item="syncInfo"
+            :setting-inte="settingInte"
+            :get-table-data="init"
+            :source_type="2"
+          ></Sync>
         </div>
       </div>
-      <div class="module-title">
-        {{ $t('views.scaDetail.vulList') }}
-      </div>
-      <el-table :data="scaObj.vuls" style="width: 100%">
-        <el-table-column
-          :label="$t('views.scaDetail.cveNumber')"
-          prop="vulcve"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('views.scaDetail.cweNumber')"
-          prop="vulcwe"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('views.scaDetail.vulName')"
-          prop="vulname"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('views.scaDetail.vulLevel')"
-          prop="level"
-        ></el-table-column>
-        <el-table-column
-          :label="$t('views.scaDetail.safeVersion')"
-          prop="safe_version"
-        ></el-table-column>
-        <el-table-column :label="$t('views.scaDetail.operate')" width="100px">
-          <template slot-scope="{ row }">
-            <i
-              class="iconfont iconxiangqing detail"
-              @click="detailShow(row)"
-            ></i>
-          </template>
-        </el-table-column>
-      </el-table>
+      <template v-if="assetVulDetail.base_info">
+        <div class="module-title has-log">
+          <span>基本信息</span>
+          <span class="get-log" @click="vullogBtn">查看日志</span>
+        </div>
+        <div class="infoWarp">
+          <div class="infoLine flex-row-space-between">
+            <div v-dot class="info">
+              <span class="label"> 危害级别： </span>
+              <span
+                class="dot"
+                :style="{ color: levelColor(assetVulDetail.base_info.level) }"
+                >{{ assetVulDetail.base_info.level }}</span
+              >
+            </div>
+            <div v-dot class="info">
+              <span class="label"> 首次出现： </span>
+              <span>{{ fmtTime(assetVulDetail.base_info.first_time) }}</span>
+            </div>
+            <div v-dot class="info">
+              <span class="label"> 最新活跃： </span>
+              <span>
+                <span>{{ fmtTime(assetVulDetail.base_info.last_time) }}</span>
+              </span>
+            </div>
+          </div>
+          <div class="infoLine flex-row-space-between">
+            <div v-dot class="info">
+              <span class="label"> 漏洞类型： </span>
+              <span>{{
+                assetVulDetail.base_info && assetVulDetail.base_info.vul_type
+              }}</span>
+            </div>
+            <div v-dot class="info">
+              <span class="label"> 编号： </span>
+              <span v-for="(i, key) in CVENUMBERS" :key="'cve' + key">
+                <span v-if="i.label" class="jump" @click="openWindow(i.link)"
+                  >{{ i.label }} </span
+                >{{ key != CVENUMBERS.length - 1 && i.label ? '|' : '' }}
+              </span>
+            </div>
+            <div v-dot class="info">
+              <span class="label"> 可利用性： </span>
+              <span
+                >{{
+                  assetVulDetail.base_info.have_article === 1
+                    ? '存在分析文章'
+                    : ''
+                }}
+                {{
+                  assetVulDetail.base_info.have_poc === 1
+                    ? '存在可利用代码'
+                    : ''
+                }}
+                {{
+                  assetVulDetail.base_info.have_poc !== 1 &&
+                  assetVulDetail.base_info.have_article !== 1
+                    ? '不存在可利用代码'
+                    : ''
+                }}
+              </span>
+            </div>
+          </div>
+          <div class="infoLine flex-row-space-between">
+            <div v-dot class="info">
+              <span class="label"> 项目名称： </span>
+              <el-tooltip
+                effect="light"
+                :content="
+                  assetVulDetail.base_info.project_names &&
+                  assetVulDetail.base_info.project_names.join(' | ')
+                "
+                placement="top"
+              >
+                <span>{{
+                  assetVulDetail.base_info.project_names &&
+                  assetVulDetail.base_info.project_names.join(' | ')
+                }}</span>
+              </el-tooltip>
+            </div>
+            <div v-dot class="info">
+              <span class="label"> 语言： </span>
+              <span class="dot">{{ assetVulDetail.base_info.language }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="module-title">漏洞描述</div>
+        <div class="vulnDesc">
+          {{ assetVulDetail.base_info && assetVulDetail.base_info.vul_detail }}
+        </div>
+
+        <div
+          v-for="(poc, index) in assetVulDetail.poc_info &&
+          assetVulDetail.poc_info.poc_list"
+          :key="index"
+        >
+          <div class="module-title">{{ poc.title }}</div>
+          <div class="markdownContent httpRequest">
+            <MyMarkdownIt
+              :content="poc.poc_content"
+              style="color: #747c8c"
+            ></MyMarkdownIt>
+          </div>
+        </div>
+
+        <div class="module-title">参考及分析文章</div>
+        <div class="vulnDesc">
+          <div
+            v-for="i in assetVulDetail.poc_info &&
+            assetVulDetail.poc_info.reference_link"
+            :key="i.url"
+            class="vulnUrl"
+            @click="openUrl(i.url)"
+          >
+            {{ i.url }}
+          </div>
+        </div>
+      </template>
     </div>
+
     <el-dialog
-      v-if="vulDetailDialogShow"
-      width="75%"
-      :visible.sync="vulDetailDialogShow"
-      :title="$t('views.scaDetail.vulDetail.title')"
+      :visible.sync="deleteDialogOpen"
+      :title="$t('views.vulnDetail.deleteVuln')"
+      width="25%"
     >
-      <div class="detail-module-label">
-        {{ $t('views.scaDetail.vulDetail.num') }}:
-        <div class="detail-module-content" style="display: inline-block">
-          {{ vulDetail.vulcve }}
+      <div style="text-align: center">
+        <p style="color: #959fb4">
+          {{ $t('views.vulnDetail.deleteVulnInfo') }}
+        </p>
+        <p style="color: #959fb4; margin-top: 14px">
+          {{ $t('views.vulnDetail.deleteVulnDesc') }}
+        </p>
+      </div>
+      <div slot="footer" style="text-align: center">
+        <el-button type="text" class="confirmDel" @click="vulnDelete">
+          {{ $t('views.vulnDetail.deleteVulnEnter') }}
+        </el-button>
+        <el-button
+          type="text"
+          class="cancelDel"
+          @click="deleteDialogOpen = false"
+        >
+          {{ $t('views.vulnDetail.cancel') }}
+        </el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog
+      :visible.sync="logDialogOpen"
+      title="查看日志"
+      width="700px"
+      custom-class="sca-dialog"
+    >
+      <div class="log-list">
+        <div v-for="log in logList" :key="log.id" class="log-item">
+          <div class="log-item-name">{{ log.msg }}</div>
+          <div class="log-item-time">
+            {{ fmtTime(log.datetime * 1000 * 1000) }}
+          </div>
         </div>
       </div>
-      <div class="detail-module-label">
-        {{ $t('views.scaDetail.vulDetail.name') }}:
-        <div class="detail-module-content" style="display: inline-block">
-          {{ vulDetail.vulname }}
-        </div>
-      </div>
-      <div class="detail-module-label">
-        {{ $t('views.scaDetail.vulDetail.desc') }}:
-      </div>
-      <div class="detail-module-content">
-        <MyMarkdownIt :content="vulDetail.overview"></MyMarkdownIt>
-      </div>
-      <div class="detail-module-label">
-        {{ $t('views.scaDetail.vulDetail.detail') }}:
-      </div>
-      <div class="detail-module-content">
-        <MyMarkdownIt :content="vulDetail.teardown"></MyMarkdownIt>
-      </div>
-      <!--      <div class="detail-module-label">References:</div>-->
-      <!--      <div v-if="vulDetail.reference !== '[]'" class="detail-module-content">-->
-      <!--        <MyMarkdownIt :content="vulDetail.reference"></MyMarkdownIt>-->
-      <!--      </div>-->
     </el-dialog>
   </main>
 </template>
 
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
+import { formatTimestamp, getPassedTime } from '@/utils/utils'
 import VueBase from '@/VueBase'
-import { ScaListObj, ScaObj, VulObj } from '@/views/sca/types'
+import request from '@/utils/request'
+import qs from 'qs'
+import Sync from '../vuln/components/sync.vue'
 
-@Component({ name: 'ScaDetail' })
-export default class ScaDetail extends VueBase {
+@Component({
+  name: 'VulnDetail',
+  components: {
+    Sync,
+  },
+})
+export default class VulnDetail extends VueBase {
   private sliderWarpContract = false
-  private scaObj = {}
-  private tableData: Array<ScaListObj> = []
-  private page = 1
-  private selectedId = 0
-  private total = 0
-  private vulDetailDialogShow = false
-  private vulDetail: VulObj | undefined
-  private searchObj = {
-    language: '',
-    level: '',
-    project_name: '',
-    keyword: '',
-    order: '',
+  private deleteDialogOpen = false
+  private logDialogOpen = false
+  fmtTime(time: any) {
+    if (time) {
+      const data = new Date(time).getTime() / 1000
+      return formatTimestamp(data)
+    }
+    return ''
   }
 
-  private orderOptions = [
+  async openUrl(url: any) {
+    window.open(url)
+  }
+
+  get CVENUMBERS() {
+    const res = []
+    for (let key in this.assetVulDetail.base_info) {
+      switch (key) {
+        case 'cnnvd':
+          res.push({
+            label: this.assetVulDetail.base_info[key],
+            link: `http://www.cnnvd.org.cn/web/xxk/ldxqById.tag?CNNVD=${this.assetVulDetail.base_info[key]}`,
+          })
+          break
+        case 'cnvd':
+          res.push({
+            label: this.assetVulDetail.base_info[key],
+            link: `https://www.cnvd.org.cn/flaw/show/${this.assetVulDetail.base_info[key]}`,
+          })
+          break
+        case 'cve':
+          res.push({
+            label: this.assetVulDetail.base_info[key],
+            link: `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${this.assetVulDetail.base_info[key]}`,
+          })
+          break
+        case 'cwe':
+          const cwe =
+            this.assetVulDetail.base_info[key] &&
+            this.assetVulDetail.base_info[key][0]
+          res.push({
+            label: cwe,
+            link: `https://cwe.mitre.org/data/definitions/${cwe}.html`,
+          })
+          break
+      }
+    }
+    return res
+  }
+
+  private openWindow(link: string) {
+    window.open(link)
+  }
+
+  private settingInte: any = []
+  private assetVulDetail: any = {}
+
+  goBack = () => {
+    this.$router.push({
+      name: 'vulnList',
+    })
+  }
+
+  private levelColor(level: any) {
+    switch (level) {
+      case '严重':
+        return '#E56363'
+      case '高危':
+        return '#F49E0B'
+      case '中危':
+        return '#2F90EA'
+      case '低危':
+        return '#ABB2C0'
+      case '提示':
+        return '#DBDBDB'
+    }
+  }
+
+  private statusOptions: Array<any> = [
     {
-      label: this.$t('views.scaList.orderOptions.project_name'),
-      value: 'project_name',
+      value: this.$t('views.vulnDetail.reported'),
+      label: this.$t('views.vulnDetail.reported'),
     },
     {
-      label: this.$t('views.scaList.orderOptions.level'),
-      value: 'level',
+      value: this.$t('views.vulnDetail.confirmed'),
+      label: this.$t('views.vulnDetail.confirmed'),
     },
     {
-      label: this.$t('views.scaList.orderOptions.package_name'),
-      value: 'package_name',
+      value: this.$t('views.vulnDetail.fixed'),
+      label: this.$t('views.vulnDetail.fixed'),
     },
     {
-      label: this.$t('views.scaList.orderOptions.version'),
-      value: 'version',
-    },
-    {
-      label: this.$t('views.scaList.orderOptions.language'),
-      value: 'language',
-    },
-    {
-      label: this.$t('views.scaList.orderOptions.vul_count'),
-      value: 'vul_count',
+      value: this.$t('views.vulnDetail.ignored'),
+      label: this.$t('views.vulnDetail.ignored'),
     },
   ]
 
-  async created() {
-    this.page = parseInt(this.$route.params.page)
+  private tableData: Array<any> = []
+  private page = 1
+  private keyword = ''
+  private selectedId = 0
+  private total = 0
+
+  private orderOptions = [
+    {
+      label: this.$t('views.vulnList.orderOptions.type'),
+      value: 'type',
+    },
+    {
+      label: this.$t('views.vulnList.orderOptions.level'),
+      value: 'level',
+    },
+    {
+      label: this.$t('views.vulnList.orderOptions.url'),
+      value: 'url',
+    },
+    {
+      label: this.$t('views.vulnList.orderOptions.latest_time'),
+      value: 'latest_time',
+    },
+    {
+      label: this.$t('views.vulnList.orderOptions.first_time'),
+      value: 'first_time',
+    },
+  ]
+
+  private syncInfo: any = {}
+  private aggr_id: any = 0
+  async init() {
+    this.aggr_id = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
-    await this.getScaDetail()
-    await this.getTableData()
+    await this.getAssetVulDetail()
+    this.syncInfo = {
+      source_type: 2,
+      id: this.aggr_id,
+      create_time: this.assetVulDetail.base_info.first_time,
+      // last_time: this.assetVulDetail.base_info.last_time,
+      type_name: this.assetVulDetail.base_info.vul_type,
+      package_language: this.assetVulDetail.base_info.language,
+      vul_number:
+        (this.assetVulDetail.base_info.cnnvd
+          ? this.assetVulDetail.base_info.cnnvd + ' | '
+          : '') +
+        (this.assetVulDetail.base_info.cnvd
+          ? this.assetVulDetail.base_info.cnvd + ' | '
+          : '') +
+        (this.assetVulDetail.base_info.cve
+          ? this.assetVulDetail.base_info.cve + ' | '
+          : '') +
+        (this.assetVulDetail.base_info.cwe
+          ? this.assetVulDetail.base_info.cwe + ' | '
+          : ''),
+      level_id: this.assetVulDetail.base_info.level,
+      vul_name: this.assetVulDetail.base_info.vul_title,
+      pro_info: this.assetVulDetail.base_info.project_names,
+    }
   }
 
-  private newSelectData() {
-    this.page = 1
-    this.getTableData()
+  async getAssetVulDetail() {
+    const res = await this.services.sca.assetVulDetail({
+      aggr_id: this.aggr_id, //组件列表id
+      vul_package_id: this.selectedId, //组件漏洞id
+    })
+    if (res.status !== 201) {
+      this.$message.error(res.msg)
+      return
+    }
+    this.assetVulDetail = res.data
   }
 
-  private currentChange(val: number) {
-    this.page = val
-    this.getTableData()
+  async created() {
+    this.init()
   }
 
-  private async getTableData() {
+  // private async changeStatus(val: any) {
+  //   const res = await this.services.vuln.changeStatus({
+  //     id: this.selectedId,
+  //     status_id: val,
+  //   })
+  //   if (res.status === 201) {
+  //     this.$message({
+  //       type: 'success',
+  //       message: res.msg,
+  //       showClose: true,
+  //     })
+  //   } else {
+  //     this.$message({
+  //       type: 'error',
+  //       message: res.msg,
+  //       showClose: true,
+  //     })
+  //   }
+  // }
+
+  private async vulnDelete() {
+    this.loadingStart()
+    const { status, msg } = await this.services.vuln.vulnDelete(this.selectedId)
+    this.loadingDone()
+    if (status !== 201) {
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
+    } else {
+      this.$message({
+        type: 'success',
+        message: msg,
+        showClose: true,
+      })
+      this.$router.push('/vuln/vulnList')
+    }
+  }
+
+  private logList: any = []
+  async vullogBtn() {
+    const res = await this.services.vuln.vullog(this.$route.query.id, '2')
+    this.logList = res.status
+    this.logDialogOpen = true
+  }
+  // exportVul() {
+  //   var projectName = this.assetVulDetail.base_info.project_names[0]
+  //   request
+  //     .get(
+  //       `project/export?vid=${this.selectedId}&pid=${this.vulnObj.vul.project_id}`,
+  //       {
+  //         responseType: 'blob',
+  //       }
+  //     )
+  //     .then((res: any) => {
+  //       if (res.type === 'application/json') {
+  //         this.$message.error({
+  //           message: this.$t('views.vulnDetail.exportFail') as string,
+  //           showClose: true,
+  //         })
+  //       } else {
+  //         const blob = new Blob([res], {
+  //           type: 'application/octet-stream',
+  //         })
+  //         const link = document.createElement('a')
+  //         link.href = window.URL.createObjectURL(blob)
+  //         link.download = projectName + '.doc'
+  //         link.click()
+  //         this.$message.success({
+  //           message: this.$t('views.vulnDetail.exportSuccess') as string,
+  //           showClose: true,
+  //         })
+  //       }
+  //     })
+  //     .catch(() => {
+  //       this.$message.error({
+  //         message: this.$t('views.vulnDetail.exportFail') as string,
+  //         showClose: true,
+  //       })
+  //     })
+  // }
+
+  private async recheckVul() {
     const params = {
-      page: this.page,
-      pageSize: 10,
-      language: this.searchObj.language,
-      level: this.searchObj.level,
-      project_name: this.searchObj.project_name,
-      keyword: this.searchObj.keyword,
-      order: this.searchObj.order,
+      ids: this.selectedId.toString(),
     }
-    this.loadingStart()
-    const { status, data, page, msg } = await this.services.sca.scaList(params)
-    this.loadingDone()
+    const { status, msg } = await this.services.vuln.vulRecheck(params)
     if (status !== 201) {
       this.$message({
         type: 'error',
         message: msg,
         showClose: true,
       })
-      return
-    }
-    this.tableData = data
-    this.total = page.alltotal
-  }
-
-  private idChange(id: number) {
-    this.selectedId = id
-    this.getScaDetail()
-  }
-
-  private async getScaDetail() {
-    this.loadingStart()
-    const { data, status, msg } = await this.services.sca.getScaDetail(
-      this.selectedId
-    )
-    this.loadingDone()
-    if (status !== 201) {
+    } else {
       this.$message({
-        type: 'error',
+        type: 'success',
         message: msg,
         showClose: true,
       })
-      return
     }
-    this.scaObj = data
-  }
-
-  private detailShow(row: any) {
-    this.vulDetail = row
-    this.vulDetailDialogShow = true
   }
 }
 </script>
 
+<style>
+.el-table .diy-row {
+  background: #fff;
+  color: #959fb4;
+  font-size: 14px;
+}
+</style>
+
 <style scoped lang="scss">
+.go-back-title {
+  padding-top: 16px;
+  color: #0085ff;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+
 .fixed-warp {
   position: fixed;
   top: 0;
   bottom: 0;
-}
-
-.slider-warp {
-  background: #fff;
-  width: 234px;
-  margin-top: 78px;
-  overflow: auto;
-  height: calc(100vh - 103px);
-  padding-bottom: 40px;
-
-  .titleForm {
-    border-bottom: 1px solid #e6e9ec;
-    padding: 14px 0;
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0 12px;
-  }
-
-  .page-line {
-    height: 41px;
-    padding: 0 12px;
-  }
-
-  .card {
-    width: 100%;
-    height: 72px;
-    padding: 0 12px;
-    cursor: pointer;
-
-    &:hover {
-      background: #eff6ff;
-    }
-
-    .titleLine {
-      width: 100%;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      padding-top: 12px;
-    }
-
-    .infoLine {
-      font-size: 14px;
-      color: #a2a5ab;
-      margin-top: 19px;
-    }
-  }
-
-  .selected {
-    background: #eff6ff;
-  }
-}
-
-.operateCol {
-  position: fixed;
-  overflow: auto;
-  height: calc(100vh - 64px);
-  .operateIcon {
-    font-size: 26px;
-    color: #c5d6e2;
-    cursor: pointer;
-    line-height: 100vh;
-  }
 }
 
 .slider-warp-contract {
@@ -446,45 +547,47 @@ export default class ScaDetail extends VueBase {
 }
 
 .slider-warp-spreadOut {
-  width: 952px;
-  margin-left: 248px;
+  width: 1200px;
 }
 
-.sca-warp {
+.vuln-warp {
   margin-top: 14px;
   min-height: calc(100vh - 104px);
   margin-bottom: 26px;
   background: #fff;
   padding: 0 14px 41px 14px;
 
-  .sca-title {
-    height: 58px;
-    line-height: 58px;
+  .vuln-title {
+    padding-top: 24px;
+    padding-bottom: 10px;
     font-size: 16px;
     color: #38435a;
     font-weight: 600;
     border-bottom: 1px solid #e6e9ec;
-  }
-
-  .sca-info {
-    margin-top: 17px;
-
-    .info-line {
-      color: #959fb4;
-      font-size: 14px;
-      margin-top: 18px;
-
-      &:first-child {
-        margin-top: 0;
-      }
-
-      span {
-        color: #5782db;
-        display: inline-block;
-        vertical-align: middle;
-
+    align-items: flex-start;
+    .btnWarp {
+      margin-left: 20px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-right: 86px;
+      .checkedAllBtn {
+        width: 32px;
+        height: 32px;
+        background: #f2f3f5;
+        border-radius: 2px;
+        border: none;
+        color: #4a72ae;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        margin-left: 8px;
+        &:hover {
+          color: #1a80f2;
+        }
         i {
-          font-size: 14px;
+          line-height: 16px;
         }
       }
     }
@@ -492,33 +595,178 @@ export default class ScaDetail extends VueBase {
 
   .module-title {
     color: #38435a;
+    margin-top: 16px;
+    font-weight: 500;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    &.link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &.has-log {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .get-log {
+      color: #1a80f2;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .linkNum {
+      color: #1a80f2;
+      cursor: pointer;
+    }
+  }
+
+  .infoWarp {
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 16px 0;
+    box-shadow: inset 0px -1px 0px rgba(230, 233, 236, 0.5);
+    .infoLine {
+      margin-top: 16px;
+      .project-name {
+        color: #4a72ae;
+        cursor: pointer;
+      }
+      &:first-child {
+        margin-top: 0;
+      }
+      .info {
+        flex: 1;
+        color: #38435a;
+        .dot {
+          display: inline-block;
+          width: 300px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          vertical-align: bottom;
+        }
+        .label {
+          color: #959fb4;
+          font-size: 14px;
+          i {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+
+  .vulnDesc {
+    color: #38435a;
     font-size: 14px;
-    font-weight: 600;
-    margin-top: 58px;
+    line-height: 22px;
+    margin-top: 16px;
+    box-shadow: inset 0px -1px 0px rgba(230, 233, 236, 0.5);
+    padding-bottom: 16px;
+  }
+
+  .markdownContent {
+    height: 246px;
+    overflow-y: auto;
+    margin-top: 0;
+    padding: 6px;
+    /* 分隔线 */
+    border: 1px solid #e6e9ec;
+    border-radius: 2px;
+    background: #fff;
+    ::v-deeptt {
+      color: red !important;
+      font-style: normal !important;
+    }
+    background: #fff;
+    margin-top: 16px;
+    border-radius: 4px;
   }
 }
 
-.detail {
-  font-size: 14px;
-  color: #a7afb9;
+.confirmDel {
+  width: 124px;
+  height: 38px;
+  line-height: 0;
+  background: #4a72ae;
+  border-radius: 2px;
+  color: #fff;
+}
+
+.cancelDel {
+  width: 124px;
+  height: 38px;
+  border-radius: 2px;
+  border: 1px solid #4a72ae;
+  color: #4a72ae;
+}
+
+.warning-bar {
+  background: rgba(244, 158, 11, 0.1);
+  border-radius: 2px;
+  color: #f49e0b;
+  padding: 8px;
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vulnUrl {
+  color: #1a80f2;
+  margin-top: 16px;
   cursor: pointer;
 }
 
-.detail-module-label {
-  font-size: 14px;
-  color: #959fb4;
-  margin-top: 18px;
+.vulnProject {
+  display: flex;
 }
-.detail-module-content {
-  font-size: 14px;
-  color: #38435a;
+
+.pagination-box {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
 }
-.long-dot {
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 70px;
-  margin-left: 6px;
+
+.log-item {
+  display: flex;
+  box-shadow: inset 0px -1px 0px rgba(230, 233, 236, 0.5);
+  justify-content: space-between;
+  align-items: center;
+  min-height: 40px;
+  .log-item-name {
+    color: #38435a;
+  }
+  .log-item-time {
+    color: #959fb4;
+  }
+}
+.jump {
+  cursor: pointer;
+}
+</style>
+
+<style lang="scss">
+.log-dialog {
+  .el-dialog__header {
+    background: #fafafa;
+    box-shadow: inset 0px -1px 0px rgba(230, 233, 236, 0.5);
+    padding: 16px 24px;
+  }
+  .el-dialog__body {
+    padding: 0px 24px 16px 24px;
+  }
+  .close-btn {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    &:hover {
+      color: #1a80f2;
+    }
+  }
 }
 </style>

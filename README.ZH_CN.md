@@ -1,7 +1,6 @@
 # DongTai-web
-[![django-project](https://img.shields.io/badge/django%20versions-3.0.3-blue)](https://www.djangoproject.com/)
-[![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/huoxianclub/DongTai)
-[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.0.0-lightgrey)](https://github.com/huoxianclub/DongTai-web)
+[![DongTai-project](https://img.shields.io/badge/DongTai%20versions-beta-green)](https://github.com/HXSecurity/DongTai)
+[![DongTai--web](https://img.shields.io/badge/DongTai--web-v1.0.0-lightgrey)](https://github.com/HXSecurity/DongTai-web)
 
 [English](README.md)
 
@@ -13,7 +12,7 @@
 - `DongTai-openapi`用于与`agent`交互，处理agent上报的数据，向agent下发策略，控制agent的运行等
 - `DongTai-engine`用于对`DongTai-openapi`接收到的数据进行分析、处理，计算存在的漏洞和可用的污点调用链等
 - `DongTai-web`为“火线～洞态IAST”的前端项目，负责页面展示
-- `agent`为各语言的数据采集端，从安装探针的项目中采集相对应的数据，发送至`DongTai-openapi`服务
+- `agent`为各语言的数据采集端，从安装Agent的项目中采集相对应的数据，发送至`DongTai-openapi`服务
 
 ## 本地开发
 1.安装`npm`依赖
@@ -47,5 +46,5 @@ $ npm run build
 4.修改nginx配置，设置前端接口对应的后端服务，nginx的配置可参考`nginx.conf`
 
 ### 文档
-- [官方文档](https://hxsecurity.github.io/DongTai-Doc/#/)
-- [快速体验](http://aws.iast.huoxian.cn:8000/login)
+- [官方文档](https://dongtai.io)
+- [快速体验](https://iast.io)

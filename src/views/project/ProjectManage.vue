@@ -1,5 +1,8 @@
 <template>
-  <main class="container">
+  <main class="container manage-container">
+    <div class="top-line flex-row-space-between">
+      {{ $t('views.projectManage.title') }}
+    </div>
     <div class="select-warp flex-row-space-between">
       <div class="flex-column-center">
         <el-button
@@ -7,16 +10,16 @@
           class="projectAdd"
           @click="$router.push('/project/projectEdit')"
         >
-          <i class="iconfont iconxinzengxiangmu-3"></i>
-          {{ $t('views.projectManage.add') }}
+          <i class="iconfont">&#xe6ad;</i>
+          <span>{{ $t('views.projectManage.add') }}</span>
         </el-button>
       </div>
       <div class="flex-column-center">
         <el-input
           v-model="searchObj.name"
           :placeholder="$t('views.projectManage.searchName')"
-          style="width: 462px"
-          size="mini"
+          style="width: 360px"
+          size="small"
           @keyup.enter.native="newSelectData"
         >
           <i
@@ -28,22 +31,15 @@
       </div>
     </div>
     <div class="list-warp">
-      <div class="top-line flex-row-space-between" style="margin-left: 8px">
-        {{ $t('views.projectManage.title') }}
-      </div>
-      <el-table :data="tableData" class="projectList-table" style="border: 1px">
-        <el-table-column
-          width="200px"
-          prop="name"
-          :label="$t('views.projectManage.name')"
-        >
+      <el-table :data="tableData" class="projectList-table">
+        <el-table-column prop="name" :label="$t('views.projectManage.name')">
           <template slot-scope="{ row }">
             <el-tooltip
               class="item"
               effect="dark"
               :content="row.name"
               placement="top"
-              :disabled="row.name.length < 24"
+              :disabled="row.name.length < 44"
             >
               <div
                 class="projectName"
@@ -55,7 +51,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          width="300px"
+          width="480px"
           style="padding-left: 20px"
           :label="$t('views.projectManage.vul')"
         >
@@ -64,52 +60,35 @@
               v-for="item in row.vul_count"
               :key="item.level"
               style="margin-right: 10px"
+              class="level-type"
+              :class="getLevel(item.level)"
             >
-              <i
-                class="iconfont iconyuandianzhong"
-                style="font-size: 12px"
-                :style="
-                  item.level === 1
-                    ? { color: '#DF6060' }
-                    : item.level === 2
-                    ? { color: '#F49E0B' }
-                    : item.level === 3
-                    ? { color: '#2F90EA' }
-                    : item.level === 4
-                    ? { color: '#2F90EA' }
-                    : ''
-                "
-              ></i
-              >{{ item.name }}&nbsp;&nbsp;&nbsp;{{ item.total }}
+              {{ item.name }}&nbsp;&nbsp;&nbsp;{{ item.total }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="agent_count"
-          width="140px"
-          :label="$t('views.projectManage.agent')"
-        ></el-table-column>
-        <el-table-column
-          prop="owner"
-          :label="$t('views.projectManage.owner')"
-        ></el-table-column>
+
         <el-table-column
           prop="latest_time"
+          width="250px"
           :label="$t('views.projectManage.time')"
         ></el-table-column>
         <el-table-column
           :label="$t('views.projectManage.manage')"
-          width="100px"
+          width="120px"
         >
           <template slot-scope="{ row }">
-            <i
-              class="iconfont iconshezhi-2 pIcon"
-              @click="$router.push(`/project/projectEdit/${row.id}`)"
-            ></i>
-            <i
-              class="iconfont iconshanchu-6 pIcon"
-              @click="projectDelete(row.id)"
-            ></i>
+            <div class="table-btn-box">
+              <i
+                class="iconfont iconshezhi-2 pIcon"
+                @click="$router.push(`/project/projectEdit/${row.id}`)"
+              ></i>
+              <span class="l"></span>
+              <i
+                class="iconfont iconshanchu-6 pIcon"
+                @click="projectDelete(row.id)"
+              ></i>
+            </div>
           </template>
         </el-table-column>
       </el-table>
@@ -140,6 +119,21 @@ export default class ProjectManage extends VueBase {
   private tableData: Array<ProjectListParams> = []
   private searchObj = {
     name: '',
+  }
+
+  private getLevel(type: number) {
+    switch (type) {
+      case 1:
+        return 'height'
+      case 2:
+        return 'middle'
+      case 3:
+        return 'low'
+      case 5:
+        return 'info'
+      default:
+        break
+    }
   }
 
   created() {
@@ -188,56 +182,134 @@ export default class ProjectManage extends VueBase {
     )
     this.total = page.alltotal
   }
-
   private async projectDelete(id: number) {
-    const { status, msg } = await this.services.project.projectDelete({ id })
-    if (status !== 201) {
+    this.$confirm(this.$t('views.projectManage.deleteConfirm') as string, '', {
+      confirmButtonText: this.$t('views.projectManage.delete') as string,
+      cancelButtonText: this.$t('views.projectManage.cancel') as string,
+      type: 'warning',
+    }).then(async () => {
+      this.loadingStart()
+      const { status, msg } = await this.services.project.projectDelete({ id })
+      this.loadingDone()
+      if (status !== 201) {
+        this.$message({
+          type: 'error',
+          message: msg,
+          showClose: true,
+        })
+        return
+      }
       this.$message({
-        type: 'error',
-        message: msg,
+        type: 'success',
+        message: this.$t('views.projectManage.deleteSuccess') as string,
         showClose: true,
       })
-      return
-    }
-    await this.getTableData()
+      this.getTableData()
+    })
   }
 }
 </script>
 
 <style scoped lang="scss">
-.select-warp {
-  height: 70px;
-  width: 100%;
-
-  .projectAdd {
-    height: 32px;
-    padding-left: 6px;
-    padding-right: 6px;
-    line-height: 0;
-    background: #ffffff;
-    border-radius: 2px;
-    border: 1px solid #4a72ae;
-    color: #4a72ae;
-  }
-}
-
-.list-warp {
-  width: 100%;
-  background: #fff;
-  padding: 14px;
-  min-height: calc(100vh - 153px);
+.manage-container {
+  margin-top: 16px;
+  padding: 24px;
+  background-color: #fff;
 
   .top-line {
     color: #38435a;
     font-size: 16px;
     font-weight: 600;
-
     img {
       width: 22px;
       height: 22px;
       cursor: pointer;
     }
   }
+  .projectList-table {
+    &.el-table {
+      border-left: 1px solid #e5e6eb;
+      border-right: 1px solid #e5e6eb;
+      border-top: 1px solid #e5e6eb;
+      ::v-deepth {
+        background: #f2f3f5;
+        .cell {
+          color: #38435a;
+          .el-checkbox {
+            margin-left: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  .level-type {
+    height: 24px;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 32px;
+    line-height: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    &.height {
+      background: rgba(229, 99, 99, 0.1);
+      color: #e56363;
+    }
+    &.middle {
+      background: rgba(244, 158, 11, 0.1);
+      color: #f49e0b;
+    }
+    &.low {
+      background: rgba(47, 144, 234, 0.1);
+      color: #2f90ea;
+    }
+    &.info {
+      background: rgba(172, 180, 196, 0.1);
+      color: #abb2c0;
+    }
+  }
+  .table-btn-box {
+    display: flex;
+    align-items: center;
+    color: #1a80f2;
+    .l {
+      height: 10px;
+      border-left: 1px solid #b6bbc5;
+    }
+    .iconshezhi-2 {
+      margin-right: 12px;
+    }
+    .iconshanchu-6 {
+      margin-left: 12px;
+    }
+  }
+}
+.select-warp {
+  margin: 16px 0;
+  width: 100%;
+  .projectAdd {
+    padding: 0 16px;
+    background: #1a80f2;
+    border-radius: 2px;
+    border: 0px solid #1a80f2;
+    color: #ffffff;
+    height: 32px;
+    display: flex;
+    font-size: 14px;
+    align-items: center;
+    justify-content: center;
+    .iconfont {
+      font-size: 14px;
+      margin-right: 4px;
+    }
+  }
+}
+
+.list-warp {
+  width: 100%;
+  background: #fff;
+  min-height: calc(100vh - 153px);
 }
 .pIcon {
   margin-right: 10px;
@@ -249,13 +321,11 @@ export default class ProjectManage extends VueBase {
 
 .projectName {
   width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // white-space: nowrap;
   cursor: pointer;
-  &:hover {
-    color: #4b99f1;
-  }
+  color: #4b99f1;
 }
 .pagination {
   display: flex;

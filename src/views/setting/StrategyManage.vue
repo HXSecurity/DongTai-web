@@ -1,71 +1,62 @@
 <template>
   <div class="content-warp">
-    <el-table :data="tableData" class="strategyManageTable">
+    <div class="total-bar">
+      <el-button
+        v-if="userInfo.role === 1 || userInfo.role === 2"
+        size="small"
+        class="btn-border"
+        icon="el-icon-circle-plus-outline"
+        @click="toPath(undefined, undefined)"
+        >{{ $t('views.strategyManage.addTitle') }}</el-button
+      >
+      <div class="search-box">
+        <el-input
+          v-model="searchValue"
+          size="small"
+          :placeholder="$t('views.strategyManage.searchValue')"
+          @keyup.enter.native="getTableData"
+        ></el-input>
+        <el-button class="btn search" @click="getTableData">
+          {{ $t('views.sensitiveManage.search') }}
+        </el-button>
+      </div>
+    </div>
+    <el-table :data="tableData" class="strategyManageTable" border>
       <el-table-column
         :label="$t('views.strategyManage.name')"
         prop="vul_name"
-        width="160px"
+        min-width="260px"
       >
         <template slot-scope="{ row }">
-          <div v-if="!row.isEdit" class="two-line">{{ row.vul_name }}</div>
-          <el-input
-            v-else
-            v-model="row.vul_name"
-            type="textarea"
-            autosize
-            resize="none"
-            size="mini"
-          ></el-input>
-        </template>
-      </el-table-column>
-      <el-table-column
-        :label="$t('views.strategyManage.detail')"
-        prop="vul_desc"
-        min-width="300px"
-      >
-        <template slot-scope="{ row }">
-          <div v-if="!row.isEdit">{{ row.vul_desc }}</div>
-          <el-input
-            v-else
-            v-model="row.vul_desc"
-            type="textarea"
-            autosize
-            resize="none"
-            size="mini"
-          ></el-input>
+          <div class="two-line vul_name" @click="toPath(1, row.id)">
+            {{ row.vul_name }}
+          </div>
         </template>
       </el-table-column>
 
       <el-table-column
-        :label="$t('views.strategyManage.fix')"
-        prop="vul_fix"
+        :label="$t('views.strategyManage.level')"
+        prop="level_id"
         min-width="200px"
         align="center"
       >
         <template slot-scope="{ row }">
-          <div v-if="!row.isEdit">
-            {{ row.vul_fix || $t('views.strategyManage.no') }}
+          <div>
+            {{ vul_levels_map[row.level_id] }}
           </div>
-          <el-input
-            v-else
-            v-model="row.vul_fix"
-            type="textarea"
-            resize="none"
-            autosize
-            size="mini"
-          ></el-input>
         </template>
       </el-table-column>
 
       <el-table-column
-        v-if="userInfo.role === 1 || userInfo.role === 2"
         :label="$t('views.strategyManage.status')"
         prop="state"
-        width="100px"
+        min-width="140px"
+        align="center"
       >
         <template slot-scope="{ row }">
           <div @click="stateChange(row.id, row.state)">
             <el-switch
+              :disabled="userInfo.role !== 1 && userInfo.role !== 2"
               :value="row.state === 'enable'"
               active-color="#1A80F2"
               inactive-color="#C1C9D3"
@@ -77,35 +68,44 @@
       <el-table-column
         v-if="userInfo.role === 1 || userInfo.role === 2"
         :label="$t('views.strategyManage.settings')"
-        width="160px"
+        min-width="160px"
+        align="center"
       >
         <template slot-scope="{ row }">
-          <el-button
-            v-if="!row.isEdit"
-            size="small"
-            class="btn"
-            @click="editStart(row)"
-            >{{ $t('views.strategyManage.edit') }}</el-button
-          >
-          <template v-else>
-            <el-button size="small" class="btn" @click="editEnd(row, true)">{{
-              $t('views.strategyManage.enter')
-            }}</el-button>
-            <el-button size="small" class="btn" @click="editEnd(row, false)">{{
-              $t('views.strategyManage.clear')
-            }}</el-button>
-          </template>
-
-          <el-button
-            v-if="!row.isEdit"
-            size="small"
-            class="btn"
-            @click="deleteManage(row)"
-            >{{ $t('views.strategyManage.del') }}</el-button
-          >
+          <div class="table-btn-box">
+            <el-button
+              v-if="!row.isEdit"
+              type="text"
+              size="small"
+              style="color: #4a72ae"
+              @click="toPath(undefined, row.id)"
+              >{{ $t('views.strategyManage.edit') }}</el-button
+            >
+            <span class="l"> | </span>
+            <el-button
+              style="color: #f56262"
+              size="small"
+              type="text"
+              @click="deleteManage(row)"
+              >{{ $t('views.strategyManage.del') }}</el-button
+            >
+          </div>
         </template>
       </el-table-column>
     </el-table>
+    <div class="pagination-box">
+      <el-pagination
+        :current-page="page"
+        background
+        :page-sizes="[10, 20, 50, 100]"
+        :page-size="page_size"
+        layout=" prev, pager, next, jumper, sizes, total"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
+    </div>
   </div>
 </template>
 
@@ -117,26 +117,119 @@ import { StrategyListObj } from '@/views/setting/types'
 @Component({ name: 'StrategyManage' })
 export default class StrategyManage extends VueBase {
   private tableData: Array<StrategyListObj> = []
-
-  created() {
-    this.getTableData()
+  private showDialog = false
+  private searchValue = ''
+  private vul_levels = []
+  private vul_levels_map = {}
+  private page = 1
+  private page_size = 20
+  private total = 0
+  private dialogForm: any = {
+    vul_name: '',
+    vul_type: '',
+    state: '',
+    vul_desc: '',
+    level_id: undefined,
+    vul_fix: '',
   }
-  get userInfo(): { username: string } {
+  private toPath(view: any, id: any) {
+    this.$router.push({
+      name: 'strategy',
+      query: {
+        view,
+        id,
+      },
+    })
+  }
+  async getVulLevels() {
+    this.loadingStart()
+    const res = await this.services.setting.vul_levels()
+    this.loadingDone()
+    if (res.status === 201) {
+      this.vul_levels = res.data
+      this.vul_levels.forEach((item: any) => {
+        this.$set(this.vul_levels_map, item.id, item.name_value)
+      })
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+  async created() {
+    await this.getVulLevels()
+    await this.getTableData()
+  }
+  addStrategy() {
+    this.showDialog = true
+  }
+  editStrategy(row: any) {
+    this.dialogForm = JSON.parse(JSON.stringify(row))
+    this.showDialog = true
+  }
+  dialogEnter() {
+    if (this.dialogForm.id) {
+      this.editStrategyApi()
+    } else {
+      this.addStrategyApi()
+    }
+  }
+  async addStrategyApi() {
+    const { status, msg } = await this.services.setting.addManage({
+      vul_name: this.dialogForm.vul_name,
+      vul_desc: this.dialogForm.vul_desc,
+      vul_fix: this.dialogForm.vul_fix,
+      vul_type: this.dialogForm.vul_name,
+      level_id: this.dialogForm.level_id,
+      state: this.dialogForm.state,
+    })
+    if (status === 201) {
+      this.$message.success(msg)
+      this.getTableData()
+      this.dialogClose()
+    } else {
+      this.$message.error(msg)
+    }
+  }
+  async editStrategyApi() {
+    this.loadingStart()
+    const { status, msg } = await this.services.setting.updateManage(
+      this.dialogForm.id,
+      {
+        vul_name: this.dialogForm.vul_name,
+        vul_desc: this.dialogForm.vul_desc,
+        vul_fix: this.dialogForm.vul_fix,
+        vul_type: this.dialogForm.vul_name,
+        level_id: this.dialogForm.level_id,
+        state: this.dialogForm.state,
+      }
+    )
+    this.loadingDone()
+    if (status === 201) {
+      this.$message.success(msg)
+      this.getTableData()
+      this.dialogClose()
+    } else {
+      this.$message.error(msg)
+    }
+  }
+  dialogClose() {
+    this.showDialog = false
+    this.dialogForm = {
+      vul_name: '',
+      vul_type: '',
+      state: '',
+      vul_desc: '',
+      level_id: undefined,
+      vul_fix: '',
+    }
+  }
+  get userInfo(): { username: string; role: number } {
     return this.$store.getters.userInfo
   }
 
   private backItem = {}
   private editStart(item: any) {
-    if (this.tableData.some((i: any) => i.isEdit)) {
-      this.$message({
-        type: 'warning',
-        message: this.$t('views.strategyManage.warning') as string,
-        showClose: true,
-      })
-      return
-    }
-    this.backItem = JSON.parse(JSON.stringify(item))
-    this.$set(item, 'isEdit', true)
+    this.showDialog = true
+    this.dialogForm = JSON.parse(JSON.stringify(item))
   }
 
   private async deleteManage(item: any) {
@@ -195,9 +288,24 @@ export default class StrategyManage extends VueBase {
     this.$set(item, 'isEdit', false)
   }
 
+  private async handleCurrentChange(page: number) {
+    this.page = page
+    await this.getTableData()
+  }
+
+  private handleSizeChange(val: number) {
+    this.page_size = val
+    this.getTableData()
+  }
+
   private async getTableData() {
     this.loadingStart()
-    const { status, msg, data } = await this.services.setting.strategyList()
+    const { status, msg, data, page } =
+      await this.services.setting.strategyList(false, {
+        page: this.page,
+        page_size: this.page_size,
+        name: this.searchValue,
+      })
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -207,10 +315,19 @@ export default class StrategyManage extends VueBase {
       })
       return
     }
+    if (data.length === 0 && this.page > 1) {
+      this.page--
+      await this.getTableData()
+      return
+    }
+    this.total = page.alltotal
     this.tableData = data
   }
 
   private async stateChange(id: number, state: string) {
+    if (this.userInfo.role !== 1 && this.userInfo.role !== 2) {
+      return
+    }
     if (state === 'enable') {
       this.loadingStart()
       const { status, msg } = await this.services.setting.strategyDisable(id)
@@ -244,6 +361,10 @@ export default class StrategyManage extends VueBase {
 </script>
 
 <style scoped lang="scss">
+.vul_name {
+  color: rgba(26, 128, 242, 1);
+  cursor: pointer;
+}
 .content-warp {
   padding: 38px 14px 40px 14px;
 }
@@ -251,6 +372,14 @@ export default class StrategyManage extends VueBase {
 .install {
   cursor: pointer;
   color: #a7afb9;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  ::v-deep.el-input__inner {
+    border-right: none;
+    border-radius: 0;
+  }
 }
 
 .uninstall {
@@ -264,15 +393,52 @@ export default class StrategyManage extends VueBase {
   background: #4a72ae;
   border-radius: 2px;
   color: #fff;
+  &.search {
+    height: 34px;
+    margin-left: -1px;
+  }
 }
 .two-line {
-  letter-spacing: 0;
-  width: 140px;
-  overflow: hidden;
-  display: -webkit-box;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2; /*要显示的行数*/
-  -webkit-box-orient: vertical;
-  font-size: 12px;
+  font-size: 14px;
+}
+.total-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.pagination-box {
+  padding-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+.btn-border {
+  border-radius: 2px;
+  color: #4a72ae;
+  border-color: #4a72ae;
+}
+.strategyManageTable {
+  margin-top: 16px;
+  &.el-table {
+    ::v-deepth {
+      background: #f6f8fa;
+    }
+  }
+}
+.table-btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .el-button {
+    font-size: 14px;
+  }
+  .l {
+    color: #38435a;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
+  }
 }
 </style>

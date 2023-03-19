@@ -25,6 +25,20 @@ const isWhiteList = (path: string) => {
 router.beforeEach(async (to: any, from: any, next: any) => {
   Nprogress.start()
 
+  if (!getToken() && !isWhiteList(to.path)) {
+    store.dispatch('user/clearInfo')
+    next('/login')
+    // setTimeout(() => {
+    //   window.location.reload()
+    // }, 100)
+    return
+  }
+
+  if (!getToken() && isWhiteList(to.path)) {
+    next()
+    return
+  }
+
   if (getToken() && !store.getters.userInfo) {
     try {
       await store.dispatch('user/getUserInfo')
@@ -32,8 +46,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
       await store.dispatch('user/logOut')
     }
   }
-
-  if (getToken() && to.fullPath === '/login') {
+  if (getToken() && to.path === '/login') {
     next({ path: '/project' })
     return
   }
@@ -45,17 +58,6 @@ router.beforeEach(async (to: any, from: any, next: any) => {
       reloadNum++
       next({ ...to, replace: true })
     }
-    return
-  }
-
-  if (!getToken() && !isWhiteList(to.fullPath)) {
-    store.dispatch('user/clearInfo')
-    next('/login')
-    return
-  }
-
-  if (!getToken() && isWhiteList(to.fullPath)) {
-    next()
     return
   }
 })

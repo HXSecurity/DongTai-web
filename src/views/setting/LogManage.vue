@@ -17,7 +17,7 @@
         </el-button>
       </div>
     </div>
-    <el-table class="logListTable" :data="tableData">
+    <el-table class="logListTable" :data="tableData" border>
       <el-table-column width="40px">
         <template slot-scope="{ row }">
           <div @click.prevent="selectIdChange(row.log_id)">
@@ -159,10 +159,11 @@ export default class LogManage extends VueBase {
       page: this.page,
       pageSize: this.pageSize,
     }
-
+    this.loadingStart()
     const { status, msg, data, total } = await this.services.setting.logList(
       params
     )
+    this.loadingDone()
     if (status !== 201) {
       this.$message({
         type: 'error',
@@ -206,6 +207,7 @@ export default class LogManage extends VueBase {
       showClose: true,
     })
     this.deleteDialogOpen = false
+    this.selectAllPage = false
     await this.getTableData()
   }
   private async logClear() {
@@ -284,5 +286,13 @@ main {
   border-radius: 2px;
   border: 1px solid #4a72ae;
   color: #4a72ae;
+}
+
+.logListTable {
+  &.el-table {
+    ::v-deepth {
+      background: #f6f8fa;
+    }
+  }
 }
 </style>

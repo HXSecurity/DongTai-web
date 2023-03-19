@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="dagre-com">
+    <div class="minimap" :id="'minimap'+poolId"></div>
     <div style="position: relative" ref="container" :id="'container'+poolId"></div>
   </div>
 </template>
@@ -28,6 +29,22 @@ export default class Dagre extends Vue {
 
 
   graphInit() {
+    const nodeMap = {}
+    for(let i=0;i<this.initData.nodes.length;i++){
+        const item = this.initData.nodes[i]
+       item.id = "node"+item.id
+       if(nodeMap[item.id]){
+         this.initData.nodes.splice(i,1)
+         i--
+       }else{
+         nodeMap[item.id] = true
+       }
+    }
+     this.initData.edges.forEach((item: any) => {
+      item.id = "edge"+item.id
+      item.source = "node"+item.source
+      item.target = "node"+item.target
+      })
     const fittingString = (str: string, maxWidth: number, fontSize: number) => {
       let currentWidth = 0
       let res = str
@@ -94,10 +111,16 @@ export default class Dagre extends Vue {
       } as ShapeOptions,
       'single-node'
     )
+    const Minimap = new G6.Minimap({
+      container: 'minimap'+this.poolId,
+      size: [200,200],
+    });
+
     const graph = new G6.Graph({
       container: 'container'+this.poolId,
       width: this.width || 1150,
       height: this.boxHeight || 290,
+      plugins: [Minimap],
       layout: {
         type: 'dagre',
         nodesepFunc: (d: { id: string; }) => {
@@ -198,5 +221,16 @@ export default class Dagre extends Vue {
   color: #fff;
   background-color: #000;
   padding: 2px 8px;
+}
+.dagre-com{
+  position: relative;
+}
+.minimap{
+  position: absolute;
+  z-index: 4;
+  right:12px;
+  top:12px;
+  background: #fff;
+  border: 1px solid #D3DBE6;
 }
 </style>

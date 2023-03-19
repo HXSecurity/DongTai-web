@@ -35,7 +35,11 @@
         ></el-table-column>
         <el-table-column :label="$t('views.userList.role')" prop="is_superuser">
           <template slot-scope="{ row }">
-            {{ row.is_superuser ? $t('views.userList.admin') : $t('views.userList.user') }}
+            {{
+              row.is_superuser
+                ? $t('views.userList.admin')
+                : $t('views.userList.user')
+            }}
           </template>
         </el-table-column>
         <el-table-column
@@ -104,8 +108,14 @@
             clearable
             style="width: 400px"
           >
-            <el-option :label="$t('views.userList.admin')" :value="1"></el-option>
-            <el-option :label="$t('views.userList.user')" :value="0"></el-option>
+            <el-option
+              :label="$t('views.userList.admin')"
+              :value="1"
+            ></el-option>
+            <el-option
+              :label="$t('views.userList.user')"
+              :value="0"
+            ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="$t('views.userList.department')">

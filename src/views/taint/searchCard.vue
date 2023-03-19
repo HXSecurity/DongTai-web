@@ -2,6 +2,7 @@
   <div class="search-card">
     <div class="title">
       <span
+        :title="info.method_pools.url"
         class="title-url pointer"
         @click="$router.push(`/taint/poolDetail/${info.method_pools.id}`)"
       >
@@ -35,7 +36,7 @@
         >
         </span>
       </el-tooltip>
-      <div style="flex: 1; text-align: right">
+      <div style="flex: 1; text-align: right; min-width: 140px">
         {{ formatTimestamp(info.method_pools.update_time) }}
       </div>
       <el-button
@@ -255,7 +256,11 @@ export default class SearchCard extends VueBase {
   @Prop() showGraph: boolean | undefined
   @Prop() isApi: boolean | undefined
   formatTimestamp(time: number) {
-    return formatTimestamp(time)
+    if (time) {
+      return formatTimestamp(time)
+    } else {
+      return ''
+    }
   }
   private isEdit = false
   private reqStr = ''
@@ -383,6 +388,7 @@ export default class SearchCard extends VueBase {
   }
 
   private async send() {
+    const str = this.reqStr.replaceAll('&lt;', '<')
     this.loadingStart()
     const res = await this.services.taint.replay({
       methodPoolId: this.isApi
@@ -390,7 +396,7 @@ export default class SearchCard extends VueBase {
         : this.$route.params.id,
       agent_id:
         this.info.method_pools.id > -1 ? undefined : this.info.relations.agent,
-      replayRequest: this.reqStr,
+      replayRequest: str,
       replay_type: this.isApi ? 3 : undefined,
     })
     this.loadingDone()
@@ -437,6 +443,17 @@ export default class SearchCard extends VueBase {
 <style scoped lang="scss">
 .pointer {
   cursor: pointer;
+}
+.title-url {
+  max-width: 800px;
+  word-break: break-all;
+  text-overflow: -o-ellipsis-lastline;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 .search-card {
   width: 100%;
@@ -511,19 +528,19 @@ export default class SearchCard extends VueBase {
   .tabs {
     padding: 0 20px;
     border-bottom: 1px solid #c8e0ff;
-    /deep/.el-tabs__nav-wrap::after {
+    ::v-deep.el-tabs__nav-wrap::after {
       background-color: #fff;
     }
-    /deep/.el-tabs__header {
+    ::v-deep.el-tabs__header {
       margin: 0 0 1px;
     }
-    /deep/.el-tabs__item.is-active {
+    ::v-deep.el-tabs__item.is-active {
       color: #1a80f2;
     }
-    /deep/.el-tabs__active-bar {
+    ::v-deep.el-tabs__active-bar {
       color: #1a80f2;
     }
-    /deep/.el-tabs__item {
+    ::v-deep.el-tabs__item {
       color: #38435a;
     }
   }
@@ -593,7 +610,7 @@ export default class SearchCard extends VueBase {
     background: #f56262;
   }
 }
-/deep/tt {
+::v-deeptt {
   color: red !important;
 }
 .card-btn {
@@ -609,7 +626,7 @@ export default class SearchCard extends VueBase {
   justify-content: center;
   color: #ffffff;
 }
-/deep/.el-textarea__inner {
+::v-deep.el-textarea__inner {
   border: none;
   resize: none;
 }

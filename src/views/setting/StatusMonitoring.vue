@@ -61,8 +61,8 @@
           <div slot="header" class="clearfix">
             <span>
               <b>{{
-                $t('views.statusMonitoring.engine_monitoring_indicators')
-              }}</b>
+                  $t('views.statusMonitoring.engine_monitoring_indicators')
+                }}</b>
             </span>
             <!-- <el-button style="float: right; padding: 3px 0" type="text"
               >操作按钮</el-button
@@ -83,34 +83,7 @@
         </el-card>
       </el-col>
     </el-row>
-    <!-- <el-row>
-      <el-col :span="12">
-        <el-card class="box-card" shadow="hover">
-          <div slot="header" class="clearfix">
-            <span>卡片名称</span>
-            <el-button style="float: right; padding: 3px 0" type="text"
-              >操作按钮</el-button
-            >
-          </div>
-          <div v-for="o in 3" :key="o" class="text item">
-            {{ '列表内容 ' + o }}
-          </div>
-        </el-card>
-      </el-col>
-      <el-col :span="12">
-        <el-card class="box-card" shadow="hover">
-          <div slot="header" class="clearfix">
-            <span>卡片名称</span>
-            <el-button style="float: right; padding: 3px 0" type="text"
-              >操作按钮</el-button
-            >
-          </div>
-          <div v-for="o in 3" :key="o" class="text item">
-            {{ '列表内容 ' + o }}
-          </div>
-        </el-card>
-      </el-col>
-    </el-row> -->
+
   </div>
 </template>
 
@@ -118,7 +91,6 @@
 import VueBase from '@/VueBase'
 import { Component } from 'vue-property-decorator'
 import { formatTimestamp } from '@/utils/utils'
-
 @Component({
   name: 'StatusMonitoring',
   filters: {
@@ -141,6 +113,15 @@ export default class StatusMonitoring extends VueBase {
     },
     engine_monitoring_indicators: [],
   }
+
+  private cache = 1
+  private cacheIo = false
+  private cacheTime = '00:00'
+
+  private cacheTimeChange(date: Date) {
+    console.log(date)
+  }
+
   private async getHealth() {
     this.loadingStart()
     const res = await this.services.setting.health()
@@ -161,6 +142,8 @@ export default class StatusMonitoring extends VueBase {
     }
     this.healthData.oss = res.data.oss
   }
+  // 保持变更
+
   created() {
     this.getHealth()
   }
@@ -202,6 +185,8 @@ export default class StatusMonitoring extends VueBase {
     margin: 10px;
     i {
       cursor: pointer;
+    }
+    .el-icon-refresh {
       position: absolute;
       right: 10px;
       top: 10px;
@@ -212,5 +197,15 @@ export default class StatusMonitoring extends VueBase {
       }
     }
   }
+  .clear-cache {
+    display: flex;
+    justify-content: space-between;
+  }
+  .header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 </style>
+

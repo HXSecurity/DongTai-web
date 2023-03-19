@@ -9,7 +9,7 @@
           :placeholder="$t('views.hookPage.selectType')"
           filterable
           clearab
-          @change="getTable"
+          @change="handleCurrentChange(1)"
         >
           <el-option
             v-for="item in types"
@@ -24,17 +24,19 @@
           style="width: 260px"
           class="search-input"
           :placeholder="$t('views.hookPage.searchDesc')"
+          @keyup.enter.native="handleCurrentChange(1)"
         >
           <el-button
             slot="append"
             icon="el-icon-search"
-            @click="getTable"
+            @click="handleCurrentChange(1)"
           ></el-button>
         </el-input>
       </div>
       <div>
         <el-button
           size="small"
+          style="visibility: hidden"
           class="resetAllBtn"
           @click="hookTypeDialog = true"
           ><i class="el-icon-plus"></i>
@@ -57,25 +59,30 @@
           size="small"
           class="resetAllBtn open"
           @click="changeStatusBatch('enable')"
-          >{{ $t('views.hookPage.on') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.on') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn stop"
           @click="changeStatusBatch('disable')"
-          >{{ $t('views.hookPage.off') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.off') }}</el-button
         >
         <el-button
           size="small"
           class="resetAllBtn delete"
           @click="changeStatusBatch('delete')"
-          >{{ $t('views.hookPage.del') }}</el-button
+          >{{ multipleSelection.length ? '' : $t('views.hookPage.all')
+          }}{{ $t('views.hookPage.del') }}</el-button
         >
       </div>
     </div>
     <el-table
+      class="hookTable"
       :data="tableData"
       style="width: 100%"
+      border
       :header-row-style="{
         color: '#000',
         fontWeight: 600,
@@ -177,31 +184,34 @@
       <el-table-column
         prop=""
         :label="$t('views.hookPage.address')"
-        width="100"
+        width="200"
         align="center"
         :fixed="tableData.length ? 'right' : false"
       >
         <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            style="color: #4a72ae"
-            @click="editRow(scope.row)"
-          >
-            {{ $t('views.hookPage.edit') }}
-          </el-button>
-          <el-popconfirm
-            :title="$t('views.hookPage.delpop')"
-            @confirm="changeStatus(scope.row, 'delete')"
-          >
+          <div class="table-btn-box">
             <el-button
-              slot="reference"
-              size="small"
-              style="margin-left: 6px; color: #f56262"
               type="text"
-              >{{ $t('views.hookPage.del') }}</el-button
+              size="small"
+              style="color: #4a72ae"
+              @click="editRow(scope.row)"
             >
-          </el-popconfirm>
+              {{ $t('views.hookPage.edit') }}
+            </el-button>
+            <span class="l"> | </span>
+            <el-popconfirm
+              :title="$t('views.hookPage.delpop')"
+              @confirm="changeStatus(scope.row, 'delete')"
+            >
+              <el-button
+                slot="reference"
+                size="small"
+                style="color: #f56262"
+                type="text"
+                >{{ $t('views.hookPage.del') }}</el-button
+              >
+            </el-popconfirm>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -402,6 +412,14 @@ export default class HookTable extends VueBase {
   @Prop({ default: '0', type: String }) ruleType!: string
   @Prop({ default: 1, type: Number }) activeLanguage!: number
   @Prop({ default: '', type: String }) activeLanguageName!: string
+  @Prop({
+    default: function () {
+      return true
+    },
+    type: Function,
+  })
+  getBase!: any
+
   keyword = ''
   hookTypeDialog = false
   hookDialog = false
@@ -465,35 +483,36 @@ export default class HookTable extends VueBase {
         cancelButtonText: this.$t('views.hookPage.clear') as string,
         type: 'warning',
       }
-    ).then(async () => {
-      if (this.multipleSelection.length === 0) {
-        this.$message({
-          type: 'warning',
-          message: this.$t('views.hookPage.changeWarning') as string,
-          showClose: true,
+    )
+      .then(async () => {
+        if (this.multipleSelection.length === 0) {
+          this.changeStatusAll(op)
+          return
+        }
+        const ids = this.multipleSelection.map((item: any) => item.id)
+        const { status, msg } = await this.services.setting.changeStatusBatch({
+          ids: String(ids),
+          op,
         })
-        return
-      }
-      const ids = this.multipleSelection.map((item: any) => item.id)
-      const { status, msg } = await this.services.setting.changeStatusBatch({
-        ids: String(ids),
-        op,
-      })
-      if (status !== 201) {
+        if (status !== 201) {
+          this.$message({
+            type: 'error',
+            message: msg,
+            showClose: true,
+          })
+          return
+        }
         this.$message({
-          type: 'error',
+          type: 'success',
           message: msg,
           showClose: true,
         })
-        return
-      }
-      this.$message({
-        type: 'success',
-        message: msg,
-        showClose: true,
+        await this.getBase()
+        await this.getTable()
       })
-      await this.getTable()
-    })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   splitAndIn(str: string, key: string) {
@@ -620,6 +639,33 @@ export default class HookTable extends VueBase {
     await this.getTable()
   }
 
+  async changeStatusAll(status: string) {
+    this.loadingStart()
+    const obj = await this.services.setting.changeStatus({
+      scope: 'all',
+      op: status,
+      language_id: this.activeLanguage,
+      hook_rule_type: this.ruleType,
+    })
+    this.loadingDone()
+    if (obj.status !== 201) {
+      this.$message({
+        showClose: true,
+        message: obj.msg,
+        type: 'error',
+      })
+      return
+    }
+    this.$message({
+      showClose: true,
+      message: obj.msg,
+      type: 'success',
+    })
+    this.currentPage = 1
+    await this.getBase()
+    await this.getTable()
+  }
+
   async changeStatus(row: any, status = '') {
     this.loadingStart()
     const obj = await this.services.setting.changeStatus({
@@ -635,6 +681,7 @@ export default class HookTable extends VueBase {
       })
       return
     }
+    await this.getBase()
     await this.getTable()
   }
 
@@ -654,6 +701,7 @@ export default class HookTable extends VueBase {
       this.hookType
     )
     this.loadingDone()
+    debugger
     if (status !== 201) {
       this.$message({
         type: 'error',
@@ -662,6 +710,7 @@ export default class HookTable extends VueBase {
       })
       return
     }
+    debugger
     await this.getTypes()
     this.clearHookType()
   }
@@ -717,6 +766,7 @@ export default class HookTable extends VueBase {
         rule_target: '',
         inherit: this.hook.inherit,
         track: this.hook.track,
+        language_id: this.activeLanguage,
       })
 
       this.loadingDone()
@@ -740,6 +790,7 @@ export default class HookTable extends VueBase {
         rule_target: '',
         inherit: this.hook.inherit,
         track: this.hook.track,
+        language_id: this.activeLanguage,
       })
 
       this.loadingDone()
@@ -751,6 +802,7 @@ export default class HookTable extends VueBase {
         })
         return
       }
+      await this.getBase()
       await this.getTable()
       this.clearHook()
     }
@@ -761,19 +813,15 @@ export default class HookTable extends VueBase {
   }
   async getTable() {
     this.loadingStart()
-    const {
-      status,
-      msg,
-      data,
-      page,
-    } = await this.services.setting.hookRuleList({
-      page: this.currentPage,
-      pageSize: this.pageSize,
-      type: this.ruleType,
-      strategy_type: this.rule_type,
-      language_id: this.activeLanguage,
-      keyword: this.keyword,
-    })
+    const { status, msg, data, page } =
+      await this.services.setting.hookRuleList({
+        page: this.currentPage,
+        pageSize: this.pageSize,
+        type: this.ruleType,
+        strategy_type: this.rule_type,
+        language_id: this.activeLanguage,
+        keyword: this.keyword,
+      })
     this.loadingDone()
     if (status !== 201) {
       this.$message({
@@ -784,6 +832,11 @@ export default class HookTable extends VueBase {
       return
     }
     this.total = page.alltotal
+    if (data.length === 0 && this.currentPage > 1) {
+      this.currentPage--
+      await this.getTable()
+      return
+    }
     this.tableData = data
   }
   handleSizeChange(val: number) {
@@ -853,7 +906,34 @@ export default class HookTable extends VueBase {
     padding-bottom: 6px;
   }
 }
-/deep/.el-table th {
+::v-deep.el-table th {
   background: #f8f9fb;
+}
+
+.hookTable {
+  &.el-table {
+    ::v-deepth {
+      background: #f6f8fa;
+    }
+  }
+}
+.table-btn-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  .el-button {
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+  .l {
+    color: #38435a;
+    line-height: 14px;
+    padding: 4px 4px 8px 4px;
+    display: inline-block;
+  }
+  .el-button + .el-button {
+    margin-left: 0;
+  }
 }
 </style>

@@ -11,14 +11,6 @@
       >
         <el-option :label="$t('views.search.url')" value="url"></el-option>
         <el-option
-          :label="$t('views.search.signature')"
-          value="signature"
-        ></el-option>
-        <el-option
-          :label="$t('views.search.sinkvalues')"
-          value="sinkvalues"
-        ></el-option>
-        <el-option
           :label="$t('views.search.req_header_fs')"
           value="req_header_fs"
         ></el-option>
@@ -288,12 +280,12 @@ export default class SearchBar extends VueBase {
   .flex-item {
     align-items: center;
     display: flex;
-    /deep/.el-input__inner {
+    ::v-deep.el-input__inner {
       border-radius: 0;
       border-color: #c8e0ff;
     }
     .input-with-select {
-      /deep/.el-input__inner {
+      ::v-deep.el-input__inner {
         border-left: none;
       }
     }
@@ -301,7 +293,7 @@ export default class SearchBar extends VueBase {
       &.el-input__inner {
         border-left: none;
       }
-      /deep/.el-range-input {
+      ::v-deep.el-range-input {
         width: 45% !important;
       }
     }

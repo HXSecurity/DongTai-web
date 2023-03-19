@@ -41,6 +41,7 @@
         >
           <HookTable
             v-if="type === '2'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
@@ -52,6 +53,7 @@
         >
           <HookTable
             v-if="type === '1'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
@@ -63,6 +65,7 @@
         >
           <HookTable
             v-if="type === '3'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
@@ -74,6 +77,16 @@
         >
           <DangerTable
             v-if="type === '4'"
+            :get-base="getBase"
+            :active-language="activeLanguage"
+            :active-language-name="activeLanguageName"
+            :rule-type="type"
+          />
+        </el-tab-pane>
+        <el-tab-pane label="主动验证" name="5" class="info-tab">
+          <VulnTable
+            v-if="type === '5'"
+            :get-base="getBase"
             :active-language="activeLanguage"
             :active-language-name="activeLanguageName"
             :rule-type="type"
@@ -88,19 +101,21 @@
 import { Component } from 'vue-property-decorator'
 import VueBase from '@/VueBase'
 import DangerTable from '@/views/setting/components/dangerTable.vue'
+import VulnTable from '@/views/setting/components/vulnTable.vue'
 import HookTable from '@/views/setting/components/hookTable.vue'
 @Component({
   name: 'HookRule',
   components: {
     DangerTable,
     HookTable,
+    VulnTable,
   },
 })
 export default class ChangePassword extends VueBase {
   activeLanguage = 0
   activeLanguageName = ''
   languageOptions = []
-  reflash = true
+  reflash = false
   changeLanguage(item: any) {
     this.activeLanguage = item.id
     this.activeLanguageName = item.name
@@ -148,7 +163,10 @@ export default class ChangePassword extends VueBase {
     this.activeLanguage = data[0].id
     this.activeLanguageName = data[0].name
     this.type = '2'
-    this.getBase()
+    this.$nextTick(() => {
+      this.getBase()
+      this.reflash = true
+    })
   }
   created() {
     this.getProgramLanguage()
