@@ -740,9 +740,9 @@ export default class VulListComponent extends VueBase {
         bind_project_id: Number(this.projectId),
         project_version_id: Number(this.version),
         keywords: this.searchObj.keywords || undefined,
-        project_id: this.searchObj.project_str.join(',') || undefined,
-        vul_level_id: this.searchObj.level_str.join(',') || undefined,
-        vul_type: this.searchObj.hook_type_str.join(',') || undefined,
+        project_id: this.searchObj.project_str || undefined,
+        vul_level_id: this.searchObj.level_str || undefined,
+        vul_type: this.searchObj.hook_type_str || undefined,
         order_type_desc: sort,
       }
     } else {
