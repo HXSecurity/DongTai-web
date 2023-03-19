@@ -75,12 +75,18 @@
             <span class="dot">{{ assetVulDetail.dast_tag }}</span>
           </div>
         </div>
-        <!-- <div class="infoLine flex-row-space-between">
+        <div class="infoLine flex-row-space-between">
           <div v-dot class="info">
-            <span class="label"> 漏洞类型： </span>
-            <span>{{ assetVulDetail.vul_type }}</span>
+            <span class="label"> payload： </span>
+            <el-tooltip
+              effect="light"
+              :content="assetVulDetail.payload"
+              placement="top"
+            >
+              <span>{{ assetVulDetail.payload }}</span>
+            </el-tooltip>
           </div>
-        </div> -->
+        </div>
       </div>
       <div class="module-title">漏洞描述</div>
       <div class="vulnDesc">
@@ -133,7 +139,7 @@ export default class VulnDetail extends VueBase {
   fmtTime(time: any) {
     console.log('time', time)
     if (time) {
-      const data = new Date(time).getTime() / 1000
+      const data = new Date(time).getTime()
       return formatTimestamp(data)
     }
     return ''

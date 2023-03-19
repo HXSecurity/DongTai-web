@@ -37,7 +37,7 @@
         <div class="card-content-item">
           <div class="label">payload：</div>
           <div class="value">
-            {{ item.detail }}
+            {{ item.payload }}
           </div>
         </div>
       </div>
