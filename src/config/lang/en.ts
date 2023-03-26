@@ -928,6 +928,7 @@ export default {
       token: 'Access Token',
       department: 'Department',
       departmentPlaceholder: 'Please select a department',
+      templatePlaceholder: 'Please select a template',
       tokenDesc:
         'Configure the access credentials of the current project for permission processing in the automatic scanning function',
       tokenPlaceholder: 'Place enter the access token',
