@@ -68,6 +68,17 @@ export default () =>
     dataCleanTask(params: any): Promise<iResponse> {
       return request.post('/systemmonitor/data_clean/task', params)
     }
+    //获取交叉验证配置
+    getCrossValid(params: any): Promise<iResponse> {
+      return request.get('/dastvul/settings', {
+        params,
+      })
+    }
+    
+    // 更新交叉验证配置
+    updateCrossValid(params: any): Promise<iResponse> {
+      return request.post('/dastvul/settings', params)
+    }
 
     agentUninstall(params: any): Promise<iResponse> {
       return request.post('/agent/uninstall', params)
@@ -224,7 +235,9 @@ export default () =>
       rule_target: string
       inherit: string
       track: string
-      language_id: number
+      language_id: number,
+      ignore_blacklist?: boolean,
+      ignore_internal?: boolean
     }): Promise<iResponse> {
       return request.post('/engine/hook/rule/add', params)
     }
@@ -236,7 +249,9 @@ export default () =>
       rule_target: string
       inherit: string
       track: string
-      language_id: number
+      language_id: number,
+      ignore_blacklist?: boolean,
+      ignore_internal?: boolean
     }): Promise<iResponse> {
       return request.post('/engine/hook/rule/modify', params)
     }

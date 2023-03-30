@@ -122,6 +122,27 @@ export default () =>
       })
     }
 
+    // 获取关联数据
+    getRelationList(params: any): Promise<iResponse>{
+      return request.post(`/dastvul/relationlist`, params)
+    }
+
+    // 获取漏洞类型
+    getVulType(params: any): Promise<iResponse>{
+      return request.get(`/dastvul/vultype`,{
+        params
+      })
+    }
+
+    // 删除关联
+    removeRelation(params: any): Promise<iResponse>{
+      return request.delete(`/dastvul/relation`, params)
+    }
+
+    // 创建关联
+    addRelation(params: any): Promise<iResponse>{
+      return request.post(`/dastvul/relation`, params)
+    }
     // 漏洞删除
     vulnDelete(id: number): Promise<iResponse> {
       return request.post(`/vuln/delete/${id}`)
