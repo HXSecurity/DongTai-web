@@ -213,6 +213,11 @@ export default {
       entryNamePlaceholder: 'Please enter the project name',
       projectTemplate: 'Template',
       projectTemplatePlaceholder: 'Please Select',
+      openLog: 'Open Log',
+      openLogPlaceholder: 'Please Select',
+      logLevel: 'Log Level',
+      logLevelPlaceholder: 'Please Select',
+      addLogSet: 'Add Log Set',
       projectVersion: 'Version',
       department: 'Department',
       begin: 'Select a language and start the installation',
@@ -455,6 +460,8 @@ export default {
       dangerType: 'Sink Rules',
       enterType: 'Entry Method Rules',
       searchDesc: 'Find rule details',
+      ignoreInternal: 'Ignore Internal',
+      ignoreBlacklist: 'Ignore Blacklist'
     },
     login: {
       title: 'User login',
