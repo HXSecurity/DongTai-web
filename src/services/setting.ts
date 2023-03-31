@@ -80,6 +80,12 @@ export default () =>
       return request.post('/dastvul/settings', params)
     }
 
+    // 扫描器文档
+    // 扫描器文档
+    getDocuments(params: any): Promise<iResponse> {
+      return request.get(`/dastvul/settings/doc`, {params})
+    }
+
     agentUninstall(params: any): Promise<iResponse> {
       return request.post('/agent/uninstall', params)
     }
