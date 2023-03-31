@@ -860,7 +860,7 @@ export default class HookTable extends VueBase {
         track: 'false',
         language_id: this.activeLanguage,
         ignore_internal: this.hook.ignore_internal,
-        ignore_blacklist: this.hook.ignore_blacklist,
+        ignore_blacklist: this.hook.ignore_blacklist
       })
 
       this.loadingDone()
