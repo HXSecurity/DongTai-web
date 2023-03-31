@@ -68,6 +68,7 @@ export default () =>
     dataCleanTask(params: any): Promise<iResponse> {
       return request.post('/systemmonitor/data_clean/task', params)
     }
+    
     //获取交叉验证配置
     getCrossValid(params: any): Promise<iResponse> {
       return request.get('/dastvul/settings', {
@@ -80,7 +81,6 @@ export default () =>
       return request.post('/dastvul/settings', params)
     }
 
-    // 扫描器文档
     // 扫描器文档
     getDocuments(params: any): Promise<iResponse> {
       return request.get(`/dastvul/settings/doc`, {params})

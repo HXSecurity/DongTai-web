@@ -328,7 +328,7 @@ export default class SystemSettings extends VueBase {
   private async getDocHandler(){
     let res = await this.services.setting.getDocuments({})
     if (res.status === 201) {
-      window.location.href = res.data.url
+      window.open(res.data.url)
     } else {
       this.$message.error(res.msg)
     }

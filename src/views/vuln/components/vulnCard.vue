@@ -189,7 +189,6 @@
             :data="relationList"
             border
             center
-            v-loading="tableLoading"
             :header-row-style="{
               color: '#000',
               fontWeight: 600,
@@ -321,7 +320,6 @@ export default class VulnList extends VueBase {
     is_relatived: false,
     vul_type: 'all'
   }
-  private tableLoading: any = false;
   private filterCurpage:number=1
   private filterList: any = []
   private filterTotal:any = 1
@@ -722,6 +720,6 @@ export default class VulnList extends VueBase {
 .table-pagination {
   margin-top: 16px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 </style>
