@@ -64,6 +64,7 @@
               :active-value="true"
               :inactive-value="false"
             ></el-switch>
+            <a href="javascript:;" style="margin-left:340px;text-decoration: underline;" @click="getDocHandler">扫描器文档</a>
           </el-form-item>
           <el-form-item
             style="margin-bottom: 0"
@@ -320,6 +321,14 @@ export default class SystemSettings extends VueBase {
     this.loadingDone()
     if (res.status === 201) {
       this.$message.success(res.msg)
+    } else {
+      this.$message.error(res.msg)
+    }
+  }
+  private async getDocHandler(){
+    let res = await this.services.setting.getDocuments({})
+    if (res.status === 201) {
+      window.location.href = res.data.url
     } else {
       this.$message.error(res.msg)
     }

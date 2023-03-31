@@ -135,14 +135,17 @@ export default () =>
     }
 
     // 删除关联
-    removeRelation(params: any): Promise<iResponse>{
-      return request.delete(`/dastvul/relation`, params)
+    deleteRelation(params: any): Promise<iResponse> {
+      return request.delete(`/dastvul/relation`, {
+        data: params
+      })
     }
 
     // 创建关联
     addRelation(params: any): Promise<iResponse>{
       return request.post(`/dastvul/relation`, params)
     }
+
     // 漏洞删除
     vulnDelete(id: number): Promise<iResponse> {
       return request.post(`/vuln/delete/${id}`)

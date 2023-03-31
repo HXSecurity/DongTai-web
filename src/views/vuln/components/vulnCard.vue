@@ -212,7 +212,7 @@
             >
               <template slot-scope="scope">
                 <a href="javascript:;" @click="goRelationDetail(scope.row)">详情|</a>
-                <a href="javascript:;" @click="relationHandler(scope.row, 'relationlist')">{{scope.row.is_relatived?'解除关联': '关联'}}</a>
+                <a href="javascript:;" @click="relationHandler(scope.row, getRelationList)">{{scope.row.is_relatived?'解除关联': '关联'}}</a>
               </template>
             </el-table-column>
           </el-table>
@@ -284,7 +284,7 @@
             >
               <template slot-scope="scope">
                 <a href="javascript:;" @click="goRelationDetail(scope.row)">详情|</a>
-                <a href="javascript:;" @click="relationHandler(scope.row)">{{scope.row.is_relatived?'关联': '解除关联'}}{{scope.row.is_relatived}}</a>
+                <a href="javascript:;" @click="relationHandler(scope.row,getFilterList)">{{scope.row.is_relatived?'解除关联': '关联'}}</a>
               </template>
             </el-table-column>
           </el-table>
@@ -462,7 +462,7 @@ export default class VulnList extends VueBase {
   private filterCurrentChange(val:any){
     this.filterCurpage = val
   }
-  private async relationHandler(row: any, from:any = 'filter'){
+  private async relationHandler(row: any, done: Function){
     this.loadingStart()
     let res:any= {}
     let requestParam:any={
@@ -470,7 +470,7 @@ export default class VulnList extends VueBase {
       dastvul_id: row.id
     }
     if(!!row.is_relatived) {
-      res = await this.services.vuln.removeRelation(requestParam)
+      res = await this.services.vuln.deleteRelation(requestParam)
     } else {
       res = await this.services.vuln.addRelation(requestParam)
     }
@@ -479,11 +479,7 @@ export default class VulnList extends VueBase {
       return false
     }
     this.loadingDone()
-    if(from == 'filter') {
-      this.getFilterList();
-    } else {
-      this.getRelationList();
-    }
+    done();
   }
 }
 </script>
