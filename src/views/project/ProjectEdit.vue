@@ -66,6 +66,39 @@
                 </el-select>
               </div>
             </el-form-item>
+            <el-form-item
+              :label="$t('views.deploy.projectTemplate')"
+              prop="template_id"
+            >
+              <el-select
+                v-model="submitForm.template_id"
+                class="addUserInput"
+                clearable
+                style="width: 390px"
+              >
+                <el-option
+                  v-for="(item, index) in projectList"
+                  :key="index"
+                  :label="item.template_name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('views.deploy.openLog')" prop="enable_log">
+              <el-select v-model="submitForm.enable_log" clearable :placeholder="$t('views.deploy.openLogPlaceholder')">
+                <el-option label="yes" :value="true" />
+                <el-option label="no" :value="false" />
+              </el-select>
+            </el-form-item>
+            <el-form-item :label="$t('views.deploy.logLevel')" prop="log_level">
+              <el-select v-model="submitForm.log_level" clearable :placeholder="$t('views.deploy.logLevelPlaceholder')">
+                <el-option label="TRACE" value="TRACE" />
+                <el-option label="INFO" value="INFO" />
+                <el-option label="DEBUG" value="DEBUG" />
+                <el-option label="WARN" value="WARN" />
+                <el-option label="ERROR" value="ERROR" />
+              </el-select>
+            </el-form-item>
             <template v-if="!advanced">
               <el-form-item>
                 <span class="advancedSetting" @click="advanced = true">
@@ -242,6 +275,8 @@ import { Form } from 'element-ui'
 export default class ProjectEdit extends VueBase {
   private advanced = false
   private departmentList = []
+  private projectList = []
+  private radio = ''
   private submitForm: {
     name: string
     mode: string
@@ -253,7 +288,10 @@ export default class ProjectEdit extends VueBase {
     base_url: string
     test_req_header_key: string
     test_req_header_value: string
-    department_id: any
+    department_id: any,
+    template_id: any,
+    log_level: any,
+    enable_log: any,
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
@@ -266,6 +304,9 @@ export default class ProjectEdit extends VueBase {
     test_req_header_key: '',
     test_req_header_value: '',
     department_id: '',
+    template_id: '',
+    log_level: '',
+    enable_log: '',
   }
   private engineList: Array<{
     id: number
@@ -309,6 +350,13 @@ export default class ProjectEdit extends VueBase {
         trigger: 'change',
       },
     ],
+    template_id: [
+      {
+        required: true,
+        message: this.$t('views.projectEdit.templatePlaceholder'),
+        trigger: 'change',
+      },
+    ],
   }
 
   private scanAddDialogOpen = false
@@ -331,9 +379,21 @@ export default class ProjectEdit extends VueBase {
     }
     this.$message.error(res.msg)
   }
+  private async getListProjecttemplat() {
+    const res = await this.services.setting.listProjecttemplat({
+      page: 1,
+      page_size: 100,
+    })
+    if (res.status === 201) {
+      this.projectList = res.data
+      return
+    }
+    this.$message.error(res.msg)
+  }
   async created() {
     await this.getEngineList()
     await this.getListDepartment()
+    await this.getListProjecttemplat()
     await this.strategyUserList()
     if (this.$route.params.pid) {
       await this.projectDetail()
@@ -381,7 +441,9 @@ export default class ProjectEdit extends VueBase {
     this.submitForm.test_req_header_key = data.test_req_header_key
     this.submitForm.test_req_header_value = data.test_req_header_value
     this.submitForm.department_id = data.department_id
-
+    this.submitForm.template_id = data.template_id
+    this.submitForm.enable_log = data.enable_log
+    this.submitForm.log_level = data.log_level
     this.agentChange()
   }
 
@@ -574,7 +636,10 @@ export default class ProjectEdit extends VueBase {
           base_url: string
           test_req_header_key: string
           test_req_header_value: string
-          department_id: any
+          department_id: any,
+          template_id: any,
+          enable_log: any,
+          log_level: any
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
@@ -591,6 +656,9 @@ export default class ProjectEdit extends VueBase {
           test_req_header_key: this.submitForm.test_req_header_key,
           test_req_header_value: this.submitForm.test_req_header_value,
           department_id: this.submitForm.department_id,
+          template_id: this.submitForm.template_id,
+          enable_log: this.submitForm.enable_log,
+          log_level: this.submitForm.log_level
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid

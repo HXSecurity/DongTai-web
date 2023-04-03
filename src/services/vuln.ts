@@ -57,6 +57,10 @@ export default () =>
           return request.post('/app_vul_summary', data, {
             baseURL: process.env.VUE_APP_BASE_API_V2,
           })
+        case 'scan':
+          return request.post('/dastvul/summary', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V1,
+          })
       }
     }
 
@@ -70,6 +74,10 @@ export default () =>
         case 'vuln':
           return request.post('/app_vul_list_content', data, {
             baseURL: process.env.VUE_APP_BASE_API_V2,
+          })
+        default:
+          return request.post('/dastvul', data, {
+            baseURL: process.env.VUE_APP_BASE_API_V1,
           })
       }
     }
@@ -106,6 +114,36 @@ export default () =>
       return request.get(`/vuln/${id}`, {
         baseURL: process.env.VUE_APP_BASE_API_V2,
       })
+    }
+    // 扫描漏洞详情
+    getScanDetail(id: number): Promise<iResponse> {
+      return request.get(`/dastvul/${id}`, {
+        baseURL: process.env.VUE_APP_BASE_API_V1,
+      })
+    }
+
+    // 获取关联数据
+    getRelationList(params: any): Promise<iResponse>{
+      return request.post(`/dastvul/relationlist`, params)
+    }
+
+    // 获取漏洞类型
+    getVulType(params: any): Promise<iResponse>{
+      return request.get(`/dastvul/vultype`,{
+        params
+      })
+    }
+
+    // 删除关联
+    deleteRelation(params: any): Promise<iResponse> {
+      return request.delete(`/dastvul/relation`, {
+        data: params
+      })
+    }
+
+    // 创建关联
+    addRelation(params: any): Promise<iResponse>{
+      return request.post(`/dastvul/relation`, params)
     }
 
     // 漏洞删除

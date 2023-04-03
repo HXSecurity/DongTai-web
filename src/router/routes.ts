@@ -156,6 +156,16 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/sca/ScaDetail.vue'),
       },
+      {
+        path: 'scanDetail/:page/:id',
+        name: 'scanDetail/:page/:id',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scanDetail',
+          name: i18n.t('menu.scaDetail'),
+        },
+        component: () => import('@/views/sca/ScanDetail.vue'),
+      },
     ],
   },
   {
@@ -516,6 +526,16 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.scaDetail'),
         },
         component: () => import('@/views/sca/ScaDetail.vue'),
+      },
+      {
+        path: 'scanDetail/:page/:id',
+        name: 'scanDetail/:page/:id',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scanDetail',
+          name: i18n.t('menu.scaDetail'),
+        },
+        component: () => import('@/views/sca/ScanDetail.vue'),
       },
     ],
   },
@@ -910,6 +930,16 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.scaDetail'),
         },
         component: () => import('@/views/sca/ScaDetail.vue'),
+      },
+      {
+        path: 'scanDetail/:page/:id',
+        name: 'scanDetail/:page/:id',
+        meta: {
+          disabled: true,
+          i18n: 'menu.scanDetail',
+          name: i18n.t('menu.scaDetail'),
+        },
+        component: () => import('@/views/sca/ScanDetail.vue'),
       },
     ],
   },

@@ -100,6 +100,7 @@ export default {
     sca: 'Libraries',
     scaList: 'Component management list',
     scaDetail: 'Component management details',
+    scanDetail: 'Scan vulnerability details',
     changeLogo: 'Site Identity',
     setting: 'Settings',
     agentManage: 'Agent',
@@ -212,6 +213,11 @@ export default {
       entryNamePlaceholder: 'Please enter the project name',
       projectTemplate: 'Template',
       projectTemplatePlaceholder: 'Please Select',
+      openLog: 'Open Log',
+      openLogPlaceholder: 'Please Select',
+      logLevel: 'Log Level',
+      logLevelPlaceholder: 'Please Select',
+      addLogSet: 'Add Log Set',
       projectVersion: 'Version',
       department: 'Department',
       begin: 'Select a language and start the installation',
@@ -454,6 +460,8 @@ export default {
       dangerType: 'Sink Rules',
       enterType: 'Entry Method Rules',
       searchDesc: 'Find rule details',
+      ignoreInternal: 'Ignore Internal',
+      ignoreBlacklist: 'Ignore Blacklist'
     },
     login: {
       title: 'User login',
@@ -927,6 +935,7 @@ export default {
       token: 'Access Token',
       department: 'Department',
       departmentPlaceholder: 'Please select a department',
+      templatePlaceholder: 'Please select a template',
       tokenDesc:
         'Configure the access credentials of the current project for permission processing in the automatic scanning function',
       tokenPlaceholder: 'Place enter the access token',

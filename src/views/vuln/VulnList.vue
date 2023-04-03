@@ -18,18 +18,18 @@
         </div>
         <el-checkbox
           v-for="(item, index) in searchOptionsObj.level"
-          :key="'level' + item.id + '-' + index"
+          :key="'level' + item.id || item.vul_level_id + '-' + index"
           v-model="searchObj.level_str"
-          :label="item.id"
+          :label="item.id || item.vul_level_id"
           class="flex-row-space-between module-line"
           @change="newSelectData"
         >
           <div class="check-label">
             <div class="selectOption">
-              {{ item.name }}
+              {{ item.name || item.vul_level__name }}
             </div>
             <div class="num">
-              {{ item.num }}
+              {{ item.num || item.total }}
             </div>
           </div>
         </el-checkbox>
@@ -42,18 +42,18 @@
         <div class="obj-scroll">
           <el-checkbox
             v-for="(item, index) in searchOptionsObj.projects"
-            :key="'project' + item.id + '-' + index"
+            :key="'project' + item.id || item.project_id + '-' + index"
             v-model="searchObj.project_str"
-            :label="item.id"
+            :label="item.id || item.project_id"
             class="flex-row-space-between module-line"
             @change="newSelectData"
           >
             <div class="check-label">
               <div class="selectOption">
-                {{ item.name }}
+                {{ item.name || item.project__name }}
               </div>
               <div class="num">
-                {{ item.num }}
+                {{ item.num || item.total }}
               </div>
             </div>
           </el-checkbox>
@@ -83,7 +83,31 @@
             </div>
           </el-checkbox>
         </template>
-
+        <template v-if="vulnType === 'scan'">
+          <div
+            v-if="searchOptionsObj.hook_type.length"
+            class="module-title flex-row-space-between"
+          >
+            <span class="filter-box-title"> 漏洞类型 </span>
+          </div>
+          <el-checkbox
+            v-for="(item, index) in searchOptionsObj.hook_type"
+            :key="'hook_type' + item.vul_type + '-' + index"
+            v-model="searchObj.hook_type_str"
+            :label="item.vul_type"
+            class="flex-row-space-between module-line"
+            @change="newSelectData"
+          >
+            <div class="check-label">
+              <div class="selectOption">
+                {{ item.vul_type }}
+              </div>
+              <div class="num">
+                {{ item.total }}
+              </div>
+            </div>
+          </el-checkbox>
+        </template>
         <template v-if="vulnType === 'vuln'">
           <div
             v-if="searchOptionsObj.hook_type.length"
@@ -222,6 +246,12 @@
           >
             组件漏洞
           </div>
+          <div
+            :class="vulnType === 'scan' ? 'active' : ''"
+            @click="changeVulnType('scan')"
+          >
+            漏洞扫描
+          </div>
         </div>
         <div class="checked-bar">
           <div>
@@ -268,6 +298,7 @@
               </div>
             </el-tooltip>
             <el-tooltip
+              v-if="vulnType !== 'scan'"
               class="item"
               effect="dark"
               content="删除"
@@ -300,6 +331,13 @@
           :setting-inte="settingInte"
           :get-table-data="getTableData"
         ></ScaCard>
+        <ScanCard
+          v-if="vulnType === 'scan'"
+          :item="item"
+          :search-obj="searchObj"
+          :setting-inte="settingInte"
+          :get-table-data="getTableData"
+        ></ScanCard>
       </div>
     </div>
 
@@ -320,8 +358,9 @@ import VueBase from '@/VueBase'
 import { VulnListObj } from './types'
 import VulnCard from './components/vulnCard.vue'
 import ScaCard from './components/ScaCard.vue'
+import ScanCard from './components/ScanCard.vue'
 
-@Component({ name: 'VulnList', components: { VulnCard, ScaCard } })
+@Component({ name: 'VulnList', components: { VulnCard, ScaCard, ScanCard } })
 export default class VulnList extends VueBase {
   private inteRules = {
     obj: [{ required: true, message: '请选择项目', trigger: 'blur' }],
@@ -379,7 +418,7 @@ export default class VulnList extends VueBase {
   private page = 1
   private pageSize = 20
   private dataEnd = false
-  private tableData: Array<VulnListObj> = []
+  private tableData: Array<any> = []
   private searchOptionsObj: any = {
     level: [
       {
@@ -769,20 +808,40 @@ export default class VulnList extends VueBase {
     if (this.searchObj.sort === false) {
       sort = 0
     }
-    const params = {
-      page: this.page,
-      pageSize: this.pageSize,
-      level_id_str: this.searchObj.level_str.join(',') || undefined,
-      order_type: this.searchObj.order_type || undefined,
-      keywords: this.searchObj.keywords || undefined,
-      project_id_str: this.searchObj.project_str.join(',') || undefined,
-      status_id_str: this.searchObj.status_str.join(',') || undefined,
-      source_type_str: this.searchObj.source_type_str.join(',') || undefined,
-      availability_str: this.searchObj.availability_str.join(',') || undefined,
-      hook_type_id_str: this.searchObj.hook_type_str.join(',') || undefined,
-      language_str: this.searchObj.language_str.join(',') || undefined,
-      order_type_desc: sort,
-      type: this.vulnType,
+    let params
+    if (this.vulnType === 'scan') {
+      params = {
+        page: this.page,
+        page_size: this.pageSize,
+        keywords: this.searchObj.keywords || undefined,
+        project_id: this.searchObj.project_str.length
+          ? this.searchObj.project_str
+          : undefined,
+        vul_level_id: this.searchObj.level_str.length
+          ? this.searchObj.level_str
+          : undefined,
+        vul_type: this.searchObj.hook_type_str.length
+          ? this.searchObj.hook_type_str
+          : undefined,
+        order_type_desc: sort,
+      }
+    } else {
+      params = {
+        page: this.page,
+        pageSize: this.pageSize,
+        level_id_str: this.searchObj.level_str.join(',') || undefined,
+        order_type: this.searchObj.order_type || undefined,
+        keywords: this.searchObj.keywords || undefined,
+        project_id_str: this.searchObj.project_str.join(',') || undefined,
+        status_id_str: this.searchObj.status_str.join(',') || undefined,
+        source_type_str: this.searchObj.source_type_str.join(',') || undefined,
+        availability_str:
+          this.searchObj.availability_str.join(',') || undefined,
+        hook_type_id_str: this.searchObj.hook_type_str.join(',') || undefined,
+        language_str: this.searchObj.language_str.join(',') || undefined,
+        order_type_desc: sort,
+        type: this.vulnType,
+      }
     }
     this.loadingStart()
     const { status, data, msg, page } = await this.services.vuln.vulListContent(
@@ -799,20 +858,23 @@ export default class VulnList extends VueBase {
       })
       return
     }
-    const tableData = data.messages.reduce((list: Array<any>, item: any) => {
-      let vul_number = ''
-      if (item.vul_cve_nums) {
-        vul_number = `${item.vul_cve_nums.cnnvd} | ${item.vul_cve_nums.cnvd} | ${item.vul_cve_nums.cve} | ${item.vul_cve_nums.cwe}`
-      }
-      list.push({
-        ...item,
-        first_time: formatTimestamp(item.first_time),
-        latest_time: getPassedTime(item.latest_time),
-        vul_number: vul_number,
-        id: item.id,
-      })
-      return list
-    }, [])
+    const tableData = (data.messages || data).reduce(
+      (list: Array<any>, item: any) => {
+        let vul_number = ''
+        if (item.vul_cve_nums) {
+          vul_number = `${item.vul_cve_nums.cnnvd} | ${item.vul_cve_nums.cnvd} | ${item.vul_cve_nums.cve} | ${item.vul_cve_nums.cwe}`
+        }
+        list.push({
+          ...item,
+          first_time: formatTimestamp(item.first_time),
+          latest_time: getPassedTime(item.latest_time),
+          vul_number: vul_number,
+          id: item.id,
+        })
+        return list
+      },
+      []
+    )
     if (tableData.length < 20) {
       this.dataEnd = true
     }
@@ -821,6 +883,7 @@ export default class VulnList extends VueBase {
     }
     this.pageInfo = page
     this.tableData = [...this.tableData, ...tableData]
+    // console.log('this.tableData', this.tableData)
   }
   private SummaryCatch: any = {}
   private async vulnSummary() {
@@ -880,6 +943,48 @@ export default class VulnList extends VueBase {
     this.loadingDone()
     if (res.status !== 201) {
       this.$message.error(res.msg)
+      return
+    }
+    if (this.vulnType === 'scan') {
+      this.SummaryCatch[this.vulnType] = res
+      this.searchOptionsObj.projects =
+        res.data.project_info && res.data.project_info.length
+          ? res.data.project_info
+          : this.searchOptionsObj.projects
+      this.searchOptionsObj.hook_type =
+        res.data.vul_type && res.data.vul_type.length
+          ? res.data.vul_type
+          : this.searchOptionsObj.hook_type
+      this.searchOptionsObj.level =
+        res.data.vul_level && res.data.vul_level.length
+          ? res.data.vul_level
+          : [
+              {
+                name: '高危',
+                num: 0,
+                id: 1,
+              },
+              {
+                name: '中危',
+                num: 0,
+                id: 2,
+              },
+              {
+                name: '低危',
+                num: 0,
+                id: 3,
+              },
+              {
+                name: '无风险',
+                num: 0,
+                id: 4,
+              },
+              {
+                name: '提示',
+                num: 0,
+                id: 5,
+              },
+            ]
       return
     }
     this.SummaryCatch[this.vulnType] = res
