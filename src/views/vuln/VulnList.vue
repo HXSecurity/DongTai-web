@@ -814,9 +814,15 @@ export default class VulnList extends VueBase {
         page: this.page,
         page_size: this.pageSize,
         keywords: this.searchObj.keywords || undefined,
-        project_id: this.searchObj.project_str || undefined,
-        vul_level_id: this.searchObj.level_str || undefined,
-        vul_type: this.searchObj.hook_type_str || undefined,
+        project_id: this.searchObj.project_str.length
+          ? this.searchObj.project_str
+          : undefined,
+        vul_level_id: this.searchObj.level_str.length
+          ? this.searchObj.level_str
+          : undefined,
+        vul_type: this.searchObj.hook_type_str.length
+          ? this.searchObj.hook_type_str
+          : undefined,
         order_type_desc: sort,
       }
     } else {

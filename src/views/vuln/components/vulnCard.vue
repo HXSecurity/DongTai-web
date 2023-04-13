@@ -171,7 +171,130 @@
           </div>
         </div>
       </div>
+      <div class="relation-wrap" style="margin-top: 10px">
+        <div class="relation-top flex-row-space-between">
+          <div class="relation-left">关联漏洞{{item.dastvul_count}}个</div>
+          <div class="relation-right-buttons">
+            <el-button size="mini" type="primary" v-for="(vultype, vulkey) in item.dastvul__vul_type" :key="vulkey">{{vultype}}</el-button>
+            <el-button size="mini" type="primary" @click="getDetails">详情 <span
+                  :class="[!relateKey?'el-icon-arrow-down':'el-icon-arrow-up']"
+                ></span></el-button>
+          </div>
+        </div>
+        <div class="table-wrap" style="margin-top: 10px" v-if="relateKey">
+          <div class="add-relation-wrap" style="display:flex; justify-content: flex-end;"><el-button size="mini" type="primary" @click="addRelation">添加关联</el-button></div>
+          <el-table
+            class="hookTable"
+            style="width: 100%; margin-top:20px"
+            :data="relationList"
+            border
+            center
+            :header-row-style="{
+              color: '#000',
+              fontWeight: 600,
+            }"
+          >
+            <el-table-column
+              prop="id"
+              label="扫描漏洞ID"
+            ></el-table-column>
+            <el-table-column
+              prop="vul_type"
+              label="扫描漏洞类型"
+            ></el-table-column>
+            <el-table-column
+              prop="payload"
+              label="payload"
+            ></el-table-column>
+            <el-table-column
+              label="操作"
+            >
+              <template slot-scope="scope">
+                <a href="javascript:;" @click="goRelationDetail(scope.row)">详情|</a>
+                <a href="javascript:;" @click="relationHandler(scope.row, getRelationList)">{{scope.row.is_relatived?'解除关联': '关联'}}</a>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="table-pagination">
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="totalPage"
+              @current-change="handleCurrentChange"
+              >
+            </el-pagination>
+          </div>
+        </div>
+      </div>
     </div>
+    <el-dialog
+      title="相同请求扫描漏洞"
+      :visible.sync="dialogVisible"
+      width="40%"
+      >
+      <el-form
+        inline
+        :model="filterObj"
+      >
+        <el-form-item label="漏洞类型" style="margin-right:20px">
+          <el-select v-model="filterObj.vul_type" placeholder="请选择" @change="changeFilter">
+            <el-option
+              label="all"
+              value="all">
+            </el-option>
+            <el-option
+              v-for="(vl,idx) in vulTypeData" :key="idx"
+              :label="vl"
+              :value="vl">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="已关联">
+          <el-radio-group v-model="filterObj.is_relatived" @change="changeFilter">
+            <el-radio :label="true">是</el-radio>
+            <el-radio :label="false">否</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <el-table
+            class="hookTable"
+            style="width: 100%; margin-top:20px"
+            :data="filterList"
+            border
+            :header-row-style="{
+              color: '#000',
+              fontWeight: 600,
+            }"
+          >
+            <el-table-column
+              prop="id"
+              label="扫描漏洞ID"
+            ></el-table-column>
+            <el-table-column
+              prop="vul_type"
+              label="扫描漏洞类型"
+            ></el-table-column>
+            <el-table-column
+              prop="payload"
+              label="payload"
+            ></el-table-column>
+            <el-table-column
+              label="操作"
+            >
+              <template slot-scope="scope">
+                <a href="javascript:;" @click="goRelationDetail(scope.row)">详情|</a>
+                <a href="javascript:;" @click="relationHandler(scope.row,getFilterList)">{{scope.row.is_relatived?'解除关联': '关联'}}</a>
+              </template>
+            </el-table-column>
+          </el-table>
+          <el-pagination
+            background
+            layout="prev, pager, next"
+            :total="filterTotal"
+            @current-change="handleCurrentChange"
+            >
+          </el-pagination>
+    </el-dialog>
   </div>
 </template>
 
@@ -186,11 +309,23 @@ export default class VulnList extends VueBase {
   @Prop() searchObj: any
   @Prop() settingInte: any
   @Prop() getTableData: any
-
   openWindow(url: string) {
     window.open(url)
   }
 
+  private relationList:any = []
+  private totalPage: any = 1
+  private page: number = 1
+  private filterObj: any ={
+    is_relatived: false,
+    vul_type: 'all'
+  }
+  private filterCurpage:number=1
+  private filterList: any = []
+  private filterTotal:any = 1
+  private relateKey: any = false
+  private dialogVisible = false
+  private vulTypeData:any = []
   get itemTitle() {
     let title = ''
     title = `${this.item.uri}  ${this.item.http_method} 出现 ${this.item.strategy__vul_name}`
@@ -253,6 +388,96 @@ export default class VulnList extends VueBase {
         '&id=' +
         item.id
     )
+  }
+  private goRelationDetail(item: any) {
+    this.$router.push(
+      `/vuln/scanDetail/1/${item.id}?status=` +
+        this.searchObj.status +
+        '&id=' +
+        item.id
+    )
+  }
+  private async getDetails(){
+    this.relateKey = !this.relateKey
+    if(!this.relateKey){
+      return;
+    }
+    this.getRelationList();
+  }
+  private async getRelationList() {
+    this.loadingStart()
+    const param = {
+      page_size: 20,
+      page: this.page,
+      pk: this.item.id
+    }
+    const res = await this.services.vuln.getRelationList(param);
+    this.relateKey = true
+    if(res.status == 201){
+      this.relationList = res.data;
+      this.totalPage = res.page.alltotal
+    } else {
+      this.$message.error(res.msg)
+    }
+    this.loadingDone()
+  }
+  private async getFilterList(){
+    this.loadingStart()
+    const param:any =  {
+      page_size: 20,
+      is_relatived: this.filterObj.is_relatived,
+      vul_type: this.filterObj.vul_type=='all'?[...this.vulTypeData]:[this.filterObj.vul_type],
+      page: this.filterCurpage,
+      pk: this.item.id
+    }
+    const res = await this.services.vuln.getRelationList(param);
+    if(res.status == 201){
+      this.filterList = res.data;
+      this.filterTotal = res.page.alltotal
+    } else {
+      this.$message.error(res.msg)
+    }
+    this.loadingDone()
+  }
+  private async addRelation(param: any){
+    let res = await this.services.vuln.getVulType({})
+    this.dialogVisible = true
+    if(res.status == 201){
+      this.vulTypeData = res.data
+    }else {
+      this.$message.error(res.msg)
+    }
+    this.getFilterList();
+  }
+  private changeFilter(){
+    this.filterList = [];
+    this.filterObj.filterCurpage = 1;
+    this.getFilterList();
+  }
+  private handleCurrentChange(val:any){
+    this.page = val
+  }
+  private filterCurrentChange(val:any){
+    this.filterCurpage = val
+  }
+  private async relationHandler(row: any, done: Function){
+    this.loadingStart()
+    let res:any= {}
+    let requestParam:any={
+      iastvul_id: this.item.id,
+      dastvul_id: row.id
+    }
+    if(!!row.is_relatived) {
+      res = await this.services.vuln.deleteRelation(requestParam)
+    } else {
+      res = await this.services.vuln.addRelation(requestParam)
+    }
+    if(res.status != 201){
+      this.$message.error(res.msg)
+      return false
+    }
+    this.loadingDone()
+    done();
   }
 }
 </script>
@@ -491,5 +716,10 @@ export default class VulnList extends VueBase {
   overflow: hidden; //超出的文本隐藏
   text-overflow: ellipsis; //溢出用省略号显示
   white-space: nowrap; //溢出不换行
+}
+.table-pagination {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

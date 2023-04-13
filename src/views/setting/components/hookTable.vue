@@ -273,7 +273,7 @@
       <el-form
         :model="hook"
         size="small"
-        :label-width="$i18n.locale === 'en' ? '140px' : '80px'"
+        :label-width="$i18n.locale === 'en' ? '160px' : '100px'"
       >
         <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hook.type) }}</span>
@@ -424,6 +424,12 @@
             $t('views.hookPage.nowChildren')
           }}</el-radio>
         </el-form-item>
+        <el-form-item :label="$t('views.hookPage.ignoreInternal')">
+          <el-checkbox v-model="hook.ignore_internal"></el-checkbox>
+        </el-form-item>
+        <el-form-item :label="$t('views.hookPage.ignoreBlacklist')">
+          <el-checkbox v-model="hook.ignore_blacklist"></el-checkbox>
+        </el-form-item>
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHook">{{
@@ -485,6 +491,9 @@ export default class HookTable extends VueBase {
     source: [{ relation: '', origin: '', param: '' }],
     target: [{ relation: '', origin: '', param: '' }],
     inherit: 'false',
+    ignore_internal: false,
+    ignore_blacklist: false
+    
   }
   relations = [
     { label: this.$t('views.hookPage.or'), value: '|' },
@@ -584,6 +593,8 @@ export default class HookTable extends VueBase {
     this.hook.target = target
     this.hook.rule_type_id = row.rule_type_id
     this.hookDialog = true
+    this.hook.ignore_internal = row.ignore_internal
+    this.hook.ignore_blacklist = row.ignore_blacklist
   }
   async getTypes() {
     this.loadingStart()
@@ -787,6 +798,8 @@ export default class HookTable extends VueBase {
       source: [{ relation: '', origin: '', param: '' }],
       target: [{ relation: '', origin: '', param: '' }],
       inherit: 'false',
+      ignore_internal: false,
+      ignore_blacklist: false
     }
     this.hookDialog = false
   }
@@ -818,6 +831,8 @@ export default class HookTable extends VueBase {
         inherit: this.hook.inherit,
         track: 'false',
         language_id: this.activeLanguage,
+        ignore_internal: this.hook.ignore_internal,
+        ignore_blacklist: this.hook.ignore_blacklist
       })
 
       this.loadingDone()
@@ -835,6 +850,7 @@ export default class HookTable extends VueBase {
       this.loadingStart()
       const rule_source = this.fmtParams(this.hook.source)
       const rule_target = this.fmtParams(this.hook.target)
+
       const { status, msg } = await this.services.setting.ruleAdd({
         rule_type_id: this.hook.rule_type_id,
         rule_value: this.hook.rule_value,
@@ -843,6 +859,8 @@ export default class HookTable extends VueBase {
         inherit: this.hook.inherit,
         track: 'false',
         language_id: this.activeLanguage,
+        ignore_internal: this.hook.ignore_internal,
+        ignore_blacklist: this.hook.ignore_blacklist
       })
 
       this.loadingDone()
