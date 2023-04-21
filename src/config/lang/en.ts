@@ -461,7 +461,11 @@ export default {
       enterType: 'Entry Method Rules',
       searchDesc: 'Find rule details',
       ignoreInternal: 'Ignore Internal',
-      ignoreBlacklist: 'Ignore Blacklist'
+      ignoreBlacklist: 'Ignore Blacklist',
+      stainTag: 'Stain Tag',
+      stainUntag: 'Stain UnTag',
+      stainRange: 'Stain Range',
+      stackBlacklist: 'Stack Blacklist'
     },
     login: {
       title: 'User login',

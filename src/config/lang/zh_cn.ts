@@ -464,7 +464,11 @@ export default {
       enterType: '入口方法规则',
       searchDesc: '查找规则详情',
       ignoreInternal: '忽略内部实现',
-      ignoreBlacklist: '白名单'
+      ignoreBlacklist: '白名单',
+      stainTag: '污点 tag',
+      stainUntag: '污点 untag',
+      stainRange: '污点 range',
+      stackBlacklist: '危险方法调用堆栈黑名单'
     },
     login: {
       title: '用户登录',
