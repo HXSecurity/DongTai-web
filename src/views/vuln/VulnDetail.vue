@@ -146,7 +146,11 @@
       </div>
       <div class="module-title">漏洞描述</div>
       <div class="vulnDesc">
-        {{ vulnObj.strategy.desc }}
+        <!-- {{ vulnObj.strategy.desc }} -->
+        <MyMarkdownIt
+          :content="vulnObj.strategy.desc"
+          style="color: #38435a"
+        ></MyMarkdownIt>
       </div>
       <template v-if="vulnObj.vul.is_need_http_detail">
         <div class="module-title">数据流</div>
