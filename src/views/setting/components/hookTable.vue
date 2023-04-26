@@ -430,40 +430,39 @@
         <el-form-item :label="$t('views.hookPage.ignoreBlacklist')">
           <el-checkbox v-model="hook.ignore_blacklist"></el-checkbox>
         </el-form-item>
-        <el-form-item :label="$t('views.hookPage.stainTag')">
-          <el-checkbox-group v-model="hook.tags">
-            <el-checkbox v-for="(t,k) in tagsList" :key="k" :label="t" />
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item :label="$t('views.hookPage.stainUntag')">
-          <el-checkbox-group v-model="hook.untags">
-            <el-checkbox v-for="(t,k) in tagsList" :key="k" :label="t" />
-          </el-checkbox-group>
-        </el-form-item>
-        <el-form-item :label="$t('views.hookPage.stainRange')">
-          <el-input type="textarea" v-model="hook.command"></el-input>
-        </el-form-item>
-        <el-form-item :label="$t('views.hookPage.stackBlacklist')">
-          <el-tag
-            :key="tag"
-            v-for="tag in stack_blacklist_test"
-            closable
-            :disable-transitions="false"
-            @close="handleClose(tag)">
-            {{tag}}
-          </el-tag>
-          <el-input
-            class="input-new-tag"
-            v-model="inputValue"
-            v-if="inputVisible"
-            ref="saveTagInput"
-            size="small"
-            @keyup.enter.native="handleInputConfirm"
-            @blur="handleInputConfirm"
-          >
-          </el-input>
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">+ Command</el-button>
-        </el-form-item>
+        <template v-if="hookType.type != '3'">
+          <el-form-item :label="$t('views.hookPage.stainTag')">
+            <el-select
+              style="width:100%"
+              v-model="hook.tags"
+              multiple
+              :placeholder="$t('views.hookPage.selectTag')">
+              <el-option
+                v-for="(t,k) in tagsList"
+                :key="k"
+                :label="t"
+                :value="t">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('views.hookPage.stainUntag')" v-if="hookType.type == '1'">
+            <el-select
+              style="width:100%"
+              v-model="hook.untags"
+              multiple
+              :placeholder="$t('views.hookPage.selectTag')">
+              <el-option
+                v-for="(t,k) in tagsList"
+                :key="k"
+                :label="t"
+                :value="t">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('views.hookPage.stainRange')">
+            <el-input type="text" v-model="hook.command"></el-input>
+          </el-form-item>
+        </template>
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHook">{{
@@ -531,7 +530,6 @@ export default class HookTable extends VueBase {
     untags: [],
     command: ''
   }
-  private stack_blacklist_test: Array<string> = []
   relations = [
     { label: this.$t('views.hookPage.or'), value: '|' },
     { label: this.$t('views.hookPage.and'), value: '&' },
@@ -545,8 +543,6 @@ export default class HookTable extends VueBase {
   pageSize = 20
   currentPage = 1
   total = 0
-  inputValue = ''
-  inputVisible = false
   tagsList = []
   splitAndIn(str: string, key: string) {
     const arr = str.split(key)
@@ -637,7 +633,6 @@ export default class HookTable extends VueBase {
     this.hook.tags = row.tags 
     this.hook.untags = row.untags
     this.hook.command = row.command
-    this.stack_blacklist_test = row.stack_blacklist
   }
   async getTypes() {
     this.loadingStart()
@@ -820,20 +815,19 @@ export default class HookTable extends VueBase {
   }
   fmtType(type: string) {
     switch (type) {
-      case '1':
+      case '1':  // 传播方法规则
         return this.$t('views.hookPage.spreadType') as string
-      case '2':
+      case '2':  // 污染源方法规则
         return this.$t('views.hookPage.contaminatedType') as string
-      case '3':
+      case '3':  // 过滤方法规则
         return this.$t('views.hookPage.filterType') as string
-      case '4':
+      case '4':  // 危险方法规则
         return this.$t('views.hookPage.dangerType') as string
-      case '5':
+      case '5': // 入口方法规则
         return this.$t('views.hookPage.enterType') as string
     }
   }
   clearHook() {
-    this.stack_blacklist_test = []
     this.hook = {
       id: 0,
       type: this.ruleType,
@@ -883,7 +877,6 @@ export default class HookTable extends VueBase {
         tags: this.hook.tags,
         untags: this.hook.untags,
         command: this.hook.command,
-        stack_blacklist: this.stack_blacklist_test
       })
 
       this.loadingDone()
@@ -915,7 +908,6 @@ export default class HookTable extends VueBase {
         tags: this.hook.tags,
         untags: this.hook.untags,
         command: this.hook.command,
-        stack_blacklist: this.stack_blacklist_test
       })
 
       this.loadingDone()
@@ -980,28 +972,6 @@ export default class HookTable extends VueBase {
       return
     }
     this.tagsList = data.tags
-  }
-  handleClose(tag: string) {
-    let stack_blacklist = this.stack_blacklist_test
-    let index = stack_blacklist.indexOf(tag)
-    stack_blacklist.splice(index, 1);
-  }
-
-  showInput() {
-    this.inputVisible = true;
-    this.$nextTick(() => {
-      ;(this.$refs.saveTagInput as any).focus();
-    });
-  }
-
-  handleInputConfirm() {
-    let stack_blacklist = this.stack_blacklist_test
-    let inputValue = this.inputValue;
-    if (inputValue) {
-      stack_blacklist.push(inputValue);
-    }
-    this.inputVisible = false;
-    this.inputValue = '';
   }
   created() {
     this.hookType.type = this.ruleType
@@ -1105,5 +1075,15 @@ export default class HookTable extends VueBase {
   width: 90px;
   margin-left: 10px;
   vertical-align: bottom;
+}
+::v-deep.el-select .el-tag.el-tag--info{
+  background-color: #eaf3ff;
+  border-color: #d5e6ff;
+  color: #2d82ff;
+}
+
+::v-deep.el-select .el-tag.el-tag--info .el-tag__close{
+  color: #2d82ff;
+  background-color: #d5e6ff;
 }
 </style>

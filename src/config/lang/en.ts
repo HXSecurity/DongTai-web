@@ -465,7 +465,8 @@ export default {
       stainTag: 'Stain Tag',
       stainUntag: 'Stain UnTag',
       stainRange: 'Stain Range',
-      stackBlacklist: 'Stack Blacklist'
+      stackBlacklist: 'Stack Blacklist',
+      selectTag: 'Please choose a tag',
     },
     login: {
       title: 'User login',
