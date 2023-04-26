@@ -468,7 +468,8 @@ export default {
       stainTag: '污点 tag',
       stainUntag: '污点 untag',
       stainRange: '污点 range',
-      stackBlacklist: '危险方法调用堆栈黑名单'
+      stackBlacklist: '危险方法调用堆栈黑名单',
+      selectTag: '请选择标签',
     },
     login: {
       title: '用户登录',

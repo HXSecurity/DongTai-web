@@ -277,7 +277,7 @@
       <el-form
         :model="hook"
         size="small"
-        :label-width="$i18n.locale === 'en' ? '140px' : '80px'"
+        :label-width="$i18n.locale === 'en' ? '160px' : '100px'"
       >
         <el-form-item :label="$t('views.hookPage.hookType')">
           <span>{{ fmtType(hook.type) }}</span>
@@ -383,6 +383,27 @@
             $t('views.hookPage.nowChildren')
           }}</el-radio>
         </el-form-item>
+        <el-form-item :label="$t('views.hookPage.stackBlacklist')">
+          <el-tag
+            :key="tag"
+            v-for="tag in stack_blacklist_test"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag)">
+            {{tag}}
+          </el-tag>
+          <el-input
+            class="input-new-tag"
+            v-model="inputValue"
+            v-if="inputVisible"
+            ref="saveTagInput"
+            size="small"
+            @keyup.enter.native="handleInputConfirm"
+            @blur="handleInputConfirm"
+          >
+          </el-input>
+          <el-button v-else class="button-new-tag" size="small" @click="showInput">Add Command</el-button>
+        </el-form-item>
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHook">{{
@@ -441,6 +462,7 @@ export default class HookTable extends VueBase {
     inherit: 'false',
     track: 'true',
   }
+  private stack_blacklist_test: Array<string> = []
   relations = [
     { label: this.$t('views.hookPage.or'), value: '|' },
     { label: this.$t('views.hookPage.and'), value: '&' },
@@ -454,7 +476,8 @@ export default class HookTable extends VueBase {
   pageSize = 20
   currentPage = 1
   total = 0
-
+  inputValue = ''
+  inputVisible = false
   multipleSelection = []
   handleSelectionChange(val: any) {
     this.multipleSelection = val
@@ -587,6 +610,7 @@ export default class HookTable extends VueBase {
     this.hook.inherit = row.inherit
     this.hook.source = source
     this.hook.rule_type_id = row.rule_type_id
+    this.stack_blacklist_test = row.stack_blacklist
     this.hookDialog = true
   }
 
@@ -729,6 +753,7 @@ export default class HookTable extends VueBase {
     }
   }
   clearHook() {
+    this.stack_blacklist_test = []
     this.hook = {
       id: 0,
       type: this.ruleType,
@@ -767,6 +792,7 @@ export default class HookTable extends VueBase {
         inherit: this.hook.inherit,
         track: this.hook.track,
         language_id: this.activeLanguage,
+        stack_blacklist: this.stack_blacklist_test
       })
 
       this.loadingDone()
@@ -791,6 +817,7 @@ export default class HookTable extends VueBase {
         inherit: this.hook.inherit,
         track: this.hook.track,
         language_id: this.activeLanguage,
+        stack_blacklist: this.stack_blacklist_test
       })
 
       this.loadingDone()
@@ -847,6 +874,28 @@ export default class HookTable extends VueBase {
   handleCurrentChange(val: number) {
     this.currentPage = val
     this.getTable()
+  }
+  handleClose(tag: string) {
+    let stack_blacklist = this.stack_blacklist_test
+    let index = stack_blacklist.indexOf(tag)
+    stack_blacklist.splice(index, 1);
+  }
+
+  showInput() {
+    this.inputVisible = true;
+    this.$nextTick(() => {
+      ;(this.$refs.saveTagInput as any).focus();
+    });
+  }
+
+  handleInputConfirm() {
+    let stack_blacklist = this.stack_blacklist_test
+    let inputValue = this.inputValue;
+    if (inputValue) {
+      stack_blacklist.push(inputValue);
+    }
+    this.inputVisible = false;
+    this.inputValue = '';
   }
   created() {
     this.hookType.type = this.ruleType
@@ -935,5 +984,20 @@ export default class HookTable extends VueBase {
   .el-button + .el-button {
     margin-left: 0;
   }
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
 }
 </style>
