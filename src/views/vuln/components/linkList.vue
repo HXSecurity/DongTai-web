@@ -98,6 +98,30 @@
                   {{ vItem.ori_targetValues }}
                 </div>
               </div>
+              <div class="info-card-item">
+                <div class="info-card-item-label">代码调用栈</div>
+                <div class="info-card-item-value">
+                  <div
+                    v-for="(codeDy, codeindex) in vItem.stacks"
+                    :key="codeindex"
+                    class="info-card-item-value-item"
+                  >
+                    <span
+                      v-if="codeDy.code_belong === 'system' && codeindex !== 0"
+                      style="color: #adadad"
+                      >{{ codeDy.stack }}</span
+                    >
+                    <span
+                      v-else-if="
+                        codeDy.code_belong === 'user' && codeindex !== 0
+                      "
+                      style="color: #1b9aee"
+                      >{{ codeDy.stack }}</span
+                    >
+                    <span v-else style="color: red">{{ codeDy.stack }}</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -340,6 +364,17 @@ export default class LinkList extends VueBase {
       &-value {
         flex: 1;
         color: #38435a;
+        &-item {
+          height: 40px;
+          line-height: 40px;
+          font-size: 14px;
+          border: 1px solid #ded6d6;
+          border-bottom: 0px;
+          padding: 0 16px;
+          &:last-child {
+            border-bottom: 1px solid #ded6d6;
+          }
+        }
       }
     }
   }

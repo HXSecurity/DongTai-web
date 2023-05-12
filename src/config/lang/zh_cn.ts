@@ -938,6 +938,11 @@ export default {
       searchName: '请输入项目名称，然后回车或点击搜索图标进行搜索',
     },
     projectEdit: {
+      add: '新增',
+      blacklist: '黑名单',
+      whitelist: '白名单',
+      prefix: '前缀',
+      ruleInfoPlaceholder: '请输入字段前缀',
       token: '访问凭证',
       department: '部门',
       departmentPlaceholder: '请选择部门',
