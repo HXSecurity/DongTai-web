@@ -7,118 +7,182 @@
           <i class="el-icon-arrow-left"></i>{{ $t('views.projectEdit.back') }}
         </span>
       </div>
-      <div class="info-box">
-        <div class="info">
-          <div class="title">项目设置</div>
-          <el-form
-            ref="submitForm"
-            :model="submitForm"
-            :label-width="$i18n.locale === 'en' ? '160px' : '120px'"
-            status-icon
-            :rules="rules"
-          >
-            <el-form-item :label="$t('views.projectEdit.name')" prop="name">
-              <el-input
-                v-model="submitForm.name"
-                style="width: 500px"
-                :placeholder="$t('views.projectEdit.namePlaceholder')"
-              ></el-input>
-            </el-form-item>
-            <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
-              <div class="scan-line">
-                <el-select
-                  v-model="submitForm.scanId"
-                  style="width: 390px"
-                  :placeholder="$t('views.projectEdit.scanPlaceholder')"
-                  @change="agentChange"
-                >
-                  <el-option
-                    v-for="item in strategyList"
-                    :key="item.id"
-                    :value="item.id"
-                    :label="item.name"
-                  ></el-option>
-                </el-select>
-                <i
-                  class="el-icon-circle-plus-outline addStrategyIcon"
-                  @click="scanAddDialogShow"
-                >
-                  {{ $t('views.projectEdit.scanAdd') }}
-                </i>
-              </div>
-            </el-form-item>
-            <el-form-item
-              :label="$t('views.projectEdit.department')"
-              prop="department_id"
-            >
-              <div class="scan-line">
-                <el-select
-                  v-model="submitForm.department_id"
-                  style="width: 390px"
-                  :placeholder="$t('views.projectEdit.departmentPlaceholder')"
-                >
-                  <el-option
-                    v-for="item in departmentList"
-                    :key="item.id"
-                    :value="item.id"
-                    :label="item.name"
-                  ></el-option>
-                </el-select>
-              </div>
-            </el-form-item>
-            <el-form-item
-              :label="$t('views.deploy.projectTemplate')"
-              prop="template_id"
-            >
-              <el-select
-                v-model="submitForm.template_id"
-                class="addUserInput"
-                clearable
-                style="width: 390px"
+      <div class="info-content">
+        <div class="info-content-warp">
+          <div v-for="(i, k) in prjectEditMenu" :key="k">
+            <template v-if="i.children.length === 0">
+              <div
+                class="info-content-item"
+                :class="changeMenu === i.name ? 'currentModule' : ''"
+                @click="changeMenu = i.name"
               >
-                <el-option
-                  v-for="(item, index) in projectList"
-                  :key="index"
-                  :label="item.template_name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="$t('views.deploy.openLog')" prop="enable_log">
-              <el-select v-model="submitForm.enable_log" clearable :placeholder="$t('views.deploy.openLogPlaceholder')">
-                <el-option label="yes" :value="true" />
-                <el-option label="no" :value="false" />
-              </el-select>
-            </el-form-item>
-            <el-form-item :label="$t('views.deploy.logLevel')" prop="log_level">
-              <el-select v-model="submitForm.log_level" clearable :placeholder="$t('views.deploy.logLevelPlaceholder')">
-                <el-option label="TRACE" value="TRACE" />
-                <el-option label="INFO" value="INFO" />
-                <el-option label="DEBUG" value="DEBUG" />
-                <el-option label="WARN" value="WARN" />
-                <el-option label="ERROR" value="ERROR" />
-              </el-select>
-            </el-form-item>
-            <template v-if="!advanced">
-              <el-form-item>
-                <span class="advancedSetting" @click="advanced = true">
-                  {{ $t('views.projectEdit.advanced') }}
-                </span>
-              </el-form-item>
+                {{ i.name }}
+              </div>
             </template>
-            <template v-if="advanced">
-              <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
-                <el-radio v-model="submitForm.vul_validation" :label="0">
-                  {{ $t('views.projectEdit.followAll') }}
-                </el-radio>
-                <el-radio v-model="submitForm.vul_validation" :label="1">
-                  {{ $t('views.projectEdit.off') }}
-                </el-radio>
-                <el-radio v-model="submitForm.vul_validation" :label="2">
-                  {{ $t('views.projectEdit.on') }}
-                </el-radio>
+            <template v-else>
+              <div>
+                <div
+                  class="info-content-item"
+                  :class="
+                    i.children.map((ii) => ii.name).includes(changeMenu)
+                      ? 'active'
+                      : ''
+                  "
+                  @click="Hopen(i)"
+                >
+                  <span>{{ i.name }}</span>
+                  <span
+                    class="el-icon-arrow-down"
+                    :class="i.open ? 'active' : ''"
+                  ></span>
+                </div>
+                <div
+                  class="info-content-item-group"
+                  :style="`height:${
+                    i.open ? i.children.length * 38 + 'px' : '0px'
+                  }`"
+                >
+                  <template v-for="j in i.children">
+                    <div
+                      :key="j.id"
+                      class="info-content-item"
+                      :class="changeMenu === j.name ? 'currentModule' : ''"
+                      @click="changeMenu = j.name"
+                    >
+                      {{ j.name }}
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+        <div class="info-box">
+          <div v-if="changeMenu === '基础设置'" class="info">
+            <div class="title">项目设置</div>
+            <el-form
+              ref="submitForm"
+              :model="submitForm"
+              :label-width="$i18n.locale === 'en' ? '160px' : '120px'"
+              status-icon
+              :rules="rules"
+            >
+              <el-form-item :label="$t('views.projectEdit.name')" prop="name">
+                <el-input
+                  v-model="submitForm.name"
+                  style="width: 500px"
+                  :placeholder="$t('views.projectEdit.namePlaceholder')"
+                ></el-input>
               </el-form-item>
-              <!-- <el-form-item>
+              <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
+                <div class="scan-line">
+                  <el-select
+                    v-model="submitForm.scanId"
+                    style="width: 390px"
+                    :placeholder="$t('views.projectEdit.scanPlaceholder')"
+                    @change="agentChange"
+                  >
+                    <el-option
+                      v-for="item in strategyList"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.name"
+                    ></el-option>
+                  </el-select>
+                  <i
+                    class="el-icon-circle-plus-outline addStrategyIcon"
+                    @click="scanAddDialogShow"
+                  >
+                    {{ $t('views.projectEdit.scanAdd') }}
+                  </i>
+                </div>
+              </el-form-item>
+              <el-form-item
+                :label="$t('views.projectEdit.department')"
+                prop="department_id"
+              >
+                <div class="scan-line">
+                  <el-select
+                    v-model="submitForm.department_id"
+                    style="width: 390px"
+                    :placeholder="$t('views.projectEdit.departmentPlaceholder')"
+                  >
+                    <el-option
+                      v-for="item in departmentList"
+                      :key="item.id"
+                      :value="item.id"
+                      :label="item.name"
+                    ></el-option>
+                  </el-select>
+                </div>
+              </el-form-item>
+              <el-form-item
+                :label="$t('views.deploy.projectTemplate')"
+                prop="template_id"
+              >
+                <el-select
+                  v-model="submitForm.template_id"
+                  class="addUserInput"
+                  clearable
+                  style="width: 390px"
+                >
+                  <el-option
+                    v-for="(item, index) in projectList"
+                    :key="index"
+                    :label="item.template_name"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                :label="$t('views.deploy.openLog')"
+                prop="enable_log"
+              >
+                <el-select
+                  v-model="submitForm.enable_log"
+                  clearable
+                  :placeholder="$t('views.deploy.openLogPlaceholder')"
+                >
+                  <el-option label="yes" :value="true" />
+                  <el-option label="no" :value="false" />
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                :label="$t('views.deploy.logLevel')"
+                prop="log_level"
+              >
+                <el-select
+                  v-model="submitForm.log_level"
+                  clearable
+                  :placeholder="$t('views.deploy.logLevelPlaceholder')"
+                >
+                  <el-option label="TRACE" value="TRACE" />
+                  <el-option label="INFO" value="INFO" />
+                  <el-option label="DEBUG" value="DEBUG" />
+                  <el-option label="WARN" value="WARN" />
+                  <el-option label="ERROR" value="ERROR" />
+                </el-select>
+              </el-form-item>
+              <template v-if="!advanced">
+                <el-form-item>
+                  <span class="advancedSetting" @click="advanced = true">
+                    {{ $t('views.projectEdit.advanced') }}
+                  </span>
+                </el-form-item>
+              </template>
+              <template v-if="advanced">
+                <el-form-item :label="$t('views.projectEdit.vul_verifiy')">
+                  <el-radio v-model="submitForm.vul_validation" :label="0">
+                    {{ $t('views.projectEdit.followAll') }}
+                  </el-radio>
+                  <el-radio v-model="submitForm.vul_validation" :label="1">
+                    {{ $t('views.projectEdit.off') }}
+                  </el-radio>
+                  <el-radio v-model="submitForm.vul_validation" :label="2">
+                    {{ $t('views.projectEdit.on') }}
+                  </el-radio>
+                </el-form-item>
+                <!-- <el-form-item>
                 <template slot="label">
                   {{ $t('views.projectEdit.agent') }}
                   <el-popover placement="top-start" width="340" trigger="hover">
@@ -144,50 +208,75 @@
                   ></el-option>
                 </el-select>
               </el-form-item> -->
-              <el-form-item prop="version_name">
-                <template slot="label">
-                  {{ $t('views.projectEdit.version_name') }}
-                  <el-popover placement="top-start" width="340" trigger="hover">
-                    <p>{{ $t('views.projectEdit.version_name_popover') }}</p>
-                    <span slot="reference">
-                      <i class="el-icon-question"></i>
-                    </span>
-                  </el-popover>
-                </template>
-                <el-input
-                  v-model="submitForm.version_name"
-                  style="width: 500px"
-                  :placeholder="$t('views.projectEdit.versionNamePlaceholder')"
-                ></el-input>
+                <el-form-item prop="version_name">
+                  <template slot="label">
+                    {{ $t('views.projectEdit.version_name') }}
+                    <el-popover
+                      placement="top-start"
+                      width="340"
+                      trigger="hover"
+                    >
+                      <p>{{ $t('views.projectEdit.version_name_popover') }}</p>
+                      <span slot="reference">
+                        <i class="el-icon-question"></i>
+                      </span>
+                    </el-popover>
+                  </template>
+                  <el-input
+                    v-model="submitForm.version_name"
+                    style="width: 500px"
+                    :placeholder="
+                      $t('views.projectEdit.versionNamePlaceholder')
+                    "
+                  ></el-input>
+                </el-form-item>
+                <el-form-item
+                  :label="$t('views.projectEdit.description')"
+                  prop="description"
+                >
+                  <el-input
+                    v-model="submitForm.description"
+                    style="width: 500px"
+                    :placeholder="
+                      $t('views.projectEdit.descriptionPlaceholder')
+                    "
+                  ></el-input>
+                </el-form-item>
+              </template>
+              <el-form-item>
+                <el-button
+                  type="text"
+                  size="small"
+                  class="submit-btn clear"
+                  @click="$router.go(-1)"
+                  >取消</el-button
+                >
+                <el-button
+                  type="text"
+                  size="small"
+                  class="submit-btn"
+                  @click="projectAdd"
+                  >{{ $t('views.projectEdit.submit') }}</el-button
+                >
               </el-form-item>
-              <el-form-item
-                :label="$t('views.projectEdit.description')"
-                prop="description"
-              >
-                <el-input
-                  v-model="submitForm.description"
-                  style="width: 500px"
-                  :placeholder="$t('views.projectEdit.descriptionPlaceholder')"
-                ></el-input>
-              </el-form-item>
-            </template>
-            <el-form-item>
-              <el-button
-                type="text"
-                size="small"
-                class="submit-btn clear"
-                @click="$router.go(-1)"
-                >取消</el-button
-              >
-              <el-button
-                type="text"
-                size="small"
-                class="submit-btn"
-                @click="projectAdd"
-                >{{ $t('views.projectEdit.submit') }}</el-button
-              >
-            </el-form-item>
-          </el-form>
+            </el-form>
+          </div>
+          <div v-else class="info1">
+            <el-tabs v-model="type" class="info-tabs" style="margin-top: 14px">
+              <el-tab-pane label="黑名单" name="1" class="info-tab">
+                <HookTable
+                  v-if="type === '1'"
+                  :project-id="$route.params.pid"
+                  :rule-type="type"
+              /></el-tab-pane>
+              <el-tab-pane label="白名单" name="2" class="info-tab">
+                <HookTable
+                  v-if="type === '2'"
+                  :project-id="$route.params.pid"
+                  :rule-type="type"
+              /></el-tab-pane>
+            </el-tabs>
+          </div>
         </div>
       </div>
     </div>
@@ -270,9 +359,37 @@
 import VueBase from '../../VueBase'
 import { Component } from 'vue-property-decorator'
 import { Form } from 'element-ui'
+import HookTable from '@/views/project/components/hookTable.vue'
 
-@Component({ name: 'ProjectEdit' })
+@Component({
+  name: 'ProjectEdit',
+  components: {
+    HookTable,
+  },
+})
 export default class ProjectEdit extends VueBase {
+  private prjectEditMenu = [
+    {
+      id: 0,
+      name: '基础设置',
+      children: [],
+    },
+    {
+      id: 1,
+      name: 'Server设置',
+      open: false,
+      children: [
+        {
+          f: 1,
+          fname: 'Server设置',
+          id: 2,
+          name: '用户代码识别',
+        },
+      ],
+    },
+  ]
+  private changeMenu = '基础设置'
+  private type = '1'
   private advanced = false
   private departmentList = []
   private projectList = []
@@ -288,10 +405,10 @@ export default class ProjectEdit extends VueBase {
     base_url: string
     test_req_header_key: string
     test_req_header_value: string
-    department_id: any,
-    template_id: any,
-    log_level: any,
-    enable_log: any,
+    department_id: any
+    template_id: any
+    log_level: any
+    enable_log: any
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
@@ -370,6 +487,17 @@ export default class ProjectEdit extends VueBase {
     name: '',
   }
   private isSelectAll = false
+  private Hopen(i: any) {
+    i.open = !i.open
+    let arr = i.children.map((item: any) => {
+      return item.name
+    })
+    console.log(arr)
+    if (arr.includes(this.changeMenu)) {
+      return
+    }
+    // this.changeMenu = i.children[0].name
+  }
   private async getListDepartment() {
     // 部门list
     const res = await this.services.deploy.getDepartment({})
@@ -399,6 +527,7 @@ export default class ProjectEdit extends VueBase {
       await this.projectDetail()
       await this.getHeaderId()
     }
+    this.changeMenu = '基础设置'
   }
 
   private scanAddDialogShow() {
@@ -636,9 +765,9 @@ export default class ProjectEdit extends VueBase {
           base_url: string
           test_req_header_key: string
           test_req_header_value: string
-          department_id: any,
-          template_id: any,
-          enable_log: any,
+          department_id: any
+          template_id: any
+          enable_log: any
           log_level: any
         } = {
           name: this.submitForm.name,
@@ -658,7 +787,7 @@ export default class ProjectEdit extends VueBase {
           department_id: this.submitForm.department_id,
           template_id: this.submitForm.template_id,
           enable_log: this.submitForm.enable_log,
-          log_level: this.submitForm.log_level
+          log_level: this.submitForm.log_level,
         }
         if (this.$route.params.pid) {
           params.pid = this.$route.params.pid
@@ -774,11 +903,66 @@ export default class ProjectEdit extends VueBase {
   color: #4a72ae;
 }
 
-.info-box {
+.info-content {
   display: flex;
   justify-content: center;
+  .info-content-warp {
+    padding: 17px 6px 0 6px;
+    width: 200px;
+    margin-right: 32px;
+
+    .info-content-item {
+      width: 100%;
+      height: 38px;
+      line-height: 38px;
+      color: #38435a;
+      font-size: 14px;
+      border-radius: 4px;
+      padding: 0 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      &:hover {
+        color: #1a80f2;
+        background: #f6f8fa;
+      }
+      &.active {
+        color: #1a80f2;
+      }
+    }
+
+    .currentModule {
+      color: #1a80f2;
+      background: #f6f8fa;
+    }
+  }
+}
+.info-content-item-group {
+  overflow: hidden;
+  transition: all 0.2s;
+  .info-content-item {
+    padding-left: 32px !important;
+    font-weight: 400 !important;
+  }
+}
+.el-icon-arrow-down {
+  transition: all 0.2s;
+  &.active {
+    transform: rotate(180deg);
+  }
+}
+
+.info-box {
+  display: flex;
+  flex: 1;
+  // justify-content: center;
   .info {
     width: 700px;
+  }
+  .info1 {
+    width: 100%;
   }
 }
 

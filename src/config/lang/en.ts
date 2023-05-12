@@ -937,6 +937,11 @@ export default {
       searchName: 'Enter the application name in the search field',
     },
     projectEdit: {
+      add: 'Add',
+      blacklist: 'BlackList',
+      whitelist: 'WhiteList',
+      prefix: 'prefix',
+      ruleInfoPlaceholder: 'Please enter the field prefix',
       token: 'Access Token',
       department: 'Department',
       departmentPlaceholder: 'Please select a department',

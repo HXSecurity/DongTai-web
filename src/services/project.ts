@@ -88,4 +88,25 @@ export default () =>
     req_headers(params: any): Promise<iResponse> {
       return request.get(`/project/${params.id}/api_test/req_headers`)
     }
+    getRecognizeRule(data: any): Promise<iResponse> {
+      return request.get(
+        `/project/recognize_rule?page=${data.page}&page_size=${data.pageSize}&project_id=${data.project_id}&rule_type=${data.rule_type}`
+      )
+    }
+    postRecognizeRule(data: any): Promise<iResponse> {
+      return request.post(`/project/recognize_rule`, data)
+    }
+    deleteRecognizeRule(params: any): Promise<iResponse> {
+      return request.delete(`/project/recognize_rule`, { data: params })
+    }
+    getRecognizeRuleById(id: any): Promise<iResponse> {
+      return request.get(`/project/recognize_rule/${id}`)
+    }
+    putRecognizeRuleById(data: any): Promise<iResponse> {
+      return request.put(`/project/recognize_rule/${data.rule_id}`, {
+        rule_detail: data.rule_detail,
+        project_id: data.project_id,
+        rule_type: data.rule_type,
+      })
+    }
   })()
