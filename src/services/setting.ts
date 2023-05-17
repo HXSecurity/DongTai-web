@@ -243,7 +243,11 @@ export default () =>
       track: string
       language_id: number,
       ignore_blacklist?: boolean,
-      ignore_internal?: boolean
+      ignore_internal?: boolean,
+      tags?: any,
+      untags?: any,
+      command?: any,
+      stack_blacklist?: any
     }): Promise<iResponse> {
       return request.post('/engine/hook/rule/add', params)
     }
@@ -257,7 +261,11 @@ export default () =>
       track: string
       language_id: number,
       ignore_blacklist?: boolean,
-      ignore_internal?: boolean
+      ignore_internal?: boolean,
+      tags?: any,
+      untags?: any,
+      command?: any,
+      stack_blacklist?: any
     }): Promise<iResponse> {
       return request.post('/engine/hook/rule/modify', params)
     }
@@ -507,5 +515,8 @@ export default () =>
     }
     delProjecttemplat(data: any): Promise<iResponse> {
       return request.delete(`/projecttemplate/` + data.id)
+    }
+    getEnum(): Promise<iResponse> {
+      return request.get('/hook_rule/enum', { timeout: 1000 })
     }
   })()

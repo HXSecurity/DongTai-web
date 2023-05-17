@@ -461,7 +461,12 @@ export default {
       enterType: 'Entry Method Rules',
       searchDesc: 'Find rule details',
       ignoreInternal: 'Ignore Internal',
-      ignoreBlacklist: 'Ignore Blacklist'
+      ignoreBlacklist: 'Ignore Blacklist',
+      stainTag: 'Stain Tag',
+      stainUntag: 'Stain UnTag',
+      stainRange: 'Stain Range',
+      stackBlacklist: 'Stack Blacklist',
+      selectTag: 'Please choose a tag',
     },
     login: {
       title: 'User login',
@@ -932,6 +937,11 @@ export default {
       searchName: 'Enter the application name in the search field',
     },
     projectEdit: {
+      add: 'Add',
+      blacklist: 'BlackList',
+      whitelist: 'WhiteList',
+      prefix: 'prefix',
+      ruleInfoPlaceholder: 'Please enter the field prefix',
       token: 'Access Token',
       department: 'Department',
       departmentPlaceholder: 'Please select a department',

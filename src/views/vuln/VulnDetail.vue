@@ -146,7 +146,26 @@
       </div>
       <div class="module-title">漏洞描述</div>
       <div class="vulnDesc">
-        {{ vulnObj.strategy.desc }}
+        <!-- {{ vulnObj.strategy.desc }} -->
+        <MyMarkdownIt
+          :content="vulnObj.strategy.desc"
+          style="color: #38435a"
+        ></MyMarkdownIt>
+        <div class="vulnDesc" v-if="vulnObj.vul.type == '硬编码'">
+          <div class="top-stack">
+            <i class="iconfont iconyuandianzhong"></i>
+            <span>
+              字段：{{ vulnObj.vul.taint_position }}
+            </span>
+          </div>
+          <div class="bottom-stack">
+            <i class="iconfont iconyuandianzhong"></i>
+            <span>
+              硬编码值：{{ vulnObj.vul.taint_value }}
+            </span>
+          </div>
+         
+        </div>
       </div>
       <template v-if="vulnObj.vul.is_need_http_detail">
         <div class="module-title">数据流</div>
@@ -1455,6 +1474,53 @@ tt {
   }
   .log-item-time {
     color: #959fb4;
+  }
+}
+
+.top-stack {
+  margin-top: 18px;
+  position: relative;
+  color: #9199a2;
+  &:before {
+    content: '';
+    width: 1px;
+    height: 20px;
+    background: #dee4ea;
+    position: absolute;
+    left: 5px;
+    top: 18px;
+  }
+
+  i {
+    color: #5491ef;
+    font-size: 12px;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+
+  span {
+    width: calc(100% - 18px);
+    word-break: break-all;
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+.bottom-stack {
+  margin-top: 18px;
+  color: #9199a2;
+  i {
+    color: #6ec79f;
+    font-size: 12px;
+    vertical-align: top;
+    margin-right: 5px;
+  }
+
+  span {
+    width: calc(100% - 18px);
+    word-break: break-all;
+    display: inline-block;
+    vertical-align: top;
   }
 }
 </style>
