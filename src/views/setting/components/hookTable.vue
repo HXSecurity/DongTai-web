@@ -430,6 +430,39 @@
         <el-form-item :label="$t('views.hookPage.ignoreBlacklist')">
           <el-checkbox v-model="hook.ignore_blacklist"></el-checkbox>
         </el-form-item>
+        <template v-if="hookType.type != '3'">
+          <el-form-item :label="$t('views.hookPage.stainTag')">
+            <el-select
+              style="width:100%"
+              v-model="hook.tags"
+              multiple
+              :placeholder="$t('views.hookPage.selectTag')">
+              <el-option
+                v-for="(t,k) in tagsList"
+                :key="k"
+                :label="t"
+                :value="t">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('views.hookPage.stainUntag')" v-if="hookType.type == '1'">
+            <el-select
+              style="width:100%"
+              v-model="hook.untags"
+              multiple
+              :placeholder="$t('views.hookPage.selectTag')">
+              <el-option
+                v-for="(t,k) in tagsList"
+                :key="k"
+                :label="t"
+                :value="t">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="$t('views.hookPage.stainRange')">
+            <el-input type="text" v-model="hook.command"></el-input>
+          </el-form-item>
+        </template>
       </el-form>
       <template slot="footer">
         <el-button size="small" @click="clearHook">{{
@@ -492,8 +525,10 @@ export default class HookTable extends VueBase {
     target: [{ relation: '', origin: '', param: '' }],
     inherit: 'false',
     ignore_internal: false,
-    ignore_blacklist: false
-    
+    ignore_blacklist: false,
+    tags: [],
+    untags: [],
+    command: ''
   }
   relations = [
     { label: this.$t('views.hookPage.or'), value: '|' },
@@ -508,7 +543,7 @@ export default class HookTable extends VueBase {
   pageSize = 20
   currentPage = 1
   total = 0
-
+  tagsList = []
   splitAndIn(str: string, key: string) {
     const arr = str.split(key)
     for (let i = 0; i < arr.length; i++) {
@@ -595,6 +630,9 @@ export default class HookTable extends VueBase {
     this.hookDialog = true
     this.hook.ignore_internal = row.ignore_internal
     this.hook.ignore_blacklist = row.ignore_blacklist
+    this.hook.tags = row.tags 
+    this.hook.untags = row.untags
+    this.hook.command = row.command
   }
   async getTypes() {
     this.loadingStart()
@@ -777,15 +815,15 @@ export default class HookTable extends VueBase {
   }
   fmtType(type: string) {
     switch (type) {
-      case '1':
+      case '1':  // 传播方法规则
         return this.$t('views.hookPage.spreadType') as string
-      case '2':
+      case '2':  // 污染源方法规则
         return this.$t('views.hookPage.contaminatedType') as string
-      case '3':
+      case '3':  // 过滤方法规则
         return this.$t('views.hookPage.filterType') as string
-      case '4':
+      case '4':  // 危险方法规则
         return this.$t('views.hookPage.dangerType') as string
-      case '5':
+      case '5': // 入口方法规则
         return this.$t('views.hookPage.enterType') as string
     }
   }
@@ -799,7 +837,10 @@ export default class HookTable extends VueBase {
       target: [{ relation: '', origin: '', param: '' }],
       inherit: 'false',
       ignore_internal: false,
-      ignore_blacklist: false
+      ignore_blacklist: false,
+      tags: [],
+      untags: [],
+      command: ''
     }
     this.hookDialog = false
   }
@@ -832,7 +873,10 @@ export default class HookTable extends VueBase {
         track: 'false',
         language_id: this.activeLanguage,
         ignore_internal: this.hook.ignore_internal,
-        ignore_blacklist: this.hook.ignore_blacklist
+        ignore_blacklist: this.hook.ignore_blacklist,
+        tags: this.hook.tags,
+        untags: this.hook.untags,
+        command: this.hook.command,
       })
 
       this.loadingDone()
@@ -860,7 +904,10 @@ export default class HookTable extends VueBase {
         track: 'false',
         language_id: this.activeLanguage,
         ignore_internal: this.hook.ignore_internal,
-        ignore_blacklist: this.hook.ignore_blacklist
+        ignore_blacklist: this.hook.ignore_blacklist,
+        tags: this.hook.tags,
+        untags: this.hook.untags,
+        command: this.hook.command,
       })
 
       this.loadingDone()
@@ -914,11 +961,24 @@ export default class HookTable extends VueBase {
     this.currentPage = val
     this.getTable()
   }
+  async getEnumData(){
+    const { status, msg, data } = await this.services.setting.getEnum();
+    if (status !== 201) {
+      this.$message({
+        type: 'error',
+        message: msg,
+        showClose: true,
+      })
+      return
+    }
+    this.tagsList = data.tags
+  }
   created() {
     this.hookType.type = this.ruleType
     this.hook.type = this.ruleType
     this.getTable()
     this.getTypes()
+    this.getEnumData()
   }
 }
 </script>
@@ -1000,5 +1060,30 @@ export default class HookTable extends VueBase {
   .el-button + .el-button {
     margin-left: 0;
   }
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.button-new-tag {
+  margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  width: 90px;
+  margin-left: 10px;
+  vertical-align: bottom;
+}
+::v-deep.el-select .el-tag.el-tag--info{
+  background-color: #eaf3ff;
+  border-color: #d5e6ff;
+  color: #2d82ff;
+}
+
+::v-deep.el-select .el-tag.el-tag--info .el-tag__close{
+  color: #2d82ff;
+  background-color: #d5e6ff;
 }
 </style>

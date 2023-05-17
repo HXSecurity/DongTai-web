@@ -464,7 +464,12 @@ export default {
       enterType: '入口方法规则',
       searchDesc: '查找规则详情',
       ignoreInternal: '忽略内部实现',
-      ignoreBlacklist: '白名单'
+      ignoreBlacklist: '白名单',
+      stainTag: '污点 tag',
+      stainUntag: '污点 untag',
+      stainRange: '污点 range',
+      stackBlacklist: '危险方法调用堆栈黑名单',
+      selectTag: '请选择标签',
     },
     login: {
       title: '用户登录',
@@ -933,6 +938,11 @@ export default {
       searchName: '请输入项目名称，然后回车或点击搜索图标进行搜索',
     },
     projectEdit: {
+      add: '新增',
+      blacklist: '黑名单',
+      whitelist: '白名单',
+      prefix: '前缀',
+      ruleInfoPlaceholder: '请输入字段前缀',
       token: '访问凭证',
       department: '部门',
       departmentPlaceholder: '请选择部门',
