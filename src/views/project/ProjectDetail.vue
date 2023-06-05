@@ -49,7 +49,7 @@
             <el-select
               v-model="projectObj.versionData.version_id"
               size="mini"
-              style="width: 80px"
+              style="width: 210px"
               @change="changeVersion"
             >
               <el-option
