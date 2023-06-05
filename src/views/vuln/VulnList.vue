@@ -240,12 +240,12 @@
           >
             应用漏洞
           </div>
-          <div
+          <!-- <div
             :class="vulnType === 'sca' ? 'active' : ''"
             @click="changeVulnType('sca')"
           >
             组件漏洞
-          </div>
+          </div> -->
           <div
             :class="vulnType === 'scan' ? 'active' : ''"
             @click="changeVulnType('scan')"
