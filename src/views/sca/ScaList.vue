@@ -131,7 +131,9 @@
             min-width="240"
           >
             <template slot-scope="{ row }">
-              <span class="pkg-name">{{ row.package_name }}</span>
+              <span class="pkg-name"
+                >{{ row.package_name }} : {{ row.version }}</span
+              >
             </template>
           </el-table-column>
           <el-table-column label="漏洞" prop="license" width="300px">
