@@ -15,12 +15,14 @@
           {{ itemTitle }}
         </span>
       </span>
-      <span
-        class="time flex-column-center"
-        style="font-size: 12px; height: 32px"
-      >
-        {{ item.first_time }}
-      </span>
+      <el-tooltip class="item" effect="dark" content="首次出现时间" placement="top">
+        <span
+          class="time flex-column-center"
+          style="font-size: 12px; height: 32px"
+        >
+          {{ item.first_time }}
+        </span>
+      </el-tooltip>
     </div>
     <div class="card-content">
       <Sync
@@ -121,13 +123,15 @@
             <i class="iconfont iconweixian"></i>
             {{ switchLevel(item.level_id) }}
           </span>
-          <span class="info" style="flex: 1.2; line-height: 28px">
-            <i
-              class="iconfont iconshijian-2"
-              style="color: #a2a5ab; font-size: 14px"
-            ></i>
-            {{ item.latest_time }}
-          </span>
+          <el-tooltip class="item" effect="dark" content="最新活跃时间" placement="top">
+            <span class="info" style="flex: 1.2; line-height: 28px">
+              <i
+                class="iconfont iconshijian-2"
+                style="color: #a2a5ab; font-size: 14px"
+              ></i>
+              {{ item.latest_time }}
+            </span>
+          </el-tooltip>
         </div>
         <div>
           <!-- <div class="tag">
