@@ -34,7 +34,11 @@
           <div class="infoLine flex-row-space-between">
             <div v-dot class="info">
               <span class="label"> 漏洞类型： </span>
-              <span>{{ assetVulDetail.vul_type }}</span>
+              <span
+                ><span v-for="type in assetVulDetail.vul_type" :key="type"
+                  >{{ type }}
+                </span></span
+              >
             </div>
             <div v-dot class="info">
               <span class="label"> 语言： </span>

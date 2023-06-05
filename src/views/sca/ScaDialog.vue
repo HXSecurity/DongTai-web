@@ -35,11 +35,15 @@
       <div class="sca-dialog-title">安全版本</div>
       <div class="sca-dialog-info">
         <span
-          v-for="version in detailInfo.affected_versions"
+          v-for="(version, index) in detailInfo.unaffected_versions"
           :key="version"
           class="verson_item"
         >
-          {{ version }} <span class="verson_split"></span>
+          {{ version }}
+          <span
+            v-show="index !== detailInfo.unaffected_versions.length - 1"
+            class="verson_split"
+          ></span>
         </span>
       </div>
     </div>
@@ -152,7 +156,7 @@
               <!-- <span v-for="(item, index) in row.vul_type" :key="index">{{
                 item
               }}</span> -->
-              {{ row.vul_type }}
+              <span v-for="type in row.vul_type" :key="type">{{ type }} </span>
             </template>
           </el-table-column>
           <el-table-column
@@ -175,7 +179,23 @@
           </el-table-column>
           <el-table-column prop="num" label="编号">
             <template slot-scope="{ row }">
-              {{ row.vul_codes }}
+              <span
+                v-for="(i, key) in Object.values(row.vul_codes)"
+                :key="'cve' + key"
+              >
+                <span v-if="i" class="jump">{{ i[0] }} </span>
+                <span
+                  v-show="key != Object.values(row.vul_codes).length - 1"
+                  style="
+                    display: inline-block;
+                    width: 0px;
+                    height: 10px;
+                    border-left: 1px solid #b6bbc5;
+                    margin: 0 10px;
+                  "
+                >
+                </span>
+              </span>
             </template>
           </el-table-column>
         </el-table>
