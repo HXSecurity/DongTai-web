@@ -101,6 +101,7 @@ export default {
     scaList: 'Component management list',
     scaDetail: 'Component management details',
     scanDetail: 'Scan vulnerability details',
+    scalistDetail: 'Scan details',
     changeLogo: 'Site Identity',
     setting: 'Settings',
     agentManage: 'Agent',

@@ -8,7 +8,7 @@
     >
       <div class="go-back-title">
         <span @click="goBack">
-          <i class="el-icon-arrow-left"></i> 返回列表
+          <i class="el-icon-arrow-left"></i> 返回漏洞列表
         </span>
       </div>
       <div class="vuln-title flex-row-space-between">
@@ -151,20 +151,15 @@
           :content="vulnObj.strategy.desc"
           style="color: #38435a"
         ></MyMarkdownIt>
-        <div class="vulnDesc" v-if="vulnObj.vul.type == '硬编码'">
+        <div v-if="vulnObj.vul.type == '硬编码'" class="vulnDesc">
           <div class="top-stack">
             <i class="iconfont iconyuandianzhong"></i>
-            <span>
-              字段：{{ vulnObj.vul.taint_position }}
-            </span>
+            <span> 字段：{{ vulnObj.vul.taint_position }} </span>
           </div>
           <div class="bottom-stack">
             <i class="iconfont iconyuandianzhong"></i>
-            <span>
-              硬编码值：{{ vulnObj.vul.taint_value }}
-            </span>
+            <span> 硬编码值：{{ vulnObj.vul.taint_value }} </span>
           </div>
-         
         </div>
       </div>
       <template v-if="vulnObj.vul.is_need_http_detail">

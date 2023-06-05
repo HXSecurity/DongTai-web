@@ -29,29 +29,81 @@ export default () =>
       })
     }
 
-    assetVuls(aggr_id: any): Promise<iResponse> {
-      return request.get('/asset_vuls/' + aggr_id, {
-        baseURL: '/openapi/sca/v1',
-      })
+    assetVuls(row: any): Promise<iResponse> {
+      return request.get(
+        `/package_vuls/${row.language_id}/${row.package_name}/${row.package_version}?page=${row.page}&page_size=${row.page_size}`,
+        {
+          baseURL: '/api/sca/v2',
+        }
+      )
     }
 
-    assetProjects(aggr_id: any): Promise<iResponse> {
-      return request.get('/asset_projects/' + aggr_id, {
-        baseURL: '/openapi/sca/v1',
+    assetProjects(row: any): Promise<iResponse> {
+      if (row.project_id) {
+        return request.get(
+          `/package/${row.language_id}/${row.package_name}/${row.package_version}/relation_projects?page=${row.page}&page_size=${row.page_size}&project_id=${row.project_id}`,
+          {
+            baseURL: '/api/sca/v2',
+          }
+        )
+      }
+      return request.get(
+        `/package/${row.language_id}/${row.package_name}/${row.package_version}/relation_projects?page=${row.page}&page_size=${row.page_size}`,
+        {
+          baseURL: '/api/sca/v2',
+        }
+      )
+    }
+    assetProjectId(row: any): Promise<iResponse> {
+      return request.get(
+        `/package/${row.language_id}/${row.package_name}/${row.package_version}/relation_project/${row.project_id}`,
+        {
+          baseURL: '/api/sca/v2',
+        }
+      )
+    }
+    vulPackId(row: any): Promise<iResponse> {
+      return request.get(`/package_vul/${row.vul_id}`, {
+        baseURL: '/api/sca/v2',
       })
     }
-    // scaList
+    // scaList /api/sca/v2/package
+    // scaList(data: any): Promise<iResponse> {
+    //   return request.post('/scas', data)
+    // }
     scaList(data: any): Promise<iResponse> {
-      return request.post('/scas', data)
+      return request.post('/package/', data, {
+        baseURL: '/api/sca/v2',
+      })
     }
 
     // scaSummary
+    // scaSummary(data: any): Promise<iResponse> {
+    //   return request.post('/sca/summary', data)
+    // }
     scaSummary(data: any): Promise<iResponse> {
-      return request.post('/sca/summary', data)
+      if (data.project_id) {
+        return request.get(
+          `/package_summary?project_id=${data.project_id}&project_version_id=${data.version_id}&keyword=${data.keyword}`,
+          {
+            baseURL: '/api/sca/v2',
+            // baseURL: '/openapi/sca/v2',
+          }
+        )
+      }
+      return request.get(`/package_summary?keyword=${data.keyword}`, {
+        baseURL: '/api/sca/v2',
+        // baseURL: '/openapi/sca/v2',
+      })
     }
 
     // getScaDetail
-    getScaDetail(id: number): Promise<iResponse> {
-      return request.get(`/sca/${id}`)
+    getScaDetail(row: any): Promise<iResponse> {
+      return request.get(
+        `/package/${row.language_id}/${row.package_name}/${row.package_version}/detail`,
+        {
+          baseURL: '/api/sca/v2',
+        }
+      )
     }
   })()
