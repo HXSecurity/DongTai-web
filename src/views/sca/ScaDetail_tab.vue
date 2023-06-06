@@ -81,14 +81,20 @@
         </div>
 
         <div class="module-title" style="color: #e56363">影响版本</div>
-        <div class="vulnDesc">
+        <div
+          v-if="assetVulDetail.affected_versions.length > 0"
+          class="vulnDesc"
+        >
           <span
             v-for="(i, key) in assetVulDetail.affected_versions"
             :key="'cve' + key"
           >
             <span v-if="i" class="jump">{{ i }} </span>
             <span
-              v-show="key != Object.values(assetVulDetail.vul_codes).length - 1"
+              v-show="
+                key !=
+                Object.values(assetVulDetail.affected_versions).length - 1
+              "
               style="
                 display: inline-block;
                 width: 0px;
@@ -100,15 +106,22 @@
             </span>
           </span>
         </div>
+        <div v-else class="vulnDesc">无</div>
         <div class="module-title" style="color: #51cb74">不影响版本</div>
-        <div class="vulnDesc">
+        <div
+          v-if="assetVulDetail.unaffected_versions.length > 0"
+          class="vulnDesc"
+        >
           <span
             v-for="(i, key) in assetVulDetail.unaffected_versions"
             :key="'cve' + key"
           >
             <span v-if="i" class="jump">{{ i }} </span>
             <span
-              v-show="key != Object.values(assetVulDetail.vul_codes).length - 1"
+              v-show="
+                key !=
+                Object.values(assetVulDetail.unaffected_versions).length - 1
+              "
               style="
                 display: inline-block;
                 width: 0px;
@@ -120,6 +133,7 @@
             </span>
           </span>
         </div>
+        <div v-else class="vulnDesc">无</div>
       </template>
     </div>
 
@@ -204,6 +218,11 @@ export default class VulnDetail extends VueBase {
   private logDialogOpen = false
   fmtTime(time: any) {
     if (time) {
+      if (`${time}`.length === 10) {
+        time = window.parseInt(time) * 1000
+      } else {
+        time = +time
+      }
       const data = new Date(time).getTime() / 1000
       return formatTimestamp(data)
     }
