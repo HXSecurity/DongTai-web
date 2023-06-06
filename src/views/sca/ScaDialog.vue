@@ -83,7 +83,7 @@
           accordion
           @change="handleChange"
         >
-          <el-collapse-item :name="project.project" style="margin-top: 8px">
+          <el-collapse-item :name="project.project_id" style="margin-top: 8px">
             <template slot="title">
               <!-- @click="toProject(project.project_id)" -->
               <div class="project-box">
@@ -92,7 +92,7 @@
                   :style="
                     index === 0 && $route.query.projectId && 'color:#38435A'
                   "
-                  @click="toProject(project.project, index)"
+                  @click="toProject(project.project_id, index)"
                 >
                   {{ project.project_name }}
                 </span>
@@ -319,7 +319,7 @@ export default class ScaDialog extends VueBase {
         project_id: val,
       })
       this.projects = this.projects.map((item: any) => {
-        if (item.project === val) {
+        if (item.project_id === val) {
           this.$set(item, 'content', res.data)
         }
         return item
@@ -365,18 +365,18 @@ export default class ScaDialog extends VueBase {
       {
         level_id: 1,
         level_name: '高危',
-        num: res.data.vul_high_count,
+        num: res.data.vul_critical_count,
       },
       {
         level_id: 2,
         level_name: '中危',
-        num: res.data.vul_medium_count,
+        num: res.data.vul_high_count,
       },
-      { level_id: 3, level_name: '低危', num: res.data.vul_low_count },
+      { level_id: 3, level_name: '低危', num: res.data.vul_medium_count },
       {
         level_id: 4,
         level_name: '无风险',
-        num: res.data.vul_info_count,
+        num: res.data.vul_low_count,
       },
     ]
   }
