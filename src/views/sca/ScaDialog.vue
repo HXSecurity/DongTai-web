@@ -94,7 +94,7 @@
                   "
                   @click="toProject(project.project, index)"
                 >
-                  {{ project.package_name }}
+                  {{ project.project_name }}
                 </span>
               </div>
             </template>
