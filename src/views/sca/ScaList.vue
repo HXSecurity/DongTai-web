@@ -47,7 +47,7 @@
           v-for="item in searchOptionsObj.language"
           :key="item.language"
           v-model="searchObj.language"
-          :label="item.language"
+          :label="item.language_id"
           class="flex-row-space-between module-line"
           @change="getTableData(true)"
         >
@@ -139,10 +139,10 @@
           <el-table-column label="漏洞" prop="license" width="300px">
             <template slot-scope="{ row }">
               <div class="danger-box">
-                <div class="height">{{ row.vul_high_count }}</div>
-                <div class="middle">{{ row.vul_medium_count }}</div>
-                <div class="low">{{ row.vul_low_count }}</div>
-                <div class="info">{{ row.vul_info_count }}</div>
+                <div class="height">{{ row.vul_critical_count }}</div>
+                <div class="middle">{{ row.vul_high_count }}</div>
+                <div class="low">{{ row.vul_medium_count }}</div>
+                <div class="info">{{ row.vul_low_count }}</div>
               </div>
             </template>
           </el-table-column>
@@ -370,9 +370,9 @@ export default class ScaList extends VueBase {
     const params: any = {
       page: this.page,
       page_size: this.pageSize,
-      language: this.searchObj.language,
-      level_id: this.searchObj.level,
-      license: this.searchObj.license,
+      language_ids: this.searchObj.language,
+      level_ids: this.searchObj.level,
+      license_ids: this.searchObj.license,
       order: sort,
       project_id: this.projectId,
       version_id: this.version,
