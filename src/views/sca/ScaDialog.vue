@@ -375,7 +375,7 @@ export default class ScaDialog extends VueBase {
       { level_id: 3, level_name: '低危', num: res.data.vul_medium_count },
       {
         level_id: 4,
-        level_name: '无风险',
+        level_name: '提示',
         num: res.data.vul_low_count,
       },
     ]
@@ -394,7 +394,7 @@ export default class ScaDialog extends VueBase {
     1: '高危',
     2: '中危',
     3: '低危',
-    4: '无风险',
+    4: '提示',
   }
   private levelColor(level: any) {
     switch (level) {
@@ -419,7 +419,7 @@ export default class ScaDialog extends VueBase {
         return { label: '低', color: '#2F90EA', bg: 'rgba(47, 144, 234, 0.1)' }
       case 0:
         return {
-          label: '无风险',
+          label: '提示',
           color: '#ABB2C0',
           bg: 'rgba(172, 180, 196, 0.1)',
         }
