@@ -423,6 +423,12 @@ export default class ScaDialog extends VueBase {
           color: '#ABB2C0',
           bg: 'rgba(172, 180, 196, 0.1)',
         }
+      default:
+        return {
+          label: '提示',
+          color: '#ABB2C0',
+          bg: 'rgba(172, 180, 196, 0.1)',
+        }
     }
   }
 }
