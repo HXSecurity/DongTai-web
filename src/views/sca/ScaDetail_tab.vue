@@ -56,8 +56,11 @@
           </div>
         </div>
         <div class="module-title">漏洞描述</div>
-        <div class="vulnDesc">
-          {{ assetVulDetail.vul_detail }}
+        <div class="vulnDesc markdownContent">
+          <MyMarkdownIt
+            :content="assetVulDetail.vul_detail"
+            style="color: #38435a"
+          ></MyMarkdownIt>
         </div>
         <div class="module-title">编号</div>
         <div v-if="assetVulDetail.vul_codes" class="vulnDesc">
@@ -649,6 +652,9 @@ export default class VulnDetail extends VueBase {
     ::v-deeptt {
       color: red !important;
       font-style: normal !important;
+    }
+    &::-webkit-scrollbar {
+      width: 4px;
     }
     background: #fff;
     margin-top: 16px;
