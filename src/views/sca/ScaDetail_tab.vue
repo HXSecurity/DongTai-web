@@ -60,7 +60,7 @@
           {{ assetVulDetail.vul_detail }}
         </div>
         <div class="module-title">编号</div>
-        <div class="vulnDesc">
+        <div v-if="assetVulDetail.vul_codes" class="vulnDesc">
           <span
             v-for="(i, key) in Object.values(assetVulDetail.vul_codes)"
             :key="'cve' + key"
@@ -82,7 +82,10 @@
 
         <div class="module-title" style="color: #e56363">影响版本</div>
         <div
-          v-if="assetVulDetail.affected_versions.length > 0"
+          v-if="
+            assetVulDetail.affected_versions &&
+            assetVulDetail.affected_versions.length > 0
+          "
           class="vulnDesc"
         >
           <span
@@ -91,10 +94,7 @@
           >
             <span v-if="i" class="jump">{{ i }} </span>
             <span
-              v-show="
-                key !=
-                Object.values(assetVulDetail.affected_versions).length - 1
-              "
+              v-show="key != assetVulDetail.affected_versions.length - 1"
               style="
                 display: inline-block;
                 width: 0px;
@@ -109,7 +109,10 @@
         <div v-else class="vulnDesc">无</div>
         <div class="module-title" style="color: #51cb74">不影响版本</div>
         <div
-          v-if="assetVulDetail.unaffected_versions.length > 0"
+          v-if="
+            assetVulDetail.unaffected_versions &&
+            assetVulDetail.unaffected_versions.length > 0
+          "
           class="vulnDesc"
         >
           <span
@@ -118,10 +121,7 @@
           >
             <span v-if="i" class="jump">{{ i }} </span>
             <span
-              v-show="
-                key !=
-                Object.values(assetVulDetail.unaffected_versions).length - 1
-              "
+              v-show="key != assetVulDetail.unaffected_versions.length - 1"
               style="
                 display: inline-block;
                 width: 0px;
@@ -367,36 +367,11 @@ export default class VulnDetail extends VueBase {
     },
   ]
 
-  private syncInfo: any = {}
   private aggr_id: any = 0
   async init() {
     this.aggr_id = parseInt(this.$route.params.page)
     this.selectedId = parseInt(this.$route.params.id)
     await this.getAssetVulDetail()
-    this.syncInfo = {
-      source_type: 2,
-      id: this.aggr_id,
-      create_time: this.assetVulDetail.base_info.first_time,
-      // last_time: this.assetVulDetail.base_info.last_time,
-      type_name: this.assetVulDetail.base_info.vul_type,
-      package_language: this.assetVulDetail.base_info.language,
-      vul_number:
-        (this.assetVulDetail.base_info.cnnvd
-          ? this.assetVulDetail.base_info.cnnvd + ' | '
-          : '') +
-        (this.assetVulDetail.base_info.cnvd
-          ? this.assetVulDetail.base_info.cnvd + ' | '
-          : '') +
-        (this.assetVulDetail.base_info.cve
-          ? this.assetVulDetail.base_info.cve + ' | '
-          : '') +
-        (this.assetVulDetail.base_info.cwe
-          ? this.assetVulDetail.base_info.cwe + ' | '
-          : ''),
-      level_id: this.assetVulDetail.base_info.level,
-      vul_name: this.assetVulDetail.base_info.vul_title,
-      pro_info: this.assetVulDetail.base_info.project_names,
-    }
   }
 
   async getAssetVulDetail() {
