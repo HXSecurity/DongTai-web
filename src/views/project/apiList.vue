@@ -55,6 +55,10 @@
           {{ $t('views.apiList.rate') }}
         </span>
         <span> {{ coverRate }} </span>
+        <el-tooltip class="item" effect="dark" placement="top">
+          <div slot="content">已覆盖测试 API 数量: {{ coverCount }}<br/><br/>全部 API 数量: {{ totalCount }}</div>
+          <span> {{ `(${coverCount}/${totalCount})` }} </span>
+        </el-tooltip>
       </div>
     </div>
     <div class="infoList">
@@ -213,6 +217,8 @@ export default class Index extends VueBase {
   private page_index = 1
   private pageSize = 20
   private coverRate = ''
+  private totalCount = ''
+  private coverCount = ''
   private openCollapse = [0]
   private apiList = []
   private getColor(type: string) {
@@ -346,6 +352,8 @@ export default class Index extends VueBase {
       this.$message.error(res.msg)
     }
     this.coverRate = res.data.cover_rate
+    this.totalCount = res.data.total_count
+    this.coverCount = res.data.covered_count
   }
 
   async mounted() {
