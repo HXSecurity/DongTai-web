@@ -93,8 +93,8 @@
       <div class="table-big-box">
         <div class="button-bar">
           <div>
-            <el-checkbox v-model="selectAll"></el-checkbox>
-            <span style="margin: 0 12px 0 4px">全选</span>
+            <!-- <el-checkbox v-model="selectAll"></el-checkbox>
+            <span style="margin: 0 12px 0 4px">全选</span> -->
             <el-button
               size="small"
               class="resetAllBtn"
