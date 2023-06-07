@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "34784038",
+      "name": "grip",
+      "font_class": "grip",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "35858646",
+      "name": "latesttime",
+      "font_class": "latesttime",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "35857495",
+      "name": "firsttime",
+      "font_class": "firsttime",
+      "unicode": "e6cc",
+      "unicode_decimal": 59084
+    },
+    {
+      "icon_id": "29742961",
+      "name": "left",
+      "font_class": "left",
+      "unicode": "e6be",
+      "unicode_decimal": 59070
+    },
+    {
       "icon_id": "30099447",
       "name": "new",
       "font_class": "new",
