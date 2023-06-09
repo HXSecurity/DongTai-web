@@ -796,6 +796,7 @@ export default class VulListComponent extends VueBase {
           latest_time: getPassedTime(item.latest_time),
           vul_number: vul_number,
           id: item.id,
+          latest_time_nyr: formatTimestamp(item.latest_time),
         })
         return list
       },

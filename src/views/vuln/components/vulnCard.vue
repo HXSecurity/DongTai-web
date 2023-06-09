@@ -15,12 +15,19 @@
           {{ itemTitle }}
         </span>
       </span>
-      <span
-        class="time flex-column-center"
-        style="font-size: 12px; height: 32px"
-      >
-        {{ item.first_time }}
-      </span>
+      <div style="display: flex;">
+        <el-tooltip class="item" effect="dark" content="最新活跃时间" placement="top">
+          <span class="flex-column-center" style="line-height:16px;font-size:14px;color:background:#5F6675;margin-right: 16px">
+            {{ item.latest_time }}
+          </span>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="最新活跃时间" placement="top">
+          <span class="time" >
+            <i class="iconfont iconlatesttime" style="margin-right:4px;"></i>
+            {{ item.latest_time_nyr }}
+          </span>
+        </el-tooltip>
+      </div>
     </div>
     <div class="card-content">
       <Sync
@@ -97,7 +104,7 @@
               >
             </el-tooltip>
           </span>
-          <span class="info" style="flex: 1.5">
+          <span class="info">
             <i class="iconfont" :class="switchServerType(item.server_type)"></i>
             {{ item.agent__server__container }}
           </span>
@@ -121,13 +128,12 @@
             <i class="iconfont iconweixian"></i>
             {{ switchLevel(item.level_id) }}
           </span>
-          <span class="info" style="flex: 1.2; line-height: 28px">
-            <i
-              class="iconfont iconshijian-2"
-              style="color: #a2a5ab; font-size: 14px"
-            ></i>
-            {{ item.latest_time }}
-          </span>
+          <el-tooltip class="item" effect="dark" content="首次出现时间" placement="top">
+            <span style="color:#9199A2" >
+              <i class="iconfont iconfirsttime"></i>
+              {{ item.first_time }}
+            </span>
+          </el-tooltip>
         </div>
         <div>
           <!-- <div class="tag">
@@ -531,8 +537,12 @@ export default class VulnList extends VueBase {
     }
 
     .time {
-      font-size: 14px;
-      color: #586069;
+      font-size:14px;
+      line-height:16px;
+      color:#959FB4;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
   }
 

@@ -98,7 +98,7 @@ export default {
     scalistDetail: '组件详情',
     scaDetail: '组件管理详情',
     scanDetail: '扫描漏洞详情',
-    setting: '系统配置',
+    setting: '系统设置',
     changeLogo: '品牌配置',
     agentManage: 'Agent',
     sensitive: '敏感信息',
