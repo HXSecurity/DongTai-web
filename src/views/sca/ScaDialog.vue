@@ -169,11 +169,11 @@
               <span
                 class="level-type"
                 :style="{
-                  color: levelColor(row.level).color,
-                  background: levelColor(row.level).bg,
+                  color: levelColor(row.level_name).color,
+                  background: levelColor(row.level_name).bg,
                 }"
               >
-                {{ levelObj[row.level] }}
+                {{ row.level_name }}
               </span>
             </template>
           </el-table-column>
@@ -361,24 +361,15 @@ export default class ScaDialog extends VueBase {
       return
     }
     this.detailInfo = res.data
-    this.level_data = [
-      {
-        level_id: 1,
-        level_name: '高危',
-        num: res.data.vul_critical_count,
-      },
-      {
-        level_id: 2,
-        level_name: '中危',
-        num: res.data.vul_high_count,
-      },
-      { level_id: 3, level_name: '低危', num: res.data.vul_medium_count },
-      {
-        level_id: 4,
-        level_name: '提示',
-        num: res.data.vul_low_count,
-      },
-    ]
+    this.level_data = res.data.vul_count_groupby_level.map(
+      (item: any, index: any) => {
+        return {
+          level_id: index + 1,
+          level_name: item.label,
+          num: item.count || 0,
+        }
+      }
+    )
   }
   private getTagColoe(language: string) {
     switch (language) {
@@ -398,13 +389,15 @@ export default class ScaDialog extends VueBase {
   }
   private levelColor(level: any) {
     switch (level) {
-      case 1:
+      case '严重':
         return { label: '高', color: '#E56363', bg: 'rgba(229, 99, 99, 0.1)' }
-      case 2:
+      case '高危':
         return { label: '中', color: '#F49E0B', bg: 'rgba(244, 158, 11, 0.1)' }
-      case 3:
+      case '中危':
         return { label: '低', color: '#2F90EA', bg: 'rgba(47, 144, 234, 0.1)' }
-      case 4:
+      case '低危':
+        return { label: '无', color: '#ABB2C0', bg: 'rgba(172, 180, 196, 0.1)' }
+      default:
         return { label: '无', color: '#ABB2C0', bg: 'rgba(172, 180, 196, 0.1)' }
     }
   }

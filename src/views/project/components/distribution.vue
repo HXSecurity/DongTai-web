@@ -38,11 +38,11 @@ export default class Index extends VueBase {
         trigger: 'item',
         formatter: (params: any) => {
           const colorMap = {
-            高危: '#E56363',
-            中危: '#F49E0B',
-            低危: '#2F90EA',
-            提示: '#ACB4C4',
-            无风险: '#D8D8D8',
+            严重: '#E56363',
+            高危: '#F49E0B',
+            中危: '#2F90EA',
+            低危: '#ACB4C4',
+            提示: '#D8D8D8',
           }
           return `
             <div style="display: flex;align-items: center;justify-content: space-between;width:160px;height:8px;">
