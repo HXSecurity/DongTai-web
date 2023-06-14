@@ -383,6 +383,9 @@ export default class ScaList extends VueBase {
     if (this.searchObj.order) {
       params.order_field = this.searchObj.order
     }
+    if (!this.projectId) {
+      delete params.project_id
+    }
     this.loadingStart()
     const { status, data, msg, page } = await this.services.sca.scaList(params)
     this.loadingDone()
