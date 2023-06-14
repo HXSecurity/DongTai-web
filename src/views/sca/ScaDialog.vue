@@ -98,7 +98,7 @@ export default class ScaDialog extends VueBase {
     this.tableLoading = true
     const res = await this.services.sca.assetVuls(this.dialogInfo.id)
     this.tableLoading = false
-    this.tableData.push(...res.data)
+    this.tableData = res.data
   }
 
   private projects: any = []
