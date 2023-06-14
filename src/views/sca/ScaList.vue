@@ -374,8 +374,8 @@ export default class ScaList extends VueBase {
       level_ids: this.searchObj.level,
       license_ids: this.searchObj.license,
       order: sort,
-      project_id: this.projectId,
-      version_id: this.version,
+      project_id: Number(this.projectId),
+      project_version_id: this.version,
     }
     if (this.searchObj.keyword) {
       params.keyword = this.searchObj.keyword

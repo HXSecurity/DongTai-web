@@ -266,7 +266,7 @@ export default class ScaDialog extends VueBase {
       page_size: this.pageSize,
     })
     this.tableLoading = false
-    this.tableData.push(...res.data)
+    this.tableData = res.data
     this.total = res.page.alltotal
   }
 
