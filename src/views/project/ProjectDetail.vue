@@ -3,7 +3,7 @@
     <div v-if="projectObj" class="project-warp">
       <div class="back">
         <span @click="goProjectList">
-          <i class="el-icon-arrow-left"></i>返回列表
+          <i class="el-icon-arrow-left"></i>返回项目列表
         </span>
       </div>
       <div class="title-warp">
