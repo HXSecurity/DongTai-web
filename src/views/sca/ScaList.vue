@@ -404,8 +404,8 @@ export default class ScaList extends VueBase {
       keyword: this.searchObj.keyword,
       license: this.searchObj.license,
       order: sort + this.searchObj.order,
-      project_id: this.projectId,
-      version_id: this.version,
+      project_id: Number(this.projectId),
+      project_version_id: this.version,
     }
     this.loadingStart()
     const { status, data, msg, page } = await this.services.sca.scaList(params)
