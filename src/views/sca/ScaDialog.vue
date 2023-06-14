@@ -290,7 +290,7 @@ export default class ScaDialog extends VueBase {
       params.project_id = this.$route.query.projectId
     }
     const res = await this.services.sca.assetProjects(params)
-    this.projects.push(...res.data)
+    this.projects = res.data
     this.projects_total = res.page.alltotal
   }
   tableSizeChange(val: number) {
