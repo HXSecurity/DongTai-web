@@ -156,11 +156,11 @@
                       {{ $t('menu.chinese') }}
                     </p></DropdownItem
                   >
-                  <DropdownItem>
+                  <!-- <DropdownItem>
                     <p @click="changeLanguage('en')">
                       {{ $t('menu.englist') }}
                     </p></DropdownItem
-                  >
+                  > -->
                 </DropdownMenu>
               </Dropdown>
               <DropdownItem>

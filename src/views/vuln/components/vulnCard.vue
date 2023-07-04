@@ -177,61 +177,6 @@
           </div>
         </div>
       </div>
-      <div class="relation-wrap" style="margin-top: 10px">
-        <div class="relation-top flex-row-space-between">
-          <div class="relation-left">关联漏洞{{item.dastvul_count}}个</div>
-          <div class="relation-right-buttons">
-            <el-button size="mini" type="primary" v-for="(vultype, vulkey) in item.dastvul__vul_type" :key="vulkey">{{vultype}}</el-button>
-            <el-button size="mini" type="primary" @click="getDetails">详情 <span
-                  :class="[!relateKey?'el-icon-arrow-down':'el-icon-arrow-up']"
-                ></span></el-button>
-          </div>
-        </div>
-        <div class="table-wrap" style="margin-top: 10px" v-if="relateKey">
-          <div class="add-relation-wrap" style="display:flex; justify-content: flex-end;"><el-button size="mini" type="primary" @click="addRelation">添加关联</el-button></div>
-          <el-table
-            class="hookTable"
-            style="width: 100%; margin-top:20px"
-            :data="relationList"
-            border
-            center
-            :header-row-style="{
-              color: '#000',
-              fontWeight: 600,
-            }"
-          >
-            <el-table-column
-              prop="id"
-              label="扫描漏洞ID"
-            ></el-table-column>
-            <el-table-column
-              prop="vul_type"
-              label="扫描漏洞类型"
-            ></el-table-column>
-            <el-table-column
-              prop="payload"
-              label="payload"
-            ></el-table-column>
-            <el-table-column
-              label="操作"
-            >
-              <template slot-scope="scope">
-                <a href="javascript:;" @click="goRelationDetail(scope.row)">详情|</a>
-                <a href="javascript:;" @click="relationHandler(scope.row, getRelationList)">{{scope.row.is_relatived?'解除关联': '关联'}}</a>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="table-pagination">
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="totalPage"
-              @current-change="handleCurrentChange"
-              >
-            </el-pagination>
-          </div>
-        </div>
-      </div>
     </div>
     <el-dialog
       title="相同请求扫描漏洞"

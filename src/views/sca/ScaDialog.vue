@@ -31,7 +31,7 @@
         <span class="banben">{{ detailInfo.version || '-' }}</span>
       </div>
     </div>
-    <div class="sca-dialog-desc-box">
+    <!-- <div class="sca-dialog-desc-box">
       <div class="sca-dialog-title">安全版本</div>
       <div class="sca-dialog-info">
         <span
@@ -46,7 +46,7 @@
           ></span>
         </span>
       </div>
-    </div>
+    </div> -->
     <!-- <div class="sca-dialog-desc-box">
       <div class="sca-dialog-title">修复建议</div>
       <div class="sca-dialog-info">

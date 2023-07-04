@@ -97,7 +97,7 @@
           <i class="el-icon-menu" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
-        <el-button
+        <!-- <el-button
           v-if="showApiListFlag"
           type="text"
           class="pTab"
@@ -106,7 +106,7 @@
         >
           <i class="iconfont iconzhongjianjian" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.apiList') }}
-        </el-button>
+        </el-button> -->
       </div>
       <template v-if="projectObj.versionData.version_id">
         <div v-if="selectTab === 'desc'">
@@ -378,7 +378,7 @@ export default class ProjectDetail extends VueBase {
       })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
-      await this.showApiList()
+      // await this.showApiList()
       await this.projectsSummary()
       await this.getVersionList()
     }
@@ -529,7 +529,7 @@ export default class ProjectDetail extends VueBase {
     })
   }
   private async changeVersion(value: any) {
-    await this.showApiList()
+    // await this.showApiList()
     // await this.projectsSummary()
     this.$nextTick(() => {
       if (this.selectTab === 'desc') {
@@ -577,7 +577,7 @@ export default class ProjectDetail extends VueBase {
     if (!this.$route.params.pid) {
       return
     }
-    await this.showApiList()
+    // await this.showApiList()
     await this.projectsSummary()
     await this.getVersionList()
   }

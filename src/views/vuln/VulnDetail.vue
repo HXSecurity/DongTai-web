@@ -47,7 +47,7 @@
             >
             </el-option>
           </el-select>
-          <el-tooltip
+          <!-- <el-tooltip
             class="item"
             effect="dark"
             content="漏洞验证"
@@ -56,7 +56,7 @@
             <div class="checkedAllBtn" @click="recheckVul('project')">
               <i class="icon iconfont">&#xe6b5;</i>
             </div>
-          </el-tooltip>
+          </el-tooltip> -->
           <Sync
             :item="syncInfo"
             :setting-inte="settingInte"
