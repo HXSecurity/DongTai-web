@@ -87,17 +87,17 @@ export default class SettingIndex extends VueBase {
   menuGroup = {
     策略管理: [
       'strategyManage',
-      'templateManage',
+      // 'templateManage',
       'hookRule',
       'sensitiveManage',
       // 'scaManage',
     ],
-    项目模版: ['projectTemplate'],
+    // 项目模版: ['projectTemplate'],
     密码修改: ['changePassword'],
     品牌配置: ['changeLogo'],
     // 状态监控: ['StatusMonitoring'],
-    系统配置: ['SystemSettings'],
-    操作日志: ['logManage'],
+    // 系统配置: ['SystemSettings'],
+    // 操作日志: ['logManage'],
     关于洞态: ['about'],
   }
   private curModule(path: string) {

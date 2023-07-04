@@ -286,7 +286,7 @@
                 :label="status.label"
               ></el-option>
             </el-select>
-            <el-tooltip
+            <!-- <el-tooltip
               v-if="vulnType === 'vuln'"
               class="item"
               effect="dark"
@@ -296,7 +296,7 @@
               <div class="checkedAllBtn" @click="recheck('project')">
                 <i class="icon iconfont">&#xe6b5;</i>
               </div>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip
               v-if="vulnType !== 'scan'"
               class="item"

@@ -17,7 +17,7 @@
         ></el-switch>
       </div>
     </div>
-    <div class="setting-card">
+    <!-- <div class="setting-card">
       <div class="setting-card-title">熔断</div>
       <div
         class="setting-card-switch"
@@ -43,7 +43,7 @@
           >&#xe69f;</span
         >
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
