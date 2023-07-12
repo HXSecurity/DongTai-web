@@ -246,12 +246,12 @@
           >
             组件漏洞
           </div> -->
-          <div
+          <!-- <div
             :class="vulnType === 'scan' ? 'active' : ''"
             @click="changeVulnType('scan')"
           >
             漏洞扫描
-          </div>
+          </div> -->
         </div>
         <div class="checked-bar">
           <div>
