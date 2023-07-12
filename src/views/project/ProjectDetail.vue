@@ -179,7 +179,7 @@
       :show-close="false"
     >
       <div class="version-dialog-btn-list">
-        <el-tag size="small" effect="plain" @click="addVersion">
+        <el-tag style="cursor: pointer;" size="small" effect="plain" @click="addVersion">
           <i class="el-icon-plus"></i>
           {{ $t('views.projectDetail.add_version') }}
         </el-tag>
