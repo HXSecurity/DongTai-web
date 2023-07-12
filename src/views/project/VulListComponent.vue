@@ -32,6 +32,30 @@
           </div>
         </div>
       </el-checkbox>
+
+        <div
+          v-if="searchOptionsObj.status"
+          class="module-title flex-row-space-between"
+        >
+          <span class="filter-box-title"> 漏洞状态 </span>
+        </div>
+        <el-checkbox
+          v-for="(item, index) in searchOptionsObj.status"
+          :key="'status' + item.id + '-' + index"
+          v-model="searchObj.status_str"
+          :label="item.id"
+          class="flex-row-space-between module-line"
+          @change="newSelectData"
+        >
+          <div class="check-label">
+            <div class="selectOption">
+              {{ item.name }}
+            </div>
+            <div class="num">
+              {{ item.num }}
+            </div>
+          </div>
+        </el-checkbox>
       <template v-if="vulnType === 'sca'">
         <div
           v-if="searchOptionsObj.availability.length"
@@ -94,29 +118,6 @@
           v-for="(item, index) in searchOptionsObj.hook_type"
           :key="'hook_type' + item.id + '-' + index"
           v-model="searchObj.hook_type_str"
-          :label="item.id"
-          class="flex-row-space-between module-line"
-          @change="newSelectData"
-        >
-          <div class="check-label">
-            <div class="selectOption">
-              {{ item.name }}
-            </div>
-            <div class="num">
-              {{ item.num }}
-            </div>
-          </div>
-        </el-checkbox>
-        <div
-          v-if="searchOptionsObj.status"
-          class="module-title flex-row-space-between"
-        >
-          <span class="filter-box-title"> 漏洞状态 </span>
-        </div>
-        <el-checkbox
-          v-for="(item, index) in searchOptionsObj.status"
-          :key="'status' + item.id + '-' + index"
-          v-model="searchObj.status_str"
           :label="item.id"
           class="flex-row-space-between module-line"
           @change="newSelectData"

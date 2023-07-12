@@ -442,7 +442,6 @@ export default class ProjectEdit extends VueBase {
   private type = '1'
   private advanced = false
   private departmentList = []
-  private projectList = []
   private radio = ''
   private submitForm: {
     name: string
@@ -530,24 +529,12 @@ export default class ProjectEdit extends VueBase {
     }
     this.$message.error(res.msg)
   }
-  private async getListProjecttemplat() {
-    const res = await this.services.setting.listProjecttemplat({
-      page: 1,
-      page_size: 100,
-    })
-    if (res.status === 201) {
-      this.projectList = res.data
-      return
-    }
-    this.$message.error(res.msg)
-  }
   async created() {
     if (this.$route.params.pid) {
       this.newEdit = true
     }
     await this.getEngineList()
     await this.getListDepartment()
-    await this.getListProjecttemplat()
     await this.strategyUserList()
     if (this.$route.params.pid) {
       await this.projectDetail()
