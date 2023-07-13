@@ -90,7 +90,7 @@ jobs:
             git clone https://github.com/HXSecurity/DongTai.git
             helm upgrade --install huoxian --create-namespace -n iast-${{ env.helm_ns }} ./DongTai/deploy/kubernetes/helm/ \
             --set sca.sca_token=${{ secrets.TOKEN_SCA }} --set usb.usb_token=${{ secrets.TOKEN_SCA }} --set mysql.host=iast-mysql-${{ env.helm_mysql }}.huoxian.cn \
-            --set tag=${{ steps.version.outputs.GITHUB_REF }}-latest --set build.server_number=iast${{github.run_number}} --values https://charts.dongtai.io/devops.yaml
+            --set tag=${{ steps.version.outputs.GITHUB_REF }}-latest --set build.web_number=iast${{github.run_number}} --values https://charts.dongtai.io/devops.yaml
 
       - name: finish build
         uses: joelwmale/webhook-action@master
