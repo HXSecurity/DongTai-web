@@ -807,19 +807,6 @@ export default class Deploy extends VueBase {
     }
   }
 
-  private async getListProjecttemplat() {
-    const res = await this.services.setting.listProjecttemplat({
-      page: 1,
-      page_size: 100,
-    })
-    if (res.status === 201) {
-      this.projectList = res.data
-      this.defaultTemplate = res.data[res.data.length - 1]?.id || ''
-      this.agentForm.projectTemplate = this.defaultTemplate
-      return
-    }
-    this.$message.error(res.msg)
-  }
   private async getListDepartment() {
     // 部门list
     const res = await this.services.deploy.getDepartment({})
@@ -832,7 +819,6 @@ export default class Deploy extends VueBase {
     this.$message.error(res.msg)
   }
   private async created() {
-    await this.getListProjecttemplat()
     await this.getListDepartment()
     this.agentForm.entryName = 'Demo Project'
     this.agentForm.version = 'V1.0'
