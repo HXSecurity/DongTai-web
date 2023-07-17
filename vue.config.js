@@ -27,6 +27,14 @@ module.exports = {
                 target: process.env.VUE_TARGET_HOST,
                 changeOrigin: true
             },
+            [process.env.VUE_APP_BASE_SCA_V1]: {
+                target: process.env.VUE_TARGET_HOST,
+                changeOrigin: true
+            },
+            [process.env.VUE_APP_BASE_SCA_V2]: {
+                target: process.env.VUE_TARGET_HOST,
+                changeOrigin: true
+            },
             [process.env.VUE_APP_UPLOAD]: {
                 target: process.env.VUE_TARGET_HOST,
                 changeOrigin: true

@@ -240,18 +240,18 @@
           >
             应用漏洞
           </div>
-          <div
+          <!-- <div
             :class="vulnType === 'sca' ? 'active' : ''"
             @click="changeVulnType('sca')"
           >
             组件漏洞
-          </div>
-          <div
+          </div> -->
+          <!-- <div
             :class="vulnType === 'scan' ? 'active' : ''"
             @click="changeVulnType('scan')"
           >
             漏洞扫描
-          </div>
+          </div> -->
         </div>
         <div class="checked-bar">
           <div>
@@ -286,7 +286,7 @@
                 :label="status.label"
               ></el-option>
             </el-select>
-            <el-tooltip
+            <!-- <el-tooltip
               v-if="vulnType === 'vuln'"
               class="item"
               effect="dark"
@@ -296,7 +296,7 @@
               <div class="checkedAllBtn" @click="recheck('project')">
                 <i class="icon iconfont">&#xe6b5;</i>
               </div>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip
               v-if="vulnType !== 'scan'"
               class="item"
@@ -870,6 +870,7 @@ export default class VulnList extends VueBase {
           latest_time: getPassedTime(item.latest_time),
           vul_number: vul_number,
           id: item.id,
+          latest_time_nyr: formatTimestamp(item.latest_time),
         })
         return list
       },

@@ -190,6 +190,15 @@ const routes: Array<RouteConfig> = [
         },
         component: () => import('@/views/sca/ScaList.vue'),
       },
+      {
+        path: 'scalistDetail/:page/:id',
+        name: 'scalistDetail/:page/:id',
+        meta: {
+          i18n: 'menu.scalistDetail',
+          name: i18n.t('menu.vulnDetail'),
+        },
+        component: () => import('@/views/sca/ScaDialog.vue'),
+      },
     ],
   },
   {
@@ -560,6 +569,15 @@ const adminRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
+      },
+      {
+        path: 'scalistDetail/:page/:id',
+        name: 'scalistDetail/:page/:id',
+        meta: {
+          i18n: 'menu.scalistDetail',
+          name: i18n.t('menu.vulnDetail'),
+        },
+        component: () => import('@/views/sca/ScaDialog.vue'),
       },
     ],
   },
@@ -964,6 +982,15 @@ const userRoutes: Array<RouteConfig> = [
           name: i18n.t('menu.scaList'),
         },
         component: () => import('@/views/sca/ScaList.vue'),
+      },
+      {
+        path: 'scalistDetail/:page/:id',
+        name: 'scalistDetail/:page/:id',
+        meta: {
+          i18n: 'menu.scalistDetail',
+          name: i18n.t('menu.scalistDetail'),
+        },
+        component: () => import('@/views/sca/ScaDialog.vue'),
       },
     ],
   },

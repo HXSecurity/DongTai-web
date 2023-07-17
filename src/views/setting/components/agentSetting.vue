@@ -17,7 +17,7 @@
         ></el-switch>
       </div>
     </div>
-    <div class="setting-card">
+    <!-- <div class="setting-card">
       <div class="setting-card-title">熔断</div>
       <div
         class="setting-card-switch"
@@ -43,7 +43,7 @@
           >&#xe69f;</span
         >
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -57,7 +57,6 @@ import { Component } from 'vue-property-decorator'
 export default class AgentSetting extends VueBase {
   private form = {
     vul_verifiy: '0',
-    circuit_break: '0',
   }
 
   async getInfo() {
@@ -77,7 +76,30 @@ export default class AgentSetting extends VueBase {
     }
   }
 
-  async profileModified() {
+  async profileModified(val: any) {
+    if(val == 1) {
+      const { status, msg, data } =
+      await this.services.setting.vulRecheckPayload({
+        page: 1,
+        page_size: 20,
+        language_id: 1,
+      })
+      
+      if (status !== 201) {
+        this.$message.error(msg)
+        return
+      }
+      if (data?.length < 1) {
+        this.$confirm('暂无可用规则，请点击跳转至规则配置', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }).then(async () => {
+          this.$router.push('/setting/hookRule')
+        })
+        return
+      }
+    }
     const data = []
     for (let key in this.form) {
       data.push({

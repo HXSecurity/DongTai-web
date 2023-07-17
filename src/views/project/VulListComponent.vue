@@ -32,31 +32,30 @@
           </div>
         </div>
       </el-checkbox>
-      <div
-        v-if="searchOptionsObj.projects.length"
-        class="module-title flex-row-space-between"
-      >
-        <span class="filter-box-title"> 关联项目 </span>
-      </div>
-      <div class="obj-scroll">
+
+        <div
+          v-if="searchOptionsObj.status"
+          class="module-title flex-row-space-between"
+        >
+          <span class="filter-box-title"> 漏洞状态 </span>
+        </div>
         <el-checkbox
-          v-for="(item, index) in searchOptionsObj.projects"
-          :key="'object' + item.id || item.project_id + '-' + index"
-          v-model="searchObj.project_str"
-          :label="item.id || item.project_id"
+          v-for="(item, index) in searchOptionsObj.status"
+          :key="'status' + item.id + '-' + index"
+          v-model="searchObj.status_str"
+          :label="item.id"
           class="flex-row-space-between module-line"
           @change="newSelectData"
         >
           <div class="check-label">
             <div class="selectOption">
-              {{ item.name || item.project__name }}
+              {{ item.name }}
             </div>
             <div class="num">
-              {{ item.num || item.total }}
+              {{ item.num }}
             </div>
           </div>
         </el-checkbox>
-      </div>
       <template v-if="vulnType === 'sca'">
         <div
           v-if="searchOptionsObj.availability.length"
@@ -132,53 +131,7 @@
             </div>
           </div>
         </el-checkbox>
-        <div
-          v-if="searchOptionsObj.status"
-          class="module-title flex-row-space-between"
-        >
-          <span class="filter-box-title"> 漏洞状态 </span>
-        </div>
-        <el-checkbox
-          v-for="(item, index) in searchOptionsObj.status"
-          :key="'status' + item.id + '-' + index"
-          v-model="searchObj.status_str"
-          :label="item.id"
-          class="flex-row-space-between module-line"
-          @change="newSelectData"
-        >
-          <div class="check-label">
-            <div class="selectOption">
-              {{ item.name }}
-            </div>
-            <div class="num">
-              {{ item.num }}
-            </div>
-          </div>
-        </el-checkbox>
       </template>
-      <div
-        v-if="searchOptionsObj.language.length"
-        class="module-title flex-row-space-between"
-      >
-        <span class="filter-box-title"> 语言 </span>
-      </div>
-      <el-checkbox
-        v-for="(item, index) in searchOptionsObj.language"
-        :key="'language' + item.id + '-' + index"
-        v-model="searchObj.language_str"
-        :label="item.id"
-        class="flex-row-space-between module-line"
-        @change="newSelectData"
-      >
-        <div class="check-label">
-          <div class="selectOption">
-            {{ item.name }}
-          </div>
-          <div class="num">
-            {{ item.num }}
-          </div>
-        </div>
-      </el-checkbox>
     </div>
     <div class="main-warp">
       <div class="top-place-bar"></div>
@@ -239,18 +192,18 @@
           >
             应用漏洞
           </div>
-          <div
+          <!-- <div
             :class="vulnType === 'sca' ? 'active' : ''"
             @click="changeVulnType('sca')"
           >
             组件漏洞
-          </div>
-          <div
+          </div> -->
+          <!-- <div
             :class="vulnType === 'scan' ? 'active' : ''"
             @click="changeVulnType('scan')"
           >
             扫描漏洞
-          </div>
+          </div> -->
         </div>
         <div class="checked-bar">
           <div>
@@ -285,7 +238,7 @@
                 :label="status.label"
               ></el-option>
             </el-select>
-            <el-tooltip
+            <!-- <el-tooltip
               v-if="vulnType === 'vuln'"
               class="item"
               effect="dark"
@@ -295,7 +248,7 @@
               <div class="checkedAllBtn" @click="recheck('project')">
                 <i class="icon iconfont">&#xe6b5;</i>
               </div>
-            </el-tooltip>
+            </el-tooltip> -->
             <el-tooltip
               v-if="vulnType !== 'scan'"
               class="item"
@@ -796,6 +749,7 @@ export default class VulListComponent extends VueBase {
           latest_time: getPassedTime(item.latest_time),
           vul_number: vul_number,
           id: item.id,
+          latest_time_nyr: formatTimestamp(item.latest_time),
         })
         return list
       },
