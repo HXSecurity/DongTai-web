@@ -47,7 +47,7 @@
           v-for="item in searchOptionsObj.language"
           :key="item.language"
           v-model="searchObj.language"
-          :label="item.language"
+          :label="item.language_id"
           class="flex-row-space-between module-line"
           @change="getTableData(true)"
         >
@@ -128,56 +128,30 @@
             label="组件名称"
             prop="package_name"
             fixed="left"
-            width="240"
+            min-width="240"
           >
             <template slot-scope="{ row }">
-              <span class="pkg-name">{{ row.package_name }}</span>
+              <span class="pkg-name"
+                >{{ row.package_name }} : {{ row.version }}</span
+              >
             </template>
           </el-table-column>
-          <el-table-column label="安全版本" prop="version" :width="'160px'">
-            <template slot-scope="{ row }">
-              <div class="version-box">
-                <p
-                  v-if="row.safe_version_list && row.safe_version_list.length"
-                  class="pkg-version"
-                >
-                  <el-popover placement="bottom" width="100" trigger="hover">
-                    <div
-                      v-for="(version, index) in row.safe_version_list"
-                      :key="index"
-                      style="font-size: 12px; color: #51cb74; margin-top: 4px"
-                    >
-                      <span class="el-icon-user"></span>
-                      {{ version.version }}
-                    </div>
-                    <template slot="reference">
-                      <div>
-                        <span class="el-icon-user"></span>
-                        {{ row.latest_safe_version || '暂无' }}
-                      </div>
-                    </template>
-                  </el-popover>
-                </p>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="漏洞" prop="license" min-width="200px">
+          <el-table-column label="漏洞" prop="license" width="300px">
             <template slot-scope="{ row }">
               <div class="danger-box">
-                <div class="height">{{ row.vul_high_count }}</div>
-                <div class="middle">{{ row.vul_medium_count }}</div>
-                <div class="low">{{ row.vul_low_count }}</div>
-                <div class="info">{{ row.vul_info_count }}</div>
+                <div class="height">{{ row.vul_critical_count }}</div>
+                <div class="middle">{{ row.vul_high_count }}</div>
+                <div class="low">{{ row.vul_medium_count }}</div>
+                <div class="info">{{ row.vul_low_count }}</div>
               </div>
             </template>
-          </el-table-column>
-          <el-table-column label="关联项目" prop="project_count" width="200px">
           </el-table-column>
         </el-table>
         <div class="pagination">
           <el-pagination
             :page-sizes="[10, 20, 40, 50]"
             :page-size="pageSize"
+            :total="total"
             :current-page="page"
             layout=" prev, pager, next, sizes"
             @size-change="handleSizeChange"
@@ -260,11 +234,12 @@ import ScrollToTop from '@/components/scrollToTop/scrollToTop.vue'
 @Component({ name: 'ScaList', components: { ScrollToTop, ScaDialog } })
 export default class ScaList extends VueBase {
   @Prop() version: string | number | undefined
-  @Prop() projectId: string | number | undefined
+  @Prop() projectId: any
   private sortSelect(flag: any) {
     this.searchObj.sort = flag
     this.newSelectData()
   }
+  total = 0
 
   private dialogInfo = {}
 
@@ -281,10 +256,6 @@ export default class ScaList extends VueBase {
       {
         label: this.$t('views.scaList.orderOptions.level'),
         value: 'level',
-      },
-      {
-        label: this.$t('views.scaList.orderOptions.language'),
-        value: 'language',
       },
       {
         label: '漏洞数量',
@@ -392,20 +363,28 @@ export default class ScaList extends VueBase {
     if (flag) {
       this.page = 1
     }
-    let sort = ''
+    let sort = 'asc'
     if (!this.searchObj.sort) {
-      sort = '-'
+      sort = 'desc'
     }
-    const params = {
+    const params: any = {
       page: this.page,
-      pageSize: this.pageSize,
-      language: this.searchObj.language,
-      level_id: this.searchObj.level,
-      keyword: this.searchObj.keyword,
-      license: this.searchObj.license,
-      order: sort + this.searchObj.order,
-      project_id: this.projectId,
-      version_id: this.version,
+      page_size: this.pageSize,
+      language_ids: this.searchObj.language,
+      level_ids: this.searchObj.level,
+      license_ids: this.searchObj.license,
+      order: sort,
+      project_id: Number(this.projectId),
+      project_version_id: this.version,
+    }
+    if (this.searchObj.keyword) {
+      params.keyword = this.searchObj.keyword
+    }
+    if (this.searchObj.order) {
+      params.order_field = this.searchObj.order
+    }
+    if (!this.projectId) {
+      delete params.project_id
     }
     this.loadingStart()
     const { status, data, msg, page } = await this.services.sca.scaList(params)
@@ -419,15 +398,19 @@ export default class ScaList extends VueBase {
       return
     }
     this.tableData = data
+    this.total = page.alltotal
   }
 
   public async scaSummary() {
-    const params = {
+    const params: any = {
       keyword: this.searchObj.keyword,
-      project_id: this.projectId,
-      version_id: this.version,
+    }
+    if (this.projectId || this.version) {
+      params.project_id = this.projectId
+      params.version_id = this.version
     }
     this.loadingStart()
+    console.log('params', params)
     const { status, data, msg } = await this.services.sca.scaSummary(params)
     this.loadingDone()
     if (status !== 201) {
@@ -445,8 +428,29 @@ export default class ScaList extends VueBase {
 
   private dialogFlag = false
   private goDetail(row: any) {
-    this.dialogInfo = row
-    this.dialogFlag = true
+    // this.dialogInfo = row
+    // this.dialogFlag = true
+    console.log(row)
+    if (this.projectId) {
+      this.$router.push({
+        path: `/sca/scalistDetail/1/${row.id}`,
+        query: {
+          projectId: this.projectId,
+          package_name: row.package_name,
+          package_version: row.version,
+          language_id: row.language_id,
+        },
+      })
+      return
+    }
+    this.$router.push({
+      path: `/sca/scalistDetail/1/${row.id}`,
+      query: {
+        package_name: row.package_name,
+        package_version: row.version,
+        language_id: row.language_id,
+      },
+    })
   }
   projectNameSplit(name: string, total: number) {
     if (name.length > total) {

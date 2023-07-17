@@ -7,14 +7,6 @@ interface ProjectListParams {
   name: string
 }
 
-interface ProjectAddParams {
-  pid?: number | string
-  name: string
-  mode: string
-  agent_ids: string
-  scan_id: number
-}
-
 export default () =>
   new (class {
     // 项目列表
@@ -43,7 +35,7 @@ export default () =>
     }
 
     //新增项目 编辑
-    projectAdd(params: ProjectAddParams): Promise<iResponse> {
+    projectAdd(params: any): Promise<iResponse> {
       return request.post('/project/add', params)
     }
 

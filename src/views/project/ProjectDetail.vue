@@ -3,7 +3,7 @@
     <div v-if="projectObj" class="project-warp">
       <div class="back">
         <span @click="goProjectList">
-          <i class="el-icon-arrow-left"></i>返回列表
+          <i class="el-icon-arrow-left"></i>返回项目列表
         </span>
       </div>
       <div class="title-warp">
@@ -49,7 +49,7 @@
             <el-select
               v-model="projectObj.versionData.version_id"
               size="mini"
-              style="width: 80px"
+              style="width: 210px"
               @change="changeVersion"
             >
               <el-option
@@ -97,7 +97,7 @@
           <i class="el-icon-menu" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.projectComponent') }}
         </el-button>
-        <el-button
+        <!-- <el-button
           v-if="showApiListFlag"
           type="text"
           class="pTab"
@@ -106,7 +106,7 @@
         >
           <i class="iconfont iconzhongjianjian" style="line-height: 8px"></i>
           {{ $t('views.projectDetail.apiList') }}
-        </el-button>
+        </el-button> -->
       </div>
       <template v-if="projectObj.versionData.version_id">
         <div v-if="selectTab === 'desc'">
@@ -179,7 +179,7 @@
       :show-close="false"
     >
       <div class="version-dialog-btn-list">
-        <el-tag size="small" effect="plain" @click="addVersion">
+        <el-tag style="cursor: pointer;" size="small" effect="plain" @click="addVersion">
           <i class="el-icon-plus"></i>
           {{ $t('views.projectDetail.add_version') }}
         </el-tag>
@@ -378,7 +378,7 @@ export default class ProjectDetail extends VueBase {
       })
       this.versionList.forEach((i) => (i.current_version = 0))
       item.current_version = 1
-      await this.showApiList()
+      // await this.showApiList()
       await this.projectsSummary()
       await this.getVersionList()
     }
@@ -529,7 +529,7 @@ export default class ProjectDetail extends VueBase {
     })
   }
   private async changeVersion(value: any) {
-    await this.showApiList()
+    // await this.showApiList()
     // await this.projectsSummary()
     this.$nextTick(() => {
       if (this.selectTab === 'desc') {
@@ -577,7 +577,7 @@ export default class ProjectDetail extends VueBase {
     if (!this.$route.params.pid) {
       return
     }
-    await this.showApiList()
+    // await this.showApiList()
     await this.projectsSummary()
     await this.getVersionList()
   }

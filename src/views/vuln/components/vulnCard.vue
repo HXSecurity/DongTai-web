@@ -15,12 +15,19 @@
           {{ itemTitle }}
         </span>
       </span>
-      <span
-        class="time flex-column-center"
-        style="font-size: 12px; height: 32px"
-      >
-        {{ item.first_time }}
-      </span>
+      <div style="display: flex;">
+        <el-tooltip class="item" effect="dark" content="最新活跃时间" placement="top">
+          <span class="flex-column-center" style="line-height:16px;font-size:14px;color:background:#5F6675;margin-right: 16px">
+            {{ item.latest_time }}
+          </span>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="最新活跃时间" placement="top">
+          <span class="time" >
+            <i class="iconfont iconlatesttime" style="margin-right:4px;"></i>
+            {{ item.latest_time_nyr }}
+          </span>
+        </el-tooltip>
+      </div>
     </div>
     <div class="card-content">
       <Sync
@@ -97,7 +104,7 @@
               >
             </el-tooltip>
           </span>
-          <span class="info" style="flex: 1.5">
+          <span class="info">
             <i class="iconfont" :class="switchServerType(item.server_type)"></i>
             {{ item.agent__server__container }}
           </span>
@@ -121,13 +128,12 @@
             <i class="iconfont iconweixian"></i>
             {{ switchLevel(item.level_id) }}
           </span>
-          <span class="info" style="flex: 1.2; line-height: 28px">
-            <i
-              class="iconfont iconshijian-2"
-              style="color: #a2a5ab; font-size: 14px"
-            ></i>
-            {{ item.latest_time }}
-          </span>
+          <el-tooltip class="item" effect="dark" content="首次出现时间" placement="top">
+            <span style="color:#9199A2" >
+              <i class="iconfont iconfirsttime"></i>
+              {{ item.first_time }}
+            </span>
+          </el-tooltip>
         </div>
         <div>
           <!-- <div class="tag">
@@ -168,61 +174,6 @@
             <span style="background: #e5f3f3; color: #3c9aa2">
               {{ item.status__name }}
             </span>
-          </div>
-        </div>
-      </div>
-      <div class="relation-wrap" style="margin-top: 10px">
-        <div class="relation-top flex-row-space-between">
-          <div class="relation-left">关联漏洞{{item.dastvul_count}}个</div>
-          <div class="relation-right-buttons">
-            <el-button size="mini" type="primary" v-for="(vultype, vulkey) in item.dastvul__vul_type" :key="vulkey">{{vultype}}</el-button>
-            <el-button size="mini" type="primary" @click="getDetails">详情 <span
-                  :class="[!relateKey?'el-icon-arrow-down':'el-icon-arrow-up']"
-                ></span></el-button>
-          </div>
-        </div>
-        <div class="table-wrap" style="margin-top: 10px" v-if="relateKey">
-          <div class="add-relation-wrap" style="display:flex; justify-content: flex-end;"><el-button size="mini" type="primary" @click="addRelation">添加关联</el-button></div>
-          <el-table
-            class="hookTable"
-            style="width: 100%; margin-top:20px"
-            :data="relationList"
-            border
-            center
-            :header-row-style="{
-              color: '#000',
-              fontWeight: 600,
-            }"
-          >
-            <el-table-column
-              prop="id"
-              label="扫描漏洞ID"
-            ></el-table-column>
-            <el-table-column
-              prop="vul_type"
-              label="扫描漏洞类型"
-            ></el-table-column>
-            <el-table-column
-              prop="payload"
-              label="payload"
-            ></el-table-column>
-            <el-table-column
-              label="操作"
-            >
-              <template slot-scope="scope">
-                <a href="javascript:;" @click="goRelationDetail(scope.row)">详情|</a>
-                <a href="javascript:;" @click="relationHandler(scope.row, getRelationList)">{{scope.row.is_relatived?'解除关联': '关联'}}</a>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="table-pagination">
-            <el-pagination
-              background
-              layout="prev, pager, next"
-              :total="totalPage"
-              @current-change="handleCurrentChange"
-              >
-            </el-pagination>
           </div>
         </div>
       </div>
@@ -531,8 +482,12 @@ export default class VulnList extends VueBase {
     }
 
     .time {
-      font-size: 14px;
-      color: #586069;
+      font-size:14px;
+      line-height:16px;
+      color:#959FB4;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
   }
 

@@ -19,42 +19,6 @@
                 {{ i.name }}
               </div>
             </template>
-            <template v-else>
-              <div>
-                <div
-                  class="info-content-item"
-                  :class="
-                    i.children.map((ii) => ii.name).includes(changeMenu)
-                      ? 'active'
-                      : ''
-                  "
-                  @click="Hopen(i)"
-                >
-                  <span>{{ i.name }}</span>
-                  <span
-                    class="el-icon-arrow-down"
-                    :class="i.open ? 'active' : ''"
-                  ></span>
-                </div>
-                <div
-                  class="info-content-item-group"
-                  :style="`height:${
-                    i.open ? i.children.length * 38 + 'px' : '0px'
-                  }`"
-                >
-                  <template v-for="j in i.children">
-                    <div
-                      :key="j.id"
-                      class="info-content-item"
-                      :class="changeMenu === j.name ? 'currentModule' : ''"
-                      @click="changeMenu = j.name"
-                    >
-                      {{ j.name }}
-                    </div>
-                  </template>
-                </div>
-              </div>
-            </template>
           </div>
         </div>
         <div v-if="newEdit" class="info-box">
@@ -73,66 +37,6 @@
                   style="width: 500px"
                   :placeholder="$t('views.projectEdit.namePlaceholder')"
                 ></el-input>
-              </el-form-item>
-              <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
-                <div class="scan-line">
-                  <el-select
-                    v-model="submitForm.scanId"
-                    style="width: 390px"
-                    :placeholder="$t('views.projectEdit.scanPlaceholder')"
-                    @change="agentChange"
-                  >
-                    <el-option
-                      v-for="item in strategyList"
-                      :key="item.id"
-                      :value="item.id"
-                      :label="item.name"
-                    ></el-option>
-                  </el-select>
-                  <i
-                    class="el-icon-circle-plus-outline addStrategyIcon"
-                    @click="scanAddDialogShow"
-                  >
-                    {{ $t('views.projectEdit.scanAdd') }}
-                  </i>
-                </div>
-              </el-form-item>
-              <el-form-item
-                :label="$t('views.projectEdit.department')"
-                prop="department_id"
-              >
-                <div class="scan-line">
-                  <el-select
-                    v-model="submitForm.department_id"
-                    style="width: 390px"
-                    :placeholder="$t('views.projectEdit.departmentPlaceholder')"
-                  >
-                    <el-option
-                      v-for="item in departmentList"
-                      :key="item.id"
-                      :value="item.id"
-                      :label="item.name"
-                    ></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-              <el-form-item
-                :label="$t('views.deploy.projectTemplate')"
-                prop="template_id"
-              >
-                <el-select
-                  v-model="submitForm.template_id"
-                  class="addUserInput"
-                  clearable
-                  style="width: 390px"
-                >
-                  <el-option
-                    v-for="(item, index) in projectList"
-                    :key="index"
-                    :label="item.template_name"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
               </el-form-item>
               <el-form-item
                 :label="$t('views.deploy.openLog')"
@@ -294,66 +198,6 @@
                   style="width: 500px"
                   :placeholder="$t('views.projectEdit.namePlaceholder')"
                 ></el-input>
-              </el-form-item>
-              <el-form-item :label="$t('views.projectEdit.scan')" prop="scanId">
-                <div class="scan-line">
-                  <el-select
-                    v-model="submitForm.scanId"
-                    style="width: 390px"
-                    :placeholder="$t('views.projectEdit.scanPlaceholder')"
-                    @change="agentChange"
-                  >
-                    <el-option
-                      v-for="item in strategyList"
-                      :key="item.id"
-                      :value="item.id"
-                      :label="item.name"
-                    ></el-option>
-                  </el-select>
-                  <i
-                    class="el-icon-circle-plus-outline addStrategyIcon"
-                    @click="scanAddDialogShow"
-                  >
-                    {{ $t('views.projectEdit.scanAdd') }}
-                  </i>
-                </div>
-              </el-form-item>
-              <el-form-item
-                :label="$t('views.projectEdit.department')"
-                prop="department_id"
-              >
-                <div class="scan-line">
-                  <el-select
-                    v-model="submitForm.department_id"
-                    style="width: 390px"
-                    :placeholder="$t('views.projectEdit.departmentPlaceholder')"
-                  >
-                    <el-option
-                      v-for="item in departmentList"
-                      :key="item.id"
-                      :value="item.id"
-                      :label="item.name"
-                    ></el-option>
-                  </el-select>
-                </div>
-              </el-form-item>
-              <el-form-item
-                :label="$t('views.deploy.projectTemplate')"
-                prop="template_id"
-              >
-                <el-select
-                  v-model="submitForm.template_id"
-                  class="addUserInput"
-                  clearable
-                  style="width: 390px"
-                >
-                  <el-option
-                    v-for="(item, index) in projectList"
-                    :key="index"
-                    :label="item.template_name"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
               </el-form-item>
               <el-form-item
                 :label="$t('views.deploy.openLog')"
@@ -598,36 +442,29 @@ export default class ProjectEdit extends VueBase {
   private type = '1'
   private advanced = false
   private departmentList = []
-  private projectList = []
   private radio = ''
   private submitForm: {
     name: string
     mode: string
     agentIdList: Array<number>
-    scanId: number | undefined
     version_name: string
     description: string
     vul_validation: number
     base_url: string
     test_req_header_key: string
     test_req_header_value: string
-    department_id: any
-    template_id: any
     log_level: any
     enable_log: any
   } = {
     name: '',
     mode: this.$t('views.projectEdit.mode1') as string,
     agentIdList: [],
-    scanId: undefined,
     version_name: '',
     description: '',
     vul_validation: 0,
     base_url: '',
     test_req_header_key: '',
     test_req_header_value: '',
-    department_id: '',
-    template_id: '',
     log_level: '',
     enable_log: '',
   }
@@ -657,27 +494,6 @@ export default class ProjectEdit extends VueBase {
         required: true,
         message: this.$t('views.projectEdit.namePlaceholder'),
         trigger: 'blur',
-      },
-    ],
-    scanId: [
-      {
-        required: true,
-        message: this.$t('views.projectEdit.scanPlaceholder'),
-        trigger: 'change',
-      },
-    ],
-    department_id: [
-      {
-        required: true,
-        message: this.$t('views.projectEdit.departmentPlaceholder'),
-        trigger: 'change',
-      },
-    ],
-    template_id: [
-      {
-        required: true,
-        message: this.$t('views.projectEdit.templatePlaceholder'),
-        trigger: 'change',
       },
     ],
   }
@@ -713,24 +529,12 @@ export default class ProjectEdit extends VueBase {
     }
     this.$message.error(res.msg)
   }
-  private async getListProjecttemplat() {
-    const res = await this.services.setting.listProjecttemplat({
-      page: 1,
-      page_size: 100,
-    })
-    if (res.status === 201) {
-      this.projectList = res.data
-      return
-    }
-    this.$message.error(res.msg)
-  }
   async created() {
     if (this.$route.params.pid) {
       this.newEdit = true
     }
     await this.getEngineList()
     await this.getListDepartment()
-    await this.getListProjecttemplat()
     await this.strategyUserList()
     if (this.$route.params.pid) {
       await this.projectDetail()
@@ -771,15 +575,12 @@ export default class ProjectEdit extends VueBase {
     this.submitForm.agentIdList = data.agents.map((item: { id: any }) => {
       return item.id
     })
-    this.submitForm.scanId = data.scan_id
     this.submitForm.version_name = data.versionData?.version_name
     this.submitForm.description = data.versionData?.description
     this.submitForm.vul_validation = data.vul_validation
     this.submitForm.base_url = data.base_url
     this.submitForm.test_req_header_key = data.test_req_header_key
     this.submitForm.test_req_header_value = data.test_req_header_value
-    this.submitForm.department_id = data.department_id
-    this.submitForm.template_id = data.template_id
     this.submitForm.enable_log = data.enable_log
     this.submitForm.log_level = data.log_level
     this.agentChange()
@@ -933,7 +734,6 @@ export default class ProjectEdit extends VueBase {
     }
     this.scanAddDialogOpen = false
     this.strategyUserList()
-    this.submitForm.scanId = data.id
   }
 
   private agentChange() {
@@ -966,7 +766,6 @@ export default class ProjectEdit extends VueBase {
           name: string
           mode: string | any
           agent_ids: string
-          scan_id: number
           pid?: string
           version_name: string | undefined
           description: string | undefined
@@ -974,15 +773,12 @@ export default class ProjectEdit extends VueBase {
           base_url: string
           test_req_header_key: string
           test_req_header_value: string
-          department_id: any
-          template_id: any
           enable_log: any
           log_level: any
         } = {
           name: this.submitForm.name,
           mode: this.submitForm.mode,
           agent_ids: this.submitForm.agentIdList.join(','),
-          scan_id: this.submitForm.scanId as number,
           version_name: this.submitForm.version_name
             ? this.submitForm.version_name
             : undefined,
@@ -993,8 +789,6 @@ export default class ProjectEdit extends VueBase {
           base_url: this.submitForm.base_url,
           test_req_header_key: this.submitForm.test_req_header_key,
           test_req_header_value: this.submitForm.test_req_header_value,
-          department_id: this.submitForm.department_id,
-          template_id: this.submitForm.template_id,
           enable_log: this.submitForm.enable_log,
           log_level: this.submitForm.log_level,
         }

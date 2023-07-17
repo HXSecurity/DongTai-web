@@ -93,8 +93,8 @@
       <div class="table-big-box">
         <div class="button-bar">
           <div>
-            <el-checkbox v-model="selectAll"></el-checkbox>
-            <span style="margin: 0 12px 0 4px">全选</span>
+            <!-- <el-checkbox v-model="selectAll"></el-checkbox>
+            <span style="margin: 0 12px 0 4px">全选</span> -->
             <el-button
               size="small"
               class="resetAllBtn"
@@ -111,7 +111,7 @@
             >
               <div><i class="icon iconfont">&#xe6ac;</i> <span>暂停</span></div>
             </el-button>
-            <el-button
+            <!-- <el-button
               size="small"
               class="resetAllBtn updateBtn"
               :disabled="!state || selectAll"
@@ -125,8 +125,8 @@
                 >
                 <span>导出日志</span>
               </div>
-            </el-button>
-            <el-button
+            </el-button> -->
+            <!-- <el-button
               size="small"
               class="resetAllBtn updateBtn"
               :disabled="!state"
@@ -140,7 +140,7 @@
                 >
                 <span>批量升级</span>
               </div>
-            </el-button>
+            </el-button> -->
             <!-- <el-button
               size="small"
               class="resetAllBtn exportBtn"
@@ -316,7 +316,7 @@
               >
                 <i class="el-icon-loading"></i>
               </span>
-              <el-tooltip
+              <!-- <el-tooltip
                 class="item"
                 effect="dark"
                 content="下载日志"
@@ -325,7 +325,7 @@
                 <el-button type="text" @click="exportAgent(row.id)">
                   <i class="icon iconfont">&#xe6aa;</i>
                 </el-button>
-              </el-tooltip>
+              </el-tooltip> -->
             </template>
           </el-table-column>
 
