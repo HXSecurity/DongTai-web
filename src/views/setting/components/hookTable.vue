@@ -40,11 +40,11 @@
           class="resetAllBtn"
           @click="hookTypeDialog = true"
           ><i class="el-icon-plus"></i>
-          {{ $t('views.hookPage.addHookType') }}</el-button
+           添加规则类型</el-button
         >
         <el-button size="small" class="resetAllBtn" @click="hookDialog = true"
           ><i class="el-icon-plus"></i>
-          {{ $t('views.hookPage.addHook') }}</el-button
+          添加规则</el-button
         >
       </div>
     </div>
@@ -212,17 +212,17 @@
       </el-table-column>
     </el-table>
 
-    <el-pagination
-      :current-page="currentPage"
-      :page-sizes="[10, 20, 30, 50]"
-      :page-size="pageSize"
-      background
-      layout=" prev, pager, next, jumper,total, sizes"
-      :total="total"
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-    >
-    </el-pagination>
+      <el-pagination
+        :current-page="currentPage"
+        :page-sizes="[10, 20, 30, 50]"
+        :page-size="pageSize"
+        background
+        layout=" prev, pager, next, jumper,total, sizes"
+        :total="total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
 
     <el-dialog :visible.sync="hookTypeDialog">
       <el-form
@@ -275,7 +275,7 @@
         size="small"
         :label-width="$i18n.locale === 'en' ? '160px' : '100px'"
       >
-        <el-form-item :label="$t('views.hookPage.hookType')">
+        <el-form-item label="规则集">
           <span>{{ fmtType(hook.type) }}</span>
         </el-form-item>
         <el-form-item :label="$t('views.hookPage.hooksType')">
@@ -356,6 +356,7 @@
             </div>
           </el-form-item>
         </template>
+        <template v-if="ruleType !== '3'">
         <template v-for="(item, key) in hook.target">
           <el-form-item
             :key="'target' + key"
@@ -413,6 +414,7 @@
             </div>
           </el-form-item>
         </template>
+        </template>
         <el-form-item :label="$t('views.hookPage.hookTrack')">
           <el-radio v-model="hook.inherit" selected label="false">{{
             $t('views.hookPage.onlyNow')
@@ -424,7 +426,7 @@
             $t('views.hookPage.nowChildren')
           }}</el-radio>
         </el-form-item>
-        <el-form-item :label="$t('views.hookPage.ignoreInternal')">
+        <el-form-item v-if="ruleType !== '3'" :label="$t('views.hookPage.ignoreInternal')">
           <el-checkbox v-model="hook.ignore_internal"></el-checkbox>
         </el-form-item>
         <el-form-item :label="$t('views.hookPage.ignoreBlacklist')">
@@ -528,7 +530,7 @@ export default class HookTable extends VueBase {
     ignore_blacklist: false,
     tags: [],
     untags: [],
-    command: ''
+    command: '',
   }
   relations = [
     { label: this.$t('views.hookPage.or'), value: '|' },
@@ -630,7 +632,7 @@ export default class HookTable extends VueBase {
     this.hookDialog = true
     this.hook.ignore_internal = row.ignore_internal
     this.hook.ignore_blacklist = row.ignore_blacklist
-    this.hook.tags = row.tags 
+    this.hook.tags = row.tags
     this.hook.untags = row.untags
     this.hook.command = row.command
   }
@@ -862,21 +864,22 @@ export default class HookTable extends VueBase {
     if (this.hook.id) {
       this.loadingStart()
       const rule_source = this.fmtParams(this.hook.source)
-      const rule_target = this.fmtParams(this.hook.target)
+      const rule_target: any = this.fmtParams(this.hook.target)
       const { status, msg } = await this.services.setting.modifyAdd({
         rule_id: this.hook.id,
         rule_type_id: this.hook.rule_type_id,
         rule_value: this.hook.rule_value,
-        rule_target: rule_target,
+        rule_target: rule_target || undefined,
         rule_source: rule_source,
         inherit: this.hook.inherit,
         track: 'false',
         language_id: this.activeLanguage,
-        ignore_internal: this.hook.ignore_internal,
+        ignore_internal: this.hook.ignore_internal || undefined,
         ignore_blacklist: this.hook.ignore_blacklist,
         tags: this.hook.tags,
         untags: this.hook.untags,
         command: this.hook.command,
+        type: Number(this.ruleType)
       })
 
       this.loadingDone()
@@ -888,26 +891,27 @@ export default class HookTable extends VueBase {
         })
         return
       }
+      this.$message.success('操作成功')
       await this.getTable()
       this.clearHook()
     } else {
       this.loadingStart()
       const rule_source = this.fmtParams(this.hook.source)
       const rule_target = this.fmtParams(this.hook.target)
-
       const { status, msg } = await this.services.setting.ruleAdd({
         rule_type_id: this.hook.rule_type_id,
         rule_value: this.hook.rule_value,
-        rule_target: rule_target,
+        rule_target: rule_target || undefined,
         rule_source: rule_source,
         inherit: this.hook.inherit,
         track: 'false',
         language_id: this.activeLanguage,
-        ignore_internal: this.hook.ignore_internal,
+        ignore_internal: this.hook.ignore_internal || undefined,
         ignore_blacklist: this.hook.ignore_blacklist,
         tags: this.hook.tags,
         untags: this.hook.untags,
         command: this.hook.command,
+        type: Number(this.ruleType)
       })
 
       this.loadingDone()
@@ -919,6 +923,8 @@ export default class HookTable extends VueBase {
         })
         return
       }
+      console.log('操作成功')
+      this.$message.success('操作成功')
       await this.getBase()
       await this.getTable()
       this.clearHook()
