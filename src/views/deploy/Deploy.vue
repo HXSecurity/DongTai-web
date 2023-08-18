@@ -155,24 +155,6 @@
                   ></el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="10">
-                <el-form-item :label="$t('views.deploy.department')">
-                  <el-select
-                    v-model="agentForm.department"
-                    class="addUserInput"
-                    clearable
-                    size="small"
-                    style="width: 180px"
-                  >
-                    <el-option
-                      v-for="(item, index) in departmentList"
-                      :key="index"
-                      :label="item.name"
-                      :value="item.token"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-              </el-col>
             </el-row>
           </el-form>
         </div>
@@ -807,23 +789,19 @@ export default class Deploy extends VueBase {
     }
   }
 
-  private async getListDepartment() {
-    // 部门list
-    const res = await this.services.deploy.getDepartment({})
+  private async getUserToken() {
+    const res = await this.services.user.userToken()
     if (res.status === 201) {
-      this.departmentList = res.data
-      this.token = res.data[res.data.length - 1]?.token || ''
-      this.agentForm.department = this.token
-      return
+      this.token = res.data.token
     }
-    this.$message.error(res.msg)
   }
+
   private async created() {
-    await this.getListDepartment()
     this.agentForm.entryName = 'Demo Project'
     this.agentForm.version = 'V1.0'
     await this.getMd()
     await this.getDoc()
+    this.getUserToken()
   }
 }
 </script>

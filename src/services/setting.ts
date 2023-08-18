@@ -234,39 +234,10 @@ export default () =>
       return request.post('/engine/hook/rule_type/add', params)
     }
 
-    ruleAdd(params: {
-      rule_type_id: string
-      rule_value: string
-      rule_source: string
-      rule_target: string
-      inherit: string
-      track: string
-      language_id: number,
-      ignore_blacklist?: boolean,
-      ignore_internal?: boolean,
-      tags?: any,
-      untags?: any,
-      command?: any,
-      stack_blacklist?: any
-    }): Promise<iResponse> {
+    ruleAdd(params: any): Promise<iResponse> {
       return request.post('/engine/hook/rule/add', params)
     }
-    modifyAdd(params: {
-      rule_id: number
-      rule_type_id: string
-      rule_value: string
-      rule_source: string
-      rule_target: string
-      inherit: string
-      track: string
-      language_id: number,
-      ignore_blacklist?: boolean,
-      ignore_internal?: boolean,
-      tags?: any,
-      untags?: any,
-      command?: any,
-      stack_blacklist?: any
-    }): Promise<iResponse> {
+    modifyAdd(params: any): Promise<iResponse> {
       return request.post('/engine/hook/rule/modify', params)
     }
 
