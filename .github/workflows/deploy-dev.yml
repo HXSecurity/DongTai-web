@@ -71,8 +71,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            registry.cn-hongkong.aliyuncs.com/secnium/dongtai-web:${{ steps.version.outputs.GITHUB_REF }}-latest
-            registry.cn-hongkong.aliyuncs.com/secnium/dongtai-web:${{ steps.version.outputs.GITHUB_REF }}-1.0.${{github.run_number}}
+            tingyun.tencentcloudcr.com/secnium/dongtai-web:${{ steps.version.outputs.GITHUB_REF }}-latest
+            tingyun.tencentcloudcr.com/secnium/dongtai-web:${{ steps.version.outputs.GITHUB_REF }}-1.0.${{github.run_number}}
 
       - name: deploy to cluster
         uses: tscuite/kubectl-helm-action@main
